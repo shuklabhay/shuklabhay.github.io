@@ -41,45 +41,55 @@ export function Navbar() {
   console.log(scrollProgress);
 
   return (
-    <div style={{ position: "sticky", top: 0, zIndex: 1000 }}>
-      <Progress value={scrollProgress} radius={0} style={{ height: "5px" }} />
+    <div
+      style={{
+        position: "sticky",
+        top: 0,
+        zIndex: 1000,
+      }}
+    >
+      <Progress
+        value={scrollProgress}
+        radius={0}
+        style={{ height: "5px", backgroundColor: theme.colors.dark[6] }}
+      />
 
-      <Container
-        size="sx"
-        px={0}
+      <div
         style={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          height: "10vh",
+          paddingInline: 10,
+          paddingBlock: 6,
+          paddingBottom: 7,
           backgroundColor: theme.colors.dark[6],
         }}
       >
-        <Group
-          style={{ cursor: "pointer" }}
-          onClick={() => handleNavigation("/")}
+        <Button
+          onClick={() => {}}
+          variant="subtle"
+          style={{ paddingInline: 6 }}
         >
-          <Image src={mainPhoto} alt="Logo" width={40} height={40} />
-          <Text fz="h4">Abhay Shukla</Text>
-        </Group>
+          <Group gap="xs">
+            <Image src={mainPhoto} alt="Logo" width={32} height={32} />
+            <Text fz="h4">Abhay Shukla</Text>
+          </Group>
+        </Button>
 
         <Group gap={5} visibleFrom="xs">
-          <Button onClick={() => handleNavigation("/")} variant="subtle">
+          <Button onClick={() => {}} variant="subtle">
             Home
           </Button>
-          <Button
-            onClick={() => handleNavigation("/projects")}
-            variant="subtle"
-          >
+          <Button onClick={() => {}} variant="subtle">
             Projects
           </Button>
-          <Button onClick={() => handleNavigation("/contact")} variant="subtle">
+          <Button onClick={() => {}} variant="subtle">
             Contact
           </Button>
         </Group>
         <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
         {/* make burger not have the animation, make it have like screen overlay with options or wtv */}
-      </Container>
+      </div>
     </div>
   );
 }

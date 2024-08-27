@@ -1,45 +1,41 @@
-import { Button, Text, Progress, useMantineTheme } from "@mantine/core";
-import { useEffect, useState } from "react";
-import { Navbar } from "../components/Navbar";
+import { Button, Text } from "@mantine/core";
 
 export default function Landing() {
   return (
     <>
-      <Navbar />
-
       <Text>Home Page!</Text>
       <Text>iiiii</Text>
-      <Button>This is button</Button>
+      <Button>This is a button</Button>
       <Text>iiiii</Text>
-      <Button>This is button</Button>
+      <Button>This is a button</Button>
       <Text>iiiii</Text>
-      <Button>This is button</Button>
+      <Button>This is a button</Button>
       <Text>iiiii</Text>
-      <Button>This is button</Button>
+      <Button>This is a button</Button>
       <Text>iiiii</Text>
-      <Button>This is button</Button>
+      <Button>This is a button</Button>
       <Text>iiiii</Text>
-      <Button>This is button</Button>
+      <Button>This is a button</Button>
       <Text>iiiii</Text>
-      <Button>This is button</Button>
+      <Button>This is a button</Button>
       <Text>iiiii</Text>
-      <Button>This is button</Button>
+      <Button>This is a button</Button>
       <Text>iiiii</Text>
-      <Button>This is button</Button>
+      <Button>This is a button</Button>
       <Text>iiiii</Text>
-      <Button>This is button</Button>
+      <Button>This is a button</Button>
       <Text>iiiii</Text>
-      <Button>This is button</Button>
+      <Button>This is a button</Button>
       <Text>iiiii</Text>
-      <Button>This is button</Button>
+      <Button>This is a button</Button>
       <Text>iiiii</Text>
-      <Button>This is button</Button>
+      <Button>This is a button</Button>
       <Text>iiiii</Text>
-      <Button>This is button</Button>
+      <Button>This is a button</Button>
       <Text>iiiii</Text>
-      <Button>This is button</Button>
+      <Button>This is a button</Button>
       <Text>iiiii</Text>
-      <Button>This is button</Button>
+      <Button>This is a button</Button>
     </>
   );
 }

@@ -5,7 +5,7 @@ export default function Contact() {
   return (
     <>
       <Text>Contact me!</Text>
-      <Text>iiiii</Text>
+      <Text>Contact info here</Text>
     </>
   );
 }

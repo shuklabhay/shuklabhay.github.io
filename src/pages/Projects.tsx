@@ -5,7 +5,7 @@ export default function Projects() {
   return (
     <>
       <Text>These are my projects!</Text>
-      <Text>iiiii</Text>
+      <Text>Put the project timeline stack thing here</Text>
     </>
   );
 }

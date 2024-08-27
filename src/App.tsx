@@ -1,24 +1,20 @@
 import "@mantine/core/styles.css";
 import { Container, MantineProvider } from "@mantine/core";
-import { theme } from "./theme";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { theme } from "./utils/theme.ts";
+import { BrowserRouter } from "react-router-dom";
 
-import Landing from "./pages/Landing";
-import Projects from "./pages/Projects";
-import Contact from "./pages/Contact";
+import PageStack from "./pages/PageStack.tsx";
+import { Navbar } from "./components/Navbar.tsx";
 
 export default function App() {
   return (
     <MantineProvider theme={theme} defaultColorScheme="dark">
-      <Container size="100%" style={{}}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/projects" element={<Projects />} />
-            <Route path="/contact" element={<Contact />} />
-          </Routes>
-        </BrowserRouter>
-      </Container>
+      <BrowserRouter>
+        <Navbar />
+        <Container size="sx">
+          <PageStack />
+        </Container>
+      </BrowserRouter>
     </MantineProvider>
   );
 }
