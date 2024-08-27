@@ -1,28 +1,22 @@
 import "@mantine/core/styles.css";
-import { Button, MantineProvider } from "@mantine/core";
-import ReactDOM from "react-dom/client";
-import React from "react";
-import { createTheme } from "@mantine/core";
+import { Container, MantineProvider } from "@mantine/core";
+import { theme } from "./theme";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-
-
-export const theme = createTheme({
-  primaryColor: mainColor,
-  colors: {
-    mainColor = 
-  },
-});
+import Home from "./pages/Home";
+import { SiteNavbar } from "./components/SiteNavbar";
 
 export default function App() {
   return (
-    <MantineProvider theme={theme}>
-      <Button> hiii</Button>
+    <MantineProvider theme={theme} defaultColorScheme="dark">
+      <Container size="sx">
+        <BrowserRouter>
+          <SiteNavbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+          </Routes>
+        </BrowserRouter>
+      </Container>
     </MantineProvider>
   );
 }
-
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
