@@ -1,0 +1,10 @@
+[
+  {
+    "title": "example project",
+    "description": "an example of project to display",
+    "contribution": "i did everything",
+    "acomplishments": "i did everything",
+    "images": ["path", "path", "path"],
+    "links": ["link", "link", "link"]
+  }
+]
