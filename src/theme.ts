@@ -1,9 +1,9 @@
 import { createTheme } from "@mantine/core";
 
 export const theme = createTheme({
-  primaryColor: "mainColor",
+  primaryColor: "main",
   colors: {
-    mainColor: [
+    main: [
       "#f7eaff",
       "#e8cfff",
       "#cd9cff",
