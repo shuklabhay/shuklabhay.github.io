@@ -4,16 +4,18 @@ import { theme } from "./theme";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Home from "./pages/Home";
-import { SiteNavbar } from "./components/SiteNavbar";
+import Projects from "./pages/Projects";
+import Contact from "./pages/Contact";
 
 export default function App() {
   return (
     <MantineProvider theme={theme} defaultColorScheme="dark">
-      <Container size="sx">
+      <Container size="100%">
         <BrowserRouter>
-          <SiteNavbar />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/contact" element={<Contact />} />
           </Routes>
         </BrowserRouter>
       </Container>
