@@ -31,7 +31,7 @@ export function Navbar() {
       setScrollProgress(Math.min(newProgress, 100));
 
       // Show/hide navbar
-      setIsVisible(currentScrollY > 20);
+      setIsVisible(currentScrollY > 30);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });

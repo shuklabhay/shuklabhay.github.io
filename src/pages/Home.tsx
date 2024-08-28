@@ -10,40 +10,44 @@ export default function Home() {
         align="center"
         gap={2}
         style={{
-          paddingTop: "17%",
           position: "relative",
           height: "100vh",
         }}
       >
         <HomeBackground />
-        <div
+
+        <Stack
+          align="center"
+          gap={2}
           style={{
             position: "absolute",
             top: 0,
             left: 0,
             width: "100%",
-            height: "100%",
-            backgroundColor: "rgba(0, 0, 0, 0.2)",
-          }}
-        />
-
-        <Text fz="h1" style={{ mixBlendMode: "overlay", userSelect: "none" }}>
-          Abhay Shukla
-        </Text>
-
-        <Text
-          fz="h5"
-          style={{
-            textAlign: "center",
-            width: "65%",
-            mixBlendMode: "soft-light",
-            userSelect: "none",
+            height: "80%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
           }}
         >
-          High School Student, AI Researcher, Roboticist, Digital Audio
-          Producer, Full Stack Developer, Nonprofit Founder, Speaker, Debator,
-          Entrepreneur, and Multilingual
-        </Text>
+          <Text fz="54" style={{ mixBlendMode: "overlay", userSelect: "none" }}>
+            Abhay Shukla
+          </Text>
+
+          <Text
+            fz="18"
+            style={{
+              textAlign: "center",
+              width: "65%",
+              mixBlendMode: "luminosity",
+              userSelect: "none",
+            }}
+          >
+            High School Student, AI Researcher, Roboticist, Digital Audio
+            Producer, Full Stack Developer, Nonprofit Founder, Speaker, Debater,
+            Entrepreneur, and Multilingual
+          </Text>
+        </Stack>
       </Stack>
     );
   }
