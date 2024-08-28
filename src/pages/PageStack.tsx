@@ -5,7 +5,7 @@ import Projects from "./Projects.tsx";
 import Contact from "./Contact.tsx";
 import { Stack } from "@mantine/core";
 import { useEffect, useRef } from "react";
-import { useScrollContext } from "../utils/scrollContext.tsx";
+import { scrollOffet, useScrollContext } from "../utils/scrollContext.tsx";
 
 export default function PageStack() {
   const { setVerticalPositions: setPositions } = useScrollContext();
@@ -15,13 +15,11 @@ export default function PageStack() {
 
   useEffect(() => {
     const updatePositions = () => {
-      const positionOffset = -54;
-
       const computeVerticalPosition = (
-        ref: React.RefObject<HTMLDivElement>,
+        ref: React.RefObject<HTMLDivElement>
       ) => {
         const offsetTop = ref.current?.offsetTop;
-        return offsetTop ? offsetTop + positionOffset : 0;
+        return offsetTop ? offsetTop - scrollOffet : 0;
       };
 
       setPositions({

@@ -10,7 +10,7 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import mainPhoto from "../static/main_photo.jpg";
 import { useEffect, useState } from "react";
-import { useScrollContext } from "../utils/scrollContext";
+import { scrollOffet, useScrollContext } from "../utils/scrollContext";
 
 export function Navbar() {
   const { verticalPositions } = useScrollContext();
@@ -38,10 +38,10 @@ export function Navbar() {
 
       const showLandingCondition = scrollTop < verticalPositions.projects;
       const showProjectsCondition =
-        scrollTop > verticalPositions.projects - 54 &&
-        viewportBottom < verticalPositions.contact + 54;
+        scrollTop > verticalPositions.projects - scrollOffet &&
+        viewportBottom < verticalPositions.contact + scrollOffet;
       const showContactCondition =
-        viewportBottom > verticalPositions.contact + 54;
+        viewportBottom > verticalPositions.contact + scrollOffet;
 
       setShowingLanding(showLandingCondition);
       setShowingProjects(showProjectsCondition);
@@ -89,13 +89,14 @@ export function Navbar() {
           <Button
             onClick={() => scrollTo(verticalPositions.landing)}
             variant="subtle"
-            style={{ paddingInline: 6, paddingTop: 4 }}
+            style={{ paddingInline: 6 }}
           >
             <Group gap="xs">
               <Image src={mainPhoto} alt="Logo" width={28} height={28} />
               <Text fz="h4">Abhay Shukla</Text>
             </Group>
           </Button>
+
           <Group gap={5} visibleFrom="xs">
             <Button
               onClick={() => scrollTo(verticalPositions.landing)}
