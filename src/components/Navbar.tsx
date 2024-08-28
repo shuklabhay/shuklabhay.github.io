@@ -15,28 +15,32 @@ import { useScrollContext } from "../utils/scrollContext";
 export function Navbar() {
   const { scrollInformation } = useScrollContext();
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
   const [opened, { toggle }] = useDisclosure(false);
   const theme = useMantineTheme();
 
   useEffect(() => {
     const handleScroll = () => {
-      // Modify scroll progress bar
+      const currentScrollY = window.scrollY;
+
+      // Update scroll progress
       const windowHeight = window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight;
-      const scrollTop = window.scrollY;
       const scrollableDistance = documentHeight - windowHeight;
-
-      const newProgress = (scrollTop / scrollableDistance) * 100;
+      const newProgress = (currentScrollY / scrollableDistance) * 100;
       setScrollProgress(Math.min(newProgress, 100));
+
+      // Show/hide navbar
+      setIsVisible(currentScrollY > 20);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollTo = (scrollPosittion: number) => {
+  const scrollTo = (scrollPosition: number) => {
     window.scrollTo({
-      top: scrollPosittion,
+      top: scrollPosition,
       behavior: "smooth",
     });
   };
@@ -45,9 +49,13 @@ export function Navbar() {
     return (
       <div
         style={{
-          position: "sticky",
+          position: "fixed",
           top: 0,
+          left: 0,
+          right: 0,
           zIndex: 9999,
+          transform: `translateY(${isVisible ? "0" : "-100%"})`,
+          transition: "transform 0.3s ease-in-out",
         }}
       >
         <Progress
@@ -78,7 +86,6 @@ export function Navbar() {
               <Text fz="h5">Abhay Shukla</Text>
             </Group>
           </Button>
-
           <Group gap={5} visibleFrom="xs">
             <Button
               onClick={() => scrollTo(scrollInformation.landingPosition)}

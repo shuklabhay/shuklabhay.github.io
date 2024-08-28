@@ -46,19 +46,19 @@ export default function PageStack() {
   console.log();
 
   return (
-    <Container size="sx">
+    <div>
       <div ref={landingRef}>
         <Home />
       </div>
 
-      <div ref={projectsRef}>
+      <Container size="sx" ref={projectsRef}>
         <Projects />
-      </div>
+      </Container>
 
-      <div ref={contactRef}>
+      <Container size="sx" ref={contactRef}>
         <Contact />
-      </div>
-    </Container>
+      </Container>
+    </div>
   );
 }
 function setVerticalPositions(arg0: {
