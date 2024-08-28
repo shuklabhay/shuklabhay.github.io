@@ -1,5 +1,5 @@
 import "@mantine/core/styles.css";
-import { Container, MantineProvider } from "@mantine/core";
+import { MantineProvider } from "@mantine/core";
 import { theme } from "./utils/theme.ts";
 import { BrowserRouter } from "react-router-dom";
 
@@ -13,9 +13,7 @@ export default function App() {
       <ScrollProvider>
         <BrowserRouter>
           <Navbar />
-          <Container size="sx" style={{ height: "100svh" }}>
-            <PageStack />
-          </Container>
+          <PageStack />
         </BrowserRouter>
       </ScrollProvider>
     </MantineProvider>

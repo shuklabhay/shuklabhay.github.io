@@ -1,11 +1,10 @@
-import { Navbar } from "../components/Navbar.tsx";
-
-import Landing from "./Landing.tsx";
-import Projects from "./Projects.tsx";
-import Contact from "./Contact.tsx";
-import { Stack } from "@mantine/core";
 import { useEffect, useRef } from "react";
 import { scrollOffet, useScrollContext } from "../utils/scrollContext.tsx";
+import { Container, Stack } from "@mantine/core";
+import Contact from "./Contact.tsx";
+import Landing from "./Landing.tsx";
+import Projects from "./Projects.tsx";
+import { Navbar } from "../components/Navbar.tsx";
 
 export default function PageStack() {
   const { setScrollInformation } = useScrollContext();
@@ -14,30 +13,41 @@ export default function PageStack() {
   const contactRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const updatePositions = () => {
+    const updateScrollInformation = () => {
       if (landingRef.current && projectsRef.current && contactRef.current) {
+        const newLandingPositon = landingRef.current.offsetTop - scrollOffet;
+        const newProjectsPositon = projectsRef.current.offsetTop - scrollOffet;
+        const newContactPositon = contactRef.current.offsetTop - scrollOffet;
+        const scrollTop = window.pageYOffset;
+        const scrollBottom = scrollTop + window.innerHeight;
+
         setScrollInformation({
-          landingPosition: landingRef.current.offsetTop,
-          projectsPosition: projectsRef.current.offsetTop,
-          contactPosition: contactRef.current.offsetTop,
+          landingPosition: newLandingPositon,
+          projectsPosition: newProjectsPositon,
+          contactPosition: newContactPositon,
+          isLandingFocused: scrollTop < newProjectsPositon,
+          isProjectsFocused:
+            scrollTop >= newProjectsPositon &&
+            scrollBottom < newContactPositon + scrollOffet,
+          isContactFocused: scrollBottom >= newContactPositon + scrollOffet,
         });
       }
     };
 
-    updatePositions();
-    window.addEventListener("resize", updatePositions);
-    window.addEventListener("scroll", updatePositions);
+    updateScrollInformation();
+    window.addEventListener("resize", updateScrollInformation);
+    window.addEventListener("scroll", updateScrollInformation);
 
     return () => {
-      window.removeEventListener("resize", updatePositions);
-      window.removeEventListener("scroll", updatePositions);
+      window.removeEventListener("resize", updateScrollInformation);
+      window.removeEventListener("scroll", updateScrollInformation);
     };
   }, [landingRef, projectsRef, contactRef]);
 
   console.log();
 
   return (
-    <Stack gap={2}>
+    <Container size="sx" style={{ height: "100svh" }}>
       <div ref={landingRef}>
         <Landing />
       </div>
@@ -49,7 +59,7 @@ export default function PageStack() {
       <div ref={contactRef}>
         <Contact />
       </div>
-    </Stack>
+    </Container>
   );
 }
 function setVerticalPositions(arg0: {

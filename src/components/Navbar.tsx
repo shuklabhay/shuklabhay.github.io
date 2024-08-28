@@ -10,10 +10,11 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import mainPhoto from "../static/main_photo.jpg";
 import { useEffect, useState } from "react";
-import { scrollOffet, useScrollContext } from "../utils/scrollContext";
+import { useScrollContext } from "../utils/scrollContext";
 
 export function Navbar() {
-  const { verticalPositions } = useScrollContext();
+  const { scrollInformation } = useScrollContext();
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [opened, { toggle }] = useDisclosure(false);
   const theme = useMantineTheme();
 
@@ -68,35 +69,47 @@ export function Navbar() {
           }}
         >
           <Button
-            onClick={() => scrollTo(verticalPositions.landing)}
+            onClick={() => scrollTo(scrollInformation.landingPosition)}
             variant="subtle"
             style={{ paddingInline: 6 }}
           >
             <Group gap="xs">
-              <Image src={mainPhoto} alt="Logo" width={28} height={28} />
-              <Text fz="h4">Abhay Shukla</Text>
+              <Image src={mainPhoto} alt="Logo" width={32} height={32} />
+              <Text fz="h5">Abhay Shukla</Text>
             </Group>
           </Button>
 
           <Group gap={5} visibleFrom="xs">
             <Button
-              onClick={() => scrollTo(verticalPositions.landing)}
+              onClick={() => scrollTo(scrollInformation.landingPosition)}
               variant="subtle"
-              color={showingLanding ? theme.colors.main[3] : undefined}
+              color={
+                scrollInformation.isLandingFocused
+                  ? theme.colors.main[3]
+                  : undefined
+              }
             >
               Home
             </Button>
             <Button
-              onClick={() => scrollTo(verticalPositions.projects)}
+              onClick={() => scrollTo(scrollInformation.projectsPosition)}
               variant="subtle"
-              color={showingProjects ? theme.colors.main[3] : undefined}
+              color={
+                scrollInformation.isProjectsFocused
+                  ? theme.colors.main[3]
+                  : undefined
+              }
             >
               Projects
             </Button>
             <Button
-              onClick={() => scrollTo(verticalPositions.contact)}
+              onClick={() => scrollTo(scrollInformation.contactPosition)}
               variant="subtle"
-              color={showingContact ? theme.colors.main[3] : undefined}
+              color={
+                scrollInformation.isContactFocused
+                  ? theme.colors.main[3]
+                  : undefined
+              }
             >
               Contact
             </Button>
