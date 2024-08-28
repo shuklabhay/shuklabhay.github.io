@@ -1,14 +1,17 @@
 import React, { createContext, useState, useContext } from "react";
 
-type ScrollPositions = {
-  landing: number;
-  projects: number;
-  contact: number;
+type ScrollInfo = {
+  landingPosition: number;
+  projectsPosition: number;
+  contactPosition: number;
+  isLandingFocused: boolean;
+  isProjectsFocused: boolean;
+  isContactFocused: boolean;
 };
 
 type ScrollContextType = {
-  verticalPositions: ScrollPositions;
-  setVerticalPositions: React.Dispatch<React.SetStateAction<ScrollPositions>>;
+  scrollInformation: ScrollInfo;
+  setScrollInformation: React.Dispatch<React.SetStateAction<ScrollInfo>>;
 };
 
 const ScrollContext = createContext<ScrollContextType | undefined>(undefined);
@@ -26,17 +29,20 @@ export const useScrollContext = () => {
 export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [positions, setPositions] = useState<ScrollPositions>({
-    landing: 0,
-    projects: 0,
-    contact: 0,
+  const [scrollInfo, setScrollInfo] = useState<ScrollInfo>({
+    landingPosition: 0,
+    projectsPosition: 0,
+    contactPosition: 0,
+    isLandingFocused: false,
+    isProjectsFocused: false,
+    isContactFocused: false,
   });
 
   return (
     <ScrollContext.Provider
       value={{
-        verticalPositions: positions,
-        setVerticalPositions: setPositions,
+        scrollInformation: scrollInfo,
+        setScrollInformation: setScrollInfo,
       }}
     >
       {children}

@@ -8,32 +8,33 @@ import { useEffect, useRef } from "react";
 import { scrollOffet, useScrollContext } from "../utils/scrollContext.tsx";
 
 export default function PageStack() {
-  const { setVerticalPositions: setPositions } = useScrollContext();
+  const { setScrollInformation } = useScrollContext();
   const landingRef = useRef<HTMLDivElement>(null);
   const projectsRef = useRef<HTMLDivElement>(null);
   const contactRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const updatePositions = () => {
-      const computeVerticalPosition = (
-        ref: React.RefObject<HTMLDivElement>,
-      ) => {
-        const offsetTop = ref.current?.offsetTop;
-        return offsetTop ? offsetTop - scrollOffet : 0;
-      };
-
-      setPositions({
-        landing: computeVerticalPosition(landingRef),
-        projects: computeVerticalPosition(projectsRef),
-        contact: computeVerticalPosition(contactRef),
-      });
+      if (landingRef.current && projectsRef.current && contactRef.current) {
+        setScrollInformation({
+          landingPosition: landingRef.current.offsetTop,
+          projectsPosition: projectsRef.current.offsetTop,
+          contactPosition: contactRef.current.offsetTop,
+        });
+      }
     };
 
     updatePositions();
     window.addEventListener("resize", updatePositions);
+    window.addEventListener("scroll", updatePositions);
 
-    return () => window.removeEventListener("resize", updatePositions);
-  }, [setPositions]);
+    return () => {
+      window.removeEventListener("resize", updatePositions);
+      window.removeEventListener("scroll", updatePositions);
+    };
+  }, [landingRef, projectsRef, contactRef]);
+
+  console.log();
 
   return (
     <Stack gap={2}>
@@ -50,4 +51,11 @@ export default function PageStack() {
       </div>
     </Stack>
   );
+}
+function setVerticalPositions(arg0: {
+  landing: number;
+  projects: number;
+  contact: number;
+}) {
+  throw new Error("Function not implemented.");
 }

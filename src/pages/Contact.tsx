@@ -5,6 +5,7 @@ export default function Contact() {
     <>
       <Text fz="h1">Contact me!</Text>
       <Text>Contact info here</Text>
+      <Text>Email: abhayshuklavtr@gmail.com</Text>
     </>
   );
 }

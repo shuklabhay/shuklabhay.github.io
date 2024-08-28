@@ -17,11 +17,6 @@ export function Navbar() {
   const [opened, { toggle }] = useDisclosure(false);
   const theme = useMantineTheme();
 
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [showingLanding, setShowingLanding] = useState(true);
-  const [showingProjects, setShowingProjects] = useState(false);
-  const [showingContact, setShowingContact] = useState(false);
-
   useEffect(() => {
     const handleScroll = () => {
       // Modify scroll progress bar
@@ -32,21 +27,6 @@ export function Navbar() {
 
       const newProgress = (scrollTop / scrollableDistance) * 100;
       setScrollProgress(Math.min(newProgress, 100));
-
-      // Modify element being shown feedback
-      const viewportBottom = scrollTop + window.innerHeight;
-
-      const showLandingCondition = scrollTop < verticalPositions.projects - 5;
-      const showProjectsCondition =
-        !showLandingCondition &&
-        scrollTop > verticalPositions.projects - 5 &&
-        viewportBottom < verticalPositions.contact + scrollOffet;
-      const showContactCondition =
-        viewportBottom > verticalPositions.contact + scrollOffet;
-
-      setShowingLanding(showLandingCondition);
-      setShowingProjects(showProjectsCondition);
-      setShowingContact(showContactCondition);
     };
 
     window.addEventListener("scroll", handleScroll);
