@@ -2,7 +2,7 @@ import { Button, Stack, Text } from "@mantine/core";
 
 export default function Projects() {
   return (
-    <>
+    <Stack gap={2}>
       <Text fz="h1">Some of the work I've done!</Text>
       <Text>Put the project timeline stack thing here</Text>
       <Stack gap={6}>
@@ -24,6 +24,6 @@ export default function Projects() {
         <Button>placeholder</Button>
         <Button>placeholder</Button>
       </Stack>
-    </>
+    </Stack>
   );
 }

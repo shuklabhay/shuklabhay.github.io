@@ -47,7 +47,7 @@ export function Navbar() {
         style={{
           position: "sticky",
           top: 0,
-          zIndex: 1000,
+          zIndex: 9999,
         }}
       >
         <Progress

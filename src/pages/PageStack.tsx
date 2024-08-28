@@ -1,10 +1,9 @@
 import { useEffect, useRef } from "react";
 import { scrollOffet, useScrollContext } from "../utils/scrollContext.tsx";
-import { Container, Stack } from "@mantine/core";
+import { Container } from "@mantine/core";
 import Contact from "./Contact.tsx";
-import Landing from "./Landing.tsx";
+import Home from "./Home.tsx";
 import Projects from "./Projects.tsx";
-import { Navbar } from "../components/Navbar.tsx";
 
 export default function PageStack() {
   const { setScrollInformation } = useScrollContext();
@@ -18,7 +17,7 @@ export default function PageStack() {
         const newLandingPositon = landingRef.current.offsetTop - scrollOffet;
         const newProjectsPositon = projectsRef.current.offsetTop - scrollOffet;
         const newContactPositon = contactRef.current.offsetTop - scrollOffet;
-        const scrollTop = window.pageYOffset;
+        const scrollTop = window.scrollY;
         const scrollBottom = scrollTop + window.innerHeight;
 
         setScrollInformation({
@@ -47,9 +46,9 @@ export default function PageStack() {
   console.log();
 
   return (
-    <Container size="sx" style={{ height: "100svh" }}>
+    <Container size="sx">
       <div ref={landingRef}>
-        <Landing />
+        <Home />
       </div>
 
       <div ref={projectsRef}>
