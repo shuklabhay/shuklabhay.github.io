@@ -16,7 +16,7 @@ export default function PageStack() {
   useEffect(() => {
     const updatePositions = () => {
       const computeVerticalPosition = (
-        ref: React.RefObject<HTMLDivElement>
+        ref: React.RefObject<HTMLDivElement>,
       ) => {
         const offsetTop = ref.current?.offsetTop;
         return offsetTop ? offsetTop - scrollOffet : 0;
