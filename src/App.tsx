@@ -5,16 +5,19 @@ import { BrowserRouter } from "react-router-dom";
 
 import PageStack from "./pages/PageStack.tsx";
 import { Navbar } from "./components/Navbar.tsx";
+import { ScrollProvider } from "./utils/scrollContext.tsx";
 
 export default function App() {
   return (
     <MantineProvider theme={theme} defaultColorScheme="dark">
-      <BrowserRouter>
-        <Navbar />
-        <Container size="sx">
-          <PageStack />
-        </Container>
-      </BrowserRouter>
+      <ScrollProvider>
+        <BrowserRouter>
+          <Navbar />
+          <Container size="sx" style={{ height: "100svh" }}>
+            <PageStack />
+          </Container>
+        </BrowserRouter>
+      </ScrollProvider>
     </MantineProvider>
   );
 }

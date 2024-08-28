@@ -1,5 +1,4 @@
 import {
-  Container,
   Group,
   Burger,
   Button,
@@ -9,87 +8,115 @@ import {
   Progress,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { useNavigate } from "react-router-dom";
 import mainPhoto from "../static/main_photo.jpg";
 import { useEffect, useState } from "react";
+import { useScrollContext } from "../utils/scrollContext";
 
 export function Navbar() {
+  const { verticalPositions } = useScrollContext();
   const [opened, { toggle }] = useDisclosure(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const navigate = useNavigate();
-
   const theme = useMantineTheme();
 
-  const handleNavigation = (path: string) => {
-    navigate(path);
-  };
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [showingLanding, setShowingLanding] = useState(true);
+  const [showingProjects, setShowingProjects] = useState(false);
+  const [showingContact, setShowingContact] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      const totalHeight =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
-      const newProgress =
-        (document.documentElement.scrollTop / totalHeight) * 100;
-      setScrollProgress(newProgress);
+      // Modify scroll progress bar
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const scrollTop = window.scrollY;
+      const scrollableDistance = documentHeight - windowHeight;
+
+      const newProgress = (scrollTop / scrollableDistance) * 100;
+      setScrollProgress(Math.min(newProgress, 100));
+
+      // Modify element being shown feedback
+      const viewportBottom = scrollTop + window.innerHeight;
+
+      setShowingLanding(scrollTop < verticalPositions.projects);
+      setShowingContact(viewportBottom > verticalPositions.contact);
+      setShowingProjects(!showingLanding && !showingContact);
     };
+
+    console.log(showingProjects);
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  console.log(scrollProgress);
+  const scrollTo = (scrollPosittion: number) => {
+    window.scrollTo({
+      top: scrollPosittion,
+      behavior: "smooth",
+    });
+  };
 
-  return (
-    <div
-      style={{
-        position: "sticky",
-        top: 0,
-        zIndex: 1000,
-      }}
-    >
-      <Progress
-        value={scrollProgress}
-        radius={0}
-        style={{ height: "5px", backgroundColor: theme.colors.dark[6] }}
-      />
-
+  if (theme.colors.main) {
+    return (
       <div
         style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          paddingInline: 10,
-          paddingBlock: 6,
-          paddingBottom: 7,
-          backgroundColor: theme.colors.dark[6],
+          position: "sticky",
+          top: 0,
+          zIndex: 1000,
         }}
       >
-        <Button
-          onClick={() => {}}
-          variant="subtle"
-          style={{ paddingInline: 6 }}
+        <Progress
+          value={scrollProgress}
+          radius={0}
+          animated={false}
+          transitionDuration={200}
+          style={{ height: "5px", backgroundColor: theme.colors.dark[6] }}
+        />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            paddingInline: 10,
+            paddingBlock: 6,
+            paddingBottom: 7,
+            backgroundColor: theme.colors.dark[6],
+          }}
         >
-          <Group gap="xs">
-            <Image src={mainPhoto} alt="Logo" width={32} height={32} />
-            <Text fz="h4">Abhay Shukla</Text>
+          <Button
+            onClick={() => scrollTo(verticalPositions.landing)}
+            variant="subtle"
+            style={{ paddingInline: 6, paddingTop: 4 }}
+          >
+            <Group gap="xs">
+              <Image src={mainPhoto} alt="Logo" width={28} height={28} />
+              <Text fz="h4">Abhay Shukla</Text>
+            </Group>
+          </Button>
+          <Group gap={5} visibleFrom="xs">
+            <Button
+              onClick={() => scrollTo(verticalPositions.landing)}
+              variant="subtle"
+              color={showingLanding ? theme.colors.main[3] : undefined}
+            >
+              Home
+            </Button>
+            <Button
+              onClick={() => scrollTo(verticalPositions.projects)}
+              variant="subtle"
+              color={showingProjects ? theme.colors.main[3] : undefined}
+            >
+              Projects
+            </Button>
+            <Button
+              onClick={() => scrollTo(verticalPositions.contact)}
+              variant="subtle"
+              color={showingContact ? theme.colors.main[3] : undefined}
+            >
+              Contact
+            </Button>
           </Group>
-        </Button>
-
-        <Group gap={5} visibleFrom="xs">
-          <Button onClick={() => {}} variant="subtle">
-            Home
-          </Button>
-          <Button onClick={() => {}} variant="subtle">
-            Projects
-          </Button>
-          <Button onClick={() => {}} variant="subtle">
-            Contact
-          </Button>
-        </Group>
-        <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
-        {/* make burger not have the animation, make it have like screen overlay with options or wtv */}
+          <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
