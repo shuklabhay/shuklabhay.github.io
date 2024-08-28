@@ -36,12 +36,17 @@ export function Navbar() {
       // Modify element being shown feedback
       const viewportBottom = scrollTop + window.innerHeight;
 
-      setShowingLanding(scrollTop < verticalPositions.projects);
-      setShowingContact(viewportBottom > verticalPositions.contact);
-      setShowingProjects(!showingLanding && !showingContact);
-    };
+      const showLandingCondition = scrollTop < verticalPositions.projects;
+      const showProjectsCondition =
+        scrollTop > verticalPositions.projects - 54 &&
+        viewportBottom < verticalPositions.contact + 54;
+      const showContactCondition =
+        viewportBottom > verticalPositions.contact + 54;
 
-    console.log(showingProjects);
+      setShowingLanding(showLandingCondition);
+      setShowingProjects(showProjectsCondition);
+      setShowingContact(showContactCondition);
+    };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);

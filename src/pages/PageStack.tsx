@@ -18,7 +18,7 @@ export default function PageStack() {
       const positionOffset = -54;
 
       const computeVerticalPosition = (
-        ref: React.RefObject<HTMLDivElement>
+        ref: React.RefObject<HTMLDivElement>,
       ) => {
         const offsetTop = ref.current?.offsetTop;
         return offsetTop ? offsetTop + positionOffset : 0;
@@ -30,8 +30,6 @@ export default function PageStack() {
         contact: computeVerticalPosition(contactRef),
       });
     };
-
-    console.log(landingRef.current?.offsetTop);
 
     updatePositions();
     window.addEventListener("resize", updatePositions);
