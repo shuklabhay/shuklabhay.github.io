@@ -36,9 +36,10 @@ export function Navbar() {
       // Modify element being shown feedback
       const viewportBottom = scrollTop + window.innerHeight;
 
-      const showLandingCondition = scrollTop < verticalPositions.projects;
+      const showLandingCondition = scrollTop < verticalPositions.projects - 5;
       const showProjectsCondition =
-        scrollTop > verticalPositions.projects - scrollOffet &&
+        !showLandingCondition &&
+        scrollTop > verticalPositions.projects - 5 &&
         viewportBottom < verticalPositions.contact + scrollOffet;
       const showContactCondition =
         viewportBottom > verticalPositions.contact + scrollOffet;
