@@ -1,0 +1,12 @@
+[
+  {
+    "title": "example project",
+    "startMonth": "month/year it started [date object]",
+    "endMonth": "month/year it ended [date object]",
+    "description": "an example of project to display",
+    "contribution": "i did everything",
+    "acomplishments": "i did everything",
+    "images": ["path", "path", "path"],
+    "links": ["link", "link", "link"]
+  }
+]
