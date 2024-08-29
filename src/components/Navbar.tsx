@@ -10,7 +10,7 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import mainPhoto from "../static/main_photo.jpg";
 import { useEffect, useState } from "react";
-import { useScrollContext } from "../utils/scrollContext";
+import { useScrollContext, scrollTo } from "../utils/scrollContext";
 
 export function Navbar() {
   const { scrollInformation } = useScrollContext();
@@ -37,13 +37,6 @@ export function Navbar() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const scrollTo = (scrollPosition: number) => {
-    window.scrollTo({
-      top: scrollPosition,
-      behavior: "smooth",
-    });
-  };
 
   if (theme.colors.main) {
     return (

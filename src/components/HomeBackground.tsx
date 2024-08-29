@@ -1,6 +1,9 @@
 import { useMantineTheme } from "@mantine/core";
 import { useEffect, useState, useRef } from "react";
-import { useScrollContext } from "../utils/scrollContext";
+import {
+  handleScrollProgressOpacity,
+  useScrollContext,
+} from "../utils/scrollContext";
 import { hexToRgb } from "../utils/theme";
 
 const gradientAngleRange = 30;
@@ -13,11 +16,12 @@ const startX = Math.random() * window.innerWidth;
 const startY = Math.random() * window.innerHeight;
 
 export function HomeBackground() {
+  // Hooks
   const { scrollInformation } = useScrollContext();
   const theme = useMantineTheme();
   const [gradientActiveX, setGradientActiveX] = useState(startX);
   const [gradientActiveY, setGradientActiveY] = useState(startY);
-  const [scrollOpacity, setScrollOpacity] = useState(1);
+  const [scrollProgressOpacity, setScrollProgressOpacity] = useState(1);
   const [isMouseInactive, setIsMouseInactive] = useState(false);
 
   const mouseTimer = useRef<number | undefined>(undefined);
@@ -26,21 +30,17 @@ export function HomeBackground() {
   const directionDuration = useRef(0);
   const lastActivePosition = useRef({ x: startX, y: startY });
 
+  // Animation and Scrolling Control
   useEffect(() => {
+    const scrollEventListener = () => {
+      handleScrollProgressOpacity(
+        scrollInformation.projectsPosition,
+        setScrollProgressOpacity,
+      );
+    };
+
     let targetX = startX;
     let targetY = startY;
-
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      if (scrollInformation.projectsPosition > 0) {
-        setScrollOpacity(
-          1 -
-            Math.min(1.2 * (scrollTop / scrollInformation.projectsPosition), 1),
-        );
-      } else {
-        setScrollOpacity(1);
-      }
-    };
 
     const handleMouseMove = (event: MouseEvent) => {
       targetX = event.clientX;
@@ -52,9 +52,15 @@ export function HomeBackground() {
     };
 
     const changePosition = () => {
-      targetX = Math.random() * 2 * window.innerWidth;
-      targetY = Math.random() * 2 * window.innerHeight;
-      directionDuration.current = (Math.random() * 1 + 3) * 1000;
+      targetX = Math.random() * window.innerWidth;
+      targetY = Math.random() * window.innerHeight;
+      directionDuration.current = (Math.random() * 2 + 2) * 1000;
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        changePosition();
+      }
     };
 
     const animateGradient = () => {
@@ -70,7 +76,7 @@ export function HomeBackground() {
         targetY = lastActivePosition.current.y;
       }
 
-      const followSpeed = 0.01;
+      const followSpeed = 0.005;
       setGradientActiveX((prev) => prev + (targetX - prev) * followSpeed);
       setGradientActiveY((prev) => prev + (targetY - prev) * followSpeed);
 
@@ -78,21 +84,29 @@ export function HomeBackground() {
     };
 
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("scroll", scrollEventListener, {
+      passive: true,
+    });
+    document.addEventListener("visibilitychange", handleVisibilityChange);
     animationRef.current = requestAnimationFrame(animateGradient);
 
-    handleScroll();
+    scrollEventListener();
 
     return () => {
       if (animationRef.current && mouseTimer.current) {
         window.removeEventListener("mousemove", handleMouseMove);
-        window.removeEventListener("scroll", handleScroll);
+        window.removeEventListener("scroll", scrollEventListener);
+        document.removeEventListener(
+          "visibilitychange",
+          handleVisibilityChange,
+        );
         clearTimeout(mouseTimer.current);
         cancelAnimationFrame(animationRef.current);
       }
     };
   }, [isMouseInactive, scrollInformation.projectsPosition]);
 
+  // Background Rendering
   if (theme.colors.gradMain && theme.colors.main) {
     const gradientMainColor = hexToRgb(theme.colors.gradMain[8]);
     const gradientAccentColor = hexToRgb(theme.colors.main[4]);
@@ -126,10 +140,9 @@ export function HomeBackground() {
             left: 0,
             width: "100%",
             height: "100%",
-            opacity: scrollOpacity,
+            opacity: scrollProgressOpacity,
             transition: "opacity 0.3s ease",
             clipPath: "inset(0 0 0 0)",
-            zIndex: 0,
           }}
         />
         <div
@@ -139,7 +152,7 @@ export function HomeBackground() {
             left: 0,
             width: "100%",
             height: "100%",
-            backgroundColor: `rgb(0, 0, 0, ${scrollOpacity * 0.2})`,
+            backgroundColor: `rgb(0, 0, 0, ${scrollProgressOpacity * 0.2})`,
           }}
         />
       </>
