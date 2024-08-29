@@ -1,5 +1,5 @@
 import { useMantineTheme } from "@mantine/core";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import {
   handleScrollProgressOpacity,
   useScrollContext,
@@ -15,6 +15,8 @@ const gradientAngle = window.matchMedia("(max-width: 767px)").matches
 const startX = Math.random() * window.innerWidth;
 const startY = Math.random() * window.innerHeight;
 
+const THROTTLE_DELAY = 32;
+
 export function HomeBackground() {
   // Hooks
   const { scrollInformation } = useScrollContext();
@@ -29,27 +31,59 @@ export function HomeBackground() {
   const lastUpdateTime = useRef(Date.now());
   const directionDuration = useRef(0);
   const lastActivePosition = useRef({ x: startX, y: startY });
+  const rafRef = useRef<number>();
 
-  // Animation and Scrolling Control
+  // Helpers
+
+  const throttle = useCallback((func: Function, limit: number) => {
+    let lastFunc: number;
+    let lastRan: number;
+    return function (this: any, ...args: any[]) {
+      if (!lastRan) {
+        func.apply(this, args);
+        lastRan = Date.now();
+      } else {
+        clearTimeout(lastFunc);
+        lastFunc = window.setTimeout(
+          () => {
+            if (Date.now() - lastRan >= limit) {
+              func.apply(this, args);
+              lastRan = Date.now();
+            }
+          },
+          limit - (Date.now() - lastRan)
+        );
+      }
+    };
+  }, []);
+
+  // Scroll and Animation Control
   useEffect(() => {
-    const scrollEventListener = () => {
-      handleScrollProgressOpacity(
-        scrollInformation.projectsPosition,
-        setScrollProgressOpacity,
-      );
+    // Control scrolling
+    const handleScroll = () => {
+      if (!rafRef.current) {
+        rafRef.current = requestAnimationFrame(() => {
+          handleScrollProgressOpacity(
+            scrollInformation.projectsPosition,
+            setScrollProgressOpacity
+          );
+          rafRef.current = undefined;
+        });
+      }
     };
 
+    // Control gradient/gradient animation
     let targetX = startX;
     let targetY = startY;
 
-    const handleMouseMove = (event: MouseEvent) => {
+    const handleMouseAction = throttle((event: MouseEvent) => {
       targetX = event.clientX;
       targetY = event.clientY;
       lastActivePosition.current = { x: targetX, y: targetY };
       setIsMouseInactive(false);
       clearTimeout(mouseTimer.current);
       mouseTimer.current = setTimeout(() => setIsMouseInactive(true), 5000);
-    };
+    }, THROTTLE_DELAY);
 
     const changePosition = () => {
       targetX = Math.random() * window.innerWidth;
@@ -64,6 +98,7 @@ export function HomeBackground() {
     };
 
     const animateGradient = () => {
+      const followSpeed = 0.05;
       const currentTime = Date.now();
       lastUpdateTime.current = currentTime;
 
@@ -71,45 +106,39 @@ export function HomeBackground() {
         if (currentTime - lastUpdateTime.current > directionDuration.current) {
           changePosition();
         }
+
+        setGradientActiveX((prev) => prev + (targetX - prev) * followSpeed);
+        setGradientActiveY((prev) => prev + (targetY - prev) * followSpeed);
       } else {
         targetX = lastActivePosition.current.x;
         targetY = lastActivePosition.current.y;
+        setGradientActiveX((prev) => prev + (targetX - prev) * followSpeed);
+        setGradientActiveY((prev) => prev + (targetY - prev) * followSpeed);
       }
-
-      const followSpeed = 0.005;
-      setGradientActiveX((prev) => prev + (targetX - prev) * followSpeed);
-      setGradientActiveY((prev) => prev + (targetY - prev) * followSpeed);
 
       animationRef.current = requestAnimationFrame(animateGradient);
     };
 
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    window.addEventListener("scroll", scrollEventListener, {
-      passive: true,
-    });
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    animationRef.current = requestAnimationFrame(animateGradient);
+    window.addEventListener("mousemove", handleMouseAction, { passive: true });
+    window.addEventListener("touchmove", handleMouseAction, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
-    scrollEventListener();
+    handleScroll();
 
     return () => {
-      if (animationRef.current && mouseTimer.current) {
-        window.removeEventListener("mousemove", handleMouseMove);
-        window.removeEventListener("scroll", scrollEventListener);
-        document.removeEventListener(
-          "visibilitychange",
-          handleVisibilityChange,
-        );
-        clearTimeout(mouseTimer.current);
-        cancelAnimationFrame(animationRef.current);
-      }
+      window.removeEventListener("mousemove", handleMouseAction);
+      window.removeEventListener("touchmove", handleMouseAction);
+      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [isMouseInactive, scrollInformation.projectsPosition]);
+  }, [isMouseInactive, throttle]);
 
-  // Background Rendering
+  // Define Gradient
   if (theme.colors.gradMain && theme.colors.main) {
-    const gradientMainColor = hexToRgb(theme.colors.gradMain[8]);
-    const gradientAccentColor = hexToRgb(theme.colors.main[4]);
+    const gradientMainColor = hexToRgb(theme.colors.gradMain[6]);
+    const gradientAccentColor = hexToRgb(theme.colors.main[7]);
 
     const grainGradient = {
       height: "100vh",
@@ -131,7 +160,7 @@ export function HomeBackground() {
     };
 
     return (
-      <>
+      <div>
         <div
           style={{
             ...grainGradient,
@@ -143,19 +172,20 @@ export function HomeBackground() {
             opacity: scrollProgressOpacity,
             transition: "opacity 0.3s ease",
             clipPath: "inset(0 0 0 0)",
+            willChange: "background-position",
           }}
         />
         <div
           style={{
-            position: "absolute",
+            position: "fixed",
             top: 0,
             left: 0,
             width: "100%",
             height: "100%",
-            backgroundColor: `rgb(0, 0, 0, ${scrollProgressOpacity * 0.2})`,
+            backgroundColor: `rgba(0, 0, 0, ${scrollProgressOpacity * 0.3})`,
           }}
         />
-      </>
+      </div>
     );
   }
 
