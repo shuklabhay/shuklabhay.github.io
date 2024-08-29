@@ -83,7 +83,9 @@ export function Navbar() {
           >
             <Group gap="xs">
               <Image src={mainPhoto} alt="Logo" width={32} height={32} />
-              <Text fz="h5">Abhay Shukla</Text>
+              <Text fz="h5" style={{ fontWeight: "bold" }}>
+                Abhay Shukla
+              </Text>
             </Group>
           </Button>
           <Group gap={5} visibleFrom="xs">

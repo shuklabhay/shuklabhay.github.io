@@ -24,13 +24,22 @@ export default function Home() {
             top: 0,
             left: 0,
             width: "100%",
-            height: "80%",
+            height: window.matchMedia("(max-width: 767px)").matches
+              ? "95vh"
+              : "85vh",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
           }}
         >
-          <Text fz="54" style={{ mixBlendMode: "overlay", userSelect: "none" }}>
+          <Text
+            fz="54"
+            style={{
+              mixBlendMode: "overlay",
+              userSelect: "none",
+              fontWeight: "bold",
+            }}
+          >
             Abhay Shukla
           </Text>
 

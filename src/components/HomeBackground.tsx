@@ -4,10 +4,13 @@ import { useScrollContext } from "../utils/scrollContext";
 import { hexToRgb } from "../utils/theme";
 
 const gradientAngleRange = 30;
-const gradientAngle =
-  Math.random() * (2 * gradientAngleRange) + (180 - gradientAngleRange);
-const startX = Math.random() * 90;
-const startY = Math.random() * 90;
+const gradientAngle = window.matchMedia("(max-width: 767px)").matches
+  ? Math.random() < 0.5
+    ? Math.random() * gradientAngleRange
+    : 360 - Math.random() * gradientAngleRange
+  : Math.random() * (2 * gradientAngleRange) + (180 - gradientAngleRange);
+const startX = Math.random() * window.innerWidth;
+const startY = Math.random() * window.innerHeight;
 
 export function HomeBackground() {
   const { scrollInformation } = useScrollContext();
@@ -20,7 +23,6 @@ export function HomeBackground() {
   const mouseTimer = useRef<number | undefined>(undefined);
   const animationRef = useRef<number | undefined>(undefined);
   const lastUpdateTime = useRef(Date.now());
-  const direction = useRef({ x: 0, y: 0 });
   const directionDuration = useRef(0);
   const lastActivePosition = useRef({ x: startX, y: startY });
 
@@ -30,55 +32,38 @@ export function HomeBackground() {
 
     const handleScroll = () => {
       const scrollTop = window.scrollY;
-      setScrollOpacity(
-        1 - Math.min(1.2 * (scrollTop / scrollInformation.projectsPosition), 1)
-      );
+      if (scrollInformation.projectsPosition > 0) {
+        setScrollOpacity(
+          1 -
+            Math.min(1.2 * (scrollTop / scrollInformation.projectsPosition), 1),
+        );
+      } else {
+        setScrollOpacity(1);
+      }
     };
 
     const handleMouseMove = (event: MouseEvent) => {
-      targetX = (event.clientX / window.innerWidth) * 100;
-      targetY = (event.clientY / window.innerHeight) * 100;
+      targetX = event.clientX;
+      targetY = event.clientY;
       lastActivePosition.current = { x: targetX, y: targetY };
       setIsMouseInactive(false);
       clearTimeout(mouseTimer.current);
       mouseTimer.current = setTimeout(() => setIsMouseInactive(true), 5000);
     };
 
-    const changeDirection = () => {
-      const angle = Math.random() * 2 * Math.PI;
-      direction.current = {
-        x: Math.cos(angle),
-        y: Math.sin(angle),
-      };
-      const magnitude = Math.sqrt(
-        direction.current.x ** 2 + direction.current.y ** 2
-      );
-      direction.current.x /= magnitude;
-      direction.current.y /= magnitude;
-      directionDuration.current = Math.random() * 5000 + 3000;
+    const changePosition = () => {
+      targetX = Math.random() * 2 * window.innerWidth;
+      targetY = Math.random() * 2 * window.innerHeight;
+      directionDuration.current = (Math.random() * 1 + 3) * 1000;
     };
 
     const animateGradient = () => {
       const currentTime = Date.now();
-      const deltaTime = currentTime - lastUpdateTime.current;
       lastUpdateTime.current = currentTime;
 
       if (isMouseInactive) {
         if (currentTime - lastUpdateTime.current > directionDuration.current) {
-          changeDirection();
-        }
-
-        const speed = 0.03;
-        targetX += direction.current.x * speed * deltaTime;
-        targetY += direction.current.y * speed * deltaTime;
-
-        if (targetX < 0 || targetX > 100) {
-          direction.current.x *= -1;
-          targetX = Math.max(0, Math.min(100, targetX));
-        }
-        if (targetY < 0 || targetY > 100) {
-          direction.current.y *= -1;
-          targetY = Math.max(0, Math.min(100, targetY));
+          changePosition();
         }
       } else {
         targetX = lastActivePosition.current.x;
@@ -92,12 +77,11 @@ export function HomeBackground() {
       animationRef.current = requestAnimationFrame(animateGradient);
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
     animationRef.current = requestAnimationFrame(animateGradient);
 
     handleScroll();
-    changeDirection();
 
     return () => {
       if (animationRef.current && mouseTimer.current) {
@@ -123,7 +107,7 @@ export function HomeBackground() {
           rgba(${gradientAccentColor.r}, ${gradientAccentColor.g}, ${gradientAccentColor.b}, 0.7) 
         ),
         radial-gradient(
-          at ${gradientActiveX}% ${gradientActiveY}%,
+          at ${gradientActiveX}px ${gradientActiveY}px,
           rgba(50, 50, 50, 0.1), 
           rgba(0, 0, 0, 0.6)
         ),
