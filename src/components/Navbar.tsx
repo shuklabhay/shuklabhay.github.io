@@ -71,12 +71,7 @@ export function Navbar() {
           }}
         >
           <Button
-            onClick={() =>
-              scrollViewportTo(
-                scrollInformation.landingPosition,
-                setScrollProgress,
-              )
-            }
+            onClick={() => scrollViewportTo(scrollInformation.landingPosition)}
             variant="subtle"
             style={{ width: "187px" }}
           >
@@ -90,10 +85,7 @@ export function Navbar() {
           <Group gap={5} visibleFrom="xs">
             <Button
               onClick={() =>
-                scrollViewportTo(
-                  scrollInformation.landingPosition,
-                  setScrollProgress,
-                )
+                scrollViewportTo(scrollInformation.landingPosition)
               }
               variant="subtle"
               color={
@@ -106,10 +98,7 @@ export function Navbar() {
             </Button>
             <Button
               onClick={() =>
-                scrollViewportTo(
-                  scrollInformation.projectsPosition,
-                  setScrollProgress,
-                )
+                scrollViewportTo(scrollInformation.projectsPosition)
               }
               variant="subtle"
               color={
@@ -122,10 +111,7 @@ export function Navbar() {
             </Button>
             <Button
               onClick={() =>
-                scrollViewportTo(
-                  scrollInformation.contactPosition,
-                  setScrollProgress,
-                )
+                scrollViewportTo(scrollInformation.contactPosition)
               }
               variant="subtle"
               color={

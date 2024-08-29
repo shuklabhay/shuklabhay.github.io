@@ -1,3 +1,5 @@
+type InformativeLink = { link: string; displayText: string };
+
 interface ProjectData {
   title: string;
   startMonth: Date[];
@@ -6,7 +8,7 @@ interface ProjectData {
   contribution: string;
   acomplishments: string;
   images: string[]; // image paths
-  links: string[];
+  links: InformativeLink[];
 }
 
 interface AwardData {

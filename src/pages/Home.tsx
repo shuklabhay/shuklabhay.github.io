@@ -52,7 +52,7 @@ export default function Home() {
       const scrollableDistance = documentHeight - windowHeight;
       const newProgress = (window.scrollY / scrollableDistance) * 100;
       setScrollProgress(Math.min(newProgress, 100));
-    }, 16); // Throttle to about 60fps
+    }, 16);
 
     window.addEventListener("scroll", handleScroll, { passive: true });
 
@@ -67,7 +67,7 @@ export default function Home() {
   }, [scrollInformation.projectsPosition, setScrollProgress]);
 
   const handleArrowClick = useCallback(() => {
-    scrollViewportTo(scrollInformation.projectsPosition, setScrollProgress);
+    scrollViewportTo(scrollInformation.projectsPosition);
   }, [scrollInformation.projectsPosition, setScrollProgress]);
 
   if (theme.colors.main) {
