@@ -43,8 +43,6 @@ export default function PageStack() {
     };
   }, [landingRef, projectsRef, contactRef]);
 
-  console.log();
-
   return (
     <div>
       <div ref={landingRef}>

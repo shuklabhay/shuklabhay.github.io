@@ -1,4 +1,4 @@
-import { useMantineTheme } from "@mantine/core";
+import { Stack, useMantineTheme } from "@mantine/core";
 import { useEffect, useState, useRef, useCallback } from "react";
 import {
   handleScrollProgressOpacity,
@@ -15,7 +15,7 @@ const gradientAngle = window.matchMedia("(max-width: 767px)").matches
 const startX = Math.random() * window.innerWidth;
 const startY = Math.random() * window.innerHeight;
 
-const THROTTLE_DELAY = 32;
+const throttleDelay = 64;
 
 export function HomeBackground({ isMobile }: { isMobile: boolean }) {
   // Hooks
@@ -31,10 +31,8 @@ export function HomeBackground({ isMobile }: { isMobile: boolean }) {
   const lastUpdateTime = useRef(Date.now());
   const directionDuration = useRef(0);
   const lastActivePosition = useRef({ x: startX, y: startY });
-  const rafRef = useRef<number>();
 
   // Helpers
-
   const throttle = useCallback((func: Function, limit: number) => {
     let lastFunc: number;
     let lastRan: number;
@@ -61,19 +59,14 @@ export function HomeBackground({ isMobile }: { isMobile: boolean }) {
   useEffect(() => {
     // Control scrolling
     const handleScroll = () => {
-      if (!rafRef.current) {
-        rafRef.current = requestAnimationFrame(() => {
-          handleScrollProgressOpacity(
-            scrollInformation.projectsPosition,
-            setScrollProgressOpacity
-          );
-          rafRef.current = undefined;
-        });
-      }
+      handleScrollProgressOpacity(
+        scrollInformation.projectsPosition,
+        setScrollProgressOpacity
+      );
     };
 
     // Control gradient/gradient animation
-    const followSpeed = 0.03;
+    const followSpeed = 0.05;
     let targetX = startX;
     let targetY = startY;
 
@@ -84,7 +77,7 @@ export function HomeBackground({ isMobile }: { isMobile: boolean }) {
       setIsMouseInactive(false);
       clearTimeout(mouseTimer.current);
       mouseTimer.current = setTimeout(() => setIsMouseInactive(true), 5000);
-    }, THROTTLE_DELAY);
+    }, throttleDelay);
 
     const randomlyChangePosition = () => {
       const currentTime = Date.now();
@@ -96,7 +89,7 @@ export function HomeBackground({ isMobile }: { isMobile: boolean }) {
       ) {
         targetX = Math.random() * window.innerWidth;
         targetY = Math.random() * window.innerHeight;
-        directionDuration.current = (Math.random() * 2 + 2) * 1000;
+        directionDuration.current = (Math.random() * 2 + 1) * 1000;
       }
     };
 
@@ -115,31 +108,28 @@ export function HomeBackground({ isMobile }: { isMobile: boolean }) {
     animationRef.current = requestAnimationFrame(animateGradient);
     handleScroll();
 
-    console.log(scrollProgressOpacity);
-
     return () => {
       window.removeEventListener("mousemove", handleMouseAction);
       window.removeEventListener("touchmove", handleMouseAction);
       window.removeEventListener("scroll", handleScroll);
 
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, [isMouseInactive, throttle]);
 
   // Define Gradient
   if (theme.colors.gradMain && theme.colors.main) {
     const gradientMainColor = hexToRgb(theme.colors.gradMain[6]);
-    const gradientAccentColor = hexToRgb(theme.colors.main[7]);
+    const gradientAccentColor = hexToRgb(theme.colors.main[6]);
 
     const grainGradient = {
       height: "100vh",
-      filter: "contrast(150%) brightness(450%) blur(15px)",
+      filter: "contrast(120%) brightness(350%) blur(10px)",
       background: `
         linear-gradient(
           ${gradientAngle}deg,
           rgba(${gradientMainColor.r}, ${gradientMainColor.g}, ${gradientMainColor.b}, 1),
-          rgba(${gradientAccentColor.r}, ${gradientAccentColor.g}, ${gradientAccentColor.b}, 0.7) 
+          rgba(${gradientAccentColor.r}, ${gradientAccentColor.g}, ${gradientAccentColor.b}, 0.6) 
         ),
         radial-gradient(
           at ${gradientActiveX}px ${gradientActiveY}px,
@@ -152,7 +142,7 @@ export function HomeBackground({ isMobile }: { isMobile: boolean }) {
     };
 
     return (
-      <div>
+      <Stack>
         <div
           style={{
             ...grainGradient,
@@ -168,18 +158,7 @@ export function HomeBackground({ isMobile }: { isMobile: boolean }) {
             zIndex: -1,
           }}
         />
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            zIndex: 0,
-            backgroundColor: `rgba(0, 0, 0, ${scrollProgressOpacity * 0.3})`,
-          }}
-        />
-      </div>
+      </Stack>
     );
   }
 

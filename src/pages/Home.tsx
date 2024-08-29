@@ -60,95 +60,102 @@ export default function Home() {
 
   if (theme.colors.main) {
     return (
-      <Stack
-        align="center"
-        gap={2}
-        style={{
-          position: "relative",
-          height: "100svh",
-          overflow: "hidden",
-        }}
-      >
-        <HomeBackground isMobile={isMobile} />
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-          }}
-        ></div>
+      <div>
         <Stack
           align="center"
           gap={2}
           style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: isMobile ? "75vh" : "85vh",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            padding: isMobile ? "0 1rem" : 0,
+            zIndex: 0,
+            position: "relative",
+            height: "100svh",
+            overflow: "hidden",
           }}
         >
-          <Text
-            fz={isMobile ? 42 : 54}
+          <HomeBackground isMobile={isMobile} />
+
+          <Stack
+            align="center"
+            gap={2}
             style={{
-              mixBlendMode: "overlay",
-              fontWeight: "bold",
-              textAlign: "center",
-              userSelect: "none",
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: isMobile ? "75vh" : "85vh",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              padding: isMobile ? "0 1rem" : 0,
             }}
           >
-            Abhay Shukla
-          </Text>
-          <Text
-            fz={isMobile ? 16 : 18}
+            <Text
+              fz={isMobile ? 42 : 54}
+              style={{
+                mixBlendMode: "overlay",
+                fontWeight: "bold",
+                textAlign: "center",
+                userSelect: "none",
+              }}
+            >
+              Abhay Shukla
+            </Text>
+            <Text
+              fz={isMobile ? 16 : 18}
+              style={{
+                mixBlendMode: "plus-lighter",
+                textAlign: "center",
+                userSelect: "none",
+                width: isMobile ? "90%" : "65%",
+              }}
+            >
+              High School Student, AI Researcher, Roboticist, Digital Audio
+              Producer, Full Stack Developer, Nonprofit Founder, Speaker,
+              Entrepreneur, and Multilingual
+            </Text>
+          </Stack>
+          <div
             style={{
-              mixBlendMode: "luminosity",
-              textAlign: "center",
-              userSelect: "none",
-              width: isMobile ? "90%" : "65%",
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: `rgba(0, 0, 0, ${scrollProgressOpacity * 0.15})`,
+              zIndex: 1,
+            }}
+          />
+          <ActionIcon
+            radius="xl"
+            size={isMobile ? "md" : "sm"}
+            onClick={() => scrollTo(scrollInformation.projectsPosition)}
+            style={{
+              position: "absolute",
+              bottom: isMobile ? 40 : 20,
+              backgroundColor: "transparent",
+              opacity: Math.min(scrollProgressOpacity, buttonOpacity),
+              transition: "opacity 3s ease",
+              zIndex: 1,
             }}
           >
-            High School Student, AI Researcher, Roboticist, Digital Audio
-            Producer, Full Stack Developer, Nonprofit Founder, Speaker,
-            Entrepreneur, and Multilingual
-          </Text>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width={isMobile ? 32 : 24}
+              height={isMobile ? 32 : 24}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M12 5l0 14" />
+              <path d="M18 13l-6 6" />
+              <path d="M6 13l6 6" />
+            </svg>
+          </ActionIcon>
         </Stack>
-        <ActionIcon
-          radius="xl"
-          size={isMobile ? "md" : "sm"}
-          onClick={() => scrollTo(scrollInformation.projectsPosition)}
-          style={{
-            position: "absolute",
-            bottom: isMobile ? 40 : 20,
-            backgroundColor: "transparent",
-            opacity: Math.min(scrollProgressOpacity, buttonOpacity),
-            transition: "opacity 3s ease",
-          }}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width={isMobile ? 32 : 24}
-            height={isMobile ? 32 : 24}
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M12 5l0 14" />
-            <path d="M18 13l-6 6" />
-            <path d="M6 13l6 6" />
-          </svg>
-        </ActionIcon>
-      </Stack>
+      </div>
     );
   }
   return null;
