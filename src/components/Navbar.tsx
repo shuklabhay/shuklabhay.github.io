@@ -72,7 +72,7 @@ export function Navbar() {
           <Button
             onClick={() => scrollTo(scrollInformation.landingPosition)}
             variant="subtle"
-            style={{ paddingInline: 6 }}
+            style={{ width: "195px" }}
           >
             <Group gap="xs">
               <Image src={mainPhoto} alt="Logo" width={32} height={32} />

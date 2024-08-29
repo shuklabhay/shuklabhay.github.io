@@ -17,7 +17,7 @@ const startY = Math.random() * window.innerHeight;
 
 const THROTTLE_DELAY = 32;
 
-export function HomeBackground() {
+export function HomeBackground({ isMobile }: { isMobile: boolean }) {
   // Hooks
   const { scrollInformation } = useScrollContext();
   const theme = useMantineTheme();
@@ -73,6 +73,7 @@ export function HomeBackground() {
     };
 
     // Control gradient/gradient animation
+    const followSpeed = 0.03;
     let targetX = startX;
     let targetY = startY;
 
@@ -85,37 +86,25 @@ export function HomeBackground() {
       mouseTimer.current = setTimeout(() => setIsMouseInactive(true), 5000);
     }, THROTTLE_DELAY);
 
-    const changePosition = () => {
-      targetX = Math.random() * window.innerWidth;
-      targetY = Math.random() * window.innerHeight;
-      directionDuration.current = (Math.random() * 2 + 2) * 1000;
-    };
+    const randomlyChangePosition = () => {
+      const currentTime = Date.now();
+      lastUpdateTime.current = currentTime;
 
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        changePosition();
+      if (
+        (isMouseInactive || isMobile) &&
+        currentTime - lastUpdateTime.current > directionDuration.current
+      ) {
+        targetX = Math.random() * window.innerWidth;
+        targetY = Math.random() * window.innerHeight;
+        directionDuration.current = (Math.random() * 2 + 2) * 1000;
       }
     };
 
     const animateGradient = () => {
-      const followSpeed = 0.05;
-      const currentTime = Date.now();
-      lastUpdateTime.current = currentTime;
+      randomlyChangePosition();
 
-      if (isMouseInactive) {
-        if (currentTime - lastUpdateTime.current > directionDuration.current) {
-          changePosition();
-        }
-
-        setGradientActiveX((prev) => prev + (targetX - prev) * followSpeed);
-        setGradientActiveY((prev) => prev + (targetY - prev) * followSpeed);
-      } else {
-        targetX = lastActivePosition.current.x;
-        targetY = lastActivePosition.current.y;
-        setGradientActiveX((prev) => prev + (targetX - prev) * followSpeed);
-        setGradientActiveY((prev) => prev + (targetY - prev) * followSpeed);
-      }
-
+      setGradientActiveX((prev) => prev + (targetX - prev) * followSpeed);
+      setGradientActiveY((prev) => prev + (targetY - prev) * followSpeed);
       animationRef.current = requestAnimationFrame(animateGradient);
     };
 
@@ -123,13 +112,16 @@ export function HomeBackground() {
     window.addEventListener("touchmove", handleMouseAction, { passive: true });
     window.addEventListener("scroll", handleScroll, { passive: true });
 
+    animationRef.current = requestAnimationFrame(animateGradient);
     handleScroll();
+
+    console.log(scrollProgressOpacity);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseAction);
       window.removeEventListener("touchmove", handleMouseAction);
       window.removeEventListener("scroll", handleScroll);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
+
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
@@ -173,6 +165,7 @@ export function HomeBackground() {
             transition: "opacity 0.3s ease",
             clipPath: "inset(0 0 0 0)",
             willChange: "background-position",
+            zIndex: -1,
           }}
         />
         <div
@@ -182,6 +175,7 @@ export function HomeBackground() {
             left: 0,
             width: "100%",
             height: "100%",
+            zIndex: 0,
             backgroundColor: `rgba(0, 0, 0, ${scrollProgressOpacity * 0.3})`,
           }}
         />

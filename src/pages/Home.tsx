@@ -69,7 +69,16 @@ export default function Home() {
           overflow: "hidden",
         }}
       >
-        <HomeBackground />
+        <HomeBackground isMobile={isMobile} />
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+          }}
+        ></div>
         <Stack
           align="center"
           gap={2}
@@ -106,7 +115,7 @@ export default function Home() {
             }}
           >
             High School Student, AI Researcher, Roboticist, Digital Audio
-            Producer, Full Stack Developer, Nonprofit Founder, Speaker, Debater,
+            Producer, Full Stack Developer, Nonprofit Founder, Speaker,
             Entrepreneur, and Multilingual
           </Text>
         </Stack>
