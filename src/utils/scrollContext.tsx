@@ -1,27 +1,5 @@
 import React, { createContext, useState, useContext } from "react";
 
-// Scroll Helpers
-export function scrollTo(scrollPosition: number) {
-  window.scrollTo({
-    top: scrollPosition,
-    behavior: "smooth",
-  });
-}
-
-export function handleScrollProgressOpacity(
-  goalPosition: number,
-  setScrollOpacity: React.Dispatch<React.SetStateAction<number>>,
-) {
-  const scrollTop = window.scrollY;
-  if (goalPosition > 0) {
-    setScrollOpacity(1 - Math.min(1.2 * (scrollTop / goalPosition), 1));
-  } else {
-    setScrollOpacity(1);
-  }
-}
-
-// Scroll context
-
 type ScrollInfo = {
   landingPosition: number;
   projectsPosition: number;
@@ -34,6 +12,8 @@ type ScrollInfo = {
 type ScrollContextType = {
   scrollInformation: ScrollInfo;
   setScrollInformation: React.Dispatch<React.SetStateAction<ScrollInfo>>;
+  scrollProgress: number;
+  setScrollProgress: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const ScrollContext = createContext<ScrollContextType | undefined>(undefined);
@@ -59,12 +39,15 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({
     isProjectsFocused: false,
     isContactFocused: false,
   });
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   return (
     <ScrollContext.Provider
       value={{
         scrollInformation: scrollInfo,
         setScrollInformation: setScrollInfo,
+        scrollProgress: scrollProgress,
+        setScrollProgress: setScrollProgress,
       }}
     >
       {children}

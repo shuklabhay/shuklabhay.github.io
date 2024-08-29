@@ -10,33 +10,34 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import mainPhoto from "../static/main_photo.jpg";
 import { useEffect, useState } from "react";
-import { useScrollContext, scrollTo } from "../utils/scrollContext";
+import { useScrollContext } from "../utils/scrollContext";
+import { scrollViewportTo } from "../utils/scrolling";
 
 export function Navbar() {
-  const { scrollInformation } = useScrollContext();
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const { scrollInformation, scrollProgress, setScrollProgress } =
+    useScrollContext();
   const [isVisible, setIsVisible] = useState(false);
   const [opened, { toggle }] = useDisclosure(false);
   const theme = useMantineTheme();
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
       // Update scroll progress
       const windowHeight = window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight;
       const scrollableDistance = documentHeight - windowHeight;
-      const newProgress = (currentScrollY / scrollableDistance) * 100;
+      const newProgress = (window.scrollY / scrollableDistance) * 100;
       setScrollProgress(Math.min(newProgress, 100));
 
       // Show/hide navbar
-      setIsVisible(currentScrollY > 30);
+      setIsVisible(window.scrollY > 30);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [setScrollProgress]);
+
+  console.log(scrollProgress);
 
   if (theme.colors.main) {
     return (
@@ -70,9 +71,14 @@ export function Navbar() {
           }}
         >
           <Button
-            onClick={() => scrollTo(scrollInformation.landingPosition)}
+            onClick={() =>
+              scrollViewportTo(
+                scrollInformation.landingPosition,
+                setScrollProgress,
+              )
+            }
             variant="subtle"
-            style={{ width: "195px" }}
+            style={{ width: "187px" }}
           >
             <Group gap="xs">
               <Image src={mainPhoto} alt="Logo" width={32} height={32} />
@@ -83,7 +89,12 @@ export function Navbar() {
           </Button>
           <Group gap={5} visibleFrom="xs">
             <Button
-              onClick={() => scrollTo(scrollInformation.landingPosition)}
+              onClick={() =>
+                scrollViewportTo(
+                  scrollInformation.landingPosition,
+                  setScrollProgress,
+                )
+              }
               variant="subtle"
               color={
                 scrollInformation.isLandingFocused
@@ -94,7 +105,12 @@ export function Navbar() {
               Home
             </Button>
             <Button
-              onClick={() => scrollTo(scrollInformation.projectsPosition)}
+              onClick={() =>
+                scrollViewportTo(
+                  scrollInformation.projectsPosition,
+                  setScrollProgress,
+                )
+              }
               variant="subtle"
               color={
                 scrollInformation.isProjectsFocused
@@ -105,7 +121,12 @@ export function Navbar() {
               Projects
             </Button>
             <Button
-              onClick={() => scrollTo(scrollInformation.contactPosition)}
+              onClick={() =>
+                scrollViewportTo(
+                  scrollInformation.contactPosition,
+                  setScrollProgress,
+                )
+              }
               variant="subtle"
               color={
                 scrollInformation.isContactFocused

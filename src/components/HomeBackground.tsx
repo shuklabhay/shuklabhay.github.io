@@ -1,10 +1,8 @@
 import { Stack, useMantineTheme } from "@mantine/core";
 import { useEffect, useState, useRef, useCallback } from "react";
-import {
-  handleScrollProgressOpacity,
-  useScrollContext,
-} from "../utils/scrollContext";
+import { useScrollContext } from "../utils/scrollContext";
 import { hexToRgb } from "../utils/theme";
+import { calculateScrollProgressOpacity } from "../utils/scrolling";
 
 const gradientAngleRange = 30;
 const gradientAngle = window.matchMedia("(max-width: 767px)").matches
@@ -23,7 +21,7 @@ export function HomeBackground({ isMobile }: { isMobile: boolean }) {
   const theme = useMantineTheme();
   const [gradientActiveX, setGradientActiveX] = useState(startX);
   const [gradientActiveY, setGradientActiveY] = useState(startY);
-  const [scrollProgressOpacity, setScrollProgressOpacity] = useState(1);
+  const [gradientOpacity, setGradientOpacity] = useState(1);
   const [isMouseInactive, setIsMouseInactive] = useState(false);
 
   const mouseTimer = useRef<number | undefined>(undefined);
@@ -49,7 +47,7 @@ export function HomeBackground({ isMobile }: { isMobile: boolean }) {
               lastRan = Date.now();
             }
           },
-          limit - (Date.now() - lastRan)
+          limit - (Date.now() - lastRan),
         );
       }
     };
@@ -58,12 +56,13 @@ export function HomeBackground({ isMobile }: { isMobile: boolean }) {
   // Scroll and Animation Control
   useEffect(() => {
     // Control scrolling
-    const handleScroll = () => {
-      handleScrollProgressOpacity(
-        scrollInformation.projectsPosition,
-        setScrollProgressOpacity
+    const handleScroll = throttle(() => {
+      setGradientOpacity(
+        scrollInformation.projectsPosition !== 0
+          ? calculateScrollProgressOpacity(scrollInformation.projectsPosition)
+          : 1,
       );
-    };
+    }, 16);
 
     // Control gradient/gradient animation
     const followSpeed = 0.05;
@@ -85,7 +84,8 @@ export function HomeBackground({ isMobile }: { isMobile: boolean }) {
 
       if (
         (isMouseInactive || isMobile) &&
-        currentTime - lastUpdateTime.current > directionDuration.current
+        currentTime - lastUpdateTime.current > directionDuration.current &&
+        gradientOpacity == 1
       ) {
         targetX = Math.random() * window.innerWidth;
         targetY = Math.random() * window.innerHeight;
@@ -119,12 +119,12 @@ export function HomeBackground({ isMobile }: { isMobile: boolean }) {
 
   // Define Gradient
   if (theme.colors.gradMain && theme.colors.main) {
-    const gradientMainColor = hexToRgb(theme.colors.gradMain[6]);
-    const gradientAccentColor = hexToRgb(theme.colors.main[6]);
+    const gradientMainColor = hexToRgb(theme.colors.gradMain[9]);
+    const gradientAccentColor = hexToRgb(theme.colors.main[8]);
 
     const grainGradient = {
       height: "100vh",
-      filter: "contrast(120%) brightness(350%) blur(10px)",
+      filter: "contrast(120%) brightness(350%) blur(12px)",
       background: `
         linear-gradient(
           ${gradientAngle}deg,
@@ -151,7 +151,7 @@ export function HomeBackground({ isMobile }: { isMobile: boolean }) {
             left: 0,
             width: "100%",
             height: "100%",
-            opacity: scrollProgressOpacity,
+            opacity: gradientOpacity,
             transition: "opacity 0.3s ease",
             clipPath: "inset(0 0 0 0)",
             willChange: "background-position",
