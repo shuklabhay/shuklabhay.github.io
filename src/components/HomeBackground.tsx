@@ -3,19 +3,30 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { useScrollContext } from "../utils/scrollContext";
 import { hexToRgb } from "../utils/theme";
 import { calculateScrollProgressOpacity } from "../utils/scrolling";
+import { AlertPopup } from "./AlertPopup";
+
+const isSmallScreen = window.matchMedia("(max-width: 767px)").matches;
 
 const gradientAngleRange = 30;
-const gradientAngle = window.matchMedia("(max-width: 767px)").matches
+const gradientAngle = isSmallScreen
   ? Math.random() < 0.5
     ? Math.random() * gradientAngleRange
     : 360 - Math.random() * gradientAngleRange
   : Math.random() * (2 * gradientAngleRange) + (180 - gradientAngleRange);
-const startX = Math.random() * window.innerWidth;
-const startY = Math.random() * window.innerHeight;
+const startX = isSmallScreen
+  ? Math.random() * window.innerWidth
+  : (Math.random() * window.innerWidth) / 2;
+const startY = isSmallScreen
+  ? Math.random() * window.innerHeight
+  : (Math.random() * window.innerHeight) / 2;
 
 const throttleDelay = 64;
 
-export function HomeBackground({ isMobile }: { isMobile: boolean }) {
+export function HomeBackground({
+  lowResourceMode,
+}: {
+  lowResourceMode: boolean;
+}) {
   // Hooks
   const { scrollInformation } = useScrollContext();
   const theme = useMantineTheme();
@@ -65,17 +76,19 @@ export function HomeBackground({ isMobile }: { isMobile: boolean }) {
     }, 16);
 
     // Control gradient/gradient animation
-    const followSpeed = 0.05;
+    const followSpeed = lowResourceMode ? 0.01 : 0.05;
     let targetX = startX;
     let targetY = startY;
 
     const handleMouseAction = throttle((event: MouseEvent) => {
-      targetX = event.clientX;
-      targetY = event.clientY;
-      lastActivePosition.current = { x: targetX, y: targetY };
-      setIsMouseInactive(false);
-      clearTimeout(mouseTimer.current);
-      mouseTimer.current = setTimeout(() => setIsMouseInactive(true), 5000);
+      if (!lowResourceMode) {
+        targetX = event.clientX;
+        targetY = event.clientY;
+        lastActivePosition.current = { x: targetX, y: targetY };
+        setIsMouseInactive(false);
+        clearTimeout(mouseTimer.current);
+        mouseTimer.current = setTimeout(() => setIsMouseInactive(true), 5000);
+      }
     }, throttleDelay);
 
     const randomlyChangePosition = () => {
@@ -83,13 +96,19 @@ export function HomeBackground({ isMobile }: { isMobile: boolean }) {
       lastUpdateTime.current = currentTime;
 
       if (
-        (isMouseInactive || isMobile) &&
+        (isMouseInactive || lowResourceMode) &&
         currentTime - lastUpdateTime.current > directionDuration.current &&
         gradientOpacity == 1
       ) {
-        targetX = Math.random() * window.innerWidth;
-        targetY = Math.random() * window.innerHeight;
-        directionDuration.current = (Math.random() * 2 + 1) * 1000;
+        targetX = isSmallScreen
+          ? Math.random() * window.innerWidth
+          : (Math.random() * window.innerWidth) / 2;
+        targetY = isSmallScreen
+          ? Math.random() * window.innerHeight
+          : (Math.random() * window.innerHeight) / 2;
+        directionDuration.current = lowResourceMode
+          ? (Math.random() * 4 + 2) * 1000
+          : (Math.random() * 2 + 1) * 1000;
       }
     };
 
@@ -101,21 +120,29 @@ export function HomeBackground({ isMobile }: { isMobile: boolean }) {
       animationRef.current = requestAnimationFrame(animateGradient);
     };
 
-    window.addEventListener("mousemove", handleMouseAction, { passive: true });
-    window.addEventListener("touchmove", handleMouseAction, { passive: true });
+    if (!lowResourceMode) {
+      window.addEventListener("mousemove", handleMouseAction, {
+        passive: true,
+      });
+      window.addEventListener("touchmove", handleMouseAction, {
+        passive: true,
+      });
+    }
     window.addEventListener("scroll", handleScroll, { passive: true });
 
     animationRef.current = requestAnimationFrame(animateGradient);
     handleScroll();
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseAction);
-      window.removeEventListener("touchmove", handleMouseAction);
+      if (!lowResourceMode) {
+        window.removeEventListener("mousemove", handleMouseAction);
+        window.removeEventListener("touchmove", handleMouseAction);
+      }
       window.removeEventListener("scroll", handleScroll);
 
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
-  }, [isMouseInactive, throttle]);
+  }, [lowResourceMode, isMouseInactive, throttle]);
 
   // Define Gradient
   if (theme.colors.gradMain && theme.colors.main) {
@@ -158,6 +185,7 @@ export function HomeBackground({ isMobile }: { isMobile: boolean }) {
             zIndex: -1,
           }}
         />
+        {lowResourceMode && <AlertPopup />}
       </Stack>
     );
   }

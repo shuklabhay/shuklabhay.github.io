@@ -37,8 +37,6 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [setScrollProgress]);
 
-  console.log(scrollProgress);
-
   if (theme.colors.main) {
     return (
       <div

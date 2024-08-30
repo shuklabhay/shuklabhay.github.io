@@ -25,14 +25,19 @@ export default function Home() {
   const [darkWrapperOpacity, setDarkWrapperOpacity] = useState(1);
   const [arrowInOpacity, setArrowInOpacity] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [isClientAnimationSupported, setIsClientAnimationSupported] =
+    useState(false);
 
-  // Mobile checks
+  // Client checks
   const checkMobile = useCallback(() => {
     setIsMobile(window.matchMedia("(max-width: 767px)").matches);
   }, []);
 
   useEffect(() => {
     checkMobile();
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    setIsClientAnimationSupported(isSafari || isMobile);
+
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, [checkMobile]);
@@ -83,7 +88,7 @@ export default function Home() {
             overflow: "hidden",
           }}
         >
-          <HomeBackground isMobile={isMobile} />
+          <HomeBackground lowResourceMode={isClientAnimationSupported} />
 
           <Stack
             align="center"
