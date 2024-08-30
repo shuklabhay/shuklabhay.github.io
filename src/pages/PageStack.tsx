@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { scrollOffet, useScrollContext } from "../utils/scrollContext.tsx";
 import { Container } from "@mantine/core";
 import Contact from "./Contact.tsx";
@@ -6,11 +6,16 @@ import Home from "./Home.tsx";
 import Projects from "./Projects.tsx";
 
 export default function PageStack() {
+  // Hooks
   const { setScrollInformation } = useScrollContext();
   const landingRef = useRef<HTMLDivElement>(null);
   const projectsRef = useRef<HTMLDivElement>(null);
   const contactRef = useRef<HTMLDivElement>(null);
 
+  const [isMobile, setIsMobile] = useState(false);
+  const [isSafari, setISafari] = useState(false);
+
+  // Scroll info updater
   useEffect(() => {
     const updateScrollInformation = () => {
       if (landingRef.current && projectsRef.current && contactRef.current) {
@@ -43,14 +48,28 @@ export default function PageStack() {
     };
   }, [landingRef, projectsRef, contactRef]);
 
+  // Client checks
+  const checkMobile = useCallback(() => {
+    setIsMobile(window.matchMedia("(max-width: 767px)").matches);
+  }, []);
+
+  useEffect(() => {
+    checkMobile();
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    setISafari(isSafari);
+
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, [checkMobile]);
+
   return (
     <div>
       <div ref={landingRef}>
-        <Home />
+        <Home isMobile={isMobile} isSafari={isSafari} />
       </div>
 
       <Container size="sx" ref={projectsRef}>
-        <Projects />
+        <Projects isMobile={isMobile} isSafari={isSafari} />
       </Container>
 
       <Container size="sx" ref={contactRef}>

@@ -19,30 +19,21 @@ function throttle(func: Function, limit: number) {
   };
 }
 
-export default function Home() {
+export default function Home({
+  isMobile,
+  isSafari,
+}: {
+  isMobile: boolean;
+  isSafari: boolean;
+}) {
+  // Hooks and constants
   const theme = useMantineTheme();
   const { scrollInformation, setScrollProgress } = useScrollContext();
   const [darkWrapperOpacity, setDarkWrapperOpacity] = useState(1);
   const [arrowInOpacity, setArrowInOpacity] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isClientAnimationSupported, setIsClientAnimationSupported] =
-    useState(false);
+  const isClientAnimationSupported = isMobile || isSafari;
 
-  // Client checks
-  const checkMobile = useCallback(() => {
-    setIsMobile(window.matchMedia("(max-width: 767px)").matches);
-  }, []);
-
-  useEffect(() => {
-    checkMobile();
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    setIsClientAnimationSupported(isSafari || isMobile);
-
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, [checkMobile]);
-
-  // Scrolling things
+  // Scrolling control
   useEffect(() => {
     const handleScroll = throttle(() => {
       setDarkWrapperOpacity(
@@ -61,13 +52,13 @@ export default function Home() {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
 
-    const timer = setTimeout(() => {
+    const arrowFadeInTimer = setTimeout(() => {
       setArrowInOpacity(1);
     }, 750);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      clearTimeout(timer);
+      clearTimeout(arrowFadeInTimer);
     };
   }, [scrollInformation.projectsPosition, setScrollProgress]);
 
