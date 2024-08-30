@@ -1,23 +1,12 @@
-import { Stack, Text, useMantineTheme } from "@mantine/core";
+import { Box, Stack, Text, useMantineTheme } from "@mantine/core";
 import { HomeBackground } from "../components/HomeBackground";
 import { useScrollContext } from "../utils/scrollContext";
 import { useEffect, useState, useCallback } from "react";
 import {
   calculateScrollProgressOpacity,
   scrollViewportTo,
-} from "../utils/scrolling";
+} from "../utils/scroll";
 import DownArrowButton from "../components/DownArrowButton";
-
-function throttle(func: Function, limit: number) {
-  let inThrottle: boolean;
-  return function (this: any, ...args: any[]) {
-    if (!inThrottle) {
-      func.apply(this, args);
-      inThrottle = true;
-      setTimeout(() => (inThrottle = false), limit);
-    }
-  };
-}
 
 export default function Home({
   isMobile,
@@ -35,11 +24,11 @@ export default function Home({
 
   // Scrolling control
   useEffect(() => {
-    const handleScroll = throttle(() => {
+    const handleScroll = () => {
       setDarkWrapperOpacity(
         scrollInformation.projectsPosition !== 0
           ? calculateScrollProgressOpacity(scrollInformation.projectsPosition)
-          : 1,
+          : 1
       );
 
       // Update scroll progress
@@ -48,7 +37,7 @@ export default function Home({
       const scrollableDistance = documentHeight - windowHeight;
       const newProgress = (window.scrollY / scrollableDistance) * 100;
       setScrollProgress(Math.min(newProgress, 100));
-    }, 16);
+    };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
 
@@ -72,10 +61,10 @@ export default function Home({
         <Stack
           align="center"
           gap={2}
+          h={"100svh"}
           style={{
             zIndex: 0,
             position: "relative",
-            height: "100svh",
             overflow: "hidden",
           }}
         >
@@ -84,36 +73,29 @@ export default function Home({
           <Stack
             align="center"
             gap={2}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: isMobile ? "75vh" : "85vh",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              padding: isMobile ? "0 1rem" : 0,
-            }}
+            h={{ base: "95vh", sm: "90vh" }}
+            w={"100%"}
+            justify="center"
+            p={{ base: "0 1rem", sm: 0 }}
           >
             <Text
-              fz={isMobile ? 42 : 54}
+              fz={{ base: 32, sm: 54 }}
+              fw={700}
+              ta="center"
               style={{
                 mixBlendMode: "overlay",
-                fontWeight: "bold",
-                textAlign: "center",
                 userSelect: "none",
               }}
             >
               Abhay Shukla
             </Text>
             <Text
-              fz={isMobile ? 16 : 18}
+              fz={{ base: 14, sm: 18 }}
+              ta="center"
+              w={{ base: "60%", sm: "70%" }}
               style={{
                 mixBlendMode: "plus-lighter",
-                textAlign: "center",
                 userSelect: "none",
-                width: isMobile ? "90%" : "65%",
               }}
             >
               High School Student, AI Researcher, Roboticist, Digital Audio
@@ -133,9 +115,8 @@ export default function Home({
             }}
           />
           <DownArrowButton
-            isMobile={isMobile}
             onClick={handleArrowClick}
-            opacity={arrowInOpacity}
+            opacity={Math.min(arrowInOpacity, darkWrapperOpacity)}
           />
         </Stack>
       </div>

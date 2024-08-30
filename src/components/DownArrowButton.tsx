@@ -1,22 +1,20 @@
 import { ActionIcon } from "@mantine/core";
 
 export default function DownArrowButton({
-  isMobile,
   onClick,
   opacity,
 }: {
-  isMobile: boolean;
   onClick: () => void;
   opacity: number;
 }) {
   return (
     <ActionIcon
       radius="xl"
-      size={isMobile ? "md" : "sm"}
+      size={40}
       onClick={onClick}
       style={{
         position: "absolute",
-        bottom: isMobile ? 40 : 20,
+        bottom: 30,
         backgroundColor: "transparent",
         opacity: opacity,
         transition: "opacity 2.5s ease",

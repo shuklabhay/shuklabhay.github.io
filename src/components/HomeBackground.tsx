@@ -2,7 +2,7 @@ import { Stack, useMantineTheme } from "@mantine/core";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useScrollContext } from "../utils/scrollContext";
 import { hexToRgb } from "../utils/theme";
-import { calculateScrollProgressOpacity } from "../utils/scrolling";
+import { calculateScrollProgressOpacity } from "../utils/scroll";
 import { AlertPopup } from "./AlertPopup";
 
 const isSmallScreen = window.matchMedia("(max-width: 767px)").matches;
@@ -19,8 +19,6 @@ const startX = isSmallScreen
 const startY = isSmallScreen
   ? Math.random() * window.innerHeight
   : (Math.random() * window.innerHeight) / 2;
-
-const throttleDelay = 64;
 
 export function HomeBackground({
   lowResourceMode,
@@ -41,46 +39,23 @@ export function HomeBackground({
   const directionDuration = useRef(0);
   const lastActivePosition = useRef({ x: startX, y: startY });
 
-  // Helpers
-  const throttle = useCallback((func: Function, limit: number) => {
-    let lastFunc: number;
-    let lastRan: number;
-    return function (this: any, ...args: any[]) {
-      if (!lastRan) {
-        func.apply(this, args);
-        lastRan = Date.now();
-      } else {
-        clearTimeout(lastFunc);
-        lastFunc = window.setTimeout(
-          () => {
-            if (Date.now() - lastRan >= limit) {
-              func.apply(this, args);
-              lastRan = Date.now();
-            }
-          },
-          limit - (Date.now() - lastRan),
-        );
-      }
-    };
-  }, []);
-
   // Scroll and Animation Control
   useEffect(() => {
     // Control scrolling
-    const handleScroll = throttle(() => {
+    const handleScroll = () => {
       setGradientOpacity(
         scrollInformation.projectsPosition !== 0
           ? calculateScrollProgressOpacity(scrollInformation.projectsPosition)
-          : 1,
+          : 1
       );
-    }, 16);
+    };
 
     // Control gradient/gradient animation
     const followSpeed = lowResourceMode ? 0.01 : 0.05;
     let targetX = startX;
     let targetY = startY;
 
-    const handleMouseAction = throttle((event: MouseEvent) => {
+    const handleMouseAction = (event: MouseEvent) => {
       if (!lowResourceMode) {
         targetX = event.clientX;
         targetY = event.clientY;
@@ -89,7 +64,7 @@ export function HomeBackground({
         clearTimeout(mouseTimer.current);
         mouseTimer.current = setTimeout(() => setIsMouseInactive(true), 5000);
       }
-    }, throttleDelay);
+    };
 
     const randomlyChangePosition = () => {
       const currentTime = Date.now();
@@ -124,9 +99,6 @@ export function HomeBackground({
       window.addEventListener("mousemove", handleMouseAction, {
         passive: true,
       });
-      window.addEventListener("touchmove", handleMouseAction, {
-        passive: true,
-      });
     }
     window.addEventListener("scroll", handleScroll, { passive: true });
 
@@ -136,13 +108,12 @@ export function HomeBackground({
     return () => {
       if (!lowResourceMode) {
         window.removeEventListener("mousemove", handleMouseAction);
-        window.removeEventListener("touchmove", handleMouseAction);
       }
       window.removeEventListener("scroll", handleScroll);
 
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
-  }, [lowResourceMode, isMouseInactive, throttle]);
+  }, [lowResourceMode, isMouseInactive]);
 
   // Define Gradient
   if (theme.colors.gradMain && theme.colors.main) {

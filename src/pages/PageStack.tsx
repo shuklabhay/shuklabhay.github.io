@@ -4,13 +4,10 @@ import { Container } from "@mantine/core";
 import Contact from "./Contact.tsx";
 import Home from "./Home.tsx";
 import Projects from "./Projects.tsx";
-import { useDataContext } from "../utils/dataContext.tsx";
 
 export default function PageStack() {
   // Hooks
   const { setScrollInformation } = useScrollContext();
-  // const { awards, ghStats, projects, skills } = useDataContext();
-
   const landingRef = useRef<HTMLDivElement>(null);
   const projectsRef = useRef<HTMLDivElement>(null);
   const contactRef = useRef<HTMLDivElement>(null);
@@ -18,7 +15,20 @@ export default function PageStack() {
   const [isMobile, setIsMobile] = useState(false);
   const [isSafari, setISafari] = useState(false);
 
-  // Scroll info updater
+  // Scroll control
+  useEffect(() => {
+    const scrollToTop = () => {
+      window.scrollTo(0, 0);
+    };
+
+    scrollToTop();
+    window.addEventListener("beforeunload", scrollToTop);
+
+    return () => {
+      window.removeEventListener("beforeunload", scrollToTop);
+    };
+  }, []);
+
   useEffect(() => {
     const updateScrollInformation = () => {
       if (landingRef.current && projectsRef.current && contactRef.current) {

@@ -1,5 +1,5 @@
 import { Stack, Text } from "@mantine/core";
-import ProjectPopup from "../components/ProjectPopup";
+import ProjectCard from "../components/ProjectCard";
 import { useEffect, useState } from "react";
 import loadSiteData from "../utils/staticdata";
 
@@ -32,12 +32,8 @@ export default function Projects({ isMobile }: { isMobile: boolean }) {
             GitHub: {siteData.ghStats.contributions} Contributions,{" "}
             {siteData.ghStats.linesModified} Lines modified, [profile]
           </Text>
-          <ProjectPopup />
-          <ProjectPopup />
-          <ProjectPopup />
-          <ProjectPopup />
-          <ProjectPopup />
-          <ProjectPopup />
+          <ProjectCard />
+          <ProjectCard />
         </Stack>
       </>
     );
