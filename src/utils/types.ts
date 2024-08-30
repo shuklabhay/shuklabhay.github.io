@@ -1,5 +1,12 @@
 type InformativeLink = { link: string; displayText: string };
 
+interface SiteData {
+  awards: AwardData[];
+  ghStats: GHStatsData;
+  projects: ProjectData[];
+  skills: SkillsData[];
+}
+
 interface AwardData {
   title: string;
   recievedMonth: Date;
@@ -7,8 +14,8 @@ interface AwardData {
 }
 
 interface GHStatsData {
-  commits: number;
-  linesWritten: number;
+  contributions: number;
+  linesModified: number;
 }
 
 interface ProjectData {

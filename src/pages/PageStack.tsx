@@ -4,10 +4,13 @@ import { Container } from "@mantine/core";
 import Contact from "./Contact.tsx";
 import Home from "./Home.tsx";
 import Projects from "./Projects.tsx";
+import { useDataContext } from "../utils/dataContext.tsx";
 
 export default function PageStack() {
   // Hooks
   const { setScrollInformation } = useScrollContext();
+  // const { awards, ghStats, projects, skills } = useDataContext();
+
   const landingRef = useRef<HTMLDivElement>(null);
   const projectsRef = useRef<HTMLDivElement>(null);
   const contactRef = useRef<HTMLDivElement>(null);
@@ -69,7 +72,7 @@ export default function PageStack() {
       </div>
 
       <Container size="sx" ref={projectsRef}>
-        <Projects isMobile={isMobile} isSafari={isSafari} />
+        <Projects isMobile={isMobile} />
       </Container>
 
       <Container size="sx" ref={contactRef}>
@@ -77,11 +80,4 @@ export default function PageStack() {
       </Container>
     </div>
   );
-}
-function setVerticalPositions(arg0: {
-  landing: number;
-  projects: number;
-  contact: number;
-}) {
-  throw new Error("Function not implemented.");
 }

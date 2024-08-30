@@ -1,10 +1,15 @@
-async function getSiteData() {
+export default async function loadSiteData() {
   const awards = await getAwardData();
   const ghStats = await getGHStatsData();
   const projects = await getProjectsData();
   const skills = await getSkillsData();
 
-  return [awards, ghStats, projects, skills];
+  return {
+    awards,
+    ghStats,
+    projects,
+    skills,
+  };
 }
 
 async function getAwardData(): Promise<AwardData[]> {
