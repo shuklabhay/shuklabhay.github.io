@@ -14,7 +14,7 @@ export default function DownArrowButton({
       onClick={onClick}
       style={{
         position: "absolute",
-        bottom: 30,
+        bottom: 25,
         backgroundColor: "transparent",
         opacity: opacity,
         transition: "opacity 2.5s ease",

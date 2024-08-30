@@ -18,7 +18,7 @@ type ScrollContextType = {
 
 const ScrollContext = createContext<ScrollContextType | undefined>(undefined);
 
-export const scrollOffet = 50;
+export const scrollOffet = 40;
 
 export const useScrollContext = () => {
   const context = useContext(ScrollContext);

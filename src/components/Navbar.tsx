@@ -57,14 +57,13 @@ export function Navbar() {
         bg="dark.6"
         style={{ height: "5px" }}
       />
-      <Grid
+      <Group
         bg="dark.6"
-        p={15}
+        p={5}
         align="center"
         justify="space-between"
         style={{
-          paddingInline: 10,
-          paddingBottom: 15,
+          paddingBottom: 10,
         }}
       >
         <Button
@@ -103,7 +102,7 @@ export function Navbar() {
           </Button>
         </Group>
         <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
-      </Grid>
+      </Group>
     </div>
   );
 }

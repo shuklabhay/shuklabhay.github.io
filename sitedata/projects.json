@@ -1,8 +1,8 @@
 [
   {
     "title": "example project",
-    "startMonth": "month/year it started [date object]",
-    "endMonth": "month/year it ended [date object]",
+    "startMonth": "2024-03",
+    "endMonth": "2024-06",
     "description": "an example of project to display, whats novel, whats unique",
     "contribution": "i did everything, what i learned how i made it happen",
     "images": ["image path", "image path", "image path"],

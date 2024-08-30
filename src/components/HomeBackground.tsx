@@ -46,7 +46,7 @@ export function HomeBackground({
       setGradientOpacity(
         scrollInformation.projectsPosition !== 0
           ? calculateScrollProgressOpacity(scrollInformation.projectsPosition)
-          : 1
+          : 1,
       );
     };
 

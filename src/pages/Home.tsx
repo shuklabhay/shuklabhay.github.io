@@ -28,7 +28,7 @@ export default function Home({
       setDarkWrapperOpacity(
         scrollInformation.projectsPosition !== 0
           ? calculateScrollProgressOpacity(scrollInformation.projectsPosition)
-          : 1
+          : 1,
       );
 
       // Update scroll progress
@@ -92,7 +92,7 @@ export default function Home({
             <Text
               fz={{ base: 14, sm: 18 }}
               ta="center"
-              w={{ base: "60%", sm: "70%" }}
+              w={{ base: "60%", sm: "65%" }}
               style={{
                 mixBlendMode: "plus-lighter",
                 userSelect: "none",
