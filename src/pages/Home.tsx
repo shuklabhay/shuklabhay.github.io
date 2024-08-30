@@ -1,12 +1,8 @@
-import { Box, Stack, Text, useMantineTheme } from "@mantine/core";
+import { Stack, Text, useMantineTheme } from "@mantine/core";
 import { HomeBackground } from "../components/HomeBackground";
 import { useScrollContext } from "../utils/scrollContext";
-import { useEffect, useState, useCallback } from "react";
-import {
-  calculateScrollProgressOpacity,
-  scrollViewportTo,
-} from "../utils/scroll";
-import DownArrowButton from "../components/DownArrowButton";
+import { useEffect, useState } from "react";
+import { calculateScrollProgressOpacity } from "../utils/scroll";
 
 export default function Home({
   isMobile,
@@ -19,7 +15,6 @@ export default function Home({
   const theme = useMantineTheme();
   const { scrollInformation, setScrollProgress } = useScrollContext();
   const [darkWrapperOpacity, setDarkWrapperOpacity] = useState(1);
-  const [arrowInOpacity, setArrowInOpacity] = useState(0);
   const isClientAnimationSupported = isMobile || isSafari;
 
   // Scrolling control
@@ -41,18 +36,9 @@ export default function Home({
 
     window.addEventListener("scroll", handleScroll, { passive: true });
 
-    const arrowFadeInTimer = setTimeout(() => {
-      setArrowInOpacity(1);
-    }, 750);
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      clearTimeout(arrowFadeInTimer);
     };
-  }, [scrollInformation.projectsPosition, setScrollProgress]);
-
-  const handleArrowClick = useCallback(() => {
-    scrollViewportTo(scrollInformation.projectsPosition);
   }, [scrollInformation.projectsPosition, setScrollProgress]);
 
   if (theme.colors.main) {
@@ -112,11 +98,9 @@ export default function Home({
               height: "100%",
               backgroundColor: `rgba(0, 0, 0, ${darkWrapperOpacity * 0.15})`,
               zIndex: 1,
+              transform: "translateZ(0)",
+              willChange: "opacity",
             }}
-          />
-          <DownArrowButton
-            onClick={handleArrowClick}
-            opacity={Math.min(arrowInOpacity, darkWrapperOpacity)}
           />
         </Stack>
       </div>

@@ -18,7 +18,7 @@ export default function DownArrowButton({
         backgroundColor: "transparent",
         opacity: opacity,
         transition: "opacity 2.5s ease",
-        zIndex: 1,
+        zIndex: 5,
       }}
     >
       <svg

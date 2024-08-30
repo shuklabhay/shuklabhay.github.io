@@ -95,7 +95,7 @@ export default function PageStack() {
       </div>
 
       <Container size="sx" ref={projectsRef}>
-        <Projects isMobile={isMobile} />
+        <Projects />
       </Container>
 
       <Container size="sx" ref={qualificationsRef}>

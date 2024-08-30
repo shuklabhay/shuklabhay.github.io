@@ -1,6 +1,18 @@
 import { Button, Text } from "@mantine/core";
+import { useState, useEffect } from "react";
+import loadProjectsData from "../utils/data";
 
 export default function Qualifications() {
+  const [siteData, setSiteData] = useState<SiteData>();
+
+  useEffect(() => {
+    async function fetchData() {
+      const newSiteData = await loadProjectsData();
+      setSiteData(newSiteData);
+    }
+    fetchData();
+  }, []);
+
   return (
     <>
       <div style={{ paddingBlock: 10 }}>

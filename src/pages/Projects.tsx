@@ -3,7 +3,7 @@ import ProjectCard from "../components/ProjectCard";
 import { useEffect, useState } from "react";
 import loadProjectsData from "../utils/data";
 
-export default function Projects({ isMobile }: { isMobile: boolean }) {
+export default function Projects() {
   const [siteData, setSiteData] = useState<SiteData>();
 
   useEffect(() => {
@@ -31,11 +31,6 @@ export default function Projects({ isMobile }: { isMobile: boolean }) {
           <ProjectCard />
           <ProjectCard />
         </Stack>
-
-        <Text fz={{ base: 16, sm: 18 }}>
-          GitHub: {siteData.ghStats.contributions} Contributions,{" "}
-          {siteData.ghStats.linesModified} Lines modified, [profile]
-        </Text>
       </>
     );
   }

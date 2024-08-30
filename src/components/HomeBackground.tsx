@@ -2,8 +2,13 @@ import { Stack, useMantineTheme } from "@mantine/core";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useScrollContext } from "../utils/scrollContext";
 import { hexToRgb } from "../utils/theme";
-import { calculateScrollProgressOpacity } from "../utils/scroll";
+import {
+  calculateScrollProgressOpacity,
+  scrollViewportTo,
+} from "../utils/scroll";
 import { AlertPopup } from "./AlertPopup";
+import useThrottle from "../utils/throttle";
+import DownArrowButton from "./DownArrowButton";
 
 const isSmallScreen = window.matchMedia("(max-width: 767px)").matches;
 
@@ -32,6 +37,7 @@ export function HomeBackground({
   const [gradientActiveY, setGradientActiveY] = useState(startY);
   const [gradientOpacity, setGradientOpacity] = useState(1);
   const [isMouseInactive, setIsMouseInactive] = useState(false);
+  const [arrowInOpacity, setArrowInOpacity] = useState(0);
 
   const mouseTimer = useRef<number | undefined>(undefined);
   const animationRef = useRef<number | undefined>(undefined);
@@ -40,22 +46,26 @@ export function HomeBackground({
   const lastActivePosition = useRef({ x: startX, y: startY });
 
   // Scroll and Animation Control
+  const handleArrowClick = useCallback(() => {
+    scrollViewportTo(scrollInformation.projectsPosition);
+  }, [scrollInformation.projectsPosition]);
+
   useEffect(() => {
     // Control scrolling
-    const handleScroll = () => {
+    const handleScroll = useThrottle(() => {
       setGradientOpacity(
         scrollInformation.projectsPosition !== 0
           ? calculateScrollProgressOpacity(scrollInformation.projectsPosition)
-          : 1
+          : 1,
       );
-    };
+    });
 
     // Control gradient/gradient animation
     const followSpeed = lowResourceMode ? 0.01 : 0.05;
     let targetX = startX;
     let targetY = startY;
 
-    const handleMouseAction = (event: MouseEvent) => {
+    const handleMouseAction = useThrottle((event: MouseEvent) => {
       if (!lowResourceMode) {
         targetX = event.clientX;
         targetY = event.clientY;
@@ -64,7 +74,7 @@ export function HomeBackground({
         clearTimeout(mouseTimer.current);
         mouseTimer.current = setTimeout(() => setIsMouseInactive(true), 5000);
       }
-    };
+    });
 
     const randomlyChangePosition = () => {
       const currentTime = Date.now();
@@ -95,7 +105,7 @@ export function HomeBackground({
       animationRef.current = requestAnimationFrame(animateGradient);
     };
 
-    if (!lowResourceMode) {
+    if (!lowResourceMode && window.scrollY === 0) {
       window.addEventListener("mousemove", handleMouseAction, {
         passive: true,
       });
@@ -105,11 +115,16 @@ export function HomeBackground({
     animationRef.current = requestAnimationFrame(animateGradient);
     handleScroll();
 
+    const arrowFadeInTimer = setTimeout(() => {
+      setArrowInOpacity(1);
+    }, 750);
+
     return () => {
       if (!lowResourceMode) {
         window.removeEventListener("mousemove", handleMouseAction);
       }
       window.removeEventListener("scroll", handleScroll);
+      clearTimeout(arrowFadeInTimer);
 
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
@@ -152,9 +167,14 @@ export function HomeBackground({
             opacity: gradientOpacity,
             transition: "opacity 0.3s ease",
             clipPath: "inset(0 0 0 0)",
-            willChange: "background-position",
+            willChange: "background",
+            transform: "translateZ(0)",
             zIndex: -1,
           }}
+        />
+        <DownArrowButton
+          onClick={handleArrowClick}
+          opacity={Math.min(arrowInOpacity, gradientOpacity)}
         />
         {lowResourceMode && <AlertPopup />}
       </Stack>
