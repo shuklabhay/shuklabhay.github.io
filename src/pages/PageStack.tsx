@@ -4,12 +4,14 @@ import { Container } from "@mantine/core";
 import Contact from "./Contact.tsx";
 import Home from "./Home.tsx";
 import Projects from "./Projects.tsx";
+import Qualifications from "./Qualifications.tsx";
 
 export default function PageStack() {
   // Hooks
   const { setScrollInformation } = useScrollContext();
   const landingRef = useRef<HTMLDivElement>(null);
   const projectsRef = useRef<HTMLDivElement>(null);
+  const qualificationsRef = useRef<HTMLDivElement>(null);
   const contactRef = useRef<HTMLDivElement>(null);
 
   const [isMobile, setIsMobile] = useState(false);
@@ -31,9 +33,16 @@ export default function PageStack() {
 
   useEffect(() => {
     const updateScrollInformation = () => {
-      if (landingRef.current && projectsRef.current && contactRef.current) {
+      if (
+        landingRef.current &&
+        projectsRef.current &&
+        qualificationsRef.current &&
+        contactRef.current
+      ) {
         const newLandingPositon = landingRef.current.offsetTop - scrollOffet;
         const newProjectsPositon = projectsRef.current.offsetTop - scrollOffet;
+        const newQualificationsPositon =
+          qualificationsRef.current.offsetTop - scrollOffet;
         const newContactPositon = contactRef.current.offsetTop - scrollOffet;
         const scrollTop = window.scrollY;
         const scrollBottom = scrollTop + window.innerHeight;
@@ -41,10 +50,14 @@ export default function PageStack() {
         setScrollInformation({
           landingPosition: newLandingPositon,
           projectsPosition: newProjectsPositon,
+          qualificationsPositon: newQualificationsPositon,
           contactPosition: newContactPositon,
           isLandingFocused: scrollTop < newProjectsPositon,
           isProjectsFocused:
             scrollTop >= newProjectsPositon &&
+            scrollBottom < newQualificationsPositon + window.innerHeight,
+          isQualificationsFocused:
+            scrollTop >= newQualificationsPositon &&
             scrollBottom < newContactPositon + scrollOffet,
           isContactFocused: scrollBottom >= newContactPositon + scrollOffet,
         });
@@ -83,6 +96,10 @@ export default function PageStack() {
 
       <Container size="sx" ref={projectsRef}>
         <Projects isMobile={isMobile} />
+      </Container>
+
+      <Container size="sx" ref={qualificationsRef}>
+        <Qualifications />
       </Container>
 
       <Container size="sx" ref={contactRef}>

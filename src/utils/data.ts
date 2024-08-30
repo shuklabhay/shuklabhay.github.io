@@ -1,4 +1,4 @@
-export default async function loadSiteData() {
+export default async function loadProjectsData() {
   const awards = await getAwardData();
   const ghStats = await getGHStatsData();
   const projects = await getProjectsData();
@@ -17,6 +17,7 @@ async function getAwardData(): Promise<AwardData[]> {
     const response = await fetch(`sitedata/awards.json`);
     const data: AwardData[] = await response.json();
     return data;
+    //MAKE SURE THAT THE DATE COMPONENTS ARE PROPERLY MADE INTO DATE OBJECTS
   } catch (error) {
     console.error("Error fetching data:", error);
     return [] as unknown as AwardData[];
@@ -39,6 +40,7 @@ async function getProjectsData(): Promise<ProjectData[]> {
     const response = await fetch(`sitedata/projects.json`);
     const data: ProjectData[] = await response.json();
     return data;
+    //MAKE SURE THAT THE DATE COMPONENTS ARE PROPERLY MADE INTO DATE OBJECTS
   } catch (error) {
     console.error("Error fetching data:", error);
     return [] as unknown as ProjectData[];

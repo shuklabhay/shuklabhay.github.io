@@ -3,9 +3,11 @@ import React, { createContext, useState, useContext } from "react";
 type ScrollInfo = {
   landingPosition: number;
   projectsPosition: number;
+  qualificationsPositon: number;
   contactPosition: number;
   isLandingFocused: boolean;
   isProjectsFocused: boolean;
+  isQualificationsFocused: boolean;
   isContactFocused: boolean;
 };
 
@@ -18,7 +20,7 @@ type ScrollContextType = {
 
 const ScrollContext = createContext<ScrollContextType | undefined>(undefined);
 
-export const scrollOffet = 40;
+export const scrollOffet = 42;
 
 export const useScrollContext = () => {
   const context = useContext(ScrollContext);
@@ -34,9 +36,11 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({
   const [scrollInfo, setScrollInfo] = useState<ScrollInfo>({
     landingPosition: 0,
     projectsPosition: 0,
+    qualificationsPositon: 0,
     contactPosition: 0,
     isLandingFocused: false,
     isProjectsFocused: false,
+    isQualificationsFocused: false,
     isContactFocused: false,
   });
   const [scrollProgress, setScrollProgress] = useState(0);

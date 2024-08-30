@@ -94,6 +94,17 @@ export function Navbar() {
             Projects
           </Button>
           <Button
+            onClick={() =>
+              scrollViewportTo(scrollInformation.qualificationsPositon)
+            }
+            variant="subtle"
+            color={
+              scrollInformation.isQualificationsFocused ? "main.3" : undefined
+            }
+          >
+            Qualifications
+          </Button>
+          <Button
             onClick={() => scrollViewportTo(scrollInformation.contactPosition)}
             variant="subtle"
             color={scrollInformation.isContactFocused ? "main.3" : undefined}

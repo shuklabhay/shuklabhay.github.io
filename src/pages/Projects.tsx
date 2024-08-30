@@ -1,14 +1,14 @@
 import { Stack, Text } from "@mantine/core";
 import ProjectCard from "../components/ProjectCard";
 import { useEffect, useState } from "react";
-import loadSiteData from "../utils/staticdata";
+import loadProjectsData from "../utils/data";
 
 export default function Projects({ isMobile }: { isMobile: boolean }) {
   const [siteData, setSiteData] = useState<SiteData>();
 
   useEffect(() => {
     async function fetchData() {
-      const newSiteData = await loadSiteData();
+      const newSiteData = await loadProjectsData();
       setSiteData(newSiteData);
     }
     fetchData();
