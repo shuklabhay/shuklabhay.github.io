@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Card, Text, Group, Button, Grid, Modal, Image } from "@mantine/core";
+import { Card, Text, Group, Button, Grid, Image, Modal } from "@mantine/core";
 import { InformativeLink, ProjectData } from "../utils/types";
 import { Carousel } from "@mantine/carousel";
+import ImageCarouselModal from "./ImageCarouselModal";
 
 export default function ProjectCard({
   projectInfo,
@@ -18,18 +19,19 @@ export default function ProjectCard({
     images,
     links,
   } = projectInfo;
-
   const [opened, setOpened] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   return (
     <Card padding="15" radius="md" c="white">
-      <Group justify="space-between" mb="10" mt="-10">
+      <Group justify="space-between" mt="-10" mb="5">
         <Text fz="22" fw={700}>
           {title}
         </Text>
         <Text
-          fz={{ base: 12, sm: 16 }}
+          fz={{ base: 12, sm: 14 }}
           c="gray"
+          mt={{ base: "-15", sm: "-5" }}
           style={{ fontStyle: "italic" }}
         >
           {startMonth} - {endMonth}
@@ -39,17 +41,50 @@ export default function ProjectCard({
 
       <Grid mb="20">
         <Grid.Col span={{ base: 12, sm: 4 }}>
-          <Carousel withIndicators height={160} slideSize="100%">
-            {images.map((image) => (
+          <Carousel
+            withIndicators
+            slideSize="100%"
+            slideGap="15"
+            loop
+            controlSize={20}
+            initialSlide={selectedImageIndex} // Set initial slide
+            onSlideChange={setSelectedImageIndex} // Update on slide change
+            styles={{
+              viewport: { borderRadius: 10 },
+              indicators: {
+                bottom: "auto",
+                top: 10,
+                zIndex: 1,
+                mixBlendMode: "luminosity",
+              },
+            }}
+          >
+            {images.map((image, index) => (
               <Carousel.Slide key={image.alt}>
-                <Image src={image.src} alt={image.alt} />
+                <Image
+                  src={image.src}
+                  alt={image.alt}
+                  onClick={() => {
+                    setOpened(true);
+                  }}
+                  style={{
+                    cursor: "pointer",
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    aspectRatio: 10 / 7,
+                    borderRadius: 10,
+                  }}
+                />
               </Carousel.Slide>
             ))}
           </Carousel>
         </Grid.Col>
+
         <Grid.Col
           span={{ base: 12, sm: 8 }}
           style={{ display: "flex", flexDirection: "column" }}
+          mb={20}
         >
           <Text fz={{ base: 12, sm: 16 }} mb={10}>
             {description}
@@ -82,32 +117,13 @@ export default function ProjectCard({
         ))}
       </Group>
 
-      <Modal
+      <ImageCarouselModal
         opened={opened}
-        onClose={() => setOpened(false)}
-        size="xl"
-        withCloseButton={false}
-      >
-        <Carousel
-          withIndicators
-          height={400}
-          slideSize="100%"
-          styles={{
-            control: {
-              "&[data-inactive]": {
-                opacity: 1,
-                backgroundColor: "rgba(0, 0, 0, 0.4)",
-              },
-            },
-          }}
-        >
-          {images.map((image) => (
-            <Carousel.Slide key={image.alt}>
-              <Image src={image.src} alt={image.alt} fit="fill" />
-            </Carousel.Slide>
-          ))}
-        </Carousel>
-      </Modal>
+        setOpened={setOpened}
+        images={images}
+        initialSlideIndex={selectedImageIndex}
+        onSlideChange={setSelectedImageIndex}
+      />
     </Card>
   );
 }

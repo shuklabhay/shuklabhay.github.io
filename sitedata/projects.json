@@ -1,11 +1,11 @@
 [
   {
-    "title": "My First Project",
+    "title": "example",
     "startMonth": "March 2024",
     "endMonth": "August 2024",
     "ongoing": true,
-    "description": "an example of project to display, whats novel, whats unique",
-    "contribution": "i did everything, what i learned how i made it happen",
+    "description": "description of a project i worked on, what's technically cool/novel/unique",
+    "contribution": "what i learned, important notes about MY development from this",
     "images": [
       { "src": "src/static/home_page.png", "alt": "home" },
       { "src": "src/static/main_photo.jpg", "alt": "main pic" },
@@ -15,8 +15,8 @@
       }
     ],
     "links": [
-      { "url": "https://github.com/", "displayText": "git" },
-      { "url": "https://www.google.com/", "displayText": "google" }
+      { "url": "https://github.com/", "displayText": "git (ex)" },
+      { "url": "https://www.google.com/", "displayText": "google (ex)" }
     ]
   }
 ]

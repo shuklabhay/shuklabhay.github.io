@@ -15,7 +15,6 @@
     "@mantine/carousel": "^7.12.2",
     "@mantine/core": "^7.12.2",
     "@mantine/hooks": "^7.12.2",
-    "@mantine/nprogress": "^7.12.1",
     "embla-carousel-react": "^8.2.0",
     "framer-motion": "^11.3.30",
     "prettier": "^3.3.3",
