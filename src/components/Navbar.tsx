@@ -1,32 +1,74 @@
-import { Group, Burger, Button, Image, Text, Progress } from "@mantine/core";
+import React, { useEffect, useState } from "react";
+import {
+  Group,
+  Burger,
+  Button,
+  Image,
+  Text,
+  Progress,
+  Stack,
+  Box,
+  useMantineTheme,
+} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import mainPhoto from "../static/main_photo.jpg";
-import { useEffect, useState } from "react";
-import { useScrollContext } from "../utils/scrollContext";
+import { useScrollContext, ScrollInfo } from "../utils/scrollContext";
 import { scrollViewportTo } from "../utils/scroll";
+import { NavItem } from "../utils/types";
+
+const navItems: NavItem[] = [
+  { label: "Home", position: "landingPosition", focused: "isLandingFocused" },
+  {
+    label: "Projects",
+    position: "projectsPosition",
+    focused: "isProjectsFocused",
+  },
+  {
+    label: "Qualifications",
+    position: "qualificationsPositon",
+    focused: "isQualificationsFocused",
+  },
+  {
+    label: "Contact",
+    position: "contactPosition",
+    focused: "isContactFocused",
+  },
+];
 
 export function Navbar() {
+  // Hooks
+  const theme = useMantineTheme();
   const { scrollInformation, scrollProgress, setScrollProgress } =
     useScrollContext();
   const [isVisible, setIsVisible] = useState(false);
   const [opened, { toggle }] = useDisclosure(false);
 
+  // Scroll handler
   useEffect(() => {
     const handleScroll = () => {
-      // Update scroll progress
       const windowHeight = window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight;
       const scrollableDistance = documentHeight - windowHeight;
       const newProgress = (window.scrollY / scrollableDistance) * 100;
       setScrollProgress(Math.min(newProgress, 100));
-
-      // Show/hide navbar
       setIsVisible(window.scrollY > 30);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [setScrollProgress]);
+
+  const handleNavClick = (position: Extract<keyof ScrollInfo, string>) => {
+    const scrollPosition = scrollInformation[position];
+    if (typeof scrollPosition === "number") {
+      scrollViewportTo(scrollPosition);
+      if (opened) {
+        toggle();
+      }
+    } else {
+      console.error(`Invalid scroll position for ${position}`);
+    }
+  };
 
   return (
     <div
@@ -48,63 +90,65 @@ export function Navbar() {
         bg="dark.6"
         style={{ height: "5px" }}
       />
-      <Group
-        bg="dark.6"
-        p={5}
-        align="center"
-        justify="space-between"
-        style={{
-          paddingBottom: 10,
-        }}
-      >
-        <Button
-          onClick={() => scrollViewportTo(scrollInformation.landingPosition)}
-          variant="subtle"
-          style={{ width: "187px" }}
+      <Box bg="dark.6">
+        <Group
+          p={5}
+          align="center"
+          justify="space-between"
+          style={{ paddingBottom: 10 }}
         >
-          <Group gap="xs" align="start">
+          <Group
+            gap="xs"
+            onClick={() => handleNavClick("landingPosition")}
+            style={{ cursor: "pointer", paddingLeft: 8 }}
+          >
             <Image src={mainPhoto} alt="Logo" width={32} height={32} />
-            <Text fz="h5" style={{ fontWeight: "bold" }}>
+            <Text fz="15" style={{ fontWeight: "bold" }}>
               Abhay Shukla
             </Text>
           </Group>
-        </Button>
-        <Group gap={5} visibleFrom="xs">
-          <Button
-            onClick={() => scrollViewportTo(scrollInformation.landingPosition)}
-            variant="subtle"
-            color={scrollInformation.isLandingFocused ? "main.3" : undefined}
-          >
-            Home
-          </Button>
-          <Button
-            onClick={() => scrollViewportTo(scrollInformation.projectsPosition)}
-            variant="subtle"
-            color={scrollInformation.isProjectsFocused ? "main.3" : undefined}
-          >
-            Projects
-          </Button>
-          <Button
-            onClick={() =>
-              scrollViewportTo(scrollInformation.qualificationsPositon)
-            }
-            variant="subtle"
-            color={
-              scrollInformation.isQualificationsFocused ? "main.3" : undefined
-            }
-          >
-            Qualifications
-          </Button>
-          <Button
-            onClick={() => scrollViewportTo(scrollInformation.contactPosition)}
-            variant="subtle"
-            color={scrollInformation.isContactFocused ? "main.3" : undefined}
-          >
-            Contact
-          </Button>
+          <Group gap={5} visibleFrom="xs">
+            {navItems.map((item) => (
+              <Button
+                key={item.label}
+                onClick={() => handleNavClick(item.position)}
+                variant="subtle"
+                color={scrollInformation[item.focused] ? "main.3" : undefined}
+              >
+                {item.label}
+              </Button>
+            ))}
+          </Group>
+
+          <Burger
+            opened={opened}
+            onClick={toggle}
+            hiddenFrom="xs"
+            size="sm"
+            transitionDuration={250}
+          />
         </Group>
-        <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
-      </Group>
+        {opened && (
+          <Stack gap={0} hiddenFrom="xs">
+            {navItems.map((item) => (
+              <Button
+                key={item.label}
+                onClick={() => handleNavClick(item.position)}
+                variant="subtle"
+                color={scrollInformation[item.focused] ? "main.3" : undefined}
+                fullWidth
+                style={{
+                  backgroundColor: scrollInformation[item.focused]
+                    ? theme.colors.dark[5]
+                    : undefined,
+                }}
+              >
+                {item.label}
+              </Button>
+            ))}
+          </Stack>
+        )}
+      </Box>
     </div>
   );
 }

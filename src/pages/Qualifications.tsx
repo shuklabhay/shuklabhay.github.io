@@ -1,6 +1,7 @@
 import { Button, Text } from "@mantine/core";
 import { useState, useEffect } from "react";
 import loadProjectsData from "../utils/data";
+import { SiteData } from "../utils/types";
 
 export default function Qualifications() {
   const [siteData, setSiteData] = useState<SiteData>();
@@ -13,24 +14,26 @@ export default function Qualifications() {
     fetchData();
   }, []);
 
-  return (
-    <>
-      <div style={{ paddingBlock: 10 }}>
-        <Text fz={{ base: 16, sm: 24 }} lh={1.5}>
-          I've worked with a{" "}
-          <Text span c="main" fw={700} inherit>
-            LOT
-          </Text>{" "}
-          of different things.
+  if (siteData) {
+    return (
+      <>
+        <div style={{ paddingBlock: 10 }}>
+          <Text fz={{ base: 16, sm: 24 }} lh={1.5}>
+            I've also worked with a{" "}
+            <Text span c="main" fw={700} inherit>
+              LOT
+            </Text>{" "}
+            of different tools.
+          </Text>
+        </div>
+
+        <Button h={850}></Button>
+
+        <Text fz={{ base: 16, sm: 18 }}>
+          GitHub: {siteData.ghStats.contributions} Contributions,{" "}
+          {siteData.ghStats.linesModified} Lines modified, [profile link]
         </Text>
-      </div>
-
-      <Button h={700}></Button>
-
-      {/* <Text fz={{ base: 16, sm: 18 }}>
-        GitHub: {siteData.ghStats.contributions} Contributions,{" "}
-        {siteData.ghStats.linesModified} Lines modified, [profile]
-      </Text> */}
-    </>
-  );
+      </>
+    );
+  }
 }

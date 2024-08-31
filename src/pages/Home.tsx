@@ -1,8 +1,7 @@
-import { Stack, Text, useMantineTheme } from "@mantine/core";
+import { Stack, Text } from "@mantine/core";
 import { HomeBackground } from "../components/HomeBackground";
 import { useScrollContext } from "../utils/scrollContext";
-import { useEffect, useState } from "react";
-import { calculateScrollProgressOpacity } from "../utils/scroll";
+import { useEffect } from "react";
 
 export default function Home({
   isMobile,
@@ -12,9 +11,7 @@ export default function Home({
   isSafari: boolean;
 }) {
   // Hooks and constants
-  const theme = useMantineTheme();
   const { scrollInformation, setScrollProgress } = useScrollContext();
-  const isClientAnimationSupported = isMobile || isSafari;
 
   // Scrolling control
   useEffect(() => {
@@ -34,57 +31,54 @@ export default function Home({
     };
   }, [scrollInformation.projectsPosition, setScrollProgress]);
 
-  if (theme.colors.main) {
-    return (
-      <div>
+  return (
+    <div>
+      <Stack
+        align="center"
+        gap={2}
+        h={"100svh"}
+        style={{
+          zIndex: 0,
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <HomeBackground />
+
         <Stack
           align="center"
           gap={2}
-          h={"100svh"}
-          style={{
-            zIndex: 0,
-            position: "relative",
-            overflow: "hidden",
-          }}
+          h={{ base: "95vh", sm: "90vh" }}
+          w={"100%"}
+          justify="center"
+          p={{ base: "0 1rem", sm: 0 }}
         >
-          <HomeBackground />
-
-          <Stack
-            align="center"
-            gap={2}
-            h={{ base: "95vh", sm: "90vh" }}
-            w={"100%"}
-            justify="center"
-            p={{ base: "0 1rem", sm: 0 }}
+          <Text
+            fz={{ base: 32, sm: 54 }}
+            fw={700}
+            ta="center"
+            style={{
+              mixBlendMode: "overlay",
+              userSelect: "none",
+            }}
           >
-            <Text
-              fz={{ base: 32, sm: 54 }}
-              fw={700}
-              ta="center"
-              style={{
-                mixBlendMode: "overlay",
-                userSelect: "none",
-              }}
-            >
-              Abhay Shukla
-            </Text>
-            <Text
-              fz={{ base: 14, sm: 18 }}
-              ta="center"
-              w={{ base: "60%", sm: "65%" }}
-              style={{
-                mixBlendMode: "plus-lighter",
-                userSelect: "none",
-              }}
-            >
-              High School Student, AI Researcher, Roboticist, Digital Audio
-              Producer, Full Stack Developer, Nonprofit Founder, Speaker, and
-              Innovator.
-            </Text>
-          </Stack>
+            Abhay Shukla
+          </Text>
+          <Text
+            fz={{ base: 14, sm: 18 }}
+            ta="center"
+            w={{ base: "60%", sm: "65%" }}
+            style={{
+              mixBlendMode: "plus-lighter",
+              userSelect: "none",
+            }}
+          >
+            High School Student, AI Researcher, Roboticist, Digital Audio
+            Producer, Full Stack Developer, Nonprofit Founder, Speaker, and
+            Innovator.
+          </Text>
         </Stack>
-      </div>
-    );
-  }
-  return null;
+      </Stack>
+    </div>
+  );
 }

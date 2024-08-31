@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext } from "react";
 
-type ScrollInfo = {
+export type ScrollInfo = {
   landingPosition: number;
   projectsPosition: number;
   qualificationsPositon: number;
@@ -20,7 +20,7 @@ type ScrollContextType = {
 
 const ScrollContext = createContext<ScrollContextType | undefined>(undefined);
 
-export const scrollOffet = 50;
+export const scrollOffet = 45;
 
 export const useScrollContext = () => {
   const context = useContext(ScrollContext);

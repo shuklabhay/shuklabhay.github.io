@@ -67,6 +67,14 @@ export function HomeBackground({}: {}) {
           ? calculateScrollProgressOpacity(scrollInformation.projectsPosition)
           : 1;
       setGradientOpacity(scrollProgress);
+
+      if (window.scrollY === 0) {
+        window.addEventListener("mousemove", handleMouseAction, {
+          passive: true,
+        });
+      } else {
+        window.removeEventListener("mousemove", handleMouseAction);
+      }
     });
 
     // Control gradient/gradient animation
@@ -113,13 +121,7 @@ export function HomeBackground({}: {}) {
       animationRef.current = requestAnimationFrame(animateGradient);
     };
 
-    if (window.scrollY === 0) {
-      window.addEventListener("mousemove", handleMouseAction, {
-        passive: true,
-      });
-    }
     window.addEventListener("scroll", handleScroll, { passive: true });
-
     animationRef.current = requestAnimationFrame(animateGradient);
     handleScroll();
 
@@ -143,17 +145,17 @@ export function HomeBackground({}: {}) {
 
     const grainGradient = {
       height: "100vh",
-      filter: "contrast(120%) brightness(350%) blur(12px)",
+      filter: "contrast(125%) brightness(335%) blur(12px)",
       background: `
         linear-gradient(
           ${gradientAngle}deg,
           rgba(${gradientMainColor.r}, ${gradientMainColor.g}, ${gradientMainColor.b}, 1),
-          rgba(${gradientAccentColor.r}, ${gradientAccentColor.g}, ${gradientAccentColor.b}, 0.7) 
+          rgba(${gradientAccentColor.r}, ${gradientAccentColor.g}, ${gradientAccentColor.b}, 0.6) 
         ),
         radial-gradient(
           at ${gradientActivePos.x}px ${gradientActivePos.y}px,
           rgba(50, 50, 50, 0.1), 
-          rgba(0, 0, 0, 0.6)
+          rgba(0, 0, 0, 0.5)
         ),
         url("data:image/svg+xml,%3Csvg viewBox='0 0 350 350' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")
       `,
@@ -178,10 +180,12 @@ export function HomeBackground({}: {}) {
             zIndex: -1,
           }}
         />
-        <DownArrowButton
-          onClick={handleArrowClick}
-          opacity={Math.min(arrowInOpacity, gradientOpacity)}
-        />
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <DownArrowButton
+            onClick={handleArrowClick}
+            opacity={Math.min(arrowInOpacity, gradientOpacity)}
+          />
+        </div>
       </Stack>
     );
   }

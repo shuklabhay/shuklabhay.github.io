@@ -1,24 +1,27 @@
+import { ScrollInfo } from "./scrollContext";
+
+// Page Data Types
 type InformativeLink = { link: string; displayText: string };
 
-interface SiteData {
+export interface SiteData {
   awards: AwardData[];
   ghStats: GHStatsData;
   projects: ProjectData[];
   skills: SkillsData[];
 }
 
-interface AwardData {
+export interface AwardData {
   title: string;
   recievedMonth: Date;
   description: string;
 }
 
-interface GHStatsData {
+export interface GHStatsData {
   contributions: number;
   linesModified: number;
 }
 
-interface ProjectData {
+export interface ProjectData {
   title: string;
   startMonth: Date;
   endMonth: Date;
@@ -29,6 +32,13 @@ interface ProjectData {
   links: InformativeLink[];
 }
 
-interface SkillsData {
+export interface SkillsData {
   skill: string;
 }
+
+//Other
+export type NavItem = {
+  label: string;
+  position: Extract<keyof ScrollInfo, string>;
+  focused: Extract<keyof ScrollInfo, string>;
+};
