@@ -1,12 +1,22 @@
 [
   {
-    "title": "example project",
-    "startMonth": "month/year it started [date object]",
-    "endMonth": "month/year it ended [date object]",
-    "description": "an example of project to display",
-    "contribution": "i did everything",
-    "acomplishments": "i did everything",
-    "images": ["path", "path", "path"],
-    "links": ["link", "link", "link"]
+    "title": "example",
+    "startMonth": "March 2024",
+    "endMonth": "August 2024",
+    "ongoing": true,
+    "description": "description of a project i worked on, what's technically cool/novel/unique",
+    "contribution": "what i learned, important notes about MY development from this",
+    "images": [
+      { "src": "src/static/home_page.png", "alt": "home" },
+      { "src": "src/static/main_photo.jpg", "alt": "main pic" },
+      {
+        "src": "src/static/project component idea.png",
+        "alt": "component idea"
+      }
+    ],
+    "links": [
+      { "url": "https://github.com/", "displayText": "git (ex)" },
+      { "url": "https://www.google.com/", "displayText": "google (ex)" }
+    ]
   }
 ]

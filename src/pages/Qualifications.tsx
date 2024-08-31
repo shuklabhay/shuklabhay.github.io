@@ -1,10 +1,9 @@
-import { Stack, Text } from "@mantine/core";
-import ProjectCard from "../components/ProjectCard";
-import { useEffect, useState } from "react";
+import { Button, Text } from "@mantine/core";
+import { useState, useEffect } from "react";
 import loadProjectsData from "../utils/data";
 import { SiteData } from "../utils/types";
 
-export default function Projects() {
+export default function Qualifications() {
   const [siteData, setSiteData] = useState<SiteData>();
 
   useEffect(() => {
@@ -16,26 +15,24 @@ export default function Projects() {
   }, []);
 
   if (siteData) {
-    const awards = siteData.awards;
-    const projects = siteData.projects;
-
     return (
       <>
         <div style={{ paddingBlock: 10 }}>
           <Text fz={{ base: 16, sm: 24 }} lh={1.5}>
-            Here's a curated list of{" "}
+            I've also worked with a{" "}
             <Text span c="main" fw={700} inherit>
-              my favorite things I've been a part of,
+              LOT
             </Text>{" "}
-            whether it be acomplishments or creations.
+            of different tools.
           </Text>
         </div>
 
-        <Stack gap={12}>
-          {projects.map((project) => {
-            return <ProjectCard projectInfo={project} />;
-          })}
-        </Stack>
+        <Button h={850}></Button>
+
+        <Text fz={{ base: 16, sm: 18 }}>
+          GitHub: {siteData.ghStats.contributions} Contributions,{" "}
+          {siteData.ghStats.linesModified} Lines modified, [profile link]
+        </Text>
       </>
     );
   }
