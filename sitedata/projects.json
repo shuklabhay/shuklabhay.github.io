@@ -1,15 +1,22 @@
 [
   {
-    "title": "example project",
-    "startMonth": "2024-03",
-    "endMonth": "2024-06",
+    "title": "My First Project",
+    "startMonth": "March 2024",
+    "endMonth": "August 2024",
+    "ongoing": true,
     "description": "an example of project to display, whats novel, whats unique",
     "contribution": "i did everything, what i learned how i made it happen",
-    "images": ["image path", "image path", "image path"],
+    "images": [
+      { "src": "src/static/home_page.png", "alt": "home" },
+      { "src": "src/static/main_photo.jpg", "alt": "main pic" },
+      {
+        "src": "src/static/project component idea.png",
+        "alt": "component idea"
+      }
+    ],
     "links": [
-      { "link": "web link", "displayText": "site relating to project" },
-      { "link": "web link", "displayText": "site relating to project" },
-      { "link": "web link", "displayText": "site relating to project" }
+      { "url": "https://github.com/", "displayText": "git" },
+      { "url": "https://www.google.com/", "displayText": "google" }
     ]
   }
 ]

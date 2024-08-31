@@ -1,7 +1,8 @@
 import { ScrollInfo } from "./scrollContext";
 
 // Page Data Types
-type InformativeLink = { link: string; displayText: string };
+export type InformativeImage = { src: string; alt: string };
+export type InformativeLink = { url: string; displayText: string };
 
 export interface SiteData {
   awards: AwardData[];
@@ -23,12 +24,13 @@ export interface GHStatsData {
 
 export interface ProjectData {
   title: string;
-  startMonth: Date;
-  endMonth: Date;
+  startMonth: string;
+  endMonth: string;
+  ongoing: boolean;
   description: string;
   contribution: string;
   acomplishments: string;
-  images: string[]; // image paths
+  images: InformativeImage[];
   links: InformativeLink[];
 }
 

@@ -2,6 +2,7 @@ import { Stack, Text } from "@mantine/core";
 import ProjectCard from "../components/ProjectCard";
 import { useEffect, useState } from "react";
 import loadProjectsData from "../utils/data";
+import { SiteData } from "../utils/types";
 
 export default function Projects() {
   const [siteData, setSiteData] = useState<SiteData>();
@@ -15,6 +16,9 @@ export default function Projects() {
   }, []);
 
   if (siteData) {
+    const awards = siteData.awards;
+    const projects = siteData.projects;
+
     return (
       <>
         <div style={{ paddingBlock: 10 }}>
@@ -28,8 +32,9 @@ export default function Projects() {
         </div>
 
         <Stack gap={12}>
-          <ProjectCard />
-          <ProjectCard />
+          {projects.map((project) => {
+            return <ProjectCard projectInfo={project} />;
+          })}
         </Stack>
       </>
     );
