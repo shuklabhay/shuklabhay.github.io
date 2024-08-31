@@ -6,35 +6,44 @@ import {
   calculateScrollProgressOpacity,
   scrollViewportTo,
 } from "../utils/scroll";
-import { AlertPopup } from "./AlertPopup";
 import useThrottle from "../utils/throttle";
 import DownArrowButton from "./DownArrowButton";
 
 const isSmallScreen = window.matchMedia("(max-width: 767px)").matches;
-
 const gradientAngleRange = 30;
 const gradientAngle = isSmallScreen
   ? Math.random() < 0.5
     ? Math.random() * gradientAngleRange
     : 360 - Math.random() * gradientAngleRange
   : Math.random() * (2 * gradientAngleRange) + (180 - gradientAngleRange);
+
 const startX = isSmallScreen
   ? Math.random() * window.innerWidth
-  : (Math.random() * window.innerWidth) / 2;
+  : (() => {
+      let x = Math.random() * window.innerWidth;
+      if (x >= window.innerWidth / 3 && x <= window.innerWidth * (2 / 3)) {
+        x = Math.random() < 0.5 ? x / 2 : x + window.innerWidth / 4;
+      }
+      return x;
+    })();
 const startY = isSmallScreen
-  ? Math.random() * window.innerHeight
-  : (Math.random() * window.innerHeight) / 2;
+  ? Math.random() * (window.innerHeight / 3)
+  : (() => {
+      let y = Math.random() * window.innerHeight;
+      if (y >= window.innerHeight / 3 && y <= window.innerHeight * (2 / 3)) {
+        y = Math.random() < 0.5 ? y / 2 : y + window.innerHeight / 4;
+      }
+      return y;
+    })();
 
-export function HomeBackground({
-  lowResourceMode,
-}: {
-  lowResourceMode: boolean;
-}) {
+export function HomeBackground({}: {}) {
   // Hooks
   const { scrollInformation } = useScrollContext();
   const theme = useMantineTheme();
-  const [gradientActiveX, setGradientActiveX] = useState(startX);
-  const [gradientActiveY, setGradientActiveY] = useState(startY);
+  const [gradientActivePos, setGradientActivePos] = useState({
+    x: startX,
+    y: startY,
+  });
   const [gradientOpacity, setGradientOpacity] = useState(1);
   const [isMouseInactive, setIsMouseInactive] = useState(false);
   const [arrowInOpacity, setArrowInOpacity] = useState(0);
@@ -53,27 +62,23 @@ export function HomeBackground({
   useEffect(() => {
     // Control scrolling
     const handleScroll = useThrottle(() => {
-      setGradientOpacity(
+      const scrollProgress =
         scrollInformation.projectsPosition !== 0
           ? calculateScrollProgressOpacity(scrollInformation.projectsPosition)
-          : 1,
-      );
+          : 1;
+      setGradientOpacity(scrollProgress);
     });
 
     // Control gradient/gradient animation
-    const followSpeed = lowResourceMode ? 0.01 : 0.05;
-    let targetX = startX;
-    let targetY = startY;
+    const followSpeed = 0.02;
+    let targetPos = { x: startX, y: startY };
 
     const handleMouseAction = useThrottle((event: MouseEvent) => {
-      if (!lowResourceMode) {
-        targetX = event.clientX;
-        targetY = event.clientY;
-        lastActivePosition.current = { x: targetX, y: targetY };
-        setIsMouseInactive(false);
-        clearTimeout(mouseTimer.current);
-        mouseTimer.current = setTimeout(() => setIsMouseInactive(true), 5000);
-      }
+      targetPos = { x: event.clientX, y: event.clientY };
+      lastActivePosition.current = { x: targetPos.x, y: targetPos.y };
+      setIsMouseInactive(false);
+      clearTimeout(mouseTimer.current);
+      mouseTimer.current = setTimeout(() => setIsMouseInactive(true), 5000);
     });
 
     const randomlyChangePosition = () => {
@@ -81,31 +86,34 @@ export function HomeBackground({
       lastUpdateTime.current = currentTime;
 
       if (
-        (isMouseInactive || lowResourceMode) &&
+        isMouseInactive &&
         currentTime - lastUpdateTime.current > directionDuration.current &&
         gradientOpacity == 1
       ) {
-        targetX = isSmallScreen
-          ? Math.random() * window.innerWidth
-          : (Math.random() * window.innerWidth) / 2;
-        targetY = isSmallScreen
-          ? Math.random() * window.innerHeight
-          : (Math.random() * window.innerHeight) / 2;
-        directionDuration.current = lowResourceMode
-          ? (Math.random() * 4 + 2) * 1000
-          : (Math.random() * 2 + 1) * 1000;
+        targetPos = {
+          x: isSmallScreen
+            ? Math.random() * window.innerWidth
+            : (Math.random() * window.innerWidth) / 2,
+          y: isSmallScreen
+            ? Math.random() * window.innerHeight
+            : (Math.random() * window.innerHeight) / 2,
+        };
+
+        directionDuration.current = (Math.random() * 2 + 1) * 1000;
       }
     };
 
     const animateGradient = () => {
       randomlyChangePosition();
 
-      setGradientActiveX((prev) => prev + (targetX - prev) * followSpeed);
-      setGradientActiveY((prev) => prev + (targetY - prev) * followSpeed);
+      setGradientActivePos((prev) => ({
+        x: prev.x + (targetPos.x - prev.x) * followSpeed,
+        y: prev.y + (targetPos.y - prev.y) * followSpeed,
+      }));
       animationRef.current = requestAnimationFrame(animateGradient);
     };
 
-    if (!lowResourceMode && window.scrollY === 0) {
+    if (window.scrollY === 0) {
       window.addEventListener("mousemove", handleMouseAction, {
         passive: true,
       });
@@ -120,15 +128,13 @@ export function HomeBackground({
     }, 750);
 
     return () => {
-      if (!lowResourceMode) {
-        window.removeEventListener("mousemove", handleMouseAction);
-      }
+      window.removeEventListener("mousemove", handleMouseAction);
       window.removeEventListener("scroll", handleScroll);
       clearTimeout(arrowFadeInTimer);
 
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
-  }, [lowResourceMode, isMouseInactive]);
+  }, [isMouseInactive]);
 
   // Define Gradient
   if (theme.colors.gradMain && theme.colors.main) {
@@ -142,10 +148,10 @@ export function HomeBackground({
         linear-gradient(
           ${gradientAngle}deg,
           rgba(${gradientMainColor.r}, ${gradientMainColor.g}, ${gradientMainColor.b}, 1),
-          rgba(${gradientAccentColor.r}, ${gradientAccentColor.g}, ${gradientAccentColor.b}, 0.6) 
+          rgba(${gradientAccentColor.r}, ${gradientAccentColor.g}, ${gradientAccentColor.b}, 0.7) 
         ),
         radial-gradient(
-          at ${gradientActiveX}px ${gradientActiveY}px,
+          at ${gradientActivePos.x}px ${gradientActivePos.y}px,
           rgba(50, 50, 50, 0.1), 
           rgba(0, 0, 0, 0.6)
         ),
@@ -176,7 +182,6 @@ export function HomeBackground({
           onClick={handleArrowClick}
           opacity={Math.min(arrowInOpacity, gradientOpacity)}
         />
-        {lowResourceMode && <AlertPopup />}
       </Stack>
     );
   }

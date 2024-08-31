@@ -1,13 +1,4 @@
-import {
-  Group,
-  Burger,
-  Button,
-  Image,
-  Text,
-  Progress,
-  Container,
-  Grid,
-} from "@mantine/core";
+import { Group, Burger, Button, Image, Text, Progress } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import mainPhoto from "../static/main_photo.jpg";
 import { useEffect, useState } from "react";
@@ -71,7 +62,7 @@ export function Navbar() {
           variant="subtle"
           style={{ width: "187px" }}
         >
-          <Group gap="xs">
+          <Group gap="xs" align="start">
             <Image src={mainPhoto} alt="Logo" width={32} height={32} />
             <Text fz="h5" style={{ fontWeight: "bold" }}>
               Abhay Shukla

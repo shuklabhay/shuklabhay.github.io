@@ -14,18 +14,11 @@ export default function Home({
   // Hooks and constants
   const theme = useMantineTheme();
   const { scrollInformation, setScrollProgress } = useScrollContext();
-  const [darkWrapperOpacity, setDarkWrapperOpacity] = useState(1);
   const isClientAnimationSupported = isMobile || isSafari;
 
   // Scrolling control
   useEffect(() => {
     const handleScroll = () => {
-      setDarkWrapperOpacity(
-        scrollInformation.projectsPosition !== 0
-          ? calculateScrollProgressOpacity(scrollInformation.projectsPosition)
-          : 1,
-      );
-
       // Update scroll progress
       const windowHeight = window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight;
@@ -54,7 +47,7 @@ export default function Home({
             overflow: "hidden",
           }}
         >
-          <HomeBackground lowResourceMode={isClientAnimationSupported} />
+          <HomeBackground />
 
           <Stack
             align="center"
@@ -89,19 +82,6 @@ export default function Home({
               Innovator.
             </Text>
           </Stack>
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              backgroundColor: `rgba(0, 0, 0, ${darkWrapperOpacity * 0.15})`,
-              zIndex: 1,
-              transform: "translateZ(0)",
-              willChange: "opacity",
-            }}
-          />
         </Stack>
       </div>
     );
