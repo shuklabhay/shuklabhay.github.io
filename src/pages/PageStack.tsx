@@ -1,6 +1,6 @@
+import { Container } from "@mantine/core";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { scrollOffet, useScrollContext } from "../utils/scrollContext.tsx";
-import { Container } from "@mantine/core";
 import Contact from "./Contact.tsx";
 import Home from "./Home.tsx";
 import Projects from "./Projects.tsx";

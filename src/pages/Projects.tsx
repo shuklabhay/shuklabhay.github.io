@@ -1,6 +1,6 @@
 import { Stack, Text } from "@mantine/core";
-import ProjectCard from "../components/ProjectCard";
 import { useEffect, useState } from "react";
+import ProjectCard from "../components/ProjectCard";
 import loadProjectsData from "../utils/data";
 import { SiteData } from "../utils/types";
 

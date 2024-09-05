@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Modal, Image } from "@mantine/core";
-import { InformativeImage } from "../utils/types";
 import { Carousel } from "@mantine/carousel";
+import { Image, Modal } from "@mantine/core";
+import React from "react";
+import { InformativeImage } from "../utils/types";
 
 export default function ImageCarouselModal({
   opened,

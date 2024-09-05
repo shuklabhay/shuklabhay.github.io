@@ -1,5 +1,5 @@
 import { Button, Text } from "@mantine/core";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import loadProjectsData from "../utils/data";
 import { SiteData } from "../utils/types";
 

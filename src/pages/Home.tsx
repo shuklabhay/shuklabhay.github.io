@@ -1,7 +1,7 @@
 import { Stack, Text } from "@mantine/core";
+import { useEffect } from "react";
 import { HomeBackground } from "../components/HomeBackground";
 import { useScrollContext } from "../utils/scrollContext";
-import { useEffect } from "react";
 
 export default function Home({
   isMobile,

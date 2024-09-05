@@ -1,11 +1,11 @@
 import { Stack, useMantineTheme } from "@mantine/core";
-import { useEffect, useState, useRef, useCallback } from "react";
-import { useScrollContext } from "../utils/scrollContext";
-import { hexToRgb } from "../utils/theme";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   calculateScrollProgressOpacity,
   scrollViewportTo,
 } from "../utils/scroll";
+import { useScrollContext } from "../utils/scrollContext";
+import { hexToRgb } from "../utils/theme";
 import useThrottle from "../utils/throttle";
 import DownArrowButton from "./DownArrowButton";
 

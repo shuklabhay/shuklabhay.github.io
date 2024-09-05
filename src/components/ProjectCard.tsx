@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Card, Text, Group, Button, Grid, Image, Modal } from "@mantine/core";
-import { InformativeLink, ProjectData } from "../utils/types";
 import { Carousel } from "@mantine/carousel";
+import { Button, Card, Grid, Group, Image, Text } from "@mantine/core";
+import { useState } from "react";
+import { InformativeLink, ProjectData } from "../utils/types";
 import ImageCarouselModal from "./ImageCarouselModal";
 
 export default function ProjectCard({

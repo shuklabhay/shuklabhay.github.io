@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
 import {
-  Group,
+  Box,
   Burger,
   Button,
+  Group,
   Image,
-  Text,
   Progress,
   Stack,
-  Box,
+  Text,
   useMantineTheme,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { useEffect, useState } from "react";
 import mainPhoto from "../static/main_photo.jpg";
-import { useScrollContext, ScrollInfo } from "../utils/scrollContext";
 import { scrollViewportTo } from "../utils/scroll";
+import { ScrollInfo, useScrollContext } from "../utils/scrollContext";
 import { NavItem } from "../utils/types";
 
 const navItems: NavItem[] = [
