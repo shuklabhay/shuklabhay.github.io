@@ -39,7 +39,7 @@ export default function ProjectCard({
         </Text>
       </Group>
 
-      <Grid mb="20">
+      <Grid mb="20" style={{ paddingInline: 5 }}>
         <Grid.Col span={{ base: 12, sm: 4 }}>
           <Carousel
             withIndicators
@@ -55,7 +55,7 @@ export default function ProjectCard({
                 bottom: "auto",
                 top: 10,
                 zIndex: 1,
-                mixBlendMode: "luminosity",
+                mixBlendMode: "color",
               },
             }}
           >

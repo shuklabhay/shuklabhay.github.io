@@ -26,16 +26,24 @@ export default function Acomplishments() {
           <Text fz={{ base: 16, sm: 24 }} lh={1.5}>
             Here's a curated list of{" "}
             <Text span c="main" fw={700} inherit>
-              my favorite things I've been a part of,
+              my favorite things I've been a part of:
             </Text>{" "}
-            whether it be acomplishments or creations.
           </Text>
         </div>
 
         <Stack gap={12}>
+          <Text fz={{ base: 14, sm: 20 }} lh={1.5}>
+            Projects:
+          </Text>
           {projects.map((project) => {
             return <ProjectCard projectInfo={project} />;
           })}
+          <Text fz={{ base: 14, sm: 20 }} lh={1.5}>
+            Positions and Programs:
+          </Text>
+          <Text fz={{ base: 14, sm: 20 }} lh={1.5}>
+            Awards:
+          </Text>
           {awards.map((award) => {
             return <AwardCard awardInfo={award} />;
           })}
