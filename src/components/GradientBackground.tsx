@@ -53,20 +53,19 @@ export function GradientBackground() {
   const lastUpdateTime = useRef(Date.now());
   const directionDuration = useRef(0);
   const lastActivePosition = useRef({ x: startX, y: startY });
+  const nextSectionStart = scrollInformation.acomplishmentsPosition;
 
   // Scroll and Animation Control
   const handleArrowClick = useCallback(() => {
-    scrollViewportTo(scrollInformation.acomplishmentsPosition);
-  }, [scrollInformation.acomplishmentsPosition]);
+    scrollViewportTo(nextSectionStart);
+  }, [nextSectionStart]);
 
   useEffect(() => {
     // Control scrolling
     const handleScroll = useThrottle(() => {
       const scrollProgress =
-        scrollInformation.acomplishmentsPosition !== 0
-          ? calculateScrollProgressOpacity(
-              scrollInformation.acomplishmentsPosition
-            )
+        nextSectionStart !== 0
+          ? calculateScrollProgressOpacity(nextSectionStart)
           : 1;
       setGradientOpacity(scrollProgress);
 
