@@ -47,8 +47,8 @@ export default function ProjectCard({
             slideGap="15"
             loop
             controlSize={20}
-            initialSlide={selectedImageIndex} // Set initial slide
-            onSlideChange={setSelectedImageIndex} // Update on slide change
+            initialSlide={selectedImageIndex}
+            onSlideChange={setSelectedImageIndex}
             styles={{
               viewport: { borderRadius: 10 },
               indicators: {

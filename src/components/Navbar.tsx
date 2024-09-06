@@ -19,14 +19,14 @@ import { NavItem } from "../utils/types";
 const navItems: NavItem[] = [
   { label: "Home", position: "landingPosition", focused: "isLandingFocused" },
   {
-    label: "Projects",
-    position: "projectsPosition",
-    focused: "isProjectsFocused",
+    label: "Acomplishments",
+    position: "acomplishmentsPosition",
+    focused: "isAcomplishmentsFocused",
   },
   {
-    label: "Qualifications",
-    position: "qualificationsPositon",
-    focused: "isQualificationsFocused",
+    label: "Skills",
+    position: "skillsPositon",
+    focused: "isSkillsFocused",
   },
   {
     label: "Contact",

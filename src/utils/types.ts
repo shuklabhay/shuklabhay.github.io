@@ -13,7 +13,7 @@ export interface SiteData {
 
 export interface AwardData {
   title: string;
-  recievedMonth: Date;
+  recievedMonth: string;
   description: string;
 }
 

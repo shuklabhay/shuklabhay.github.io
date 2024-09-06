@@ -36,7 +36,7 @@ const startY = isSmallScreen
       return y;
     })();
 
-export function HomeBackground({}: {}) {
+export function GradientBackground() {
   // Hooks
   const { scrollInformation } = useScrollContext();
   const theme = useMantineTheme();
@@ -56,15 +56,17 @@ export function HomeBackground({}: {}) {
 
   // Scroll and Animation Control
   const handleArrowClick = useCallback(() => {
-    scrollViewportTo(scrollInformation.projectsPosition);
-  }, [scrollInformation.projectsPosition]);
+    scrollViewportTo(scrollInformation.acomplishmentsPosition);
+  }, [scrollInformation.acomplishmentsPosition]);
 
   useEffect(() => {
     // Control scrolling
     const handleScroll = useThrottle(() => {
       const scrollProgress =
-        scrollInformation.projectsPosition !== 0
-          ? calculateScrollProgressOpacity(scrollInformation.projectsPosition)
+        scrollInformation.acomplishmentsPosition !== 0
+          ? calculateScrollProgressOpacity(
+              scrollInformation.acomplishmentsPosition
+            )
           : 1;
       setGradientOpacity(scrollProgress);
 
