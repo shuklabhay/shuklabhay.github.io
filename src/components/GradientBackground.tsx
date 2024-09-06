@@ -65,7 +65,7 @@ export function GradientBackground() {
       const scrollProgress =
         scrollInformation.acomplishmentsPosition !== 0
           ? calculateScrollProgressOpacity(
-              scrollInformation.acomplishmentsPosition
+              scrollInformation.acomplishmentsPosition,
             )
           : 1;
       setGradientOpacity(scrollProgress);
