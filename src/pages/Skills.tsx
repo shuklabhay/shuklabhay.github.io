@@ -1,20 +1,22 @@
 import { Button, Text } from "@mantine/core";
-import { useState, useEffect } from "react";
-import loadProjectsData from "../utils/data";
+import { useEffect, useState } from "react";
+import loadSiteData from "../utils/data";
 import { SiteData } from "../utils/types";
 
-export default function Qualifications() {
+export default function Skills() {
   const [siteData, setSiteData] = useState<SiteData>();
 
   useEffect(() => {
     async function fetchData() {
-      const newSiteData = await loadProjectsData();
+      const newSiteData = await loadSiteData();
       setSiteData(newSiteData);
     }
     fetchData();
   }, []);
 
   if (siteData) {
+    const ghStats = siteData.ghStats;
+
     return (
       <>
         <div style={{ paddingBlock: 10 }}>
@@ -30,8 +32,8 @@ export default function Qualifications() {
         <Button h={850}></Button>
 
         <Text fz={{ base: 16, sm: 18 }}>
-          GitHub: {siteData.ghStats.contributions} Contributions,{" "}
-          {siteData.ghStats.linesModified} Lines modified, [profile link]
+          GitHub: {ghStats.contributions} Contributions, {ghStats.linesModified}{" "}
+          Lines modified, [profile link]
         </Text>
       </>
     );

@@ -1,15 +1,9 @@
 import { Stack, Text } from "@mantine/core";
-import { HomeBackground } from "../components/HomeBackground";
-import { useScrollContext } from "../utils/scrollContext";
 import { useEffect } from "react";
+import { GradientBackground } from "../components/GradientBackground";
+import { useScrollContext } from "../utils/scrollContext";
 
-export default function Home({
-  isMobile,
-  isSafari,
-}: {
-  isMobile: boolean;
-  isSafari: boolean;
-}) {
+export default function Landing() {
   // Hooks and constants
   const { scrollInformation, setScrollProgress } = useScrollContext();
 
@@ -29,7 +23,7 @@ export default function Home({
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [scrollInformation.projectsPosition, setScrollProgress]);
+  }, [scrollInformation.acomplishmentsPosition, setScrollProgress]);
 
   return (
     <div>
@@ -43,7 +37,7 @@ export default function Home({
           overflow: "hidden",
         }}
       >
-        <HomeBackground />
+        <GradientBackground />
 
         <Stack
           align="center"

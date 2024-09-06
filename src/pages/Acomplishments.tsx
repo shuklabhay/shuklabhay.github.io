@@ -1,15 +1,16 @@
 import { Stack, Text } from "@mantine/core";
-import ProjectCard from "../components/ProjectCard";
 import { useEffect, useState } from "react";
-import loadProjectsData from "../utils/data";
+import ProjectCard from "../components/ProjectCard";
+import loadSiteData from "../utils/data";
 import { SiteData } from "../utils/types";
+import AwardCard from "../components/AwardCard";
 
-export default function Projects() {
+export default function Acomplishments() {
   const [siteData, setSiteData] = useState<SiteData>();
 
   useEffect(() => {
     async function fetchData() {
-      const newSiteData = await loadProjectsData();
+      const newSiteData = await loadSiteData();
       setSiteData(newSiteData);
     }
     fetchData();
@@ -34,6 +35,9 @@ export default function Projects() {
         <Stack gap={12}>
           {projects.map((project) => {
             return <ProjectCard projectInfo={project} />;
+          })}
+          {awards.map((award) => {
+            return <AwardCard awardInfo={award} />;
           })}
         </Stack>
       </>

@@ -1,4 +1,6 @@
-export default async function loadProjectsData() {
+import { AwardData, GHStatsData, ProjectData, SkillsData } from "./types";
+
+export default async function loadSiteData() {
   const awards = await getAwardData();
   const ghStats = await getGHStatsData();
   const projects = await getProjectsData();
