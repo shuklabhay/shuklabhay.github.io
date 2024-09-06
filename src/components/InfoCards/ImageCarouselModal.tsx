@@ -1,7 +1,7 @@
 import { Carousel } from "@mantine/carousel";
 import { Image, Modal } from "@mantine/core";
 import React from "react";
-import { InformativeImage } from "../utils/types";
+import { RichImage } from "../utils/types";
 
 export default function ImageCarouselModal({
   opened,
@@ -12,7 +12,7 @@ export default function ImageCarouselModal({
 }: {
   opened: boolean;
   setOpened: (value: React.SetStateAction<boolean>) => void;
-  images: InformativeImage[];
+  images: RichImage[];
   initialSlideIndex: number;
   onSlideChange: React.Dispatch<React.SetStateAction<number>>;
 }) {

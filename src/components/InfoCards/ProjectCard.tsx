@@ -1,7 +1,8 @@
 import { Carousel } from "@mantine/carousel";
 import { Button, Card, Grid, Group, Image, Text } from "@mantine/core";
 import { useState } from "react";
-import { InformativeLink, ProjectData } from "../utils/types";
+import { ProjectData, RichLink } from "../../utils/types";
+import CardTitle from "./CardTitle";
 import ImageCarouselModal from "./ImageCarouselModal";
 
 export default function ProjectCard({
@@ -22,22 +23,11 @@ export default function ProjectCard({
   const [opened, setOpened] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
+  const timeframeLabel = `${startMonth} - ${endMonth}${ongoing ? ": Ongoing" : ""}`;
+
   return (
     <Card padding="15" radius="md" c="white">
-      <Group justify="space-between" mt="-10" mb="5">
-        <Text fz="22" fw={700}>
-          {title}
-        </Text>
-        <Text
-          fz={{ base: 12, sm: 14 }}
-          c="gray"
-          mt={{ base: "-15", sm: "-5" }}
-          style={{ fontStyle: "italic" }}
-        >
-          {startMonth} - {endMonth}
-          {ongoing ? ": Ongoing" : ""}
-        </Text>
-      </Group>
+      <CardTitle title={title} timeframe={timeframeLabel} />
 
       <Grid mb="20" style={{ paddingInline: 5 }}>
         <Grid.Col span={{ base: 12, sm: 4 }}>
@@ -103,7 +93,7 @@ export default function ProjectCard({
       </Grid>
 
       <Group gap={10} grow>
-        {links.map((linkObject: InformativeLink) => (
+        {links.map((linkObject: RichLink) => (
           <Button
             component="a"
             href={linkObject.url}

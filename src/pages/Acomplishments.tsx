@@ -1,9 +1,10 @@
 import { Stack, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
-import ProjectCard from "../components/ProjectCard";
+import AwardCard from "../components/InfoCards/AwardCard";
+import PositionCard from "../components/InfoCards/PositionCard";
+import ProjectCard from "../components/InfoCards/ProjectCard";
 import loadSiteData from "../utils/data";
 import { SiteData } from "../utils/types";
-import AwardCard from "../components/AwardCard";
 
 export default function Acomplishments() {
   const [siteData, setSiteData] = useState<SiteData>();
@@ -18,6 +19,7 @@ export default function Acomplishments() {
 
   if (siteData) {
     const awards = siteData.awards;
+    const positions = siteData.positions;
     const projects = siteData.projects;
 
     return (
@@ -40,6 +42,9 @@ export default function Acomplishments() {
           })}
           <Text fz={{ base: 14, sm: 20 }} lh={1.5}>
             Positions and Programs:
+            {positions.map((position) => {
+              return <PositionCard positionInfo={position} />;
+            })}
           </Text>
           <Text fz={{ base: 14, sm: 20 }} lh={1.5}>
             Awards:
