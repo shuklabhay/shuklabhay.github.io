@@ -11,11 +11,26 @@ import DownArrowButton from "./DownArrowButton";
 
 const isSmallScreen = window.matchMedia("(max-width: 767px)").matches;
 const gradientAngleRange = 30;
+
 const gradientAngle = isSmallScreen
   ? Math.random() < 0.5
-    ? Math.random() * gradientAngleRange
-    : 360 - Math.random() * gradientAngleRange
-  : Math.random() * (2 * gradientAngleRange) + (180 - gradientAngleRange);
+    ? 315 - Math.random() * gradientAngleRange // Top right
+    : 45 + Math.random() * gradientAngleRange // Top left
+  : (() => {
+      const random = Math.random();
+      if (random < 0.333) {
+        // Top
+        return Math.random() < 0.5
+          ? Math.random() * gradientAngleRange
+          : 360 - Math.random() * gradientAngleRange;
+      } else if (random < 0.666) {
+        // Right
+        return 240 + Math.random() * 60;
+      } else {
+        // Left
+        return 60 + Math.random() * 60;
+      }
+    })();
 
 const startX = isSmallScreen
   ? Math.random() * window.innerWidth
@@ -79,7 +94,7 @@ export function GradientBackground() {
     });
 
     // Control gradient/gradient animation
-    const followSpeed = 0.025;
+    const followSpeed = 0.03;
     let targetPos = { x: startX, y: startY };
 
     const handleMouseAction = useThrottle((event: MouseEvent) => {
@@ -146,7 +161,7 @@ export function GradientBackground() {
 
     const grainGradient = {
       height: "100vh",
-      filter: "contrast(125%) brightness(335%) blur(12px)",
+      filter: "contrast(125%) brightness(365%) blur(12px)",
       background: `
         linear-gradient(
           ${gradientAngle}deg,

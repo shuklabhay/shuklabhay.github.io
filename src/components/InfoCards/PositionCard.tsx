@@ -1,4 +1,4 @@
-import { Card, Text } from "@mantine/core";
+import { Card, Grid, Image, Text } from "@mantine/core";
 import { PositionsData } from "../../utils/types";
 import CardTitle from "./CardTitle";
 
@@ -16,9 +16,28 @@ export default function PositionCard({
     <Card padding="15" radius="md" c="white">
       <CardTitle title={title} timeframe={timeframeLabel} />
 
-      <Text fz={{ base: 12, sm: 16 }} mb={10} style={{ paddingInline: 5 }}>
-        {description}
-      </Text>
+      <Grid>
+        <Grid.Col span={{ base: 2.5, sm: 0.75 }}>
+          <a href={icon.link} target="_blank" rel="noopener noreferrer">
+            <Image
+              src={icon.src}
+              style={{
+                cursor: "pointer",
+                height: "100%",
+                width: "100",
+                objectFit: "cover",
+                aspectRatio: 1 / 1,
+                borderRadius: 10,
+              }}
+            />
+          </a>
+        </Grid.Col>
+        <Grid.Col span={{ base: 12 - 2.5, sm: 12 - 0.75 }}>
+          <Text fz={{ base: 12, sm: 16 }} mb={10}>
+            {description}
+          </Text>
+        </Grid.Col>
+      </Grid>
     </Card>
   );
 }

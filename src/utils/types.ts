@@ -2,6 +2,7 @@ import { ScrollInfo } from "./scrollContext";
 
 // Page Data Types
 export type RichImage = { src: string; alt: string };
+export type RichIcon = { src: string; link: string };
 export type RichLink = { url: string; displayText: string };
 
 export interface SiteData {
@@ -29,7 +30,7 @@ export interface PositionsData {
   endMonth: string;
   ongoing: boolean;
   description: string;
-  icon: RichImage;
+  icon: RichIcon;
 }
 
 export interface ProjectData {

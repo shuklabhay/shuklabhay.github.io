@@ -29,8 +29,8 @@ export default function ProjectCard({
     <Card padding="15" radius="md" c="white">
       <CardTitle title={title} timeframe={timeframeLabel} />
 
-      <Grid mb="20" style={{ paddingInline: 5 }}>
-        <Grid.Col span={{ base: 12, sm: 4 }}>
+      <Grid mb="20">
+        <Grid.Col span={{ base: 12, sm: 4 }} w={"100%"}>
           <Carousel
             withIndicators
             slideSize="100%"
@@ -49,7 +49,7 @@ export default function ProjectCard({
               },
             }}
           >
-            {images.map((image, index) => (
+            {images.map((image) => (
               <Carousel.Slide key={image.alt}>
                 <Image
                   src={image.src}
@@ -73,7 +73,10 @@ export default function ProjectCard({
 
         <Grid.Col
           span={{ base: 12, sm: 8 }}
-          style={{ display: "flex", flexDirection: "column" }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+          }}
           mb={20}
         >
           <Text fz={{ base: 12, sm: 16 }} mb={10}>

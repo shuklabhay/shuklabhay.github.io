@@ -1,4 +1,6 @@
-import { Group, Text } from "@mantine/core";
+import { Text } from "@mantine/core";
+
+const isSmallScreen = window.matchMedia("(max-width: 767px)").matches;
 
 export default function CardTitle({
   title,
@@ -7,19 +9,31 @@ export default function CardTitle({
   title: string;
   timeframe: string;
 }) {
+  const flexDirection = isSmallScreen ? "column" : undefined;
+
   return (
-    <Group justify="space-between" mt="-10" mb="5">
-      <Text fz="22" fw={700}>
+    <div
+      style={{
+        display: "flex",
+        marginTop: -10,
+        marginBottom: 5,
+        justifyContent: "space-between",
+        flexDirection: flexDirection,
+      }}
+    >
+      <Text fz={{ base: 20, sm: 22 }} fw={700}>
         {title}
       </Text>
+
       <Text
         fz={{ base: 12, sm: 14 }}
         c="gray"
-        mt={{ base: "-15", sm: "-5" }}
+        mt={{ base: 0, sm: 5 }}
+        px={{ base: 5, sm: 0 }}
         style={{ fontStyle: "italic" }}
       >
         {timeframe}
       </Text>
-    </Group>
+    </div>
   );
 }

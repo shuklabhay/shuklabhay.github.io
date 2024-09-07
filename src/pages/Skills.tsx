@@ -20,7 +20,7 @@ export default function Skills() {
     return (
       <>
         <div style={{ paddingBlock: 10 }}>
-          <Text fz={{ base: 16, sm: 24 }} lh={1.5}>
+          <Text fz={{ base: 18, sm: 24 }} lh={1.5}>
             I've worked with a{" "}
             <Text span c="main" fw={700} inherit>
               LOT
