@@ -95,7 +95,10 @@ export function Navbar() {
           p={5}
           align="center"
           justify="space-between"
-          style={{ paddingBottom: 10 }}
+          style={{
+            paddingBottom: 10,
+            borderBottom: `2px solid ${theme.colors.dark[5]}`,
+          }}
         >
           <Group
             gap="xs"
