@@ -1,6 +1,6 @@
 import { Carousel } from "@mantine/carousel";
 import { Image, Modal } from "@mantine/core";
-import React from "react";
+import React, { useState } from "react";
 import { RichImage } from "../../utils/types";
 
 export default function ImageCarouselModal({
@@ -8,35 +8,40 @@ export default function ImageCarouselModal({
   setOpened,
   images,
   initialSlideIndex,
-  onSlideChange,
+  setSlideIndex,
 }: {
   opened: boolean;
   setOpened: (value: React.SetStateAction<boolean>) => void;
   images: RichImage[];
   initialSlideIndex: number;
-  onSlideChange: React.Dispatch<React.SetStateAction<number>>;
+  setSlideIndex: React.Dispatch<React.SetStateAction<number>>;
 }) {
+  const [currentSlide, setCurrentSlide] = useState(initialSlideIndex);
+
+  const handleClose = () => {
+    setOpened(false);
+    setSlideIndex(currentSlide);
+  };
+
   return (
-    <Modal opened={opened} onClose={() => setOpened(false)} size="xl" centered>
+    <Modal opened={opened} onClose={() => handleClose()} size={"xl"} centered>
       <Carousel
         loop
         withIndicators
         height="60vh"
         slideSize="100%"
         slideGap="15"
-        py={{ base: 0, sm: 20 }}
-        initialSlide={initialSlideIndex}
-        onSlideChange={onSlideChange}
+        initialSlide={currentSlide}
+        onSlideChange={setCurrentSlide}
         styles={{
           controls: {
-            position: "absolute",
-            botom: -10,
+            position: "relative",
           },
           control: {
-            backgroundColor: "rgba(0, 0, 0, 0.4)",
-            borderRadius: "50%",
+            marginTop: 10,
+            backgroundColor: "rgba(0, 0, 0, 0.8)",
             "&:hover": {
-              backgroundColor: "rgba(0, 0, 0, 0.6)",
+              backgroundColor: "rgba(0, 0, 0, 1)",
             },
           },
         }}

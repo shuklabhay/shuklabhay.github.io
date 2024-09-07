@@ -32,7 +32,6 @@ export default function ProjectCard({
       <Grid mb="20">
         <Grid.Col span={{ base: 12, sm: 4 }} w={"100%"}>
           <Carousel
-            withIndicators
             slideSize="100%"
             slideGap="15"
             loop
@@ -41,11 +40,11 @@ export default function ProjectCard({
             onSlideChange={setSelectedImageIndex}
             styles={{
               viewport: { borderRadius: 10 },
-              indicators: {
-                bottom: "auto",
-                top: 10,
-                zIndex: 1,
-                mixBlendMode: "color",
+              control: {
+                backgroundColor: "rgba(0, 0, 0, 0.6)",
+                "&:hover": {
+                  backgroundColor: "rgba(0, 0, 0, 0.8)",
+                },
               },
             }}
           >
@@ -63,7 +62,6 @@ export default function ProjectCard({
                     height: "100%",
                     objectFit: "cover",
                     aspectRatio: 10 / 7,
-                    borderRadius: 10,
                   }}
                 />
               </Carousel.Slide>
@@ -115,7 +113,7 @@ export default function ProjectCard({
         setOpened={setOpened}
         images={images}
         initialSlideIndex={selectedImageIndex}
-        onSlideChange={setSelectedImageIndex}
+        setSlideIndex={setSelectedImageIndex}
       />
     </Card>
   );

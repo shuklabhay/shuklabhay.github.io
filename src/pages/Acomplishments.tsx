@@ -35,21 +35,22 @@ export default function Acomplishments() {
         </div>
 
         <Stack gap={12}>
-          <Text fz={{ base: 14, sm: 20 }} lh={1.5}>
+          <Text fz={{ base: 14, sm: 20 }} lh={0.5} pt={5}>
             Projects:
           </Text>
           {projects.map((project) => {
             return <ProjectCard projectInfo={project} key={project.title} />;
           })}
-          <Text fz={{ base: 14, sm: 20 }} lh={1.5}>
+          <Text fz={{ base: 14, sm: 20 }} lh={0.5} pt={5}>
             Positions and Programs:
-            {positions.map((position) => {
-              return (
-                <PositionCard positionInfo={position} key={position.title} />
-              );
-            })}
           </Text>
-          <Text fz={{ base: 14, sm: 20 }} lh={1.5}>
+          {positions.map((position) => {
+            return (
+              <PositionCard positionInfo={position} key={position.title} />
+            );
+          })}
+
+          <Text fz={{ base: 14, sm: 20 }} lh={0.5} pt={5}>
             Awards:
           </Text>
           {awards.map((award) => {
