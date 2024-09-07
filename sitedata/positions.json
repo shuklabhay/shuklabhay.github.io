@@ -1,0 +1,13 @@
+[
+  {
+    "title": "position title",
+    "startMonth": "March 2024",
+    "endMonth": "August 2024",
+    "ongoing": true,
+    "description": "what i do, what ive done",
+    "icon": {
+      "src": "src/static/main_photo.jpg",
+      "link": "https://github.com/"
+    }
+  }
+]

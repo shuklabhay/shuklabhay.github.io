@@ -1,7 +1,8 @@
 import { Carousel } from "@mantine/carousel";
 import { Button, Card, Grid, Group, Image, Text } from "@mantine/core";
 import { useState } from "react";
-import { InformativeLink, ProjectData } from "../utils/types";
+import { ProjectData, RichLink } from "../../utils/types";
+import CardTitle from "./CardTitle";
 import ImageCarouselModal from "./ImageCarouselModal";
 
 export default function ProjectCard({
@@ -22,27 +23,15 @@ export default function ProjectCard({
   const [opened, setOpened] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
+  const timeframeLabel = `${startMonth} - ${endMonth}${ongoing ? ": Ongoing" : ""}`;
+
   return (
     <Card padding="15" radius="md" c="white">
-      <Group justify="space-between" mt="-10" mb="5">
-        <Text fz="22" fw={700}>
-          {title}
-        </Text>
-        <Text
-          fz={{ base: 12, sm: 14 }}
-          c="gray"
-          mt={{ base: "-15", sm: "-5" }}
-          style={{ fontStyle: "italic" }}
-        >
-          {startMonth} - {endMonth}
-          {ongoing ? ": Ongoing" : ""}
-        </Text>
-      </Group>
+      <CardTitle title={title} timeframe={timeframeLabel} />
 
       <Grid mb="20">
-        <Grid.Col span={{ base: 12, sm: 4 }}>
+        <Grid.Col span={{ base: 12, sm: 4 }} w={"100%"}>
           <Carousel
-            withIndicators
             slideSize="100%"
             slideGap="15"
             loop
@@ -51,15 +40,15 @@ export default function ProjectCard({
             onSlideChange={setSelectedImageIndex}
             styles={{
               viewport: { borderRadius: 10 },
-              indicators: {
-                bottom: "auto",
-                top: 10,
-                zIndex: 1,
-                mixBlendMode: "luminosity",
+              control: {
+                backgroundColor: "rgba(0, 0, 0, 0.6)",
+                "&:hover": {
+                  backgroundColor: "rgba(0, 0, 0, 0.8)",
+                },
               },
             }}
           >
-            {images.map((image, index) => (
+            {images.map((image) => (
               <Carousel.Slide key={image.alt}>
                 <Image
                   src={image.src}
@@ -73,7 +62,6 @@ export default function ProjectCard({
                     height: "100%",
                     objectFit: "cover",
                     aspectRatio: 10 / 7,
-                    borderRadius: 10,
                   }}
                 />
               </Carousel.Slide>
@@ -83,7 +71,10 @@ export default function ProjectCard({
 
         <Grid.Col
           span={{ base: 12, sm: 8 }}
-          style={{ display: "flex", flexDirection: "column" }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+          }}
           mb={20}
         >
           <Text fz={{ base: 12, sm: 16 }} mb={10}>
@@ -103,7 +94,7 @@ export default function ProjectCard({
       </Grid>
 
       <Group gap={10} grow>
-        {links.map((linkObject: InformativeLink) => (
+        {links.map((linkObject: RichLink) => (
           <Button
             component="a"
             href={linkObject.url}
@@ -122,7 +113,7 @@ export default function ProjectCard({
         setOpened={setOpened}
         images={images}
         initialSlideIndex={selectedImageIndex}
-        onSlideChange={setSelectedImageIndex}
+        setSlideIndex={setSelectedImageIndex}
       />
     </Card>
   );

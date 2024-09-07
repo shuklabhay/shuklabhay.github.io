@@ -11,11 +11,26 @@ import DownArrowButton from "./DownArrowButton";
 
 const isSmallScreen = window.matchMedia("(max-width: 767px)").matches;
 const gradientAngleRange = 30;
+
 const gradientAngle = isSmallScreen
   ? Math.random() < 0.5
-    ? Math.random() * gradientAngleRange
-    : 360 - Math.random() * gradientAngleRange
-  : Math.random() * (2 * gradientAngleRange) + (180 - gradientAngleRange);
+    ? 315 - Math.random() * gradientAngleRange // Top right
+    : 45 + Math.random() * gradientAngleRange // Top left
+  : (() => {
+      const random = Math.random();
+      if (random < 0.333) {
+        // Top
+        return Math.random() < 0.5
+          ? Math.random() * gradientAngleRange
+          : 360 - Math.random() * gradientAngleRange;
+      } else if (random < 0.666) {
+        // Right
+        return 240 + Math.random() * 60;
+      } else {
+        // Left
+        return 60 + Math.random() * 60;
+      }
+    })();
 
 const startX = isSmallScreen
   ? Math.random() * window.innerWidth
@@ -53,20 +68,19 @@ export function GradientBackground() {
   const lastUpdateTime = useRef(Date.now());
   const directionDuration = useRef(0);
   const lastActivePosition = useRef({ x: startX, y: startY });
+  const nextSectionStart = scrollInformation.acomplishmentsPosition;
 
   // Scroll and Animation Control
   const handleArrowClick = useCallback(() => {
-    scrollViewportTo(scrollInformation.acomplishmentsPosition);
-  }, [scrollInformation.acomplishmentsPosition]);
+    scrollViewportTo(nextSectionStart);
+  }, [nextSectionStart]);
 
   useEffect(() => {
     // Control scrolling
     const handleScroll = useThrottle(() => {
       const scrollProgress =
-        scrollInformation.acomplishmentsPosition !== 0
-          ? calculateScrollProgressOpacity(
-              scrollInformation.acomplishmentsPosition,
-            )
+        nextSectionStart !== 0
+          ? calculateScrollProgressOpacity(nextSectionStart)
           : 1;
       setGradientOpacity(scrollProgress);
 
@@ -80,7 +94,7 @@ export function GradientBackground() {
     });
 
     // Control gradient/gradient animation
-    const followSpeed = 0.02;
+    const followSpeed = 0.03;
     let targetPos = { x: startX, y: startY };
 
     const handleMouseAction = useThrottle((event: MouseEvent) => {
@@ -147,7 +161,7 @@ export function GradientBackground() {
 
     const grainGradient = {
       height: "100vh",
-      filter: "contrast(125%) brightness(335%) blur(12px)",
+      filter: "contrast(125%) brightness(365%) blur(12px)",
       background: `
         linear-gradient(
           ${gradientAngle}deg,
@@ -156,7 +170,7 @@ export function GradientBackground() {
         ),
         radial-gradient(
           at ${gradientActivePos.x}px ${gradientActivePos.y}px,
-          rgba(50, 50, 50, 0.1), 
+          rgba(50, 50, 50, 0.2), 
           rgba(0, 0, 0, 0.5)
         ),
         url("data:image/svg+xml,%3Csvg viewBox='0 0 350 350' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")

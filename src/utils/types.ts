@@ -1,13 +1,15 @@
 import { ScrollInfo } from "./scrollContext";
 
 // Page Data Types
-export type InformativeImage = { src: string; alt: string };
-export type InformativeLink = { url: string; displayText: string };
+export type RichImage = { src: string; alt: string };
+export type RichIcon = { src: string; link: string };
+export type RichLink = { url: string; displayText: string };
 
 export interface SiteData {
   awards: AwardData[];
   ghStats: GHStatsData;
   projects: ProjectData[];
+  positions: PositionsData[];
   skills: SkillsData[];
 }
 
@@ -22,6 +24,15 @@ export interface GHStatsData {
   linesModified: number;
 }
 
+export interface PositionsData {
+  title: string;
+  startMonth: string;
+  endMonth: string;
+  ongoing: boolean;
+  description: string;
+  icon: RichIcon;
+}
+
 export interface ProjectData {
   title: string;
   startMonth: string;
@@ -30,8 +41,8 @@ export interface ProjectData {
   description: string;
   contribution: string;
   acomplishments: string;
-  images: InformativeImage[];
-  links: InformativeLink[];
+  images: RichImage[];
+  links: RichLink[];
 }
 
 export interface SkillsData {
