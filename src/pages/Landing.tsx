@@ -23,7 +23,7 @@ export default function Landing() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [scrollInformation.acomplishmentsPosition, setScrollProgress]);
+  }, [scrollInformation.skillsPosition, setScrollProgress]);
 
   return (
     <div>

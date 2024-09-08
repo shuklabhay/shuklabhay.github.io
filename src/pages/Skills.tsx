@@ -1,5 +1,6 @@
-import { Button, Text } from "@mantine/core";
+import { Grid, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
+import SkillCard from "../components/InfoCards/SkillCard";
 import loadSiteData from "../utils/data";
 import { SiteData } from "../utils/types";
 
@@ -16,20 +17,27 @@ export default function Skills() {
 
   if (siteData) {
     const ghStats = siteData.ghStats;
+    const skills = siteData.skills;
 
     return (
       <>
         <div style={{ paddingBlock: 10 }}>
           <Text fz={{ base: 18, sm: 24 }} lh={1.5}>
-            I've worked with a{" "}
+            I have experience in a{" "}
             <Text span c="main" fw={700} inherit>
               LOT
             </Text>{" "}
-            of different tools.
+            of different areas.
           </Text>
         </div>
 
-        <Button h={850}></Button>
+        <Grid justify="center" gutter="sm" mb={15}>
+          {skills.map((skill) => (
+            <Grid.Col span={{ base: 4, sm: 2 }} key={skill.skill}>
+              <SkillCard skillInfo={skill} />
+            </Grid.Col>
+          ))}
+        </Grid>
 
         <Text fz={{ base: 16, sm: 18 }}>
           GitHub: {ghStats.contributions} Contributions, {ghStats.linesModified}{" "}

@@ -1,5 +1,26 @@
 [
   {
-    "skill": "skill"
+    "skill": "AI/ML"
+  },
+  {
+    "skill": "Git"
+  },
+  {
+    "skill": "Webdev"
+  },
+  {
+    "skill": "CAD"
+  },
+  {
+    "skill": "Robotics Controls"
+  },
+  {
+    "skill": "Audio Processing"
+  },
+  {
+    "skill": "Image Processing"
+  },
+  {
+    "skill": "Video Processing"
   }
 ]
