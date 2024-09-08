@@ -4,7 +4,7 @@
 
 ## App Info
 
-Personal portfolio site. Currently only accessible by running locally.
+Personal portfolio.
 
 ![Home Page](src/static/home_page.png)
 

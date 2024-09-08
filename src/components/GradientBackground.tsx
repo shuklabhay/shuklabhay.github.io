@@ -68,7 +68,7 @@ export function GradientBackground() {
   const lastUpdateTime = useRef(Date.now());
   const directionDuration = useRef(0);
   const lastActivePosition = useRef({ x: startX, y: startY });
-  const nextSectionStart = scrollInformation.acomplishmentsPosition;
+  const nextSectionStart = scrollInformation.skillsPosition;
 
   // Scroll and Animation Control
   const handleArrowClick = useCallback(() => {

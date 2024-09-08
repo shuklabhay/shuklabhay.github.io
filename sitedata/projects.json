@@ -8,11 +8,7 @@
     "contribution": "what i learned, important notes about MY development from this",
     "images": [
       { "src": "src/static/home_page.png", "alt": "home" },
-      { "src": "src/static/main_photo.jpg", "alt": "main pic" },
-      {
-        "src": "src/static/project component idea.png",
-        "alt": "component idea"
-      }
+      { "src": "src/static/main_photo.jpg", "alt": "main pic" }
     ],
     "links": [
       { "url": "https://github.com/", "displayText": "git (ex)" },

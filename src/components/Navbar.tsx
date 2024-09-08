@@ -19,14 +19,14 @@ import { NavItem } from "../utils/types";
 const navItems: NavItem[] = [
   { label: "Home", position: "landingPosition", focused: "isLandingFocused" },
   {
+    label: "Skills",
+    position: "skillsPosition",
+    focused: "isSkillsFocused",
+  },
+  {
     label: "Acomplishments",
     position: "acomplishmentsPosition",
     focused: "isAcomplishmentsFocused",
-  },
-  {
-    label: "Skills",
-    position: "skillsPositon",
-    focused: "isSkillsFocused",
   },
   {
     label: "Contact",
@@ -97,7 +97,7 @@ export function Navbar() {
           justify="space-between"
           style={{
             paddingBottom: 10,
-            borderBottom: `2px solid ${theme.colors.dark[5]}`,
+            borderBottom: `2px solid ${theme.colors.dark[opened ? 6 : 5]}`,
           }}
         >
           <Group
