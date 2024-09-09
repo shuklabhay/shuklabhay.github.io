@@ -23,7 +23,7 @@ export default function GHCard({ ghStats }: { ghStats: GHStatsData }) {
         (modifications).
       </Text>
 
-      {/* PUT THIS STUFF IN A SEPERATE COMPONENT, MAYBE ANOTHER GRID LIKE SKILLS? */}
+      {/* PUT THIS STUFF IN A SEPERATE COMPONENT, HAVE ANOTHER GRID LIKE SKILLS PROB  */}
       <Text fz={{ base: 12, sm: 16 }} mb={0}>
         Significant repositories I've made contributions in:
       </Text>
