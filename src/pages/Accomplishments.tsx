@@ -6,7 +6,7 @@ import ProjectCard from "../components/InfoCards/ProjectCard";
 import loadSiteData from "../utils/data";
 import { SiteData } from "../utils/types";
 
-export default function Acomplishments() {
+export default function Accomplishments() {
   const [siteData, setSiteData] = useState<SiteData>();
 
   useEffect(() => {
@@ -24,13 +24,12 @@ export default function Acomplishments() {
 
     return (
       <>
-        <div style={{ paddingBlock: 10 }}>
+        <div style={{ paddingBlock: 10, marginTop: -10 }}>
           <Text fz={{ base: 18, sm: 24 }} lh={1.5}>
-            Here's a curated list of{" "}
+            Notable{" "}
             <Text span c="main" fw={700} inherit>
-              my favorite things
+              Accomplishments:
             </Text>{" "}
-            I've been a part of:
           </Text>
         </div>
 

@@ -12,7 +12,7 @@ export type significantRepoInfo = {
 
 export interface SiteData {
   awards: AwardData[];
-  ghStats: GHStatsData;
+  ghData: GHData;
   projects: ProjectData[];
   positions: PositionsData[];
   skills: SkillsData[];
@@ -24,8 +24,7 @@ export interface AwardData {
   description: string;
 }
 
-export interface GHStatsData {
-  creationDate: string;
+export interface GHData {
   lastUpdated: string;
   contributions: number;
   linesModified: number;
@@ -48,7 +47,7 @@ export interface ProjectData {
   ongoing: boolean;
   description: string;
   contribution: string;
-  acomplishments: string;
+  accomplishments: string;
   images: RichImage[];
   links: RichLink[];
 }

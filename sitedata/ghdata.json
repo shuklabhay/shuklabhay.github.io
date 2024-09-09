@@ -1,27 +1,26 @@
 {
-  "creationDate": "May 2022",
   "lastUpdated": "September 9 2024",
   "contributions": 200,
   "linesModified": 206,
   "significantRepos": [
     {
       "repo": "The Blue Alliance",
-      "description": "FIRST Robotics Competition Data Aggregation and Visualization Platform",
+      "description": "FIRST Robotics Competition (FRC) Data Aggregation and Visualization Platform",
       "link": "https://github.com/the-blue-alliance/the-blue-alliance"
     },
     {
-      "repo": "FRC 604 2022-2024",
-      "description": "FIRST Robotics Competition Team 604 Robot Competition Code",
+      "repo": "FRC 604 2022-2024public",
+      "description": "FRC Team 604 Competition Robot Code",
       "link": "https://github.com/frc604"
     },
     {
       "repo": "FRC 604 Quickscout2",
-      "description": "FIRST Robotics Competition Team 604 Competition Data Collection Application",
+      "description": "FRC Team 604 Competition Data Collection Application",
       "link": "https://github.com/frc604"
     },
     {
       "repo": "CTRE Phoenix5 Documentation",
-      "description": "FIRST Robotics Competition Motor Controller Documentation",
+      "description": "FRC Motor Controller Documentation",
       "link": "https://github.com/CrossTheRoadElec/Phoenix5-Documentation"
     }
   ]

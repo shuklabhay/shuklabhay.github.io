@@ -18,15 +18,11 @@ import { NavItem } from "../utils/types";
 
 const navItems: NavItem[] = [
   { label: "Home", position: "landingPosition", focused: "isLandingFocused" },
+  { label: "Skills", position: "skillsPosition", focused: "isSkillsFocused" },
   {
-    label: "Skills",
-    position: "skillsPosition",
-    focused: "isSkillsFocused",
-  },
-  {
-    label: "Acomplishments",
-    position: "acomplishmentsPosition",
-    focused: "isAcomplishmentsFocused",
+    label: "Accomplishments",
+    position: "accomplishmentsPosition",
+    focused: "isAccomplishmentsFocused",
   },
   {
     label: "Contact",
@@ -36,14 +32,12 @@ const navItems: NavItem[] = [
 ];
 
 export function Navbar() {
-  // Hooks
   const theme = useMantineTheme();
   const { scrollInformation, scrollProgress, setScrollProgress } =
     useScrollContext();
   const [isVisible, setIsVisible] = useState(false);
   const [opened, { toggle }] = useDisclosure(false);
 
-  // Scroll handler
   useEffect(() => {
     const handleScroll = () => {
       const windowHeight = window.innerHeight;

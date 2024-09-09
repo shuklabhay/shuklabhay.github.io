@@ -1,6 +1,5 @@
 import { Text } from "@mantine/core";
-
-const isSmallScreen = window.matchMedia("(max-width: 767px)").matches;
+import { isSmallScreen } from "../../utils/scroll";
 
 export default function CardTitle({
   title,

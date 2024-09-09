@@ -1,3 +1,5 @@
+export const isSmallScreen = window.matchMedia("(max-width: 767px)").matches;
+
 export function scrollViewportTo(scrollPosition: number) {
   window.scrollTo({
     top: scrollPosition,
@@ -7,7 +9,7 @@ export function scrollViewportTo(scrollPosition: number) {
 
 export function calculateScrollProgressOpacity(
   goalPosition: number,
-  scale = 1.5,
+  scale = 1.5
 ) {
   const scrollTop = window.scrollY;
   return 1 - Math.min(scale * (scrollTop / goalPosition), 1);

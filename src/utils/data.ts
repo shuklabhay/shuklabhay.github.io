@@ -1,6 +1,6 @@
 import {
   AwardData,
-  GHStatsData,
+  GHData,
   PositionsData,
   ProjectData,
   SkillsData,
@@ -8,14 +8,14 @@ import {
 
 export default async function loadSiteData() {
   const awards = await getAwardData();
-  const ghStats = await getGHStatsData();
+  const ghData = await getGHData();
   const positions = await getPositionsData();
   const projects = await getProjectsData();
   const skills = await getSkillsData();
 
   return {
     awards,
-    ghStats,
+    ghData,
     positions,
     projects,
     skills,
@@ -33,14 +33,14 @@ async function getAwardData(): Promise<AwardData[]> {
   }
 }
 
-async function getGHStatsData(): Promise<GHStatsData> {
+async function getGHData(): Promise<GHData> {
   try {
-    const response = await fetch(`sitedata/ghstats.json`);
-    const data: GHStatsData = await response.json();
+    const response = await fetch(`sitedata/ghdata.json`);
+    const data: GHData = await response.json();
     return data;
   } catch (error) {
     console.error("Error fetching data:", error);
-    return [] as unknown as GHStatsData;
+    return [] as unknown as GHData;
   }
 }
 

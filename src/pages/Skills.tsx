@@ -17,7 +17,7 @@ export default function Skills() {
   }, []);
 
   if (siteData) {
-    const ghStats = siteData.ghStats;
+    const ghData = siteData.ghData;
     const skills = siteData.skills;
 
     return (
@@ -28,18 +28,25 @@ export default function Skills() {
             <Text span c="main" fw={700} inherit>
               LOT
             </Text>{" "}
-            of different areas.
+            of different areas:
           </Text>
         </div>
 
-        <GHCard ghStats={ghStats} />
-
-        <Grid justify="center" gutter="sm" mb={15}>
+        <Grid justify="center" gutter="sm" mb={10}>
           {skills.map((skill) => (
             <Grid.Col span={{ base: 4, sm: 2 }} key={skill.skill}>
               <SkillCard skillInfo={skill} />
             </Grid.Col>
           ))}
+        </Grid>
+
+        <Grid gutter="sm" mb={0}>
+          <Grid.Col span={{ base: 4, sm: 2 }}>
+            <SkillCard skillInfo={{ skill: "Git:" }} />
+          </Grid.Col>
+          <Grid.Col span={{ base: 8, sm: 10 }}>
+            <GHCard ghData={ghData} />
+          </Grid.Col>
         </Grid>
       </>
     );
