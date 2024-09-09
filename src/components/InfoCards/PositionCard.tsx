@@ -1,4 +1,5 @@
 import { Card, Grid, Image, Text } from "@mantine/core";
+import { getTimeframeLabel } from "../../utils/dates";
 import { PositionsData } from "../../utils/types";
 import CardTitle from "./CardTitle";
 
@@ -10,10 +11,10 @@ export default function PositionCard({
   const { title, startMonth, endMonth, ongoing, description, icon } =
     positionInfo;
 
-  const timeframeLabel = `${startMonth} - ${endMonth}${ongoing ? ": Ongoing" : ""}`;
+  const timeframeLabel = getTimeframeLabel(startMonth, endMonth, ongoing);
 
   return (
-    <Card padding="15" radius="md" c="white">
+    <Card padding="15" radius="md" c="white" mb={5}>
       <CardTitle title={title} timeframe={timeframeLabel} />
 
       <Grid>

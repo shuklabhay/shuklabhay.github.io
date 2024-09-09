@@ -4,6 +4,11 @@ import { ScrollInfo } from "./scrollContext";
 export type RichImage = { src: string; alt: string };
 export type RichIcon = { src: string; link: string };
 export type RichLink = { url: string; displayText: string };
+export type significantRepoInfo = {
+  repo: string;
+  description: string;
+  link: string;
+};
 
 export interface SiteData {
   awards: AwardData[];
@@ -20,8 +25,11 @@ export interface AwardData {
 }
 
 export interface GHStatsData {
+  creationDate: string;
+  lastUpdated: string;
   contributions: number;
   linesModified: number;
+  significantRepos: significantRepoInfo[];
 }
 
 export interface PositionsData {

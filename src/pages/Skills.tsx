@@ -1,5 +1,6 @@
 import { Grid, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
+import GHCard from "../components/InfoCards/GhCard";
 import SkillCard from "../components/InfoCards/SkillCard";
 import loadSiteData from "../utils/data";
 import { SiteData } from "../utils/types";
@@ -31,6 +32,8 @@ export default function Skills() {
           </Text>
         </div>
 
+        <GHCard ghStats={ghStats} />
+
         <Grid justify="center" gutter="sm" mb={15}>
           {skills.map((skill) => (
             <Grid.Col span={{ base: 4, sm: 2 }} key={skill.skill}>
@@ -38,11 +41,6 @@ export default function Skills() {
             </Grid.Col>
           ))}
         </Grid>
-
-        <Text fz={{ base: 16, sm: 18 }}>
-          GitHub: {ghStats.contributions} Contributions, {ghStats.linesModified}{" "}
-          Lines modified, [profile link]
-        </Text>
       </>
     );
   }
