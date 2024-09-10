@@ -1,4 +1,4 @@
-import { ScrollInfo } from "./scrollContext";
+import { RefObject } from "react";
 
 //  Data Types
 export type RichImage = { src: string; alt: string };
@@ -56,8 +56,34 @@ export interface SkillsData {
   skill: string;
 }
 
-//Other
+// Counting Label Animation
 export type counterAnimationInfo = { label: string; finalValue: number };
+export interface CountHookResult {
+  ref: RefObject<HTMLSpanElement>;
+  startAnimation: () => void;
+}
+export interface CountingAnimationLabelProps {
+  counterAnimationInfo: counterAnimationInfo[];
+}
+
+// Scrolling and Navigation
+export type ScrollInfo = {
+  landingPosition: number;
+  accomplishmentsPosition: number;
+  skillsPosition: number;
+  contactPosition: number;
+  isLandingFocused: boolean;
+  isAccomplishmentsFocused: boolean;
+  isSkillsFocused: boolean;
+  isContactFocused: boolean;
+};
+
+export type ScrollContextType = {
+  scrollInformation: ScrollInfo;
+  setScrollInformation: React.Dispatch<React.SetStateAction<ScrollInfo>>;
+  scrollProgress: number;
+  setScrollProgress: React.Dispatch<React.SetStateAction<number>>;
+};
 
 export type NavItem = {
   label: string;

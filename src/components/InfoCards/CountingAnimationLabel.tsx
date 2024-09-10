@@ -1,61 +1,99 @@
 import { Text } from "@mantine/core";
+import React, { createRef, useRef } from "react";
 import { useCountUp } from "react-countup";
 import { isSmallScreen } from "../../utils/scroll";
-import { counterAnimationInfo } from "../../utils/types";
+import {
+  CountHookResult,
+  CountingAnimationLabelProps,
+} from "../../utils/types";
 
+// Counting Hook
+function CountHook({ finalValue }: { finalValue: number }): CountHookResult {
+  const countUpRef = createRef<HTMLSpanElement>();
+  const hasAnimatedRef = useRef(false);
+
+  const countUp = useCountUp({
+    ref: countUpRef,
+    start: Math.floor(finalValue - finalValue / 5),
+    end: finalValue,
+    duration: 2,
+    startOnMount: false,
+  });
+
+  const startAnimation = () => {
+    if (!hasAnimatedRef.current) {
+      countUp.start();
+      hasAnimatedRef.current = true;
+    }
+  };
+
+  return {
+    ref: countUpRef,
+    startAnimation,
+  };
+}
+
+// Counting Label
 export default function CountingAnimationLabel({
   counterAnimationInfo,
-}: {
-  counterAnimationInfo: counterAnimationInfo[];
-}) {
+}: CountingAnimationLabelProps) {
   const statBreakpoint = isSmallScreen ? "" : ", ";
+  const containerRef = useRef<HTMLDivElement>(null);
+  const countHooks = counterAnimationInfo.map(({ finalValue }) =>
+    CountHook({ finalValue }),
+  );
 
-  function CountHook({
-    label,
-    finalValue,
-  }: {
-    label: string;
-    finalValue: number;
-  }) {
-    const counterLabel = `counter-${label}`;
-    useCountUp({
-      ref: counterLabel,
-      start: Math.floor(finalValue - 15),
-      end: finalValue,
-    });
-    return <span id={counterLabel} />;
-  }
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          countHooks.forEach((hook) => hook.startAnimation());
+          observer.disconnect();
+        }
+      },
+      {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+      },
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => {
+      if (containerRef.current) {
+        observer.disconnect();
+      }
+    };
+  }, [countHooks]);
 
   return (
-    <>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "flex-end",
-          gap: 5,
-        }}
-      >
-        {counterAnimationInfo.map(({ label, finalValue }, index) => {
-          return (
-            <>
-              <Text fz={{ base: 16, sm: 20 }} lh={1.25}>
-                <Text
-                  span
-                  c="main"
-                  fz={{ base: 16, sm: 20 }}
-                  fw={700}
-                  lh={1.25}
-                >
-                  <CountHook label={label} finalValue={finalValue} />
-                </Text>{" "}
-                {label}
-                {index < counterAnimationInfo.length - 1 && statBreakpoint}
-              </Text>
-            </>
-          );
-        })}
-      </div>
-    </>
+    <div
+      ref={containerRef}
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "flex-end",
+        gap: 5,
+      }}
+    >
+      {counterAnimationInfo.map(({ label, finalValue }, index) => (
+        <React.Fragment key={label}>
+          <Text fz={{ base: 16, sm: 20 }} lh={1.25}>
+            <Text span c="main" fz={{ base: 16, sm: 20 }} fw={700} lh={1.25}>
+              {countHooks[index] ? (
+                <span ref={countHooks[index].ref}>{finalValue}</span>
+              ) : (
+                <span>{finalValue}</span>
+              )}
+            </Text>{" "}
+            {label}
+            {index < counterAnimationInfo.length - 1 && statBreakpoint}
+          </Text>
+        </React.Fragment>
+      ))}
+    </div>
   );
 }

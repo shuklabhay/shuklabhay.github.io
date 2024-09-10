@@ -1,22 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
-
-export type ScrollInfo = {
-  landingPosition: number;
-  accomplishmentsPosition: number;
-  skillsPosition: number;
-  contactPosition: number;
-  isLandingFocused: boolean;
-  isAccomplishmentsFocused: boolean;
-  isSkillsFocused: boolean;
-  isContactFocused: boolean;
-};
-
-type ScrollContextType = {
-  scrollInformation: ScrollInfo;
-  setScrollInformation: React.Dispatch<React.SetStateAction<ScrollInfo>>;
-  scrollProgress: number;
-  setScrollProgress: React.Dispatch<React.SetStateAction<number>>;
-};
+import { ScrollContextType, ScrollInfo } from "./types";
 
 const ScrollContext = createContext<ScrollContextType | undefined>(undefined);
 
