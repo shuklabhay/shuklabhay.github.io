@@ -4,8 +4,7 @@ import { GHData } from "../../utils/types";
 import CountingAnimationLabel from "./CountingAnimationLabel";
 
 export default function GHCard({ ghData }: { ghData: GHData }) {
-  const { lastUpdated, contributions, linesModified, significantRepos } =
-    ghData;
+  const { contributions, linesModified, significantRepos } = ghData;
 
   return (
     <Card padding="15" radius="md" c="white" mb={15}>
@@ -32,7 +31,7 @@ export default function GHCard({ ghData }: { ghData: GHData }) {
       <List mr={15} withPadding>
         {significantRepos.map((repoInfo) => (
           <List.Item key={repoInfo.repo}>
-            <Text fz={{ base: 12, sm: 14 }}>
+            <Text fz={{ base: 12, sm: 16 }}>
               <a
                 href={repoInfo.link}
                 target="_blank"

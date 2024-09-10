@@ -26,10 +26,11 @@ export default function Accomplishments() {
       <>
         <div style={{ paddingBlock: 10, marginTop: -10 }}>
           <Text fz={{ base: 18, sm: 24 }} lh={1.5}>
-            Notable{" "}
+            These are some of the{" "}
             <Text span c="main" fw={700} inherit>
-              Accomplishments:
+              acomplishments
             </Text>{" "}
+            I'm proudest of:
           </Text>
         </div>
 

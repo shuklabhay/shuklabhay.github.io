@@ -24,11 +24,11 @@ export default function Skills() {
       <>
         <div style={{ paddingBlock: 10 }}>
           <Text fz={{ base: 18, sm: 24 }} lh={1.5}>
-            I have experience in a{" "}
+            I've worked with a{" "}
             <Text span c="main" fw={700} inherit>
               LOT
             </Text>{" "}
-            of different areas:
+            of different concepts:
           </Text>
         </div>
 
@@ -49,6 +49,10 @@ export default function Skills() {
               <GHCard ghData={ghData} />
             </Grid.Col>
           </Grid>
+
+          <Text fz={{ base: 10, sm: 12 }} mt={-15} mb={5} ta={"right"}>
+            (Github Data last updated {ghData.lastUpdated})
+          </Text>
         </div>
       </>
     );
