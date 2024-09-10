@@ -52,7 +52,7 @@ export default function Landing() {
             fw={700}
             ta="center"
             style={{
-              mixBlendMode: "soft-light",
+              mixBlendMode: "overlay",
               userSelect: "none",
             }}
           >
