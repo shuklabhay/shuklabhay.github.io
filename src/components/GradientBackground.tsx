@@ -2,6 +2,7 @@ import { Stack, useMantineTheme } from "@mantine/core";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   calculateScrollProgressOpacity,
+  isSmallScreen,
   scrollViewportTo,
 } from "../utils/scroll";
 import { useScrollContext } from "../utils/scrollContext";
@@ -9,7 +10,6 @@ import { hexToRgb } from "../utils/theme";
 import useThrottle from "../utils/throttle";
 import DownArrowButton from "./DownArrowButton";
 
-const isSmallScreen = window.matchMedia("(max-width: 767px)").matches;
 const gradientAngleRange = 30;
 
 const gradientAngle = isSmallScreen
@@ -41,8 +41,9 @@ const startX = isSmallScreen
       }
       return x;
     })();
+
 const startY = isSmallScreen
-  ? Math.random() * (window.innerHeight / 3)
+  ? Math.random() * (window.innerHeight / 4)
   : (() => {
       let y = Math.random() * window.innerHeight;
       if (y >= window.innerHeight / 3 && y <= window.innerHeight * (2 / 3)) {

@@ -1,13 +1,18 @@
-import { ScrollInfo } from "./scrollContext";
+import { RefObject } from "react";
 
-// Page Data Types
+//  Data Types
 export type RichImage = { src: string; alt: string };
 export type RichIcon = { src: string; link: string };
 export type RichLink = { url: string; displayText: string };
+export type significantRepoInfo = {
+  repo: string;
+  description: string;
+  link: string;
+};
 
 export interface SiteData {
   awards: AwardData[];
-  ghStats: GHStatsData;
+  ghData: GHData;
   projects: ProjectData[];
   positions: PositionsData[];
   skills: SkillsData[];
@@ -19,9 +24,11 @@ export interface AwardData {
   description: string;
 }
 
-export interface GHStatsData {
+export interface GHData {
+  lastUpdated: string;
   contributions: number;
   linesModified: number;
+  significantRepos: significantRepoInfo[];
 }
 
 export interface PositionsData {
@@ -40,7 +47,7 @@ export interface ProjectData {
   ongoing: boolean;
   description: string;
   contribution: string;
-  acomplishments: string;
+  accomplishments: string;
   images: RichImage[];
   links: RichLink[];
 }
@@ -49,7 +56,35 @@ export interface SkillsData {
   skill: string;
 }
 
-//Other
+// Counting Label Animation
+export type counterAnimationInfo = { label: string; finalValue: number };
+export interface CountHookResult {
+  ref: RefObject<HTMLSpanElement>;
+  startAnimation: () => void;
+}
+export interface CountingAnimationLabelProps {
+  counterAnimationInfo: counterAnimationInfo[];
+}
+
+// Scrolling and Navigation
+export type ScrollInfo = {
+  landingPosition: number;
+  accomplishmentsPosition: number;
+  skillsPosition: number;
+  contactPosition: number;
+  isLandingFocused: boolean;
+  isAccomplishmentsFocused: boolean;
+  isSkillsFocused: boolean;
+  isContactFocused: boolean;
+};
+
+export type ScrollContextType = {
+  scrollInformation: ScrollInfo;
+  setScrollInformation: React.Dispatch<React.SetStateAction<ScrollInfo>>;
+  scrollProgress: number;
+  setScrollProgress: React.Dispatch<React.SetStateAction<number>>;
+};
+
 export type NavItem = {
   label: string;
   position: Extract<keyof ScrollInfo, string>;

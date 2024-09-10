@@ -1,22 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
-
-export type ScrollInfo = {
-  landingPosition: number;
-  acomplishmentsPosition: number;
-  skillsPosition: number;
-  contactPosition: number;
-  isLandingFocused: boolean;
-  isAcomplishmentsFocused: boolean;
-  isSkillsFocused: boolean;
-  isContactFocused: boolean;
-};
-
-type ScrollContextType = {
-  scrollInformation: ScrollInfo;
-  setScrollInformation: React.Dispatch<React.SetStateAction<ScrollInfo>>;
-  scrollProgress: number;
-  setScrollProgress: React.Dispatch<React.SetStateAction<number>>;
-};
+import { ScrollContextType, ScrollInfo } from "./types";
 
 const ScrollContext = createContext<ScrollContextType | undefined>(undefined);
 
@@ -35,11 +18,11 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [scrollInfo, setScrollInfo] = useState<ScrollInfo>({
     landingPosition: 0,
-    acomplishmentsPosition: 0,
+    accomplishmentsPosition: 0,
     skillsPosition: 0,
     contactPosition: 0,
     isLandingFocused: false,
-    isAcomplishmentsFocused: false,
+    isAccomplishmentsFocused: false,
     isSkillsFocused: false,
     isContactFocused: false,
   });

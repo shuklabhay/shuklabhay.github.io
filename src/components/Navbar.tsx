@@ -13,20 +13,16 @@ import { useDisclosure } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import mainPhoto from "../static/main_photo.jpg";
 import { scrollViewportTo } from "../utils/scroll";
-import { ScrollInfo, useScrollContext } from "../utils/scrollContext";
-import { NavItem } from "../utils/types";
+import { useScrollContext } from "../utils/scrollContext";
+import { NavItem, ScrollInfo } from "../utils/types";
 
 const navItems: NavItem[] = [
   { label: "Home", position: "landingPosition", focused: "isLandingFocused" },
+  { label: "Skills", position: "skillsPosition", focused: "isSkillsFocused" },
   {
-    label: "Skills",
-    position: "skillsPosition",
-    focused: "isSkillsFocused",
-  },
-  {
-    label: "Acomplishments",
-    position: "acomplishmentsPosition",
-    focused: "isAcomplishmentsFocused",
+    label: "Accomplishments",
+    position: "accomplishmentsPosition",
+    focused: "isAccomplishmentsFocused",
   },
   {
     label: "Contact",
@@ -36,14 +32,12 @@ const navItems: NavItem[] = [
 ];
 
 export function Navbar() {
-  // Hooks
   const theme = useMantineTheme();
   const { scrollInformation, scrollProgress, setScrollProgress } =
     useScrollContext();
   const [isVisible, setIsVisible] = useState(false);
   const [opened, { toggle }] = useDisclosure(false);
 
-  // Scroll handler
   useEffect(() => {
     const handleScroll = () => {
       const windowHeight = window.innerHeight;
@@ -97,7 +91,13 @@ export function Navbar() {
           justify="space-between"
           style={{
             paddingBottom: 10,
-            borderBottom: `2px solid ${theme.colors.dark[opened ? 6 : 5]}`,
+            borderBottom: opened
+              ? undefined
+              : `2px solid ${theme.colors.dark[5]}`,
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            flexWrap: "nowrap",
           }}
         >
           <Group
@@ -110,6 +110,16 @@ export function Navbar() {
               Abhay Shukla
             </Text>
           </Group>
+
+          <Burger
+            opened={opened}
+            onClick={toggle}
+            hiddenFrom="xs"
+            size="sm"
+            transitionDuration={250}
+            mt={-3}
+          />
+
           <Group gap={5} visibleFrom="xs">
             {navItems.map((item) => (
               <Button
@@ -122,14 +132,6 @@ export function Navbar() {
               </Button>
             ))}
           </Group>
-
-          <Burger
-            opened={opened}
-            onClick={toggle}
-            hiddenFrom="xs"
-            size="sm"
-            transitionDuration={250}
-          />
         </Group>
         {opened && (
           <Stack gap={0} hiddenFrom="xs">

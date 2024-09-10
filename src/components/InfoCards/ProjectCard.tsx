@@ -1,6 +1,7 @@
 import { Carousel } from "@mantine/carousel";
 import { Button, Card, Grid, Group, Image, Text } from "@mantine/core";
 import { useState } from "react";
+import { getTimeframeLabel } from "../../utils/dates";
 import { ProjectData, RichLink } from "../../utils/types";
 import CardTitle from "./CardTitle";
 import ImageCarouselModal from "./ImageCarouselModal";
@@ -23,10 +24,10 @@ export default function ProjectCard({
   const [opened, setOpened] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-  const timeframeLabel = `${startMonth} - ${endMonth}${ongoing ? ": Ongoing" : ""}`;
+  const timeframeLabel = getTimeframeLabel(startMonth, endMonth, ongoing);
 
   return (
-    <Card padding="15" radius="md" c="white">
+    <Card padding="15" radius="md" c="white" mb={5}>
       <CardTitle title={title} timeframe={timeframeLabel} />
 
       <Grid mb="20">

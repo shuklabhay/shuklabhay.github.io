@@ -3,24 +3,27 @@
     "skill": "AI/ML"
   },
   {
-    "skill": "Git"
-  },
-  {
-    "skill": "Webdev"
-  },
-  {
     "skill": "CAD"
   },
   {
     "skill": "Robotics Controls"
   },
   {
-    "skill": "Audio Processing"
+    "skill": "Webdev/Appdev"
   },
   {
-    "skill": "Image Processing"
+    "skill": "3D Printing"
   },
   {
-    "skill": "Video Processing"
+    "skill": "Signal Processing"
+  },
+  {
+    "skill": "Digital Audio Production"
+  },
+  {
+    "skill": "Image Editing"
+  },
+  {
+    "skill": "Video Editing"
   }
 ]

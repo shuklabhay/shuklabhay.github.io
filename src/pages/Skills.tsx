@@ -1,5 +1,6 @@
 import { Grid, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
+import GHCard from "../components/InfoCards/GhCard";
 import SkillCard from "../components/InfoCards/SkillCard";
 import loadSiteData from "../utils/data";
 import { SiteData } from "../utils/types";
@@ -16,33 +17,43 @@ export default function Skills() {
   }, []);
 
   if (siteData) {
-    const ghStats = siteData.ghStats;
+    const ghData = siteData.ghData;
     const skills = siteData.skills;
 
     return (
       <>
         <div style={{ paddingBlock: 10 }}>
           <Text fz={{ base: 18, sm: 24 }} lh={1.5}>
-            I have experience in a{" "}
+            I've worked with a{" "}
             <Text span c="main" fw={700} inherit>
               LOT
             </Text>{" "}
-            of different areas.
+            of different concepts:
           </Text>
         </div>
 
-        <Grid justify="center" gutter="sm" mb={15}>
-          {skills.map((skill) => (
-            <Grid.Col span={{ base: 4, sm: 2 }} key={skill.skill}>
-              <SkillCard skillInfo={skill} />
-            </Grid.Col>
-          ))}
-        </Grid>
+        <div>
+          <Grid justify="center" gutter="sm" mb={10}>
+            {skills.map((skill) => (
+              <Grid.Col span={{ base: 4, sm: 2 }} key={skill.skill}>
+                <SkillCard skillInfo={skill} />
+              </Grid.Col>
+            ))}
+          </Grid>
 
-        <Text fz={{ base: 16, sm: 18 }}>
-          GitHub: {ghStats.contributions} Contributions, {ghStats.linesModified}{" "}
-          Lines modified, [profile link]
-        </Text>
+          <Grid gutter="sm" mb={0}>
+            <Grid.Col span={{ base: 4, sm: 2 }}>
+              <SkillCard skillInfo={{ skill: "Git:" }} />
+            </Grid.Col>
+            <Grid.Col span={{ base: 8, sm: 10 }}>
+              <GHCard ghData={ghData} />
+            </Grid.Col>
+          </Grid>
+
+          <Text fz={{ base: 10, sm: 12 }} mt={-15} mb={5} ta={"right"}>
+            (Github Data last updated {ghData.lastUpdated})
+          </Text>
+        </div>
       </>
     );
   }

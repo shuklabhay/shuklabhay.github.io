@@ -1,3 +1,5 @@
+export const isSmallScreen = window.matchMedia("(max-width: 767px)").matches;
+
 export function scrollViewportTo(scrollPosition: number) {
   window.scrollTo({
     top: scrollPosition,
