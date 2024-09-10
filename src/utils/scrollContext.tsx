@@ -18,11 +18,11 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [scrollInfo, setScrollInfo] = useState<ScrollInfo>({
     landingPosition: 0,
-    accomplishmentsPosition: 0,
+    experiencePosition: 0,
     skillsPosition: 0,
     contactPosition: 0,
     isLandingFocused: false,
-    isAccomplishmentsFocused: false,
+    isExperienceFocused: false,
     isSkillsFocused: false,
     isContactFocused: false,
   });

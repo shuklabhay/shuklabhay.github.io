@@ -6,7 +6,7 @@ import ProjectCard from "../components/InfoCards/ProjectCard";
 import loadSiteData from "../utils/data";
 import { SiteData } from "../utils/types";
 
-export default function Accomplishments() {
+export default function Experience() {
   const [siteData, setSiteData] = useState<SiteData>();
 
   useEffect(() => {

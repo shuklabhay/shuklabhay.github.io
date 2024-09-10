@@ -1,8 +1,9 @@
 import { Container } from "@mantine/core";
 import { useEffect, useRef } from "react";
 import { scrollOffet, useScrollContext } from "../utils/scrollContext.tsx";
-import Accomplishments from "./Accomplishments.tsx";
 import Contact from "./Contact.tsx";
+
+import Experience from "./Experience.tsx";
 import Landing from "./Landing.tsx";
 import Skills from "./Skills.tsx";
 
@@ -11,7 +12,7 @@ export default function PageStack() {
   const { setScrollInformation } = useScrollContext();
   const landingRef = useRef<HTMLDivElement>(null);
   const skillsRef = useRef<HTMLDivElement>(null);
-  const accomplishmentsRef = useRef<HTMLDivElement>(null);
+  const experienceRef = useRef<HTMLDivElement>(null);
   const contactRef = useRef<HTMLDivElement>(null);
 
   // Scroll control
@@ -33,30 +34,38 @@ export default function PageStack() {
       if (
         landingRef.current &&
         skillsRef.current &&
-        accomplishmentsRef.current &&
+        experienceRef.current &&
         contactRef.current
       ) {
         const newLandingPosition = landingRef.current.offsetTop - scrollOffet;
         const newSkillsPosition = skillsRef.current.offsetTop - scrollOffet;
-        const newAccomplishmentsPosition =
-          accomplishmentsRef.current.offsetTop - scrollOffet;
+        const newExperiencePosition =
+          experienceRef.current.offsetTop - scrollOffet;
         const newContactPosition = contactRef.current.offsetTop - scrollOffet;
         const scrollTop = window.scrollY;
         const scrollBottom = scrollTop + window.innerHeight;
 
+        const newIsLandingFocused = scrollTop < newSkillsPosition;
+        const newIsSkillsFocused =
+          scrollTop >= newSkillsPosition &&
+          scrollBottom < newExperiencePosition + window.innerHeight;
+        const newIsExperienceFocused =
+          scrollTop >= newExperiencePosition &&
+          scrollBottom < newContactPosition + scrollOffet;
+        const newIsContactFocused =
+          !newIsLandingFocused &&
+          !newIsSkillsFocused &&
+          !newIsExperienceFocused;
+
         setScrollInformation({
           landingPosition: newLandingPosition,
           skillsPosition: newSkillsPosition,
-          accomplishmentsPosition: newAccomplishmentsPosition,
+          experiencePosition: newExperiencePosition,
           contactPosition: newContactPosition,
-          isLandingFocused: scrollTop < newSkillsPosition,
-          isSkillsFocused:
-            scrollTop >= newSkillsPosition &&
-            scrollBottom < newAccomplishmentsPosition + window.innerHeight,
-          isAccomplishmentsFocused:
-            scrollTop >= newAccomplishmentsPosition &&
-            scrollBottom < newContactPosition,
-          isContactFocused: scrollBottom >= newContactPosition + scrollOffet,
+          isLandingFocused: newIsLandingFocused,
+          isSkillsFocused: newIsSkillsFocused,
+          isExperienceFocused: newIsExperienceFocused,
+          isContactFocused: newIsContactFocused,
         });
       }
     };
@@ -69,7 +78,7 @@ export default function PageStack() {
       window.removeEventListener("resize", updateScrollInformation);
       window.removeEventListener("scroll", updateScrollInformation);
     };
-  }, [landingRef, accomplishmentsRef, contactRef]);
+  }, [landingRef, experienceRef, contactRef]);
 
   return (
     <div>
@@ -81,8 +90,8 @@ export default function PageStack() {
         <Skills />
       </Container>
 
-      <Container size="sx" ref={accomplishmentsRef}>
-        <Accomplishments />
+      <Container size="sx" ref={experienceRef}>
+        <Experience />
       </Container>
 
       <Container size="sx" ref={contactRef}>

@@ -49,7 +49,7 @@ export interface ProjectData {
   ongoing: boolean;
   description: BulletPoint[];
   contribution: string;
-  accomplishments: string;
+  experience: string;
   images: RichImage[];
   links: RichLink[];
 }
@@ -71,11 +71,11 @@ export interface CountingAnimationLabelProps {
 // Scrolling and Navigation
 export type ScrollInfo = {
   landingPosition: number;
-  accomplishmentsPosition: number;
+  experiencePosition: number;
   skillsPosition: number;
   contactPosition: number;
   isLandingFocused: boolean;
-  isAccomplishmentsFocused: boolean;
+  isExperienceFocused: boolean;
   isSkillsFocused: boolean;
   isContactFocused: boolean;
 };

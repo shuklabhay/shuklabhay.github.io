@@ -20,9 +20,9 @@ const navItems: NavItem[] = [
   { label: "Home", position: "landingPosition", focused: "isLandingFocused" },
   { label: "Skills", position: "skillsPosition", focused: "isSkillsFocused" },
   {
-    label: "Accomplishments",
-    position: "accomplishmentsPosition",
-    focused: "isAccomplishmentsFocused",
+    label: "Experience",
+    position: "experiencePosition",
+    focused: "isExperienceFocused",
   },
   {
     label: "Contact",
