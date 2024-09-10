@@ -1,5 +1,5 @@
 import { Carousel } from "@mantine/carousel";
-import { Button, Card, Grid, Group, Image, Text } from "@mantine/core";
+import { Button, Card, Grid, Group, Image, List, Text } from "@mantine/core";
 import { useState } from "react";
 import { getTimeframeLabel } from "../../utils/dates";
 import { ProjectData, RichLink } from "../../utils/types";
@@ -78,9 +78,15 @@ export default function ProjectCard({
           }}
           mb={20}
         >
-          <Text fz={{ base: 12, sm: 16 }} mb={10}>
-            {description}
-          </Text>
+          <Text fz={{ base: 12, sm: 16 }}>Project description:</Text>
+          <List mr={15} withPadding>
+            {description.map(({ point }) => (
+              <List.Item key={point}>
+                <Text fz={{ base: 12, sm: 16 }}>{point}</Text>
+              </List.Item>
+            ))}
+          </List>
+
           <div
             style={{
               display: "flex",
