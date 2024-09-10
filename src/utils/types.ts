@@ -1,6 +1,6 @@
 import { ScrollInfo } from "./scrollContext";
 
-// Page Data Types
+//  Data Types
 export type RichImage = { src: string; alt: string };
 export type RichIcon = { src: string; link: string };
 export type RichLink = { url: string; displayText: string };
@@ -57,6 +57,8 @@ export interface SkillsData {
 }
 
 //Other
+export type counterAnimationInfo = { label: string; finalValue: number };
+
 export type NavItem = {
   label: string;
   position: Extract<keyof ScrollInfo, string>;

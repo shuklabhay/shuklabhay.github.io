@@ -91,7 +91,13 @@ export function Navbar() {
           justify="space-between"
           style={{
             paddingBottom: 10,
-            borderBottom: `2px solid ${theme.colors.dark[opened ? 6 : 5]}`,
+            borderBottom: opened
+              ? undefined
+              : `2px solid ${theme.colors.dark[5]}`,
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            flexWrap: "nowrap",
           }}
         >
           <Group
@@ -104,6 +110,16 @@ export function Navbar() {
               Abhay Shukla
             </Text>
           </Group>
+
+          <Burger
+            opened={opened}
+            onClick={toggle}
+            hiddenFrom="xs"
+            size="sm"
+            transitionDuration={250}
+            mt={-3}
+          />
+
           <Group gap={5} visibleFrom="xs">
             {navItems.map((item) => (
               <Button
@@ -116,14 +132,6 @@ export function Navbar() {
               </Button>
             ))}
           </Group>
-
-          <Burger
-            opened={opened}
-            onClick={toggle}
-            hiddenFrom="xs"
-            size="sm"
-            transitionDuration={250}
-          />
         </Group>
         {opened && (
           <Stack gap={0} hiddenFrom="xs">

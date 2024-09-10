@@ -1,38 +1,35 @@
 import { Card, List, Text } from "@mantine/core";
 import { isSmallScreen } from "../../utils/scroll";
 import { GHData } from "../../utils/types";
+import CountingAnimationLabel from "./CountingAnimationLabel";
 
 export default function GHCard({ ghData }: { ghData: GHData }) {
   const { lastUpdated, contributions, linesModified, significantRepos } =
     ghData;
 
-  const statTitleBreakpoint = isSmallScreen ? <br /> : ", ";
-
   return (
     <Card padding="15" radius="md" c="white" mb={15}>
-      <Text
-        fz={{ base: 16, sm: 20 }}
-        lh={1.5}
-        mt={-5}
-        mb={5}
-        display={{ base: "block", sm: "inline" }}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: isSmallScreen ? "column" : "row",
+          gap: 5,
+          marginBottom: 5,
+        }}
       >
-        <Text span c="main" fw={700} inherit>
-          {contributions}
-        </Text>{" "}
-        Contributions
-        {statTitleBreakpoint}
-        <Text span c="main" fw={700} inherit>
-          {linesModified}
-        </Text>{" "}
-        Lines Modified
-      </Text>
+        <CountingAnimationLabel
+          counterAnimationInfo={[
+            { label: "Contributions", finalValue: contributions },
+            { label: "Lines Modified", finalValue: linesModified },
+          ]}
+        />
+      </div>
 
-      <Text fz={{ base: 12, sm: 16 }} mb={0}>
+      <Text fz={{ base: 12, sm: 16 }} mb={-2}>
         Significant contributions:
       </Text>
 
-      <List mr={15}>
+      <List mr={15} withPadding>
         {significantRepos.map((repoInfo) => (
           <List.Item key={repoInfo.repo}>
             <Text fz={{ base: 12, sm: 14 }}>

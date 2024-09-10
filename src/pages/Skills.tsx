@@ -32,22 +32,24 @@ export default function Skills() {
           </Text>
         </div>
 
-        <Grid justify="center" gutter="sm" mb={10}>
-          {skills.map((skill) => (
-            <Grid.Col span={{ base: 4, sm: 2 }} key={skill.skill}>
-              <SkillCard skillInfo={skill} />
-            </Grid.Col>
-          ))}
-        </Grid>
+        <div>
+          <Grid justify="center" gutter="sm" mb={10}>
+            {skills.map((skill) => (
+              <Grid.Col span={{ base: 4, sm: 2 }} key={skill.skill}>
+                <SkillCard skillInfo={skill} />
+              </Grid.Col>
+            ))}
+          </Grid>
 
-        <Grid gutter="sm" mb={0}>
-          <Grid.Col span={{ base: 4, sm: 2 }}>
-            <SkillCard skillInfo={{ skill: "Git:" }} />
-          </Grid.Col>
-          <Grid.Col span={{ base: 8, sm: 10 }}>
-            <GHCard ghData={ghData} />
-          </Grid.Col>
-        </Grid>
+          <Grid gutter="sm" mb={0}>
+            <Grid.Col span={{ base: 4, sm: 2 }}>
+              <SkillCard skillInfo={{ skill: "Git:" }} />
+            </Grid.Col>
+            <Grid.Col span={{ base: 8, sm: 10 }}>
+              <GHCard ghData={ghData} />
+            </Grid.Col>
+          </Grid>
+        </div>
       </>
     );
   }
