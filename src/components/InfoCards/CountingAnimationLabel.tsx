@@ -1,4 +1,4 @@
-import { Text } from "@mantine/core";
+import { Box, Text } from "@mantine/core";
 import React, { createRef, useRef } from "react";
 import { useCountUp } from "react-countup";
 import { isSmallScreen } from "../../utils/scroll";
@@ -70,30 +70,29 @@ export default function CountingAnimationLabel({
   }, [countHooks]);
 
   return (
-    <div
+    <Box
       ref={containerRef}
+      mb={{ base: 5, sm: 0 }}
       style={{
         display: "flex",
-        flexDirection: "row",
-        alignItems: "flex-end",
+        flexDirection: isSmallScreen ? "column" : "row",
+        alignItems: isSmallScreen ? "flex-start" : "flex-end",
         gap: 5,
       }}
     >
       {counterAnimationInfo.map(({ label, finalValue }, index) => (
-        <React.Fragment key={label}>
-          <Text fz={{ base: 16, sm: 20 }} lh={1.25}>
-            <Text span c="main" fz={{ base: 16, sm: 20 }} fw={700} lh={1.25}>
-              {countHooks[index] ? (
-                <span ref={countHooks[index].ref}>{finalValue}</span>
-              ) : (
-                <span>{finalValue}</span>
-              )}
-            </Text>{" "}
-            {label}
-            {index < counterAnimationInfo.length - 1 && statBreakpoint}
-          </Text>
-        </React.Fragment>
+        <Text fz={{ base: 16, sm: 20 }} lh={1} key={label}>
+          <Text span c="main" fz={{ base: 16, sm: 20 }} fw={700} inherit>
+            {countHooks[index] ? (
+              <span ref={countHooks[index].ref}>{finalValue}</span>
+            ) : (
+              <span>{finalValue}</span>
+            )}
+          </Text>{" "}
+          {label}
+          {index < counterAnimationInfo.length - 1 && statBreakpoint}
+        </Text>
       ))}
-    </div>
+    </Box>
   );
 }

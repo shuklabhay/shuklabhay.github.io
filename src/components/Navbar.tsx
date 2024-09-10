@@ -13,8 +13,8 @@ import { useDisclosure } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import mainPhoto from "../static/main_photo.jpg";
 import { scrollViewportTo } from "../utils/scroll";
-import { ScrollInfo, useScrollContext } from "../utils/scrollContext";
-import { NavItem } from "../utils/types";
+import { useScrollContext } from "../utils/scrollContext";
+import { NavItem, ScrollInfo } from "../utils/types";
 
 const navItems: NavItem[] = [
   { label: "Home", position: "landingPosition", focused: "isLandingFocused" },
