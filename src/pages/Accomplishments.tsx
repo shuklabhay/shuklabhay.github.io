@@ -34,7 +34,7 @@ export default function Accomplishments() {
           </Text>
         </div>
 
-        <Stack gap={12}>
+        <Stack gap={12} px={5}>
           <Text fz={{ base: 14, sm: 20 }} lh={0.5} pt={5}>
             Projects:
           </Text>
