@@ -21,13 +21,13 @@ async function graphqlQuery(query) {
       { query },
       {
         headers: { Authorization: `Bearer ${apiKey}` },
-      }
+      },
     );
 
     return response.data.data;
   } catch (error) {
     console.error(
-      `Request failed with status code ${error.response ? error.response.status : "unknown"}`
+      `Request failed with status code ${error.response ? error.response.status : "unknown"}`,
     );
     throw error;
   }
@@ -59,13 +59,24 @@ async function getContributionYears() {
 }
 
 async function getYearlyContributions(year) {
+  const query = `
+    query {
+      viewer {
+        contributionsCollection {
+          contributionCalendar {
+            totalContributions
+          }
+        }
+      }
+    }
+  `;
+
   const rawData = await graphqlQuery(query);
   console.log(rawData);
-  const { totalContributions } =
-    rawData.viewer.contributionsCollection.contributionCalendar
-      .totalContributions;
 
-  return totalContributions;
+  const { contributionCalendar } = rawData.viewer.contributionsCollection;
+
+  return contributionCalendar;
 }
 
 // async function getUserInfo() {
