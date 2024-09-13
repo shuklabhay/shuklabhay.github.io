@@ -6,7 +6,7 @@ import {
   SkillsData,
 } from "./types";
 
-export default async function loadSiteData() {
+export default async function useSiteData() {
   const awards = await getAwardData();
   const ghData = await getGHData();
   const positions = await getPositionsData();

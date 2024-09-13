@@ -78,7 +78,7 @@ export default function ProjectCard({
           }}
           mb={20}
         >
-          <Text fz={{ base: 12, sm: 16 }}>Project description:</Text>
+          <Text fz={{ base: 12, sm: 16 }}>Significant project details:</Text>
           <List mr={15} withPadding>
             {description.map(({ point }) => (
               <List.Item key={point}>

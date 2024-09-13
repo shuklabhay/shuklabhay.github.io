@@ -2,15 +2,15 @@ import { Grid, Stack, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import GHCard from "../components/InfoCards/GHCard";
 import SkillCard from "../components/InfoCards/SkillCard";
-import loadSiteData from "../utils/data";
 import { SiteData } from "../utils/types";
+import useSiteData from "../utils/useData";
 
 export default function Skills() {
   const [siteData, setSiteData] = useState<SiteData>();
 
   useEffect(() => {
     async function fetchData() {
-      const newSiteData = await loadSiteData();
+      const newSiteData = await useSiteData();
       setSiteData(newSiteData);
     }
     fetchData();
