@@ -7,6 +7,7 @@ import { config } from "dotenv";
 config();
 const apiKey = process.env.GH_API_ACCESS_TOKEN;
 
+// Query wrappers
 async function graphqlQuery(query, variables = {}) {
   const response = await fetch("https://api.github.com/graphql", {
     method: "POST",
@@ -32,17 +33,18 @@ export default async function compileAndWriteGHData() {
   console.log("total", totalContributions);
 }
 
+// Fetch total contribution count
 async function computeTotalContributions() {
   const contributions = await fetchAllContributions();
-  const issues = await fetchAllIssues();
-  const prs = await fetchAllPullRequests();
-  const reviews = await fetchAllReviews();
+  // const issues = await fetchAllIssues();
+  // const prs = await fetchAllPullRequests();
+  // const reviews = await fetchAllReviews();
+
+  console.log(contributions);
 
   const extraContributions = 2; //Account creation, orgs joined
 
-  return (
-    contributions + len(issues) + len(prs) + len(reviews) + extraContributions
-  );
+  return contributions;
 }
 
 async function fetchAllContributions() {
@@ -60,15 +62,16 @@ async function fetchAllContributions() {
   return total;
 }
 
-// Fetch yearly contribtuions
 async function getYearlyContributions(year) {
   const commitsQuery = `
     query($from: DateTime!, $to: DateTime!) {
       viewer {
         contributionsCollection(from: $from, to: $to) {
-          contributionCalendar {
-            totalContributions
-          }
+          totalCommitContributions
+          totalIssueContributions
+          totalPullRequestContributions
+          totalPullRequestReviewContributions
+          totalRepositoryContributions
         }
       }
     }
@@ -83,48 +86,67 @@ async function getYearlyContributions(year) {
       to: toDate,
     });
 
-    const totalCommits =
-      rawCommits.data.viewer.contributionsCollection.contributionCalendar
-        .totalContributions;
+    const contributionsCollection =
+      rawCommits.data.viewer.contributionsCollection;
 
-    return totalCommits;
+    const totalContributions =
+      contributionsCollection.totalCommitContributions +
+      contributionsCollection.totalIssueContributions +
+      contributionsCollection.totalPullRequestContributions +
+      contributionsCollection.totalPullRequestReviewContributions +
+      contributionsCollection.totalRepositoryContributions;
+
+    return totalContributions;
   } catch (error) {
     console.error("Error fetching data:", error);
     return 0;
   }
 }
 
-// Fetch paginated information
 async function fetchAllIssues() {
   const issuesQuery = `
-  query($afterCursor: String) {
-  viewer {
-    issues(first: 100, after: $afterCursor, orderBy: { field: CREATED_AT, direction: DESC }) {
-      edges {
-        node {
-          createdAt
-          title
-          body
+    query($afterCursor: String) {
+      viewer {
+        issues(first: 100, after: $afterCursor, orderBy: { field: CREATED_AT, direction: DESC }) {
+          edges {
+            node {
+              createdAt
+              title
+              body
+            }
+          }
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
         }
       }
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
     }
-  }
-  }
-`;
+  `;
 
   let issues = [];
   let hasNextPage = true;
   let endCursor = null;
 
   while (hasNextPage) {
-    const result = await graphqlQuery(issuesQuery, { afterCursor: endCursor });
-    issues = issues.concat(result.viewer.issues.edges.map((edge) => edge.node));
-    hasNextPage = result.viewer.issues.pageInfo.hasNextPage;
-    endCursor = result.viewer.issues.pageInfo.endCursor;
+    try {
+      const result = await graphqlQuery(issuesQuery, {
+        afterCursor: endCursor,
+      });
+
+      if (!result.data || !result.data.viewer || !result.data.viewer.issues) {
+        throw new Error("Unexpected response structure");
+      }
+
+      issues = issues.concat(
+        result.data.viewer.issues.edges.map((edge) => edge.node)
+      );
+      hasNextPage = result.data.viewer.issues.pageInfo.hasNextPage;
+      endCursor = result.data.viewer.issues.pageInfo.endCursor;
+    } catch (error) {
+      console.error("Error fetching issues:", error);
+      break;
+    }
   }
 
   return issues;
@@ -132,23 +154,23 @@ async function fetchAllIssues() {
 
 async function fetchAllPullRequests() {
   const prsQuery = `
-  query($afterCursor: String) {
-  viewer {
-    pullRequests(first: 100, after: $afterCursor, orderBy: { field: CREATED_AT, direction: DESC }) {
-      edges {
-        node {
-          createdAt
-          title
-          body
+    query($afterCursor: String) {
+      viewer {
+        pullRequests(first: 100, after: $afterCursor, orderBy: { field: CREATED_AT, direction: DESC }) {
+          edges {
+            node {
+              createdAt
+              title
+              body
+            }
+          }
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
         }
       }
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
     }
-  }
-  }
   `;
 
   let prs = [];
@@ -156,10 +178,26 @@ async function fetchAllPullRequests() {
   let endCursor = null;
 
   while (hasNextPage) {
-    const result = await graphqlQuery(prsQuery, { afterCursor: endCursor });
-    prs = prs.concat(result.viewer.pullRequests.edges.map((edge) => edge.node));
-    hasNextPage = result.viewer.pullRequests.pageInfo.hasNextPage;
-    endCursor = result.viewer.pullRequests.pageInfo.endCursor;
+    try {
+      const result = await graphqlQuery(prsQuery, { afterCursor: endCursor });
+
+      if (
+        !result.data ||
+        !result.data.viewer ||
+        !result.data.viewer.pullRequests
+      ) {
+        throw new Error("Unexpected response structure");
+      }
+
+      prs = prs.concat(
+        result.data.viewer.pullRequests.edges.map((edge) => edge.node)
+      );
+      hasNextPage = result.data.viewer.pullRequests.pageInfo.hasNextPage;
+      endCursor = result.data.viewer.pullRequests.pageInfo.endCursor;
+    } catch (error) {
+      console.error("Error fetching pull requests:", error);
+      break;
+    }
   }
 
   return prs;
@@ -167,31 +205,31 @@ async function fetchAllPullRequests() {
 
 async function fetchAllReviews() {
   const reviewsQuery = `
-  query($afterCursor: String) {
-  viewer {
-    pullRequests(first: 100, after: $afterCursor, orderBy: { field: CREATED_AT, direction: DESC }) {
-      edges {
-        node {
-          reviews(first: 100) {
-            edges {
-              node {
-                createdAt
-                body
-                author {
-                  login
+    query($afterCursor: String) {
+      viewer {
+        pullRequests(first: 100, after: $afterCursor, orderBy: { field: CREATED_AT, direction: DESC }) {
+          edges {
+            node {
+              reviews(first: 100) {
+                edges {
+                  node {
+                    createdAt
+                    body
+                    author {
+                      login
+                    }
+                  }
                 }
               }
             }
           }
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
         }
       }
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
     }
-  }
-  }
   `;
 
   let reviews = [];
@@ -199,15 +237,33 @@ async function fetchAllReviews() {
   let endCursor = null;
 
   while (hasNextPage) {
-    const result = await graphqlQuery(reviewsQuery, { afterCursor: endCursor });
-    const prs = result.viewer.pullRequests.edges;
+    try {
+      const result = await graphqlQuery(reviewsQuery, {
+        afterCursor: endCursor,
+      });
 
-    for (const pr of prs) {
-      reviews = reviews.concat(pr.node.reviews.edges.map((edge) => edge.node));
+      if (
+        !result.data ||
+        !result.data.viewer ||
+        !result.data.viewer.pullRequests
+      ) {
+        throw new Error("Unexpected response structure");
+      }
+
+      const prs = result.data.viewer.pullRequests.edges;
+
+      for (const pr of prs) {
+        reviews = reviews.concat(
+          pr.node.reviews.edges.map((edge) => edge.node)
+        );
+      }
+
+      hasNextPage = result.data.viewer.pullRequests.pageInfo.hasNextPage;
+      endCursor = result.data.viewer.pullRequests.pageInfo.endCursor;
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+      break;
     }
-
-    hasNextPage = result.viewer.pullRequests.pageInfo.hasNextPage;
-    endCursor = result.viewer.pullRequests.pageInfo.endCursor;
   }
 
   return reviews;
