@@ -43,7 +43,7 @@ const startX = isSmallScreen
     })();
 
 const startY = isSmallScreen
-  ? Math.random() * (window.innerHeight / 4)
+  ? Math.random() * (window.innerHeight / 3) + window.innerHeight / 8
   : (() => {
       let y = Math.random() * window.innerHeight;
       if (y >= window.innerHeight / 3 && y <= window.innerHeight * (2 / 3)) {

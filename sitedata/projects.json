@@ -4,7 +4,11 @@
     "startMonth": "March 2024",
     "endMonth": "August 2024",
     "ongoing": true,
-    "description": "description of a project i worked on, what's technically cool/novel/unique",
+    "description": [
+      { "point": "bullet1" },
+      { "point": "bullet2" },
+      { "point": "bullet3" }
+    ],
     "contribution": "what i learned, important notes about MY development from this",
     "images": [
       { "src": "src/static/home_page.png", "alt": "home" },

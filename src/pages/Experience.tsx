@@ -3,15 +3,15 @@ import { useEffect, useState } from "react";
 import AwardCard from "../components/InfoCards/AwardCard";
 import PositionCard from "../components/InfoCards/PositionCard";
 import ProjectCard from "../components/InfoCards/ProjectCard";
-import loadSiteData from "../utils/data";
 import { SiteData } from "../utils/types";
+import useSiteData from "../utils/useData";
 
-export default function Accomplishments() {
+export default function Experience() {
   const [siteData, setSiteData] = useState<SiteData>();
 
   useEffect(() => {
     async function fetchData() {
-      const newSiteData = await loadSiteData();
+      const newSiteData = await useSiteData();
       setSiteData(newSiteData);
     }
     fetchData();
@@ -26,15 +26,15 @@ export default function Accomplishments() {
       <>
         <div style={{ paddingBlock: 10, marginTop: -10 }}>
           <Text fz={{ base: 18, sm: 24 }} lh={1.5}>
-            These are some of the{" "}
+            Here is some of{" "}
             <Text span c="main" fw={700} inherit>
-              acomplishments
+              my work
             </Text>{" "}
             I'm proudest of:
           </Text>
         </div>
 
-        <Stack gap={12}>
+        <Stack gap={12} px={5}>
           <Text fz={{ base: 14, sm: 20 }} lh={0.5} pt={5}>
             Projects:
           </Text>

@@ -1,0 +1,29 @@
+name: Update GH Data
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # Run at 00:00 (midnight) every day
+
+jobs:
+  update-gh-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run updateghdata.js
+        run: node updateghdata.js
+
+      - name: Run Formatting
+        run: npm run lint
+
+      - name: Commit to the repo
+        run: |
+          git config --global user.name "shuklabhay/portfolio"
+          git config --global user.email "portfolio[bot]@shuklabhay.github.io"
+          git add .
+          git commit -m 'Update generated files' || true
+          git push

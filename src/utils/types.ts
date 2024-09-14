@@ -4,11 +4,13 @@ import { RefObject } from "react";
 export type RichImage = { src: string; alt: string };
 export type RichIcon = { src: string; link: string };
 export type RichLink = { url: string; displayText: string };
-export type significantRepoInfo = {
+
+export interface SignificantRepoInfo {
   repo: string;
   description: string;
   link: string;
-};
+}
+export type BulletPoint = { point: string };
 
 export interface SiteData {
   awards: AwardData[];
@@ -28,7 +30,7 @@ export interface GHData {
   lastUpdated: string;
   contributions: number;
   linesModified: number;
-  significantRepos: significantRepoInfo[];
+  significantRepos: SignificantRepoInfo[];
 }
 
 export interface PositionsData {
@@ -45,9 +47,9 @@ export interface ProjectData {
   startMonth: string;
   endMonth: string;
   ongoing: boolean;
-  description: string;
+  description: BulletPoint[];
   contribution: string;
-  accomplishments: string;
+  experience: string;
   images: RichImage[];
   links: RichLink[];
 }
@@ -69,11 +71,11 @@ export interface CountingAnimationLabelProps {
 // Scrolling and Navigation
 export type ScrollInfo = {
   landingPosition: number;
-  accomplishmentsPosition: number;
+  experiencePosition: number;
   skillsPosition: number;
   contactPosition: number;
   isLandingFocused: boolean;
-  isAccomplishmentsFocused: boolean;
+  isExperienceFocused: boolean;
   isSkillsFocused: boolean;
   isContactFocused: boolean;
 };
