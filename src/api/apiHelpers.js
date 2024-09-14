@@ -1,7 +1,7 @@
+import axios from "axios";
 import { config } from "dotenv";
 
-//TODO: make api find out how many org im in and account for that
-//TODO: get profile image from git, set that as main image
+//TODO: get profile image from git, set that as main image file
 
 // Load API key
 config();
@@ -24,42 +24,42 @@ async function graphqlQuery(query, variables = {}) {
   return data;
 }
 
+async function restQuery(extensionPath, returnCallback) {
+  return axios
+    .get(`https://api.github.com/${extensionPath}`, {
+      headers: { Authorization: `token ${apiKey}` },
+    })
+    .then(returnCallback)
+    .catch((error) => {
+      console.error(
+        `Request failed with status code ${error.response ? error.response.status : "unknown"}`
+      );
+    });
+}
+
 // Read Github data & write to JSON
 export default async function compileAndWriteGHData() {
-  // const { followers, diskUsage } = await getUserInfo();
-  // const diskUsageMB = (diskUsage / 1000).toFixed(2);
+  const { diskUsage } = await getUserInfo();
+  const diskUsageMB = (diskUsage / 1000).toFixed(2);
 
   const totalContributions = await computeTotalContributions();
-  console.log("total", totalContributions);
+  const fetchAllLinesModified = await computeTotalLinesModified();
+  console.log(totalContributions, diskUsageMB, fetchAllLinesModified);
 }
 
-// Fetch total contribution count
 async function computeTotalContributions() {
-  const contributions = await fetchAllContributions();
-  // const issues = await fetchAllIssues();
-  // const prs = await fetchAllPullRequests();
-  // const reviews = await fetchAllReviews();
-
-  console.log(contributions);
-
-  const extraContributions = 2; //Account creation, orgs joined
-
-  return contributions;
-}
-
-async function fetchAllContributions() {
-  let total = 0;
   const startYear = 2022;
   const currentYear = new Date().getFullYear();
 
+  let total = 0;
   for (let year = startYear; year <= currentYear; year++) {
-    console.log(year, await getYearlyContributions(year));
-    total += await getYearlyContributions(year);
+    const yearlyContributions = await getYearlyContributions(year);
+
+    total += yearlyContributions;
   }
 
-  // total += 2; //Account creation, organizations joined
-
-  return total;
+  const missingCommits = 20; // api is missing some amount of contributions
+  return total + missingCommits;
 }
 
 async function getYearlyContributions(year) {
@@ -67,11 +67,9 @@ async function getYearlyContributions(year) {
     query($from: DateTime!, $to: DateTime!) {
       viewer {
         contributionsCollection(from: $from, to: $to) {
-          totalCommitContributions
-          totalIssueContributions
-          totalPullRequestContributions
-          totalPullRequestReviewContributions
-          totalRepositoryContributions
+          contributionCalendar {
+            totalContributions
+          }
         }
       }
     }
@@ -86,15 +84,9 @@ async function getYearlyContributions(year) {
       to: toDate,
     });
 
-    const contributionsCollection =
-      rawCommits.data.viewer.contributionsCollection;
-
     const totalContributions =
-      contributionsCollection.totalCommitContributions +
-      contributionsCollection.totalIssueContributions +
-      contributionsCollection.totalPullRequestContributions +
-      contributionsCollection.totalPullRequestReviewContributions +
-      contributionsCollection.totalRepositoryContributions;
+      rawCommits.data.viewer.contributionsCollection.contributionCalendar
+        .totalContributions;
 
     return totalContributions;
   } catch (error) {
@@ -103,20 +95,52 @@ async function getYearlyContributions(year) {
   }
 }
 
-// async function getUserInfo() {
-//   return axios
-//     .get("https://api.github.com/user", {
-//       headers: { Authorization: `token ${apiKey}` },
-//     })
-//     .then((response) => {
-//       return {
-//         followers: response.data.followers,
-//         diskUsage: response.data.disk_usage,
-//       };
-//     })
-//     .catch((error) => {
-//       console.error(
-//         `Request failed with status code ${error.response ? error.response.status : "unknown"}`
-//       );
-//     });
-// }
+async function computeTotalLinesModified() {
+  let totalLinesModified = 0;
+  let page = 1;
+  const perPage = 100;
+
+  while (true) {
+    const repos = await restQuery(
+      `user/repos?page=${page}&per_page=${perPage}`,
+      (response) => response.data
+    );
+
+    if (repos.length === 0) {
+      break;
+    }
+
+    for (const repo of repos) {
+      const stats = await restQuery(
+        `repos/${repo.full_name}/stats/contributors`,
+        (response) => response.data
+      );
+
+      if (Array.isArray(stats)) {
+        for (const contributor of stats) {
+          if (contributor.author.login === repo.owner.login) {
+            for (const week of contributor.weeks) {
+              totalLinesModified += week.a + week.d;
+            }
+          }
+        }
+      }
+    }
+
+    page++;
+  }
+
+  return totalLinesModified;
+}
+
+async function getUserInfo() {
+  const returnCallback = (response) => {
+    return {
+      diskUsage: response.data.disk_usage,
+    };
+  };
+
+  const { diskUsage } = await restQuery("user", returnCallback);
+
+  return { diskUsage };
+}
