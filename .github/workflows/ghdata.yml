@@ -1,8 +1,6 @@
 name: Update GitHub Data
 
 on:
-  push:
-    branches: [main]
   schedule:
     - cron: "5 0 * * *"
   workflow_dispatch:
@@ -37,4 +35,4 @@ jobs:
           git config --global user.email "portfolio[bot]@shuklabhay.github.io"
           git add sitedata/ghdata.json
           git commit -m 'Update github data' || true
-          git push --force origin main
+          git push
