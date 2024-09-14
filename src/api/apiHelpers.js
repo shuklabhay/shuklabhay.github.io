@@ -33,7 +33,7 @@ async function restQuery(extensionPath, returnCallback) {
     .then(returnCallback)
     .catch((error) => {
       console.error(
-        `Request failed with status code ${error.response ? error.response.status : "unknown"}`
+        `Request failed with status code ${error.response ? error.response.status : "unknown"}`,
       );
     });
 }
@@ -59,7 +59,7 @@ export default async function compileAndWriteGHData() {
     "Total Contributions",
     totalContributions,
     "Total Modifications",
-    totalLinesModified
+    totalLinesModified,
   );
 
   if (dateString && totalContributions && totalLinesModified) {
@@ -132,7 +132,7 @@ async function computeTotalLinesModified(username) {
 async function getLinesModifiedInRepo(repo, username) {
   const stats = await restQuery(
     `repos/${repo.full_name}/stats/contributors`,
-    (response) => response.data
+    (response) => response.data,
   );
   let repoLinesModified = 0;
   if (Array.isArray(stats)) {
@@ -156,7 +156,7 @@ async function getAllRepos() {
   while (true) {
     const repos = await restQuery(
       `user/repos?page=${page}&per_page=${perPage}`,
-      (response) => response.data
+      (response) => response.data,
     );
 
     if (repos.length === 0) {

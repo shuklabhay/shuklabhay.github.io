@@ -17,6 +17,9 @@ jobs:
       - name: Run updateghdata.js
         run: node updateghdata.js
 
+      - name: Run Formatting
+        run: npm run lint
+
       - name: Commit to the repo
         run: |
           git config --global user.name "shuklabhay/portfolio"
