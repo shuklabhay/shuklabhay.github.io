@@ -1,5 +1,6 @@
 import axios from "axios";
 import { config } from "dotenv";
+import fs from "fs";
 
 //TODO: get profile image from git, set that as main image file
 
@@ -32,19 +33,45 @@ async function restQuery(extensionPath, returnCallback) {
     .then(returnCallback)
     .catch((error) => {
       console.error(
-        `Request failed with status code ${error.response ? error.response.status : "unknown"}`
+        `Request failed with status code ${error.response ? error.response.status : "unknown"}`,
       );
     });
 }
 
 // Read Github data & write to JSON
 export default async function compileAndWriteGHData() {
-  const { diskUsage } = await getUserInfo();
-  const diskUsageMB = (diskUsage / 1000).toFixed(2);
+  const outputPath = "sitedata/ghdata.json";
+  const jsonData = JSON.parse(fs.readFileSync(outputPath, "utf8"));
 
+  const { username } = await getUserInfo();
+  const today = new Date();
+
+  const dateString = `${(today.getMonth() + 1).toString().padStart(2, "0")}-${today.getDate()}-${today.getFullYear()}`;
   const totalContributions = await computeTotalContributions();
-  const fetchAllLinesModified = await computeTotalLinesModified();
-  console.log(totalContributions, diskUsageMB, fetchAllLinesModified);
+  let totalLinesModified = 0;
+  while (totalLinesModified < jsonData.linesModified) {
+    totalLinesModified = await computeTotalLinesModified(username);
+  }
+
+  console.log(
+    "Date string",
+    dateString,
+    "Total Contributions",
+    totalContributions,
+    "Total Modifications",
+    totalLinesModified,
+  );
+
+  if (dateString && totalContributions && totalLinesModified) {
+    jsonData.lastUpdated = dateString;
+    jsonData.contributions = totalContributions;
+    jsonData.linesModified = totalLinesModified;
+
+    fs.writeFileSync(outputPath, JSON.stringify(jsonData, null, 2));
+    console.log(`json data updated at ${outputPath}`);
+  } else {
+    console.log("something is wrong with data");
+  }
 }
 
 async function computeTotalContributions() {
@@ -58,7 +85,7 @@ async function computeTotalContributions() {
     total += yearlyContributions;
   }
 
-  const missingCommits = 20; // api is missing some amount of contributions
+  const missingCommits = 20; // api missing a constant amount of contributions
   return total + missingCommits;
 }
 
@@ -78,69 +105,80 @@ async function getYearlyContributions(year) {
   const fromDate = `${year}-01-01T00:00:00Z`;
   const toDate = `${year + 1}-01-01T00:00:00Z`;
 
-  try {
-    const rawCommits = await graphqlQuery(commitsQuery, {
-      from: fromDate,
-      to: toDate,
-    });
+  const rawCommits = await graphqlQuery(commitsQuery, {
+    from: fromDate,
+    to: toDate,
+  });
 
-    const totalContributions =
-      rawCommits.data.viewer.contributionsCollection.contributionCalendar
-        .totalContributions;
+  const totalContributions =
+    rawCommits.data.viewer.contributionsCollection.contributionCalendar
+      .totalContributions;
 
-    return totalContributions;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    return 0;
-  }
+  return totalContributions;
 }
 
-async function computeTotalLinesModified() {
+async function computeTotalLinesModified(username) {
+  const allRepos = await getAllRepos(username);
   let totalLinesModified = 0;
+
+  for (const repo of allRepos) {
+    const repoLinesModified = await getLinesModifiedInRepo(repo, username);
+    totalLinesModified += repoLinesModified;
+  }
+
+  console.log(`Total lines modified: ${totalLinesModified}`);
+  return totalLinesModified;
+}
+
+async function getLinesModifiedInRepo(repo, username) {
+  const stats = await restQuery(
+    `repos/${repo.full_name}/stats/contributors`,
+    (response) => response.data,
+  );
+  let repoLinesModified = 0;
+  if (Array.isArray(stats)) {
+    for (const contributor of stats) {
+      if (contributor.author && contributor.author.login === username) {
+        for (const week of contributor.weeks) {
+          repoLinesModified += week.a + week.d;
+        }
+        break;
+      }
+    }
+  }
+  return repoLinesModified;
+}
+
+async function getAllRepos() {
+  let allRepos = [];
   let page = 1;
   const perPage = 100;
 
   while (true) {
     const repos = await restQuery(
       `user/repos?page=${page}&per_page=${perPage}`,
-      (response) => response.data
+      (response) => response.data,
     );
 
     if (repos.length === 0) {
       break;
     }
 
-    for (const repo of repos) {
-      const stats = await restQuery(
-        `repos/${repo.full_name}/stats/contributors`,
-        (response) => response.data
-      );
-
-      if (Array.isArray(stats)) {
-        for (const contributor of stats) {
-          if (contributor.author.login === repo.owner.login) {
-            for (const week of contributor.weeks) {
-              totalLinesModified += week.a + week.d;
-            }
-          }
-        }
-      }
-    }
-
+    allRepos = allRepos.concat(repos);
     page++;
   }
 
-  return totalLinesModified;
+  return allRepos;
 }
 
 async function getUserInfo() {
   const returnCallback = (response) => {
     return {
-      diskUsage: response.data.disk_usage,
+      username: response.data.login,
     };
   };
 
-  const { diskUsage } = await restQuery("user", returnCallback);
+  const { username } = await restQuery("user", returnCallback);
 
-  return { diskUsage };
+  return { username };
 }
