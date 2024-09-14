@@ -14,7 +14,7 @@ function CountHook({ finalValue }: { finalValue: number }): CountHookResult {
 
   const countUp = useCountUp({
     ref: countUpRef,
-    start: Math.floor(finalValue - finalValue / 5),
+    start: finalValue - 25,
     end: finalValue,
     duration: 2,
     startOnMount: false,
