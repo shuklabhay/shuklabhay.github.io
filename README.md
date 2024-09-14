@@ -21,6 +21,7 @@ Personal portfolio.
 - Install [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) and [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) extensions
 - In VSCode settings enable formatOnSave
 - In VSCode settings select "Prettier - Code formatter" for the Default Formatter
+- Setup a `.env` file with a variable `ACCESS_TOKEN=your_github_access_token`
 
 ## Development
 

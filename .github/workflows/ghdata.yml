@@ -1,8 +1,14 @@
-name: Update GH Data
+name: Update GitHub Data
 
 on:
+  push:
+    branches: [main]
   schedule:
-    - cron: "0 0 * * *" # Run at 00:00 (midnight) every day
+    - cron: "5 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   update-gh-data:
@@ -14,16 +20,21 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run updateghdata.js
-        run: node updateghdata.js
+      - name: Check formatting
+        run: npm run format-check
 
-      - name: Run Formatting
+      - name: Update GitHub data
+        env:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        run: node src/api/updateGHData.js
+
+      - name: Update formatting
         run: npm run lint
 
-      - name: Commit to the repo
+      - name: Commit changes to ghdata.json
         run: |
           git config --global user.name "shuklabhay/portfolio"
           git config --global user.email "portfolio[bot]@shuklabhay.github.io"
-          git add .
-          git commit -m 'Update generated files' || true
-          git push
+          git add sitedata/ghdata.json
+          git commit -m 'Update github data' || true
+          git push --force origin main

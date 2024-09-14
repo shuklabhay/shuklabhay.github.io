@@ -6,7 +6,7 @@ import fs from "fs";
 
 // Load API key
 config();
-const apiKey = process.env.GH_API_ACCESS_TOKEN;
+const apiKey = process.env.ACCESS_TOKEN;
 
 // Query wrappers
 async function graphqlQuery(query, variables = {}) {
