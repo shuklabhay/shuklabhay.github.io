@@ -28,7 +28,7 @@ export default function Experience() {
           <Text fz={{ base: 18, sm: 24 }} lh={1.5} mb={-5}>
             Some of my{" "}
             <Text span c="main" fw={700} inherit>
-              impressive contributions:
+              significant contributions:
             </Text>{" "}
           </Text>
         </div>

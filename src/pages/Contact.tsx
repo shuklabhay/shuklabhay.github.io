@@ -20,12 +20,12 @@ export default function Contact() {
 
     return (
       <div style={{ paddingBlock: 10 }}>
-        <div style={{ paddingBlock: 10 }}>
+        <div style={{ paddingBlock: 10, marginBottom: -10 }}>
           <Text fz={{ base: 18, sm: 24 }} lh={1.5} mt={-10}>
             <Text span c="main" fw={700} inherit>
               Reach out
             </Text>{" "}
-            to me:
+            anywhere here:
           </Text>
         </div>
 
