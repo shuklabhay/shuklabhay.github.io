@@ -2,14 +2,14 @@ import { Carousel } from "@mantine/carousel";
 import { Button, Card, Grid, Group, Image, List, Text } from "@mantine/core";
 import { useState } from "react";
 import { getTimeframeLabel } from "../../utils/dates";
-import { ProjectData, RichLink } from "../../utils/types";
+import { ProjectItem, RichLink } from "../../utils/types";
 import CardTitle from "./CardTitle";
 import ImageCarouselModal from "./ImageCarouselModal";
 
 export default function ProjectCard({
   projectInfo,
 }: {
-  projectInfo: ProjectData;
+  projectInfo: ProjectItem;
 }) {
   const {
     title,

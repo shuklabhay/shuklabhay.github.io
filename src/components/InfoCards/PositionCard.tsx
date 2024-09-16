@@ -1,12 +1,12 @@
 import { Card, Grid, Image, Text } from "@mantine/core";
 import { getTimeframeLabel } from "../../utils/dates";
-import { PositionsData } from "../../utils/types";
+import { PositionItem } from "../../utils/types";
 import CardTitle from "./CardTitle";
 
 export default function PositionCard({
   positionInfo,
 }: {
-  positionInfo: PositionsData;
+  positionInfo: PositionItem;
 }) {
   const { title, startMonth, endMonth, ongoing, description, icon } =
     positionInfo;

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import GHCard from "../components/InfoCards/GHCard";
 import SkillCard from "../components/InfoCards/SkillCard";
 import { SiteData } from "../utils/types";
-import useSiteData from "../utils/useData";
+import useSiteData from "../utils/useSiteData";
 
 export default function Skills() {
   const [siteData, setSiteData] = useState<SiteData>();

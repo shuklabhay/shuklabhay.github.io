@@ -13,17 +13,19 @@ export interface SignificantRepoInfo {
 export type BulletPoint = { point: string };
 
 export interface SiteData {
-  awards: AwardData[];
+  awards: AwardItem[];
   ghData: GHData;
-  projects: ProjectData[];
-  positions: PositionsData[];
-  skills: SkillsData[];
+  projects: ProjectItem[];
+  positions: PositionItem[];
+  skills: SkillItem[];
+  contact: ContactItem[];
 }
 
-export interface AwardData {
+export interface AwardItem {
   title: string;
   recievedMonth: string;
   description: string;
+  hide: boolean;
 }
 
 export interface GHData {
@@ -33,7 +35,7 @@ export interface GHData {
   significantRepos: SignificantRepoInfo[];
 }
 
-export interface PositionsData {
+export interface PositionItem {
   title: string;
   startMonth: string;
   endMonth: string;
@@ -42,7 +44,7 @@ export interface PositionsData {
   icon: RichIcon;
 }
 
-export interface ProjectData {
+export interface ProjectItem {
   title: string;
   startMonth: string;
   endMonth: string;
@@ -54,8 +56,13 @@ export interface ProjectData {
   links: RichLink[];
 }
 
-export interface SkillsData {
+export interface SkillItem {
   skill: string;
+}
+
+export interface ContactItem {
+  title: string;
+  link: string;
 }
 
 // Counting Label Animation

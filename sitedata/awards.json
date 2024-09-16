@@ -2,6 +2,7 @@
   {
     "title": "award title",
     "recievedMonth": "March 2024",
-    "description": "some info about the award, what i did to get it"
+    "description": "some info about the award, what i did to get it",
+    "hide": false
   }
 ]
