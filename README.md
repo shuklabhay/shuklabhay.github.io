@@ -1,6 +1,7 @@
 # portfolio
 
 [![On Push](https://github.com/shuklabhay/portfolio/actions/workflows/push.yml/badge.svg)](https://github.com/shuklabhay/portfolio/actions/workflows/push.yml/badge.svg)
+[![Update GitHub Data](https://github.com/shuklabhay/portfolio/actions/workflows/ghdata.yml/badge.svg)](https://github.com/shuklabhay/portfolio/actions/workflows/ghdata.yml/badge.svg)
 
 ## App Info
 
