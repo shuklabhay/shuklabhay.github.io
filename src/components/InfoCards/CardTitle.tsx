@@ -20,7 +20,7 @@ export default function CardTitle({
         flexDirection: flexDirection,
       }}
     >
-      <Text fz={{ base: 18, sm: 22 }} fw={700}>
+      <Text fz={{ base: 16, sm: 20 }} fw={700}>
         {title}
       </Text>
 
