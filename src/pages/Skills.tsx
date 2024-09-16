@@ -24,11 +24,10 @@ export default function Skills() {
       <>
         <div style={{ paddingBlock: 10 }}>
           <Text fz={{ base: 18, sm: 24 }} lh={1.5}>
-            I've worked in a{" "}
+            I've worked in{" "}
             <Text span c="main" fw={700} inherit>
-              variety
+              various technical fields:
             </Text>{" "}
-            of technical fields:
           </Text>
         </div>
 

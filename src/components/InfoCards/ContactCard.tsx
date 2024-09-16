@@ -11,7 +11,18 @@ export default function ContactCard({
   return (
     <Card padding="15" radius="md" c="white" mb={15}>
       <Text fz={{ base: 12, sm: 16 }} mb={-2}>
-        Significant contributions:
+        {title}:{" "}
+        <a
+          href={link}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            color: "#8a8ae6",
+            textDecoration: "underline",
+          }}
+        >
+          {link}
+        </a>
       </Text>
     </Card>
   );

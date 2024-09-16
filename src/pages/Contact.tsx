@@ -1,4 +1,4 @@
-import { Text } from "@mantine/core";
+import { Grid, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import ContactCard from "../components/InfoCards/ContactCard";
 import { SiteData } from "../utils/types";
@@ -21,18 +21,27 @@ export default function Contact() {
     return (
       <div style={{ paddingBlock: 10 }}>
         <div style={{ paddingBlock: 10 }}>
-          <Text fz={{ base: 18, sm: 24 }} lh={1.5}>
-            You can{" "}
+          <Text fz={{ base: 18, sm: 24 }} lh={1.5} mt={-10}>
             <Text span c="main" fw={700} inherit>
-              contact me
+              Reach out
             </Text>{" "}
-            anywhere here:
+            to me:
           </Text>
         </div>
 
-        {contact.map((contactItem) => {
-          return <ContactCard contactItem={contactItem} />;
-        })}
+        <Grid gutter="sm">
+          {contact.map((contactItem) => {
+            return (
+              <Grid.Col
+                span={{ base: 12, sm: 6 }}
+                mb={-15}
+                key={contactItem.title}
+              >
+                <ContactCard contactItem={contactItem} />
+              </Grid.Col>
+            );
+          })}
+        </Grid>
       </div>
     );
   }

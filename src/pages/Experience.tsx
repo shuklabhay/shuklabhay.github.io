@@ -24,11 +24,11 @@ export default function Experience() {
 
     return (
       <>
-        <div style={{ paddingBlock: 10, marginTop: -10 }}>
-          <Text fz={{ base: 18, sm: 24 }} lh={1.5}>
-            Here is some of my{" "}
+        <div style={{ paddingBlock: 10 }}>
+          <Text fz={{ base: 18, sm: 24 }} lh={1.5} mb={-5}>
+            Some of my{" "}
             <Text span c="main" fw={700} inherit>
-              favorite work:
+              impressive contributions:
             </Text>{" "}
           </Text>
         </div>
