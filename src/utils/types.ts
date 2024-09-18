@@ -46,11 +46,7 @@ export interface PositionItem {
 
 export interface ProjectItem {
   title: string;
-  startMonth: string;
-  endMonth: string;
-  ongoing: boolean;
   description: BulletPoint[];
-  contribution: string;
   experience: string;
   images: RichImage[];
   links: RichLink[];

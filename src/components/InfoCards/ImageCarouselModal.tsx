@@ -1,6 +1,6 @@
 import { Carousel } from "@mantine/carousel";
 import { Image, Modal } from "@mantine/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RichImage } from "../../utils/types";
 
 export default function ImageCarouselModal({
@@ -23,6 +23,12 @@ export default function ImageCarouselModal({
     setSlideIndex(currentSlide);
   };
 
+  useEffect(() => {
+    if (!opened) {
+      setCurrentSlide(initialSlideIndex);
+    }
+  }, [initialSlideIndex]);
+
   return (
     <Modal opened={opened} onClose={() => handleClose()} size={"xl"} centered>
       <Carousel
@@ -31,6 +37,7 @@ export default function ImageCarouselModal({
         height="60vh"
         slideSize="100%"
         slideGap="15"
+        controlSize={25}
         initialSlide={currentSlide}
         onSlideChange={setCurrentSlide}
         styles={{

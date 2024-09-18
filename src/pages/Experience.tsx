@@ -28,18 +28,12 @@ export default function Experience() {
           <Text fz={{ base: 18, sm: 24 }} lh={1.5} mb={-5}>
             Some of my{" "}
             <Text span c="main" fw={700} inherit>
-              significant contributions:
+              significant experience:
             </Text>{" "}
           </Text>
         </div>
 
         <Stack gap={12} px={5}>
-          <Text fz={{ base: 14, sm: 20 }} lh={0.5} pt={5}>
-            Projects:
-          </Text>
-          {projects.map((project) => {
-            return <ProjectCard projectInfo={project} key={project.title} />;
-          })}
           <Text fz={{ base: 14, sm: 20 }} lh={0.5} pt={5}>
             Positions and Programs:
           </Text>
@@ -47,6 +41,13 @@ export default function Experience() {
             return (
               <PositionCard positionInfo={position} key={position.title} />
             );
+          })}
+
+          <Text fz={{ base: 14, sm: 20 }} lh={0.5} pt={5}>
+            Projects:
+          </Text>
+          {projects.map((project) => {
+            return <ProjectCard projectInfo={project} key={project.title} />;
           })}
 
           <Text fz={{ base: 14, sm: 20 }} lh={0.5} pt={5}>

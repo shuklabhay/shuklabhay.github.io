@@ -1,22 +1,65 @@
 [
   {
-    "title": "project title",
-    "startMonth": "March 2024",
-    "endMonth": "August 2024",
-    "ongoing": true,
+    "title": "StereoSampleGAN",
     "description": [
-      { "point": "bullet1" },
-      { "point": "bullet2" },
-      { "point": "bullet3" }
+      {
+        "point": "Lightweight machine learning approach high fidelity stereo audio sample generation."
+      },
+      {
+        "point": "Utilizes a novel, WGAN based model to generate stereo, time-frequency representations of audio samples."
+      },
+      {
+        "point": "Skills: Advanced ML Training Techniques, Attention/Transformers, GANs, Signal Processing, Data Representation, Data Collection"
+      }
     ],
-    "contribution": "what i learned, important notes about MY development from this",
     "images": [
-      { "src": "src/static/home_page.png", "alt": "home" },
-      { "src": "src/static/main_photo.jpg", "alt": "main pic" }
+      {
+        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/main/paper/static/generated_audio_example_1.png",
+        "alt": "Generated Audio Example"
+      }
     ],
     "links": [
-      { "url": "https://github.com/", "displayText": "git (ex)" },
-      { "url": "https://www.google.com/", "displayText": "google (ex)" }
+      {
+        "url": "https://github.com/shuklabhay/stereo-sample-gan",
+        "displayText": "GitHub Repo"
+      }
+    ]
+  },
+  {
+    "title": "VelocityDraft",
+    "description": [
+      {
+        "point": "Flexible essay writing scheduler webapp."
+      },
+      {
+        "point": "Leverages user writing abilities and essay deadlines to algorithmically determine best order of essay writing to maximize writing and review time without overloading user."
+      },
+      {
+        "point": "Third place submission in OneHacks III Hackathon."
+      },
+      {
+        "point": "Skills: GitHub Action Automation, Algorithmic Problem Solving, Website Interface Design"
+      }
+    ],
+    "images": [
+      {
+        "src": "https://raw.githubusercontent.com/shuklabhay/velocity-draft/refs/heads/main/public/app-interfaces.png",
+        "alt": "VelocityDraft Interface"
+      },
+      {
+        "src": "https://raw.githubusercontent.com/shuklabhay/velocity-draft/refs/heads/main/public/logo512.png",
+        "alt": "VelocityDraft Icon"
+      }
+    ],
+    "links": [
+      {
+        "url": "https://github.com/shuklabhay/velocity-draft",
+        "displayText": "GitHub Repo"
+      },
+      {
+        "url": "https://shuklabhay.github.io/velocity-draft/",
+        "displayText": "Website"
+      }
     ]
   }
 ]
