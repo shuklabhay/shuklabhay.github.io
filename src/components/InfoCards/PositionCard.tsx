@@ -8,14 +8,14 @@ export default function PositionCard({
 }: {
   positionInfo: PositionItem;
 }) {
-  const { title, startMonth, endMonth, ongoing, description, icon } =
+  const { org, title, startMonth, endMonth, ongoing, description, icon } =
     positionInfo;
 
   const timeframeLabel = getTimeframeLabel(startMonth, endMonth, ongoing);
 
   return (
     <Card padding="15" radius="md" c="white" mb={5}>
-      <CardTitle title={title} timeframe={timeframeLabel} />
+      <CardTitle title={title} smallerText={timeframeLabel} />
 
       <Grid>
         <Grid.Col span={{ base: 2.5, sm: 0.75 }}>

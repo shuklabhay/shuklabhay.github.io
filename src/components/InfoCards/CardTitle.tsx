@@ -3,10 +3,10 @@ import { isSmallScreen } from "../../utils/scroll";
 
 export default function CardTitle({
   title,
-  timeframe,
+  smallerText,
 }: {
   title: string;
-  timeframe: string;
+  smallerText: string;
 }) {
   const flexDirection = isSmallScreen ? "column" : undefined;
 
@@ -31,7 +31,7 @@ export default function CardTitle({
         px={{ base: 5, sm: 0 }}
         style={{ fontStyle: "italic" }}
       >
-        {timeframe}
+        {smallerText}
       </Text>
     </div>
   );

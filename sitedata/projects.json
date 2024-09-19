@@ -1,10 +1,9 @@
 [
   {
     "title": "StereoSampleGAN",
-    "description": [
-      {
-        "point": "Lightweight machine learning approach high fidelity stereo audio sample generation."
-      },
+    "type": "Independent AI Research",
+    "broadDescription": "Lightweight machine learning approach high fidelity stereo audio sample generation.",
+    "details": [
       {
         "point": "Utilizes a novel, WGAN based model to generate stereo, time-frequency representations of audio samples."
       },
@@ -34,10 +33,9 @@
   },
   {
     "title": "VelocityDraft",
-    "description": [
-      {
-        "point": "Flexible essay writing scheduler webapp."
-      },
+    "type": "Duo Hackathon Application",
+    "broadDescription": "Flexible essay writing scheduler webapp.",
+    "details": [
       {
         "point": "Leverages user writing abilities and essay deadlines to algorithmically determine best order of essay writing to maximize writing and review time without overwhelming user."
       },

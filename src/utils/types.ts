@@ -36,6 +36,7 @@ export interface GHData {
 }
 
 export interface PositionItem {
+  org: string;
   title: string;
   startMonth: string;
   endMonth: string;
@@ -46,7 +47,9 @@ export interface PositionItem {
 
 export interface ProjectItem {
   title: string;
-  description: BulletPoint[];
+  type: string;
+  broadDescription: string;
+  details: BulletPoint[];
   experience: string;
   images: RichImage[];
   links: RichLink[];

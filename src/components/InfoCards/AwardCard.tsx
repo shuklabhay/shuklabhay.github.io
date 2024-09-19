@@ -7,7 +7,7 @@ export default function AwardCard({ awardInfo }: { awardInfo: AwardItem }) {
 
   return (
     <Card padding="15" radius="md" c="white">
-      <CardTitle title={title} timeframe={recievedMonth} />
+      <CardTitle title={title} smallerText={recievedMonth} />
 
       <Text fz={{ base: 12, sm: 16 }}>{description}</Text>
     </Card>

@@ -10,13 +10,28 @@ export default function ProjectCard({
 }: {
   projectInfo: ProjectItem;
 }) {
-  const { title, description, images, links } = projectInfo;
+  const { title, type, broadDescription, details, images, links } = projectInfo;
   const [opened, setOpened] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
+  function formatBroadDescription(broadDescriptionString: string) {
+    if (broadDescriptionString.length === 0) {
+      return broadDescriptionString;
+    }
+    let modifiedStr =
+      broadDescriptionString.charAt(0).toLowerCase() +
+      broadDescriptionString.slice(1);
+
+    if (modifiedStr.endsWith(".")) {
+      modifiedStr = modifiedStr.slice(0, -1);
+    }
+
+    return modifiedStr;
+  }
+
   return (
     <Card padding="15" radius="md" c="white" mb={5}>
-      <CardTitle title={title} timeframe={""} />
+      <CardTitle title={title} smallerText={type} />
 
       <Grid mb="20">
         <Grid.Col span={{ base: 12, sm: 3 }} w={"100%"}>
@@ -59,9 +74,11 @@ export default function ProjectCard({
         </Grid.Col>
 
         <Grid.Col span={{ base: 12, sm: 9 }} mb={5}>
-          <Text fz={{ base: 12, sm: 16 }}>Project breakdown:</Text>
+          <Text fz={{ base: 12, sm: 16 }}>
+            {title} is a {formatBroadDescription(broadDescription)} that:
+          </Text>
           <List mr={15} withPadding>
-            {description.map(({ point }, index) => (
+            {details.map(({ point }, index) => (
               <List.Item key={`Point ${index + 1}`}>
                 <Text fz={{ base: 12, sm: 16 }} mb={5}>
                   {point}
