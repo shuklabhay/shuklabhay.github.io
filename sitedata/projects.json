@@ -5,7 +5,7 @@
     "broadDescription": "Lightweight machine learning approach high fidelity stereo audio sample generation.",
     "details": [
       {
-        "point": "Utilizes a novel, WGAN based model to generate stereo, time-frequency representations of audio samples."
+        "point": "Novel machine learning architecture to generate stereo, time-frequency representations of audio samples."
       },
       {
         "point": "Independent research project, continuation of UCLA COSMOS 2024 Research. Pending publishing."

@@ -75,7 +75,7 @@ export default function ProjectCard({
 
         <Grid.Col span={{ base: 12, sm: 9 }} mb={-10}>
           <Text fz={{ base: 12, sm: 16 }} mb={5}>
-            {title} is a {formatBroadDescription(broadDescription)} that:
+            {title} is a {formatBroadDescription(broadDescription)}:
           </Text>
           <List mr={40} withPadding>
             {details.map(({ point }, index) => (
