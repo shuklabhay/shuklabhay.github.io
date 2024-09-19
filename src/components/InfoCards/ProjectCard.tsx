@@ -73,11 +73,11 @@ export default function ProjectCard({
           </Carousel>
         </Grid.Col>
 
-        <Grid.Col span={{ base: 12, sm: 9 }} mb={5}>
-          <Text fz={{ base: 12, sm: 16 }}>
+        <Grid.Col span={{ base: 12, sm: 9 }} mb={-10}>
+          <Text fz={{ base: 12, sm: 16 }} mb={5}>
             {title} is a {formatBroadDescription(broadDescription)} that:
           </Text>
-          <List mr={15} withPadding>
+          <List mr={40} withPadding>
             {details.map(({ point }, index) => (
               <List.Item key={`Point ${index + 1}`}>
                 <Text fz={{ base: 12, sm: 16 }} mb={5}>
