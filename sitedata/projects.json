@@ -9,13 +9,20 @@
         "point": "Utilizes a novel, WGAN based model to generate stereo, time-frequency representations of audio samples."
       },
       {
-        "point": "Skills: Advanced ML Training Techniques, Attention/Transformers, GANs, Signal Processing, Data Representation, Data Collection"
+        "point": "Independent research project, continuation of UCLA COSMOS 2024 Research. Pending publishing."
+      },
+      {
+        "point": "Skills: Advanced ML Training Techniques, Attention/Transformers, GANs, Signal Processing, Data Representation, Data Collection, AI Research."
       }
     ],
     "images": [
       {
         "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/main/paper/static/generated_audio_example_1.png",
-        "alt": "Generated Audio Example"
+        "alt": "Generated Audio Example 1"
+      },
+      {
+        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/main/paper/static/generated_audio_example_2.png",
+        "alt": "Generated Audio Example 2"
       }
     ],
     "links": [
