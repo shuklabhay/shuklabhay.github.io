@@ -40,7 +40,7 @@ export default function CountingAnimationLabel({
   const statBreakpoint = isSmallScreen ? "" : ", ";
   const containerRef = useRef<HTMLDivElement>(null);
   const countHooks = counterAnimationInfo.map(({ finalValue }) =>
-    CountHook({ finalValue }),
+    CountHook({ finalValue })
   );
 
   React.useEffect(() => {
@@ -55,7 +55,7 @@ export default function CountingAnimationLabel({
         root: null,
         rootMargin: "0px",
         threshold: 0.1,
-      },
+      }
     );
 
     if (containerRef.current) {

@@ -5,12 +5,12 @@ export type RichImage = { src: string; alt: string };
 export type RichIcon = { src: string; link: string };
 export type RichLink = { url: string; displayText: string };
 
+export type BulletPoint = { point: string };
 export interface SignificantRepoInfo {
   repo: string;
   description: string;
   link: string;
 }
-export type BulletPoint = { point: string };
 
 export interface SiteData {
   awards: AwardItem[];
@@ -43,6 +43,7 @@ export interface PositionItem {
   ongoing: boolean;
   details: BulletPoint[];
   icon: RichIcon;
+  hide: boolean;
 }
 
 export interface ProjectItem {
@@ -53,6 +54,7 @@ export interface ProjectItem {
   experience: string;
   images: RichImage[];
   links: RichLink[];
+  hide: boolean;
 }
 
 export interface SkillItem {

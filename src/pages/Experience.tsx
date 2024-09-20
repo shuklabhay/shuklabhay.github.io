@@ -38,16 +38,20 @@ export default function Experience() {
             Positions and Programs:
           </Text>
           {positions.map((position) => {
-            return (
-              <PositionCard positionInfo={position} key={position.position} />
-            );
+            if (!position.hide) {
+              return (
+                <PositionCard positionInfo={position} key={position.position} />
+              );
+            }
           })}
 
           <Text fz={{ base: 14, sm: 20 }} lh={0.5} pt={5}>
             Projects:
           </Text>
           {projects.map((project) => {
-            return <ProjectCard projectInfo={project} key={project.title} />;
+            if (!project.hide) {
+              return <ProjectCard projectInfo={project} key={project.title} />;
+            }
           })}
 
           <Text fz={{ base: 14, sm: 20 }} lh={0.5} pt={5}>

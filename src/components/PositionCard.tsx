@@ -15,9 +15,9 @@ export default function PositionCard({
   const timeframeLabel = getTimeframeLabel(startMonth, endMonth, ongoing);
   const listHeader = () => {
     return (
-      <Text fz={{ base: 14, sm: 16 }} lh={1.5} mb={5}>
+      <Text fz={{ base: 14, sm: 16 }} lh={1.5}>
         Experience as{" "}
-        <Text span c="main" fw={700} inherit>
+        <Text span c="main.3" fw={700} inherit>
           {position}:
         </Text>
       </Text>

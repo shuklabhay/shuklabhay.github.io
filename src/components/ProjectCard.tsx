@@ -32,7 +32,7 @@ export default function ProjectCard({
 
   const bulletPointListHeader = () => {
     return (
-      <Text fz={{ base: 14, sm: 16 }} lh={1.5} mb={5}>
+      <Text fz={{ base: 14, sm: 16 }} lh={1.5}>
         {`${title} is a ${formatBroadDescription(broadDescription)}:`}
       </Text>
     );

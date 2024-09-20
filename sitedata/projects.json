@@ -8,7 +8,7 @@
         "point": "Novel machine learning architecture to generate stereo, time-frequency representations of audio samples."
       },
       {
-        "point": "Independent research project, continuation of UCLA COSMOS 2024 Research. Pending publishing."
+        "point": "Independent research project, pending publishing. Continuation of UCLA COSMOS 2024 Research."
       },
       {
         "point": "Skills: Advanced ML Training Techniques, Attention/Transformers, GANs, Signal Processing, Data Representation, Data Collection, AI Research."
@@ -29,7 +29,8 @@
         "url": "https://github.com/shuklabhay/stereo-sample-gan",
         "displayText": "GitHub Repo"
       }
-    ]
+    ],
+    "hide": false
   },
   {
     "title": "VelocityDraft",
@@ -65,6 +66,7 @@
         "url": "https://shuklabhay.github.io/velocity-draft/",
         "displayText": "Website"
       }
-    ]
+    ],
+    "hide": false
   }
 ]
