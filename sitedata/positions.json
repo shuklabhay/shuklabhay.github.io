@@ -1,13 +1,17 @@
 [
   {
-    "org": "org/company",
+    "org": "FRC604: Quixilver Robotics",
     "position": "position title",
     "startMonth": "March 2024",
     "endMonth": "August 2024",
     "ongoing": true,
-    "description": "what i do, what ive done",
+    "description": [
+      { "point": "what i do, what ive done" },
+      { "point": "what i do, what ive done" },
+      { "point": "what i do, what ive done" }
+    ],
     "icon": {
-      "src": "src/static/main_photo.jpg",
+      "src": "src/static/icons/frc604.jpeg",
       "link": "https://github.com/"
     }
   }

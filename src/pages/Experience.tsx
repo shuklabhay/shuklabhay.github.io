@@ -1,8 +1,8 @@
 import { Stack, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
-import AwardCard from "../components/InfoCards/AwardCard";
-import PositionCard from "../components/InfoCards/PositionCard";
-import ProjectCard from "../components/InfoCards/ProjectCard";
+import AwardCard from "../components/AwardCard";
+import PositionCard from "../components/PositionCard";
+import ProjectCard from "../components/ProjectCard";
 import { SiteData } from "../utils/types";
 import useSiteData from "../utils/useSiteData";
 

@@ -1,7 +1,7 @@
 import { Card, Grid, Image, Text } from "@mantine/core";
-import { getTimeframeLabel } from "../../utils/dates";
-import { PositionItem } from "../../utils/types";
-import PositionCardTitle from "./PositionCardTitle";
+import { getTimeframeLabel } from "../utils/dates";
+import { PositionItem } from "../utils/types";
+import PositionCardTitle from "./CardComponents/PositionCardTitle";
 
 export default function PositionCard({
   positionInfo,
@@ -39,9 +39,9 @@ export default function PositionCard({
             />
           </a>
         </Grid.Col>
-        <Grid.Col span={{ base: 12 - 2.5, sm: 12 - 0.75 }}>
+        <Grid.Col span={{ base: 12 - 2.5, sm: 12 - 0.75 }} px={-5}>
           <Text fz={{ base: 12, sm: 16 }} mb={10}>
-            {description}
+            {""}
           </Text>
         </Grid.Col>
       </Grid>

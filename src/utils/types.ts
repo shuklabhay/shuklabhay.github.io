@@ -41,7 +41,7 @@ export interface PositionItem {
   startMonth: string;
   endMonth: string;
   ongoing: boolean;
-  description: string;
+  description: BulletPoint[];
   icon: RichIcon;
 }
 

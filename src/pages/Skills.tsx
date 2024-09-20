@@ -1,7 +1,7 @@
 import { Grid, Stack, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
-import GHCard from "../components/InfoCards/GHCard";
-import SkillCard from "../components/InfoCards/SkillCard";
+import GHCard from "../components/CardComponents/GHCard";
+import SkillCard from "../components/SkillCard";
 import { SiteData } from "../utils/types";
 import useSiteData from "../utils/useSiteData";
 
