@@ -1,5 +1,5 @@
 import { Carousel } from "@mantine/carousel";
-import { Button, Card, Grid, Group, Image } from "@mantine/core";
+import { Button, Card, Grid, Group, Image, Text } from "@mantine/core";
 import { useState } from "react";
 import { ProjectItem } from "../utils/types";
 import BulletPointList from "./CardComponents/BulletpointList";
@@ -30,7 +30,13 @@ export default function ProjectCard({
     return modifiedStr;
   }
 
-  const bulletPointListHeader = `${title} is a ${formatBroadDescription(broadDescription)}:`;
+  const bulletPointListHeader = () => {
+    return (
+      <Text fz={{ base: 14, sm: 16 }} lh={1.5} mb={5}>
+        {`${title} is a ${formatBroadDescription(broadDescription)}:`}
+      </Text>
+    );
+  };
 
   return (
     <Card padding="15" radius="md" c="white" mb={5}>
@@ -77,7 +83,10 @@ export default function ProjectCard({
         </Grid.Col>
 
         <Grid.Col span={{ base: 12, sm: 9 }} mb={-10}>
-          <BulletPointList header={bulletPointListHeader} details={details} />
+          <BulletPointList
+            HeaderComponent={bulletPointListHeader}
+            details={details}
+          />
         </Grid.Col>
       </Grid>
 

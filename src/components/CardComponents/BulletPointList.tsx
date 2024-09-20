@@ -2,15 +2,15 @@ import { List, Text } from "@mantine/core";
 import { BulletPoint } from "../../utils/types";
 
 export default function BulletPointList({
-  header,
+  HeaderComponent,
   details,
 }: {
-  header: string;
+  HeaderComponent: () => React.JSX.Element;
   details: BulletPoint[];
 }) {
   return (
     <>
-      <Text fz={{ base: 12, sm: 16 }}>{header}</Text>
+      <HeaderComponent />
       <List mr={40} withPadding>
         {details.map(({ point }, index) => (
           <List.Item key={`Point ${index + 1}`}>
