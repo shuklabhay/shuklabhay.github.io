@@ -1,9 +1,10 @@
 import { Carousel } from "@mantine/carousel";
-import { Button, Card, Grid, Group, Image, List, Text } from "@mantine/core";
+import { Button, Card, Grid, Group, Image } from "@mantine/core";
 import { useState } from "react";
-import { ProjectItem, RichLink } from "../../utils/types";
-import CardTitle from "./CardTitle";
-import ImageCarouselModal from "./ImageCarouselModal";
+import { ProjectItem } from "../utils/types";
+import BulletPointList from "./CardComponents/BulletpointList";
+import CardTitle from "./CardComponents/CardTitle";
+import ImageCarouselModal from "./CardComponents/ImageCarouselModal";
 
 export default function ProjectCard({
   projectInfo,
@@ -28,6 +29,8 @@ export default function ProjectCard({
 
     return modifiedStr;
   }
+
+  const bulletPointListHeader = `${title} is a ${formatBroadDescription(broadDescription)}:`;
 
   return (
     <Card padding="15" radius="md" c="white" mb={5}>
@@ -74,23 +77,12 @@ export default function ProjectCard({
         </Grid.Col>
 
         <Grid.Col span={{ base: 12, sm: 9 }} mb={-10}>
-          <Text fz={{ base: 12, sm: 16 }} mb={5}>
-            {title} is a {formatBroadDescription(broadDescription)}:
-          </Text>
-          <List mr={40} withPadding>
-            {details.map(({ point }, index) => (
-              <List.Item key={`Point ${index + 1}`}>
-                <Text fz={{ base: 12, sm: 16 }} mb={5}>
-                  {point}
-                </Text>
-              </List.Item>
-            ))}
-          </List>
+          <BulletPointList header={bulletPointListHeader} details={details} />
         </Grid.Col>
       </Grid>
 
       <Group gap={10} grow>
-        {links.map((linkObject: RichLink) => (
+        {links.map((linkObject) => (
           <Button
             component="a"
             href={linkObject.url}

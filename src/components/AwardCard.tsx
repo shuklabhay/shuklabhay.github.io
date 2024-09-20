@@ -1,6 +1,6 @@
 import { Card, Text } from "@mantine/core";
-import { AwardItem } from "../../utils/types";
-import CardTitle from "./CardTitle";
+import { AwardItem } from "../utils/types";
+import CardTitle from "./CardComponents/CardTitle";
 
 export default function AwardCard({ awardInfo }: { awardInfo: AwardItem }) {
   const { title, recievedMonth, description } = awardInfo;

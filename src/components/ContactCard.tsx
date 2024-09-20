@@ -1,5 +1,5 @@
 import { Card, Text } from "@mantine/core";
-import { ContactItem } from "../../utils/types";
+import { ContactItem } from "../utils/types";
 
 export default function ContactCard({
   contactItem,
