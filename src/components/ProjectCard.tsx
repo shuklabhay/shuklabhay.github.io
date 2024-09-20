@@ -15,74 +15,66 @@ export default function ProjectCard({
   const [opened, setOpened] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-  function formatBroadDescription(broadDescriptionString: string) {
-    if (broadDescriptionString.length === 0) {
-      return broadDescriptionString;
-    }
-    let modifiedStr =
-      broadDescriptionString.charAt(0).toLowerCase() +
-      broadDescriptionString.slice(1);
-
-    if (modifiedStr.endsWith(".")) {
-      modifiedStr = modifiedStr.slice(0, -1);
-    }
-
-    return modifiedStr;
-  }
-
   const bulletPointListHeader = () => {
     return (
       <Text fz={{ base: 14, sm: 16 }} lh={1.5}>
-        {`${title} is a ${formatBroadDescription(broadDescription)}:`}
+        {broadDescription}:
       </Text>
     );
   };
+  const areImages = images.length !== 0;
 
   return (
     <Card padding="15" radius="md" c="white" mb={5}>
       <CardTitle title={title} smallerText={type} />
 
       <Grid mb="20">
-        <Grid.Col span={{ base: 12, sm: 3 }} w={"100%"}>
-          <Carousel
-            slideSize="100%"
-            slideGap="15"
-            loop
-            controlSize={25}
-            initialSlide={selectedImageIndex}
-            onSlideChange={setSelectedImageIndex}
-            styles={{
-              viewport: { borderRadius: 10 },
-              control: {
-                backgroundColor: "rgba(0, 0, 0, 0.6)",
-                "&:hover": {
-                  backgroundColor: "rgba(0, 0, 0, 0.8)",
+        {areImages && (
+          <Grid.Col span={{ base: 12, sm: 3 }} w={"100%"}>
+            <Carousel
+              slideSize="100%"
+              slideGap="15"
+              loop
+              controlSize={25}
+              initialSlide={selectedImageIndex}
+              onSlideChange={setSelectedImageIndex}
+              styles={{
+                viewport: { borderRadius: 10 },
+                control: {
+                  backgroundColor: "rgba(0, 0, 0, 0.6)",
+                  "&:hover": {
+                    backgroundColor: "rgba(0, 0, 0, 0.8)",
+                  },
                 },
-              },
-            }}
-          >
-            {images.map((image) => (
-              <Carousel.Slide key={image.alt}>
-                <Image
-                  src={image.src}
-                  alt={image.alt}
-                  onClick={() => {
-                    setOpened(true);
-                  }}
-                  style={{
-                    cursor: "pointer",
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    aspectRatio: 10 / 6,
-                  }}
-                />
-              </Carousel.Slide>
-            ))}
-          </Carousel>
-        </Grid.Col>
+              }}
+            >
+              {images.map((image) => (
+                <Carousel.Slide key={image.alt}>
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    onClick={() => {
+                      setOpened(true);
+                    }}
+                    style={{
+                      cursor: "pointer",
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      aspectRatio: 10 / 6,
+                    }}
+                  />
+                </Carousel.Slide>
+              ))}
+            </Carousel>
+          </Grid.Col>
+        )}
 
-        <Grid.Col span={{ base: 12, sm: 9 }} mb={-10}>
+        <Grid.Col
+          span={{ base: 12, sm: areImages ? 9 : 12 }}
+          mb={-10}
+          style={{ paddingInline: areImages ? 0 : 15 }}
+        >
           <BulletPointList
             HeaderComponent={bulletPointListHeader}
             details={details}

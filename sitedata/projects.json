@@ -2,7 +2,7 @@
   {
     "title": "StereoSampleGAN",
     "type": "Independent AI Research",
-    "broadDescription": "Lightweight machine learning approach high fidelity stereo audio sample generation.",
+    "broadDescription": "StereoSampleGAN is a lightweight machine learning approach high fidelity stereo audio sample generation",
     "details": [
       {
         "point": "Novel machine learning architecture to generate stereo, time-frequency representations of audio samples."
@@ -33,9 +33,31 @@
     "hide": false
   },
   {
+    "title": "Digital Audio Production",
+    "type": "Solo Passion Project",
+    "broadDescription": "Create professional full length compositions and songs",
+    "details": [
+      {
+        "point": "Learned audio production, synthesis, and engineering since July 2022. Collaborate with artists worldwide, build artist brand."
+      },
+      {
+        "point": "Understand physical applications of signal processing and manipulation to produce desired sounds"
+      },
+      {
+        "point": "Create professional full length compositions and songs."
+      },
+      {
+        "point": "178,000+ streams in 2 years."
+      }
+    ],
+    "images": [],
+    "links": [],
+    "hide": false
+  },
+  {
     "title": "VelocityDraft",
     "type": "Duo Hackathon Application",
-    "broadDescription": "Flexible essay writing scheduler webapp.",
+    "broadDescription": "VelocityDraft is a flexible essay writing scheduler webapp",
     "details": [
       {
         "point": "Leverages user writing abilities and essay deadlines to algorithmically determine best order of essay writing to maximize writing and review time without overwhelming user."
