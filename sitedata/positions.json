@@ -1,6 +1,7 @@
 [
   {
-    "title": "position title",
+    "org": "org/company",
+    "position": "position title",
     "startMonth": "March 2024",
     "endMonth": "August 2024",
     "ongoing": true,

@@ -37,7 +37,7 @@ export interface GHData {
 
 export interface PositionItem {
   org: string;
-  title: string;
+  position: string;
   startMonth: string;
   endMonth: string;
   ongoing: boolean;

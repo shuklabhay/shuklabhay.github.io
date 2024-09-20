@@ -1,21 +1,27 @@
 import { Card, Grid, Image, Text } from "@mantine/core";
 import { getTimeframeLabel } from "../../utils/dates";
 import { PositionItem } from "../../utils/types";
-import CardTitle from "./CardTitle";
+import PositionCardTitle from "./PositionCardTitle";
 
 export default function PositionCard({
   positionInfo,
 }: {
   positionInfo: PositionItem;
 }) {
-  const { org, title, startMonth, endMonth, ongoing, description, icon } =
+  const { org, position, startMonth, endMonth, ongoing, description, icon } =
     positionInfo;
 
   const timeframeLabel = getTimeframeLabel(startMonth, endMonth, ongoing);
 
   return (
     <Card padding="15" radius="md" c="white" mb={5}>
-      <CardTitle title={title} smallerText={timeframeLabel} />
+      <PositionCardTitle
+        org={org}
+        position={position}
+        startMonth={startMonth}
+        endMonth={endMonth}
+        ongoing={ongoing}
+      />
 
       <Grid>
         <Grid.Col span={{ base: 2.5, sm: 0.75 }}>

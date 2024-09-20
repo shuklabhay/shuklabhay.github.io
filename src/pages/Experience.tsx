@@ -39,7 +39,7 @@ export default function Experience() {
           </Text>
           {positions.map((position) => {
             return (
-              <PositionCard positionInfo={position} key={position.title} />
+              <PositionCard positionInfo={position} key={position.position} />
             );
           })}
 
