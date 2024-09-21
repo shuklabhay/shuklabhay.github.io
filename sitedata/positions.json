@@ -22,7 +22,7 @@
         "point": "Lead subteams in design, manufacturing, and programming of team robot and train new members to contribute to robot development."
       },
       {
-        "point": "4th ranked team in California, 12th out of 9000+ total teams (2024)"
+        "point": "4th ranked team in California, 12th out of 9000+ total teams; World Championship Division and Two California Regional Event Winning Team (2024)"
       }
     ],
     "icon": {
@@ -39,13 +39,13 @@
     "ongoing": false,
     "details": [
       {
-        "point": "Accepted to prestigious 4 week UCLA Neurology and AI Summer Program with <5% acceptance rate."
+        "point": "Highly selective 4 week UCLA Neurology and AI Summer Program (<4.6% acceptance rate.)"
       },
       {
-        "point": "Rapidly developed comprehensive understanding of machine learning fundamenal principles: transformers, recurrent networks, advanced regression, reinforcement learning, and convolutional models."
+        "point": "Started program without any prior knowledge, created and optimized numerous architectures (Synaptic Integration, MLPs, CNNs, AlexNet, VAEs, RL Model) for given use cases."
       },
       {
-        "point": "Started program without any prior knowledge, developed and optimized numerous architectures (Synaptic Integration, MLPs, CNNs, AlexNet, VAEs, RL Model) for given use cases."
+        "point": "Rapidly developed comprehensive understanding of fundamenal machine learning principles: transformers, recurrent networks, advanced regression, reinforcement learning, convolutional models, advanced training optimization."
       }
     ],
     "icon": {

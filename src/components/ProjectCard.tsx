@@ -23,12 +23,13 @@ export default function ProjectCard({
     );
   };
   const areImages = images.length !== 0;
+  const areLinks = links.length !== 0;
 
   return (
     <Card padding="15" radius="md" c="white" mb={5}>
       <CardTitle title={title} smallerText={type} />
 
-      <Grid mb="20" mt={areImages ? 5 : 0}>
+      <Grid mb={areImages ? 20 : 0} mt={areImages ? 5 : 0}>
         {areImages && (
           <Grid.Col span={{ base: 12, sm: 3 }} w={"100%"}>
             <Carousel
@@ -78,20 +79,22 @@ export default function ProjectCard({
         </Grid.Col>
       </Grid>
 
-      <Group gap={10} grow>
-        {links.map((linkObject) => (
-          <Button
-            component="a"
-            href={linkObject.url}
-            target="_blank"
-            variant="filled"
-            rel="noopener noreferrer"
-            key={linkObject.displayText}
-          >
-            {linkObject.displayText}
-          </Button>
-        ))}
-      </Group>
+      {areLinks && (
+        <Group gap={10} grow>
+          {links.map((linkObject) => (
+            <Button
+              component="a"
+              href={linkObject.url}
+              target="_blank"
+              variant="filled"
+              rel="noopener noreferrer"
+              key={linkObject.displayText}
+            >
+              {linkObject.displayText}
+            </Button>
+          ))}
+        </Group>
+      )}
 
       <ImageCarouselModal
         opened={opened}
