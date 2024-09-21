@@ -2,7 +2,7 @@ import { Carousel } from "@mantine/carousel";
 import { Button, Card, Grid, Group, Image, Text } from "@mantine/core";
 import { useState } from "react";
 import { ProjectItem } from "../utils/types";
-import BulletPointList from "./CardComponents/BulletpointList";
+import BulletPointList from "./CardComponents/BulletPointList";
 import CardTitle from "./CardComponents/CardTitle";
 import ImageCarouselModal from "./CardComponents/ImageCarouselModal";
 

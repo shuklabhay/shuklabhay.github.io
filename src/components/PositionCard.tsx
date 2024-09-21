@@ -1,7 +1,7 @@
 import { Card, Grid, Image, Text } from "@mantine/core";
 import { getTimeframeLabel } from "../utils/dates";
 import { PositionItem } from "../utils/types";
-import BulletPointList from "./CardComponents/BulletpointList";
+import BulletPointList from "./CardComponents/BulletPointList";
 import CardTitle from "./CardComponents/CardTitle";
 
 export default function PositionCard({

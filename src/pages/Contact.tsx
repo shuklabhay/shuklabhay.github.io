@@ -22,10 +22,10 @@ export default function Contact() {
       <div style={{ paddingBlock: 10 }}>
         <div style={{ paddingBlock: 10, marginBottom: -10 }}>
           <Text fz={{ base: 18, sm: 24 }} lh={1.5} mt={-10}>
+            Here's how you can{" "}
             <Text span c="main" fw={700} inherit>
-              Reach out
-            </Text>{" "}
-            anywhere here:
+              reach out:
+            </Text>
           </Text>
         </div>
 
