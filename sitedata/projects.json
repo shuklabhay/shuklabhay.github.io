@@ -33,28 +33,6 @@
     "hide": false
   },
   {
-    "title": "Digital Audio Production",
-    "type": "Solo Passion Project",
-    "broadDescription": "Create professional full length compositions and songs",
-    "details": [
-      {
-        "point": "Learned audio production, synthesis, and engineering since July 2022. Collaborate with artists worldwide, build artist brand."
-      },
-      {
-        "point": "Understand physical applications of signal processing and manipulation to produce desired sounds"
-      },
-      {
-        "point": "Create professional full length compositions and songs."
-      },
-      {
-        "point": "178,000+ streams in 2 years."
-      }
-    ],
-    "images": [],
-    "links": [],
-    "hide": false
-  },
-  {
     "title": "VelocityDraft",
     "type": "Duo Hackathon Application",
     "broadDescription": "VelocityDraft is a flexible essay writing scheduler webapp",
@@ -89,6 +67,28 @@
         "displayText": "Website"
       }
     ],
+    "hide": false
+  },
+  {
+    "title": "Digital Audio Production",
+    "type": "Independent Passion Project",
+    "broadDescription": "Create professional full length compositions and songs",
+    "details": [
+      {
+        "point": "Learned audio production, synthesis, and engineering since July 2022. Collaborate with artists worldwide, build artist brand."
+      },
+      {
+        "point": "Understand physical applications of signal processing and manipulation to produce desired sounds"
+      },
+      {
+        "point": "Create professional full length compositions and songs."
+      },
+      {
+        "point": "178,000+ streams in 2 years."
+      }
+    ],
+    "images": [],
+    "links": [],
     "hide": false
   }
 ]

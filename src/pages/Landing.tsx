@@ -42,10 +42,10 @@ export default function Landing() {
         <Stack
           align="center"
           gap={2}
-          h={{ base: "95vh", sm: "90vh" }}
+          h={{ base: "75vh", sm: "90vh" }}
           w={"100%"}
           justify="center"
-          p={{ base: "0 1rem", sm: 0 }}
+          p={{ base: "1rem", sm: 0 }}
         >
           <Text
             fz={{ base: 32, sm: 54 }}

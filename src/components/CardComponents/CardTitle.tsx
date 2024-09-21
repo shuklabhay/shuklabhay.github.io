@@ -28,6 +28,7 @@ export default function CardTitle({
         c="gray"
         mt={{ base: 0, sm: 5 }}
         px={{ base: 5, sm: 0 }}
+        mb={5}
         style={{ fontStyle: "italic" }}
       >
         {smallerText}

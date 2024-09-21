@@ -43,7 +43,7 @@ export default function PositionCard({
             />
           </a>
         </Grid.Col>
-        <Grid.Col span={{ base: 12 - 2.5, sm: 12 - 0.75 }} px={-5}>
+        <Grid.Col span={{ base: 12 - 2.5, sm: 12 - 0.75 }} px={5}>
           <BulletPointList HeaderComponent={listHeader} details={details} />
         </Grid.Col>
       </Grid>

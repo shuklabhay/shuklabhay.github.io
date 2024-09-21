@@ -6,11 +6,6 @@ export type RichIcon = { src: string; link: string };
 export type RichLink = { url: string; displayText: string };
 
 export type BulletPoint = { point: string };
-export interface SignificantRepoInfo {
-  repo: string;
-  description: string;
-  link: string;
-}
 
 export interface SiteData {
   awards: AwardItem[];
@@ -32,7 +27,6 @@ export interface GHData {
   lastUpdated: string;
   contributions: number;
   linesModified: number;
-  significantRepos: SignificantRepoInfo[];
 }
 
 export interface PositionItem {

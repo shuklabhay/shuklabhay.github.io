@@ -48,10 +48,6 @@ export default function Skills() {
               <GHCard ghData={ghData} />
             </Grid.Col>
           </Grid>
-
-          <Text fz={{ base: 10, sm: 12 }} mt={-10} ta={"right"}>
-            (Github Data last updated {ghData.lastUpdated})
-          </Text>
         </Stack>
       </>
     );
