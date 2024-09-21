@@ -71,7 +71,7 @@ export default function ProjectCard({
           </Grid.Col>
         )}
 
-        <Grid.Col span={{ base: 12, sm: areImages ? 9 : 12 }} mb={-10}>
+        <Grid.Col span={{ base: 12, sm: areImages ? 9 : 12 }} mb={-5}>
           <BulletPointList
             HeaderComponent={bulletPointListHeader}
             details={details}

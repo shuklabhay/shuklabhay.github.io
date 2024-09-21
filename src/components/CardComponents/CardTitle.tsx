@@ -8,31 +8,57 @@ export default function CardTitle({
   title: string;
   smallerText: string;
 }) {
-  const flexDirection = isSmallScreen ? "column" : undefined;
+  const titleSize = { base: 16, sm: 20 };
+  const labelSize = { base: 12, sm: 14 };
 
-  return (
-    <div
-      style={{
-        display: "flex",
-        marginTop: -10,
-        justifyContent: "space-between",
-        flexDirection: flexDirection,
-      }}
-    >
-      <Text fz={{ base: 16, sm: 20 }} fw={700}>
-        {title}
-      </Text>
-
-      <Text
-        fz={{ base: 12, sm: 14 }}
-        c="gray"
-        mt={{ base: 0, sm: 5 }}
-        px={{ base: 5, sm: 0 }}
-        mb={5}
-        style={{ fontStyle: "italic" }}
+  if (isSmallScreen) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          marginTop: -10,
+          justifyContent: "space-between",
+          flexDirection: "column",
+        }}
       >
-        {smallerText}
-      </Text>
-    </div>
-  );
+        <Text fz={titleSize} fw={700}>
+          {title}
+        </Text>
+
+        <Text
+          fz={labelSize}
+          c="gray"
+          px={5}
+          mb={5}
+          style={{ fontStyle: "italic" }}
+        >
+          {smallerText}
+        </Text>
+      </div>
+    );
+  } else {
+    return (
+      <div
+        style={{
+          display: "flex",
+          marginTop: -10,
+          justifyContent: "space-between",
+        }}
+      >
+        <Text fz={titleSize} fw={700}>
+          {title}
+        </Text>
+
+        <Text
+          fz={labelSize}
+          c="gray"
+          mt={5}
+          mb={5}
+          style={{ fontStyle: "italic" }}
+        >
+          {smallerText}
+        </Text>
+      </div>
+    );
+  }
 }
