@@ -5,7 +5,7 @@
 
 ## App Info
 
-Compile personal portfolio data as a dynamic webapp and resume.
+Portfolio data repository and dynamic webapp + resume compilers.
 
 ## Setup
 
