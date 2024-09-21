@@ -28,7 +28,7 @@ export default function ProjectCard({
     <Card padding="15" radius="md" c="white" mb={5}>
       <CardTitle title={title} smallerText={type} />
 
-      <Grid mb="20">
+      <Grid mb="20" mt={areImages ? 5 : 0}>
         {areImages && (
           <Grid.Col span={{ base: 12, sm: 3 }} w={"100%"}>
             <Carousel
@@ -70,11 +70,7 @@ export default function ProjectCard({
           </Grid.Col>
         )}
 
-        <Grid.Col
-          span={{ base: 12, sm: areImages ? 9 : 12 }}
-          mb={-10}
-          style={{ paddingInline: areImages ? 0 : 15 }}
-        >
+        <Grid.Col span={{ base: 12, sm: areImages ? 9 : 12 }} mb={-10}>
           <BulletPointList
             HeaderComponent={bulletPointListHeader}
             details={details}

@@ -10,16 +10,19 @@
         "point": "Lead subteams in design, manufacturing, and programming of team robot and train new members to contribute to robot development."
       },
       {
-        "point": "Maintain and contribute to team's Particle Filter, Holonomic Time Optimized Autonomous Path Planner, Yearly Robot Control Software."
+        "point": "Maintain and contribute to team's Particle Filter, Holonomic Time Optimized Autonomous Path Planner, Yearly Robot Control Software based on yearly needs."
       },
       {
-        "point": "Directing long term project to develop and maintain new, highly modular, competition data collection app Quickscout."
+        "point": "Directed development and maintainance of novel application to efficiently collect and insightfully visualize high volumes of competition data, enhancing strategic decision-making and competitive performance."
       },
       {
-        "point": "Contribute to and utilize TheBlueAlliance: a comprehensive FRC data insights platform."
+        "point": "Utilize computer vision and environmental sensors (color, beam break, optical, etc.) to enhance robot capabilities, navigation, and autonomous capabilities."
       },
       {
-        "point": "12th place Ranked Team Internationally, 4th in California (2024)"
+        "point": "Contribute to and utilize ubiquitous FRC tools: TheBlueAlliance, a data insight platform encompassing data from all global FRC events, and WPILIB, a comprehensive framework for robot development and control"
+      },
+      {
+        "point": "4th ranked team in California, 12th out of 9000+ total teams (2024)"
       }
     ],
     "icon": {

@@ -15,7 +15,6 @@ export default function CardTitle({
       style={{
         display: "flex",
         marginTop: -10,
-        marginBottom: 5,
         justifyContent: "space-between",
         flexDirection: flexDirection,
       }}
