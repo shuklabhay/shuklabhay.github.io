@@ -5,9 +5,7 @@
 
 ## App Info
 
-Personal portfolio.
-
-![Home Page](src/static/home_page.png)
+Compile personal portfolio data as a dynamic webapp and resume.
 
 ## Setup
 
