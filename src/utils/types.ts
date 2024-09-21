@@ -5,57 +5,59 @@ export type RichImage = { src: string; alt: string };
 export type RichIcon = { src: string; link: string };
 export type RichLink = { url: string; displayText: string };
 
-export interface SignificantRepoInfo {
-  repo: string;
-  description: string;
-  link: string;
-}
 export type BulletPoint = { point: string };
 
 export interface SiteData {
-  awards: AwardData[];
+  awards: AwardItem[];
   ghData: GHData;
-  projects: ProjectData[];
-  positions: PositionsData[];
-  skills: SkillsData[];
+  projects: ProjectItem[];
+  positions: PositionItem[];
+  skills: SkillItem[];
+  contact: ContactItem[];
 }
 
-export interface AwardData {
+export interface AwardItem {
   title: string;
   recievedMonth: string;
   description: string;
+  hide: boolean;
 }
 
 export interface GHData {
   lastUpdated: string;
   contributions: number;
   linesModified: number;
-  significantRepos: SignificantRepoInfo[];
 }
 
-export interface PositionsData {
-  title: string;
+export interface PositionItem {
+  org: string;
+  position: string;
   startMonth: string;
   endMonth: string;
   ongoing: boolean;
-  description: string;
+  details: BulletPoint[];
   icon: RichIcon;
+  hide: boolean;
 }
 
-export interface ProjectData {
+export interface ProjectItem {
   title: string;
-  startMonth: string;
-  endMonth: string;
-  ongoing: boolean;
-  description: BulletPoint[];
-  contribution: string;
+  type: string;
+  broadDescription: string;
+  details: BulletPoint[];
   experience: string;
   images: RichImage[];
   links: RichLink[];
+  hide: boolean;
 }
 
-export interface SkillsData {
+export interface SkillItem {
   skill: string;
+}
+
+export interface ContactItem {
+  title: string;
+  link: string;
 }
 
 // Counting Label Animation

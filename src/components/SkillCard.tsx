@@ -1,7 +1,7 @@
 import { Card, Text } from "@mantine/core";
-import { SkillsData } from "../../utils/types";
+import { SkillItem } from "../utils/types";
 
-export default function SkillCard({ skillInfo }: { skillInfo: SkillsData }) {
+export default function SkillCard({ skillInfo }: { skillInfo: SkillItem }) {
   const { skill } = skillInfo;
 
   return (
@@ -16,7 +16,7 @@ export default function SkillCard({ skillInfo }: { skillInfo: SkillsData }) {
         justifyContent: "center",
       }}
     >
-      <Text fz={{ base: 12, sm: 18 }} fw={700} ta={"center"}>
+      <Text fz={{ base: 10, sm: 18 }} fw={700} ta={"center"}>
         {skill}
       </Text>
     </Card>

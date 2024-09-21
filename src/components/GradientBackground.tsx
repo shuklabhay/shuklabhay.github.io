@@ -103,7 +103,9 @@ export function GradientBackground() {
       lastActivePosition.current = { x: targetPos.x, y: targetPos.y };
       setIsMouseInactive(false);
       clearTimeout(mouseTimer.current);
-      mouseTimer.current = setTimeout(() => setIsMouseInactive(true), 5000);
+      setTimeout(() => {
+        setIsMouseInactive(true);
+      }, 5000);
     });
 
     const randomlyChangePosition = () => {

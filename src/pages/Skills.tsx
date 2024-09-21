@@ -1,9 +1,9 @@
 import { Grid, Stack, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
-import GHCard from "../components/InfoCards/GHCard";
-import SkillCard from "../components/InfoCards/SkillCard";
+import GHCard from "../components/CardComponents/GHCard";
+import SkillCard from "../components/SkillCard";
 import { SiteData } from "../utils/types";
-import useSiteData from "../utils/useData";
+import useSiteData from "../utils/useSiteData";
 
 export default function Skills() {
   const [siteData, setSiteData] = useState<SiteData>();
@@ -24,11 +24,10 @@ export default function Skills() {
       <>
         <div style={{ paddingBlock: 10 }}>
           <Text fz={{ base: 18, sm: 24 }} lh={1.5}>
-            I've worked in a{" "}
+            I've worked in{" "}
             <Text span c="main" fw={700} inherit>
-              variety
+              various technical fields:
             </Text>{" "}
-            of technical fields:
           </Text>
         </div>
 
@@ -49,10 +48,6 @@ export default function Skills() {
               <GHCard ghData={ghData} />
             </Grid.Col>
           </Grid>
-
-          <Text fz={{ base: 10, sm: 12 }} mt={-10} ta={"right"}>
-            (Github Data last updated {ghData.lastUpdated})
-          </Text>
         </Stack>
       </>
     );

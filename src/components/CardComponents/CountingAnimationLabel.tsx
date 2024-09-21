@@ -14,7 +14,7 @@ function CountHook({ finalValue }: { finalValue: number }): CountHookResult {
 
   const countUp = useCountUp({
     ref: countUpRef,
-    start: finalValue - 25,
+    start: finalValue - Math.floor(finalValue / 32),
     end: finalValue,
     duration: 2,
     startOnMount: false,
@@ -81,8 +81,8 @@ export default function CountingAnimationLabel({
       }}
     >
       {counterAnimationInfo.map(({ label, finalValue }, index) => (
-        <Text fz={{ base: 16, sm: 20 }} lh={1} key={label}>
-          <Text span c="main" fz={{ base: 16, sm: 20 }} fw={700} inherit>
+        <Text fz={{ base: 14, sm: 20 }} lh={1} key={label}>
+          <Text span c="main" fw={700} inherit>
             ~
             {countHooks[index] ? (
               <span ref={countHooks[index].ref}>{finalValue}</span>

@@ -1,22 +1,94 @@
 [
   {
-    "title": "project title",
-    "startMonth": "March 2024",
-    "endMonth": "August 2024",
-    "ongoing": true,
-    "description": [
-      { "point": "bullet1" },
-      { "point": "bullet2" },
-      { "point": "bullet3" }
+    "title": "StereoSampleGAN",
+    "type": "Independent AI Research",
+    "broadDescription": "StereoSampleGAN is a lightweight machine learning approach high fidelity stereo audio sample generation",
+    "details": [
+      {
+        "point": "Novel machine learning architecture to generate stereo, time-frequency representations of audio samples."
+      },
+      {
+        "point": "Independent research project, pending publishing. Continuation of UCLA COSMOS 2024 Research."
+      },
+      {
+        "point": "Skills: Advanced ML Training Techniques, Attention/Transformers, GANs, Signal Processing, Data Representation, Data Collection, AI Research."
+      }
     ],
-    "contribution": "what i learned, important notes about MY development from this",
     "images": [
-      { "src": "src/static/home_page.png", "alt": "home" },
-      { "src": "src/static/main_photo.jpg", "alt": "main pic" }
+      {
+        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/main/paper/static/generated_audio_example_1.png",
+        "alt": "Generated Audio Example 1"
+      },
+      {
+        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/main/paper/static/generated_audio_example_2.png",
+        "alt": "Generated Audio Example 2"
+      }
     ],
     "links": [
-      { "url": "https://github.com/", "displayText": "git (ex)" },
-      { "url": "https://www.google.com/", "displayText": "google (ex)" }
-    ]
+      {
+        "url": "https://github.com/shuklabhay/stereo-sample-gan",
+        "displayText": "GitHub Repo"
+      }
+    ],
+    "hide": false
+  },
+  {
+    "title": "VelocityDraft",
+    "type": "Duo Hackathon Application",
+    "broadDescription": "VelocityDraft is a flexible essay writing scheduler webapp",
+    "details": [
+      {
+        "point": "Leverages user writing abilities and essay deadlines to algorithmically determine best order of essay writing to maximize writing and review time without overwhelming user."
+      },
+      {
+        "point": "Recieved third place prize in OneHacks III Hackathon."
+      },
+      {
+        "point": "Skills: GitHub Action Automation, Algorithmic Problem Solving, Website Interface Design"
+      }
+    ],
+    "images": [
+      {
+        "src": "https://raw.githubusercontent.com/shuklabhay/velocity-draft/refs/heads/main/public/app-interfaces.png",
+        "alt": "VelocityDraft Interface"
+      },
+      {
+        "src": "https://raw.githubusercontent.com/shuklabhay/velocity-draft/refs/heads/main/public/logo512.png",
+        "alt": "VelocityDraft Icon"
+      }
+    ],
+    "links": [
+      {
+        "url": "https://github.com/shuklabhay/velocity-draft",
+        "displayText": "GitHub Repo"
+      },
+      {
+        "url": "https://shuklabhay.github.io/velocity-draft/",
+        "displayText": "Website"
+      }
+    ],
+    "hide": false
+  },
+  {
+    "title": "Digital Audio Production",
+    "type": "Independent Passion Project",
+    "broadDescription": "Create professional full length compositions and songs",
+    "details": [
+      {
+        "point": "Learned audio production, synthesis, and engineering since July 2022. Collaborate with artists worldwide, build artist brand."
+      },
+      {
+        "point": "Understand physical applications of signal processing and manipulation to produce desired sounds"
+      },
+      {
+        "point": "Create professional full length compositions and songs."
+      },
+      {
+        "point": "178,000+ streams in 2 years."
+      }
+    ],
+    "images": [],
+    "links": [],
+    "hide": false
   }
 ]
