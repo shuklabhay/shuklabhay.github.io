@@ -22,7 +22,7 @@
         "point": "Lead subteams in design, manufacturing, and programming of team robot and train new members to contribute to robot development. Attend 20+ STEM community outreach events."
       },
       {
-        "point": "4th ranked team in California, 12th out of 9000+ total teams; World Championship Division and Double California Regional Event Winning Team in 2024."
+        "point": "4th ranked team in California, 12th out of 9000+ total teams; World Championship Division and Double California Regional Event Winners in 2024."
       }
     ],
     "icon": {
@@ -74,6 +74,29 @@
     "icon": {
       "src": "src/static/icons/basa.jpeg",
       "link": "https://bayareastemacademy.net/"
+    },
+    "hide": false
+  },
+  {
+    "org": "Leland Speech and Debate (NSDA)",
+    "position": "Varsity Speaker",
+    "startMonth": "August 2022",
+    "endMonth": "September 2024",
+    "ongoing": true,
+    "details": [
+      {
+        "point": "Develop robust arguments and refine argumentation skills on national and international issues through competitive debate."
+      },
+      {
+        "point": "Rapidly synthesize compelling and appealing speeches using current events and existing knowledge."
+      },
+      {
+        "point": "Competed in 20+ tournaments as a member of the selective, nationally ranked (3rd out of 3550+ NSDA programs) team."
+      }
+    ],
+    "icon": {
+      "src": "src/static/icons/lsd.jpg",
+      "link": "https://www.lelandsd.org/"
     },
     "hide": false
   }
