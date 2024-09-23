@@ -53,5 +53,28 @@
       "link": "https://cosmos.ucla.edu/"
     },
     "hide": false
+  },
+  {
+    "org": "Bay Area Stem Academy",
+    "position": "Cofounder",
+    "startMonth": "April 2023",
+    "endMonth": "September 2024",
+    "ongoing": true,
+    "details": [
+      {
+        "point": "Cofounded non-profit organization to host accessible and engaging free STEM camps for local elementary, middle, and high school students."
+      },
+      {
+        "point": "Developed engaging curriculums, recruited mentors, managed logistical aspects, and effectively taught several in-person and online camps covering diverse STEM fields including Lego Robotics, Engineering Principles, 3D Modeling, Web Development, and Machine Learning."
+      },
+      {
+        "point": "Impacted 500+ students, raised $4800+ to support organization costs, local robotics team STEM outreach initiatives, and cardiac care foundation for vulnerable infants in underserved indian communities."
+      }
+    ],
+    "icon": {
+      "src": "src/static/icons/basa.jpeg",
+      "link": "https://bayareastemacademy.net/"
+    },
+    "hide": false
   }
 ]

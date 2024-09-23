@@ -17,7 +17,7 @@ export default function PositionCard({
   const ListHeader = () => {
     return (
       <Text fz={{ base: 14, sm: 16 }} lh={1.5}>
-        Experience as{" "}
+        I've participated here as a{" "}
         <Text span c="main.3" fw={700} inherit>
           {position}:
         </Text>
