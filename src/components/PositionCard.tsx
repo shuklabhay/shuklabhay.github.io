@@ -17,7 +17,7 @@ export default function PositionCard({
   const ListHeader = () => {
     return (
       <Text fz={{ base: 14, sm: 16 }} lh={1.5}>
-        I've participated here as a{" "}
+        My position(s):{" "}
         <Text span c="main.3" fw={700} inherit>
           {position}:
         </Text>
@@ -32,7 +32,7 @@ export default function PositionCard({
           src={icon.src}
           style={{
             cursor: "pointer",
-            width: "100",
+            width: "100%",
             objectFit: "cover",
             aspectRatio: 1 / 1,
             borderRadius: 10,
