@@ -5,13 +5,13 @@
     "broadDescription": "StereoSampleGAN is a lightweight machine learning approach high fidelity stereo audio sample generation",
     "details": [
       {
-        "point": "Novel machine learning architecture to generate stereo, time-frequency representations of audio samples."
+        "point": "Introduces a novel machine learning architecture to generate stereo, time-frequency representations of audio samples."
       },
       {
         "point": "Independent research project, pending publishing. Continuation of UCLA COSMOS 2024 Research."
       },
       {
-        "point": "Skills: Advanced ML Training Techniques, Attention/Transformers, GANs, Signal Processing, Data Representation, Data Collection, AI Research."
+        "point": "Takeaways: Advanced ML Training Techniques, Attention/Transformers, GANs, Signal Processing, Data Representation, Data Collection, AI Research."
       }
     ],
     "images": [
@@ -33,6 +33,64 @@
     "hide": false
   },
   {
+    "title": "Quickscout",
+    "type": "Team Scouting Application",
+    "broadDescription": "Quickscout is an incredibly modular scouting application built to collect and insightfully visualize high volumes of FRC competition data",
+    "details": [
+      {
+        "point": "Provides intuitive and easily modifiable data collection interfaces for effective data collection and flexible control over data capture/visualization."
+      },
+      {
+        "point": "Integrates collected data and external sources to create insightful visualizations, enabling comprehensive competitive analysis."
+      },
+      {
+        "point": "Comprehensive data collection enables the creation of new metric visualizations on demand and ultra-informed strategic decisions."
+      },
+      {
+        "point": "Mainly led app development, trained 10+ team members in web dev to build app in a modular to build and adapt the app to yearly games."
+      },
+      {
+        "point": "Actively used by FRC604: 100+ users, data collected for 670+ robots."
+      },
+      {
+        "point": "Takeaways: Dynamic App Design, Insightful Data Visualization, Data Collection/Processing, Full Stack Development, Intuitive Interface Design"
+      }
+    ],
+    "images": [
+      {
+        "src": "src/static/projects/quickscout/match_scouting_pages.png",
+        "alt": "Match Scouting Pages"
+      },
+      {
+        "src": "src/static/projects/quickscout/team_breakdown_page.png",
+        "alt": "Team Breakdown Page"
+      },
+      {
+        "src": "src/static/projects/quickscout/stats_page.png",
+        "alt": "Stats Page"
+      },
+      {
+        "src": "src/static/projects/quickscout/match_preview_page.png",
+        "alt": "Match Preview Page"
+      },
+      {
+        "src": "src/static/projects/quickscout/rankings_page.png",
+        "alt": "Rankings Page"
+      }
+    ],
+    "links": [
+      {
+        "url": "https://docs.google.com/document/d/1mp_JpH5frYM_O2Jui3zq9Dub9FggDtYIIbOUp9XL5-U/edit",
+        "displayText": "Match Data Collection Interfaces"
+      },
+      {
+        "url": "https://docs.google.com/document/d/1mp_JpH5frYM_O2Jui3zq9Dub9FggDtYIIbOUp9XL5-U/edit",
+        "displayText": "App Writeup"
+      }
+    ],
+    "hide": false
+  },
+  {
     "title": "VelocityDraft",
     "type": "Duo Hackathon Application",
     "broadDescription": "VelocityDraft is a flexible essay writing scheduler webapp",
@@ -44,7 +102,7 @@
         "point": "Recieved third place prize in OneHacks III Hackathon."
       },
       {
-        "point": "Skills: GitHub Action Automation, Algorithmic Problem Solving, Website Interface Design"
+        "point": "Takeaways: GitHub Action Automation, Algorithmic Problem Solving, Website Interface Design"
       }
     ],
     "images": [

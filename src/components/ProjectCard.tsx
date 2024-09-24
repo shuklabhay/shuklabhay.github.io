@@ -29,7 +29,7 @@ export default function ProjectCard({
     <Card padding="15" radius="md" c="white" mb={5}>
       <CardTitle title={title} smallerText={type} />
 
-      <Grid mb={areImages ? 20 : 0} mt={areImages ? 5 : 0}>
+      <Grid mb={areImages && areLinks ? 20 : 0} mt={areImages ? 5 : 0}>
         {areImages && (
           <Grid.Col span={{ base: 12, sm: 3 }} w={"100%"}>
             <Carousel
@@ -37,6 +37,7 @@ export default function ProjectCard({
               slideGap="15"
               loop
               controlSize={25}
+              mb={0}
               initialSlide={selectedImageIndex}
               onSlideChange={setSelectedImageIndex}
               styles={{
@@ -89,6 +90,7 @@ export default function ProjectCard({
               variant="filled"
               rel="noopener noreferrer"
               key={linkObject.displayText}
+              style={{ whiteSpace: "normal", wordWrap: "break-word" }}
             >
               {linkObject.displayText}
             </Button>
