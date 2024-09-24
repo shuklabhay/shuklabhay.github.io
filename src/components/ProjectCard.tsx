@@ -90,7 +90,6 @@ export default function ProjectCard({
               variant="filled"
               rel="noopener noreferrer"
               key={linkObject.displayText}
-              style={{ whiteSpace: "normal", wordWrap: "break-word" }}
             >
               {linkObject.displayText}
             </Button>
