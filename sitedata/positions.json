@@ -10,7 +10,7 @@
         "point": "Contribute to team's Particle Filter, Holonomic Time Optimized Autonomous Path Planner, and Yearly Robot Control Software."
       },
       {
-        "point": "Enhance robot capabilities, navigation, and autonomous capabilities by utilizing computer vision and environmental sensors."
+        "point": "Enhance robot capabilities and localization by utilizing computer vision and environmental sensors."
       },
       {
         "point": "Direct development of scouting application to efficiently collect and insightfully visualize high volumes of competition data."
@@ -22,7 +22,7 @@
         "point": "Lead subteams in design, manufacturing, and programming of team robot while training new members to contribute to robot development. Personally attended 20+ STEM community outreach events."
       },
       {
-        "point": "4th ranked ranked team in California, 12th out of ~10000 total teams. Won International World Championship Division and two California Regional Events in 2024."
+        "point": "2024 Season: 4th ranked ranked team in California, 12th out of ~3500 participating teams. Won International World Championship Division and two California Regional Events."
       }
     ],
     "icon": {
@@ -32,14 +32,14 @@
     "hide": false
   },
   {
-    "org": "UCLA COSMOS",
-    "position": "2024 AI Cohort Student",
+    "org": "UCLA COSMOS (2024 Cluster 1)",
+    "position": "AI Cohort Student",
     "startMonth": "July 2022",
     "endMonth": "August 2024",
     "ongoing": false,
     "details": [
       {
-        "point": "Highly selective 4 week UCLA Neurology and AI Summer Program (<4.6% acceptance rate.)"
+        "point": "Participated in highly selective 4 week UCLA Neurology and AI Summer Program (<4.6% acceptance rate.)"
       },
       {
         "point": "Rapidly developed comprehensive understanding of transformers, recurrent networks, advanced regression, reinforcement learning, convolutional models, and training optimization."

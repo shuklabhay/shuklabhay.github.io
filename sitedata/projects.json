@@ -53,7 +53,7 @@
         "point": "Actively used by FRC604: 100+ users, data collected for 670+ robots."
       },
       {
-        "point": "Takeaways: Dynamic App Design, Insightful Data Visualization, Data Collection/Processing, Full Stack Development, Intuitive Interface Design"
+        "point": "Takeaways: Dynamic App Design, Insightful Data Visualization, Big Data Collection and Processing, Full Stack Development, Intuitive Interface Design"
       }
     ],
     "images": [
@@ -82,6 +82,47 @@
       {
         "url": "https://docs.google.com/document/d/1mp_JpH5frYM_O2Jui3zq9Dub9FggDtYIIbOUp9XL5-U/edit",
         "displayText": "Match Data Collection Interfaces"
+      }
+    ],
+    "hide": false
+  },
+  {
+    "title": "Domotron (FRC604 2024 Robot)",
+    "type": "FRC Team 604 2024 Robot",
+    "broadDescription": "Domotron is a high-performance competitive robot designed excel in \"Crescendo\" – the 2024 FRC Game",
+    "details": [
+      {
+        "point": "The robot's design prioritized maximizing ranking points by incorporating speaker, amplifier, and trap scoring capabilities."
+      },
+      {
+        "point": "Mechanically focused on packaging the winch climber mechanism within space constraints and designing the vertical elevator."
+      },
+      {
+        "point": "Developed physics-based shot calculations to allow scoring from various distances and while in motion, simplified driver operation with control automation, developed multiple competitive autonomous routines."
+      }
+    ],
+    "images": [
+      {
+        "src": "src/static/projects/domotron/champs_zoom.jpg",
+        "alt": "Domotron in motion at the World Championships"
+      },
+      {
+        "src": "src/static/projects/domotron/sac_climb.jpg",
+        "alt": "Domotron climbing the stage at the end of a Sacramento Regional QM75"
+      },
+      {
+        "src": "src/static/projects/domotron/sac_peek_shot.jpg",
+        "alt": "Domotron shooting a note in some Sacramento Reiognal match"
+      },
+      {
+        "src": "src/static/projects/domotron/mbr_auto.png",
+        "alt": "Domotron deploying intake to continue its autonomous routine in Monterey Bay Regional QM8"
+      }
+    ],
+    "links": [
+      {
+        "url": "https://604robotics.com/2023-2024-crescendo/",
+        "displayText": "Robot Website"
       }
     ],
     "hide": false
