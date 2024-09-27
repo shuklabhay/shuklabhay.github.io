@@ -20,4 +20,4 @@ async function getTexStrings() {
   console.log("fjdjdfjdfjdf");
 }
 
-getTexStrings();
+await getTexStrings();

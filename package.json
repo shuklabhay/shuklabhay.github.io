@@ -11,7 +11,7 @@
     "lint": "prettier ./ --write",
     "format-check": "prettier ./ --check",
     "update-gh-data": "npx tsx src/api/updateGHData.ts",
-    "compile-resume-to-tex": "npx tsx src/resume/parseJSONtoTex.ts"
+    "compile-tex-resume": "npx tsx src/resume/parseJSONtoTex.ts"
   },
   "dependencies": {
     "@mantine/carousel": "^7.12.2",

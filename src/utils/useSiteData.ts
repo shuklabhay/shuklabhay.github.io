@@ -13,7 +13,6 @@ export default async function useSiteData() {
   const positions = await getPositionsData();
   const projects = await getProjectsData();
   const skills = await getSkillsData();
-
   const contact = await getContactData();
 
   return {
@@ -26,68 +25,40 @@ export default async function useSiteData() {
   };
 }
 
-async function getAwardData(): Promise<AwardItem[]> {
+async function readJsonFile<T>(filename: string): Promise<T> {
   try {
-    const response = await fetch(`../../sitedata/awards.json`);
-    const data: AwardItem[] = await response.json();
-    return data;
+    const response = await fetch(`/sitedata/${filename}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data as T;
   } catch (error) {
-    console.error("Error fetching data:", error);
-    return [] as unknown as AwardItem[];
+    console.error(`Error fetching data from ${filename}:`, error);
+    return [] as unknown as T;
   }
+}
+
+async function getAwardData(): Promise<AwardItem[]> {
+  return readJsonFile<AwardItem[]>("awards.json");
 }
 
 async function getGHData(): Promise<GHData> {
-  try {
-    const response = await fetch(`../../sitedata/ghdata.json`);
-    const data: GHData = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    return [] as unknown as GHData;
-  }
+  return readJsonFile<GHData>("ghdata.json");
 }
 
 async function getPositionsData(): Promise<PositionItem[]> {
-  try {
-    const response = await fetch(`../../sitedata/positions.json`);
-    const data: PositionItem[] = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    return [] as unknown as PositionItem[];
-  }
+  return readJsonFile<PositionItem[]>("positions.json");
 }
 
 async function getProjectsData(): Promise<ProjectItem[]> {
-  try {
-    const response = await fetch(`../../sitedata/projects.json`);
-    const data: ProjectItem[] = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    return [] as unknown as ProjectItem[];
-  }
+  return readJsonFile<ProjectItem[]>("projects.json");
 }
 
 async function getSkillsData(): Promise<SkillItem[]> {
-  try {
-    const response = await fetch(`../../sitedata/skills.json`);
-    const data: SkillItem[] = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    return [] as unknown as SkillItem[];
-  }
+  return readJsonFile<SkillItem[]>("skills.json");
 }
 
 async function getContactData(): Promise<ContactItem[]> {
-  try {
-    const response = await fetch(`../../sitedata/contact.json`);
-    const data: ContactItem[] = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    return [] as unknown as ContactItem[];
-  }
+  return readJsonFile<ContactItem[]>("contact.json");
 }
