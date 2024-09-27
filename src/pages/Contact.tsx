@@ -1,15 +1,15 @@
 import { Grid, Text } from "@mantine/core";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ContactCard from "../components/ContactCard";
+import { getJSONDataForSite } from "../utils/data";
 import { SiteData } from "../utils/types";
-import useSiteData from "../utils/useSiteData";
 
 export default function Contact() {
   const [siteData, setSiteData] = useState<SiteData>();
 
   useEffect(() => {
     async function fetchData() {
-      const newSiteData = await useSiteData();
+      const newSiteData = await getJSONDataForSite();
       setSiteData(newSiteData);
     }
     fetchData();

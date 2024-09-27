@@ -1,8 +1,8 @@
-import useSiteData from "../utils/useSiteData.ts";
+import { getJSONDataForResume } from "../utils/data.ts";
 
 async function getTexStrings() {
   // Read JSON data
-  const siteData = await useSiteData();
+  const siteData = await getJSONDataForResume();
   const awards = siteData.awards;
   const contact = siteData.contact;
   const positions = siteData.positions;
@@ -17,7 +17,7 @@ async function getTexStrings() {
   //   })
   //   .join(" $\\vert$ ")}}% Contact information`;
 
-  console.log("fjdjdfjdfjdf");
+  console.log(awards);
 }
 
 await getTexStrings();
