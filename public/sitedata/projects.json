@@ -58,23 +58,23 @@
     ],
     "images": [
       {
-        "src": "src/static/projects/quickscout/match_scouting_pages.png",
+        "src": "public/static/projects/quickscout/match_scouting_pages.png",
         "alt": "Match Scouting Pages"
       },
       {
-        "src": "src/static/projects/quickscout/team_breakdown_page.png",
+        "src": "public/static/projects/quickscout/team_breakdown_page.png",
         "alt": "Team Breakdown Page"
       },
       {
-        "src": "src/static/projects/quickscout/stats_page.png",
+        "src": "public/static/projects/quickscout/stats_page.png",
         "alt": "Stats Page"
       },
       {
-        "src": "src/static/projects/quickscout/match_preview_page.png",
+        "src": "public/static/projects/quickscout/match_preview_page.png",
         "alt": "Match Preview Page"
       },
       {
-        "src": "src/static/projects/quickscout/rankings_page.png",
+        "src": "public/static/projects/quickscout/rankings_page.png",
         "alt": "Rankings Page"
       }
     ],
@@ -103,19 +103,19 @@
     ],
     "images": [
       {
-        "src": "src/static/projects/domotron/champs_zoom.jpg",
+        "src": "public/static/projects/domotron/champs_zoom.jpg",
         "alt": "Domotron in motion at the World Championships"
       },
       {
-        "src": "src/static/projects/domotron/sac_climb.jpg",
+        "src": "public/static/projects/domotron/sac_climb.jpg",
         "alt": "Domotron climbing the stage at the end of a Sacramento Regional QM75"
       },
       {
-        "src": "src/static/projects/domotron/sac_peek_shot.jpg",
+        "src": "public/static/projects/domotron/sac_peek_shot.jpg",
         "alt": "Domotron shooting a note in some Sacramento Reiognal match"
       },
       {
-        "src": "src/static/projects/domotron/mbr_auto.png",
+        "src": "public/static/projects/domotron/mbr_auto.png",
         "alt": "Domotron deploying intake to continue its autonomous routine in Monterey Bay Regional QM8"
       }
     ],

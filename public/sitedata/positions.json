@@ -26,7 +26,7 @@
       }
     ],
     "icon": {
-      "src": "src/static/icons/frc604.jpeg",
+      "src": "public/static/icons/frc604.jpeg",
       "link": "https://604robotics.com/"
     },
     "hide": false
@@ -49,7 +49,7 @@
       }
     ],
     "icon": {
-      "src": "src/static/icons/cosmos.jpg",
+      "src": "public/static/icons/cosmos.jpg",
       "link": "https://cosmos.ucla.edu/"
     },
     "hide": false
@@ -72,7 +72,7 @@
       }
     ],
     "icon": {
-      "src": "src/static/icons/basa.jpeg",
+      "src": "public/static/icons/basa.jpeg",
       "link": "https://bayareastemacademy.net/"
     },
     "hide": false
@@ -95,7 +95,7 @@
       }
     ],
     "icon": {
-      "src": "src/static/icons/lsd.jpg",
+      "src": "public/static/icons/lsd.jpg",
       "link": "https://www.lelandsd.org/"
     },
     "hide": false
