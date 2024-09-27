@@ -1,4 +1,5 @@
 import { Card, Grid, Image, Text } from "@mantine/core";
+import React from "react";
 import { getTimeframeLabel } from "../utils/dates";
 import { isSmallScreen } from "../utils/scroll";
 import { PositionItem } from "../utils/types";

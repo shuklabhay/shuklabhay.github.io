@@ -1,5 +1,5 @@
 import { Grid, Text } from "@mantine/core";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ContactCard from "../components/ContactCard";
 import { SiteData } from "../utils/types";
 import useSiteData from "../utils/useSiteData";

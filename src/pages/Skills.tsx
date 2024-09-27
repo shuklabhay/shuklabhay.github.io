@@ -1,5 +1,5 @@
 import { Grid, Stack, Text } from "@mantine/core";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import GHCard from "../components/CardComponents/GHCard";
 import SkillCard from "../components/SkillCard";
 import { SiteData } from "../utils/types";

@@ -1,6 +1,6 @@
 import { Carousel } from "@mantine/carousel";
 import { Button, Card, Grid, Group, Image, Text } from "@mantine/core";
-import { useState } from "react";
+import React, { useState } from "react";
 import { ProjectItem } from "../utils/types";
 import BulletPointList from "./CardComponents/BulletPointList";
 import CardTitle from "./CardComponents/CardTitle";

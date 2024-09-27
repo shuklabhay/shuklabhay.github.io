@@ -1,4 +1,5 @@
 import { Card, Text } from "@mantine/core";
+import React from "react";
 import { SkillItem } from "../utils/types";
 
 export default function SkillCard({ skillInfo }: { skillInfo: SkillItem }) {

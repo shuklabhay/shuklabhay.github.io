@@ -28,7 +28,7 @@ export default async function useSiteData() {
 
 async function getAwardData(): Promise<AwardItem[]> {
   try {
-    const response = await fetch(`sitedata/awards.json`);
+    const response = await fetch(`../../sitedata/awards.json`);
     const data: AwardItem[] = await response.json();
     return data;
   } catch (error) {
@@ -39,7 +39,7 @@ async function getAwardData(): Promise<AwardItem[]> {
 
 async function getGHData(): Promise<GHData> {
   try {
-    const response = await fetch(`sitedata/ghdata.json`);
+    const response = await fetch(`../../sitedata/ghdata.json`);
     const data: GHData = await response.json();
     return data;
   } catch (error) {
@@ -50,7 +50,7 @@ async function getGHData(): Promise<GHData> {
 
 async function getPositionsData(): Promise<PositionItem[]> {
   try {
-    const response = await fetch(`sitedata/positions.json`);
+    const response = await fetch(`../../sitedata/positions.json`);
     const data: PositionItem[] = await response.json();
     return data;
   } catch (error) {
@@ -61,7 +61,7 @@ async function getPositionsData(): Promise<PositionItem[]> {
 
 async function getProjectsData(): Promise<ProjectItem[]> {
   try {
-    const response = await fetch(`sitedata/projects.json`);
+    const response = await fetch(`../../sitedata/projects.json`);
     const data: ProjectItem[] = await response.json();
     return data;
   } catch (error) {
@@ -72,7 +72,7 @@ async function getProjectsData(): Promise<ProjectItem[]> {
 
 async function getSkillsData(): Promise<SkillItem[]> {
   try {
-    const response = await fetch(`sitedata/skills.json`);
+    const response = await fetch(`../../sitedata/skills.json`);
     const data: SkillItem[] = await response.json();
     return data;
   } catch (error) {
@@ -83,7 +83,7 @@ async function getSkillsData(): Promise<SkillItem[]> {
 
 async function getContactData(): Promise<ContactItem[]> {
   try {
-    const response = await fetch(`sitedata/contact.json`);
+    const response = await fetch(`../../sitedata/contact.json`);
     const data: ContactItem[] = await response.json();
     return data;
   } catch (error) {

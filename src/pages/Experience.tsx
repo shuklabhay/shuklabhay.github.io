@@ -1,5 +1,5 @@
 import { Stack, Text } from "@mantine/core";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import AwardCard from "../components/AwardCard";
 import PositionCard from "../components/PositionCard";
 import ProjectCard from "../components/ProjectCard";
