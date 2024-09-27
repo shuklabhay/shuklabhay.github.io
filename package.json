@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "lint": "prettier ./ --write",
     "format-check": "prettier ./ --check",
-    "create-resume": "npx tsx src/resume/parseJSONtoTex.ts"
+    "update-gh-data": "npx tsx src/api/updateGHData.ts",
+    "compile-resume-to-tex": "npx tsx src/resume/parseJSONtoTex.ts"
   },
   "dependencies": {
     "@mantine/carousel": "^7.12.2",
@@ -24,7 +25,8 @@
     "prettier": "^3.3.3",
     "react": "^18.3.1",
     "react-countup": "^6.5.3",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "tsx": "^4.19.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

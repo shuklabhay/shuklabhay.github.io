@@ -24,7 +24,7 @@ jobs:
       - name: Update GitHub data
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        run: node src/api/updateGHData.js
+        run: npm run update-gh-data
 
       - name: Update formatting
         run: npm run lint
