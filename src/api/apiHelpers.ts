@@ -1,15 +1,14 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { config } from "dotenv";
 import fs from "fs";
-
-//TODO: get profile image from git, set that as main image file
+import { GitHubRepo, GitHubRestReturn } from "../utils/types";
 
 // Load API key
 config();
 const apiKey = process.env.ACCESS_TOKEN;
 
 // Query wrappers
-async function graphqlQuery(query, variables = {}) {
+async function graphqlQuery(query: string, variables = {}) {
   const response = await fetch("https://api.github.com/graphql", {
     method: "POST",
     headers: {
@@ -25,7 +24,12 @@ async function graphqlQuery(query, variables = {}) {
   return data;
 }
 
-async function restQuery(extensionPath, returnCallback) {
+async function restQuery(
+  extensionPath: string,
+  returnCallback: (
+    response: AxiosResponse<GitHubRestReturn>,
+  ) => GitHubRestReturn,
+) {
   return axios
     .get(`https://api.github.com/${extensionPath}`, {
       headers: { Authorization: `token ${apiKey}` },
@@ -89,7 +93,7 @@ async function computeTotalContributions() {
   return total + missingCommits;
 }
 
-async function getYearlyContributions(year) {
+async function getYearlyContributions(year: number) {
   const commitsQuery = `
     query($from: DateTime!, $to: DateTime!) {
       viewer {
@@ -117,8 +121,8 @@ async function getYearlyContributions(year) {
   return totalContributions;
 }
 
-async function computeTotalLinesModified(username) {
-  const allRepos = await getAllRepos(username);
+async function computeTotalLinesModified(username: string) {
+  const allRepos = await getAllRepos();
   let totalLinesModified = 0;
 
   for (const repo of allRepos) {
@@ -129,7 +133,10 @@ async function computeTotalLinesModified(username) {
   return totalLinesModified;
 }
 
-async function getLinesModifiedInRepo(repo, username) {
+async function getLinesModifiedInRepo(
+  repo: { full_name: string },
+  username: string,
+) {
   const stats = await restQuery(
     `repos/${repo.full_name}/stats/contributors`,
     (response) => response.data,
@@ -149,7 +156,7 @@ async function getLinesModifiedInRepo(repo, username) {
 }
 
 async function getAllRepos() {
-  let allRepos = [];
+  let allRepos: GitHubRepo[] = [];
   let page = 1;
   const perPage = 100;
 
@@ -171,7 +178,7 @@ async function getAllRepos() {
 }
 
 async function getUserInfo() {
-  const returnCallback = (response) => {
+  const returnCallback = (response: { data: { login: string } }) => {
     return {
       username: response.data.login,
     };

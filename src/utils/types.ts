@@ -1,5 +1,9 @@
 import { RefObject } from "react";
 
+// GitHub API
+export type GitHubRestReturn = any;
+export type GitHubRepo = any;
+
 //  Data Types
 export type RichImage = { src: string; alt: string };
 export type RichIcon = { src: string; link: string };
