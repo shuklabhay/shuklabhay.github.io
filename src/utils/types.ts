@@ -19,6 +19,13 @@ export interface SiteData {
   skills: SkillItem[];
   contact: ContactItem[];
 }
+export interface ResumeData {
+  awards: AwardItem[];
+  projects: ProjectItem[];
+  positions: PositionItem[];
+  skills: SkillItem[];
+  contact: ContactItem[];
+}
 
 export interface AwardItem {
   title: string;

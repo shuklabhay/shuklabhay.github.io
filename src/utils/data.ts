@@ -6,6 +6,8 @@ import {
   GHData,
   PositionItem,
   ProjectItem,
+  ResumeData,
+  SiteData,
   SkillItem,
 } from "./types";
 
@@ -33,7 +35,7 @@ export async function getJSONDataForSite() {
     projects,
     skills,
     contact,
-  };
+  } as SiteData;
 }
 
 async function readJSONForSite<T>(file: string): Promise<T> {
@@ -89,7 +91,7 @@ export async function getJSONDataForResume() {
     projects,
     skills,
     contact,
-  };
+  } as ResumeData;
 }
 
 async function readJSONFileForResume<T>(file: string): Promise<T> {
