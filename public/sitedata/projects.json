@@ -154,12 +154,12 @@
     ],
     "links": [
       {
-        "url": "https://github.com/shuklabhay/velocity-draft",
-        "displayText": "GitHub Repo"
-      },
-      {
         "url": "https://shuklabhay.github.io/velocity-draft/",
         "displayText": "Website"
+      },
+      {
+        "url": "https://github.com/shuklabhay/velocity-draft",
+        "displayText": "GitHub Repo"
       }
     ],
     "hide": false

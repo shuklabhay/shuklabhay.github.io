@@ -1,10 +1,12 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { getJSONDataForResume } from "../utils/data.ts";
 import { ResumeData } from "../utils/types.ts";
+import { getTimeframeLabel } from "../utils/dates.ts";
 
 function parseDataToTexTemplate(userData: ResumeData) {
   const { awards, positions, projects, skills, contact } = userData;
 
+  const skillList = skills.map((skillItem) => skillItem.skill).join(", ");
   const getContactLink = (title: string) => {
     const titleLower = title.toLowerCase();
 
@@ -50,11 +52,11 @@ function parseDataToTexTemplate(userData: ResumeData) {
 
 % You can use the \\address command up to 3 times for 3 different addresses or pieces of contact information
 % Any new lines you use in the \\address commands will be converted to symbols, so each address will appear as a single line.
-// \\address{${getContactLink("Email")} $\vert$ \\underline{\\href{${getContactLink("Linkedin")}}{${getContactLink("Linkedin")}}} $\vert$ \\underline{\\href{${getContactLink("GitHub")}}{${getContactLink("GitHub")}}} $\vert$ \\underline{\\href{${getContactLink("Website")}}{${getContactLink("Website")}}}}% Contact information
+// \\address{${getContactLink("Email")} $\\vert$ \\underline{\\href{${getContactLink("Linkedin")}}{${getContactLink("Linkedin")}}} $\\vert$ \\underline{\\href{${getContactLink("GitHub")}}{${getContactLink("GitHub")}}} $\\vert$ \\underline{\\href{${getContactLink("Website")}}{${getContactLink("Website")}}}}% Contact information
 
 %----------------------------------------------------------------------------------------
 
-\begin{document}
+\\begin{document}
 
 %----------------------------------------------------------------------------------------
 %	WORK EXPERIENCE SECTION
@@ -63,20 +65,96 @@ function parseDataToTexTemplate(userData: ResumeData) {
 \\begin{rSection}{Experience}
 
 ${positions
-  .map(() => {
-    return `
-  \\begin{rSubsection}{{{experience_org}}}{{{experience_time}}}{{{experience_role}}}{{{experience_location}}}
-  \\item {{experience_point}}   
-  \\end{rSubsection}
+  .map((position) => {
+    if (!position.hide) {
+      return `
+  \\begin{rSubsection}{${position.org}}{${getTimeframeLabel(position.startMonth, position.endMonth, position.ongoing)}}{${position.position}}{}
+    ${position.details
+      .map((detail) => {
+        return `
+    \\item ${detail.point}
     `;
+      })
+      .join("")}
+  \\end{rSubsection}
+        `;
+    }
   })
   .join("")}
 	
+\\end{rSection}
 
-%------------------------------------------------
+----------------------------------------------------------------------------------
+%	PROJECTS SECTION
+%----------------------------------------------------------------------------------------
+
+\\begin{rSection}{Projects}
+
+  ${projects
+    .map((project) => {
+      if (!project.hide) {
+        return `
+  \\begin{rSubsection}{{${project.title}}{}{${project.links[0] ? project.links[0]?.displayText + ": " : ""}\\underline{${project.links[0] ? `\\href{${project.links[0]?.url}}{${project.links[0]?.url}}}` : ""}}{}
+       ${project.details
+         .map((detail) => {
+           return `
+    \\item ${detail.point}
+        `;
+         })
+         .join("")}
+  \\end{rSubsection}
+      `;
+      }
+    })
+    .join("")}
+	
+%----------------------------------------------------------------------------------------
+%	EDUCATION SECTION
+%----------------------------------------------------------------------------------------
+
+\\begin{rSection}{Education}
+	
+	\\textbf{Leland High School} \\hfill \\textit{Expected June 2026} \\ 
+	HS Junior \\hfill \\textit{San Jose, CA}
+	
+\\end{rSection}
+
+%----------------------------------------------------------------------------------------
+    %	SKILLS SECTION
+%----------------------------------------------------------------------------------------
+
+\\begin{rSection}{Skills}
+
+  \\begin{tabular}{@{} >{\\bfseries}l @{\\hspace{6ex}} l @{}}
+		Relevant Fields & ${skillList} \\\\
+	\\end{tabular}
 
 \\end{rSection}
 
+%----------------------------------------------------------------------------------------
+    % HONORS & AWARDS SECTION
+%----------------------------------------------------------------------------------------
+
+\\begin{rSection}{Honors \\& Awards}
+
+  \\begin{itemize}
+      \\setlength\\itemsep{-0.7em} % Adjust the space between items
+        ${awards
+          .map((award) => {
+            if (!award.hide) {
+              return `
+      \\item ${award.title} \\hfill ${award.recievedMonth}
+              `;
+            }
+          })
+          .join("")}
+
+
+    \\end{itemize}
+
+\\end{rSection}
+
+\\end{document}
 `;
 }
 
