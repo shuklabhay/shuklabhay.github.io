@@ -179,12 +179,13 @@ async function saveTexResume() {
 
   const replacements = [
     { key: "&#x27;", value: "'" },
-    { key: "$4800+", value: "\\$4800+" },
+    { key: "\\$4800\\+", value: "\\$4800+" },
     { key: "&lt;4.6%", value: "<4.6\\%" },
     { key: "&gt;", value: "<" },
   ];
   for (const { key, value } of replacements) {
-    processedTexString = processedTexString.replace(key, value);
+    const regex = new RegExp(key, "g");
+    processedTexString = processedTexString.replace(regex, value);
   }
 
   // Write tex file
