@@ -68,9 +68,9 @@ function parseDataToTexTemplate(userData: ResumeData) {
 
 ${positions
   .map((position) => {
-    if (!position.hide) {
+    if (!position.hideOnResume) {
       return `
-  \\begin{rSubsection}{${position.org}}{${getTimeframeLabel(position.startMonth, position.endMonth, position.ongoing)}}{${position.position}}{}
+  \\begin{rSubsection}{${position.org}}{${getTimeframeLabel(position.startMonth, position.endMonth, position.ongoing)}}{${position.position}}{California}
     ${position.details
       .map((detail) => {
         return `
@@ -94,9 +94,9 @@ ${positions
 
   ${projects
     .map((project) => {
-      if (!project.hide) {
+      if (!project.hideOnResume) {
         return `
-  \\begin{rSubsection}{${project.title}}{}{${project.links[0] ? project.links[0]?.displayText + ": " : ""}\\underline{${project.links[0] ? `\\href{${project.links[0]?.url}}{${project.links[0]?.url}}` : ""}}{}
+  \\begin{rSubsection}{${project.title}}{}{${project.links[0] ? project.links[0].displayText + `: \\underline{\\href{${project.links[0].url}}{${project.links[0].url}}}` : ""}}{}
        ${project.details
          .map((detail) => {
            return `
@@ -110,6 +110,8 @@ ${positions
     })
     .join("")}
 	
+\\end{rSection}
+    
 %----------------------------------------------------------------------------------------
 %	EDUCATION SECTION
 %----------------------------------------------------------------------------------------
@@ -143,7 +145,7 @@ ${positions
       \\setlength\\itemsep{-0.7em} % Adjust the space between items
         ${awards
           .map((award) => {
-            if (!award.hide) {
+            if (!award.hideOnResume) {
               return `
       \\item ${award.title} \\hfill ${award.recievedMonth}
               `;
