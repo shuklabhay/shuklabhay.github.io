@@ -1,11 +1,12 @@
 # portfolio
 
+[![Build Resume](https://github.com/shuklabhay/portfolio/actions/workflows/resume.yml/badge.svg)](https://github.com/shuklabhay/portfolio/actions/workflows/resume.yml)
 [![On Push](https://github.com/shuklabhay/portfolio/actions/workflows/push.yml/badge.svg)](https://github.com/shuklabhay/portfolio/actions/workflows/push.yml/badge.svg)
 [![Update GitHub Data](https://github.com/shuklabhay/portfolio/actions/workflows/ghdata.yml/badge.svg)](https://github.com/shuklabhay/portfolio/actions/workflows/ghdata.yml/badge.svg)
 
 ## App Info
 
-Portfolio data repository and dynamic webapp + resume compilers.
+Portfolio website, data repository and dynamic resume compiler
 
 ## Setup
 
