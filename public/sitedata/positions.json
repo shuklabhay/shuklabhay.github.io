@@ -7,13 +7,10 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Contribute to team's Particle Filter, Holonomic Time Optimized Autonomous Path Planner, and Yearly Robot Control Software."
+        "point": "Develop team's competition data collection application, contribute to team's Particle Filter, Holonomic Time Optimized Autonomous Path Planner, and Yearly Robot Control Software."
       },
       {
         "point": "Enhance robot capabilities and localization by utilizing computer vision and environmental sensors."
-      },
-      {
-        "point": "Direct development of scouting application to efficiently collect and insightfully visualize high volumes of competition data."
       },
       {
         "point": "Contribute to a universally used FRC tool TheBlueAlliance: a global competition data aggregation and insight platform."
