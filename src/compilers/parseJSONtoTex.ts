@@ -180,6 +180,7 @@ async function saveTexResume() {
     { key: "\\$4800\\+", value: "\\$4800+" },
     { key: "&lt;4.6%", value: "\\<4.6\\%" },
     { key: "&gt;", value: ">" },
+    { key: "Mathematics & Science", value: "Mathematics \\& Science" },
   ];
   for (const { key, value } of replacements) {
     const regex = new RegExp(key, "g");
