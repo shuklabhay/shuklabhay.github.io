@@ -7,7 +7,8 @@ import fs from "fs/promises";
 function parseDataToTexTemplate(userData: ResumeData) {
   const { awards, positions, projects, skills, contact } = userData;
 
-  const skillList = skills.map((skillItem) => skillItem.skill).join(", ");
+  const technicalSkillsList = skills.technical.map((skill) => skill).join(", ");
+  const otherSkillsList = skills.other.map((skill) => skill).join(", ");
   const getContactLink = (title: string) => {
     const titleLower = title.toLowerCase();
 
@@ -59,6 +60,7 @@ function parseDataToTexTemplate(userData: ResumeData) {
 %----------------------------------------------------------------------------------------
 
 \\begin{document}
+\\sloppy
 
 %----------------------------------------------------------------------------------------
 %	WORK EXPERIENCE SECTION
@@ -130,7 +132,8 @@ ${positions
 \\begin{rSection}{Skills}
 
   \\begin{tabular}{@{} >{\\bfseries}l @{\\hspace{6ex}} l @{}}
-		Relevant Fields \\& ${skillList} \\\\
+		Technical Fields & ${technicalSkillsList} \\\\
+    Other & ${otherSkillsList} \\\\
 	\\end{tabular}
 
 \\end{rSection}
@@ -171,17 +174,12 @@ async function saveTexResume() {
   // Process string
   let processedTexString = texString;
 
-  const remove = ["amp;"];
-  for (const item of remove) {
-    const regex = new RegExp(item, "g");
-    processedTexString = processedTexString.replace(regex, "");
-  }
-
   const replacements = [
+    { key: "&amp;", value: "&" },
     { key: "&#x27;", value: "'" },
     { key: "\\$4800\\+", value: "\\$4800+" },
     { key: "&lt;4.6%", value: "<4.6\\%" },
-    { key: "&gt;", value: "<" },
+    { key: "&gt;", value: ">" },
   ];
   for (const { key, value } of replacements) {
     const regex = new RegExp(key, "g");

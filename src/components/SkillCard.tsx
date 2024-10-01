@@ -1,10 +1,8 @@
 import { Card, Text } from "@mantine/core";
 import React from "react";
-import { SkillItem } from "../utils/types";
+import { Skill } from "../utils/types";
 
-export default function SkillCard({ skillInfo }: { skillInfo: SkillItem }) {
-  const { skill } = skillInfo;
-
+export default function SkillCard({ skill }: { skill: Skill }) {
   return (
     <Card
       padding="15"

@@ -1,7 +1,7 @@
 [
   {
     "org": "FRC 604: Quixilver Robotics",
-    "position": "Controls (Software) Lead (10-11)",
+    "position": "Controls/Software Lead (10-11)",
     "startMonth": "June 2022",
     "endMonth": "September 2024",
     "ongoing": true,
@@ -13,13 +13,13 @@
         "point": "Enhance robot capabilities and localization by utilizing computer vision and environmental sensors."
       },
       {
-        "point": "Contribute to a universally used FRC tool TheBlueAlliance: a global competition data aggregation and insight platform."
-      },
-      {
         "point": "Lead subteams in design, manufacturing, and programming of team robot while training new members to contribute to robot development. Personally attended 20+ STEM community outreach events."
       },
       {
-        "point": "2024 Season: 4th ranked ranked team in California, 12th out of ~3500 participating teams. Won International World Championship Division and two California Regional Events."
+        "point": "Contribute to universally used FRC tool TheBlueAlliance: a global competition data aggregation and insight platform."
+      },
+      {
+        "point": "2024 Season: 4/300 California teams, 12/3500 nationally."
       }
     ],
     "icon": {
@@ -40,10 +40,7 @@
         "point": "Participated in highly selective 4 week UCLA Neurology and AI Summer Program (<4.6% acceptance rate)."
       },
       {
-        "point": "Rapidly developed comprehensive understanding of transformers, recurrent networks, advanced regression, reinforcement learning, convolutional models, and training optimization."
-      },
-      {
-        "point": "Started program without any prior knowledge, created and optimized numerous architectures for given use cases."
+        "point": "Developed comprehensive understanding of transformers, recurrent networks, advanced regression, reinforcement learning, convolutional models, and training optimization."
       }
     ],
     "icon": {
@@ -60,9 +57,6 @@
     "endMonth": "September 2024",
     "ongoing": true,
     "details": [
-      {
-        "point": "Cofounded non-profit organization to host accessible and engaging free STEM camps for local elementary, middle, and high school students."
-      },
       {
         "point": "Developed engaging curriculums, managed logistical aspects, recruited mentors, and effectively taught multiple in-person and online camps encompassing diverse STEM fields."
       },
@@ -99,6 +93,6 @@
       "link": "https://www.lelandsd.org/"
     },
     "hideOnSite": false,
-    "hideOnResume": false
+    "hideOnResume": true
   }
 ]

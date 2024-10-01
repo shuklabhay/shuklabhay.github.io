@@ -18,7 +18,9 @@ export default function Skills() {
 
   if (siteData) {
     const ghData = siteData.ghData;
-    const skills = siteData.skills;
+    const { technical, other } = siteData.skills;
+
+    const allSkills = technical.concat(other);
 
     return (
       <>
@@ -33,16 +35,16 @@ export default function Skills() {
 
         <Stack gap={0}>
           <Grid justify="center" gutter="sm" mb={10}>
-            {skills.map((skill) => (
-              <Grid.Col span={{ base: 4, sm: 2 }} key={skill.skill}>
-                <SkillCard skillInfo={skill} />
+            {allSkills.map((skill) => (
+              <Grid.Col span={{ base: 4, sm: 2 }} key={skill}>
+                <SkillCard skill={skill} />
               </Grid.Col>
             ))}
           </Grid>
 
           <Grid gutter="sm" mb={0}>
             <Grid.Col span={{ base: 4, sm: 2 }}>
-              <SkillCard skillInfo={{ skill: "Git:" }} />
+              <SkillCard skill={"Git: "} />
             </Grid.Col>
             <Grid.Col span={{ base: 8, sm: 10 }}>
               <GHCard ghData={ghData} />

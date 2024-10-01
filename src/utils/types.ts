@@ -10,20 +10,21 @@ export type RichIcon = { src: string; link: string };
 export type RichLink = { url: string; displayText: string };
 
 export type BulletPoint = { point: string };
+export type Skill = string;
 
 export interface SiteData {
   awards: AwardItem[];
   ghData: GHData;
   projects: ProjectItem[];
   positions: PositionItem[];
-  skills: SkillItem[];
+  skills: SkillData;
   contact: ContactItem[];
 }
 export interface ResumeData {
   awards: AwardItem[];
   projects: ProjectItem[];
   positions: PositionItem[];
-  skills: SkillItem[];
+  skills: SkillData;
   contact: ContactItem[];
 }
 
@@ -65,8 +66,9 @@ export interface ProjectItem {
   hideOnResume: boolean;
 }
 
-export interface SkillItem {
-  skill: string;
+export interface SkillData {
+  technical: Skill[];
+  other: Skill[];
 }
 
 export interface ContactItem {

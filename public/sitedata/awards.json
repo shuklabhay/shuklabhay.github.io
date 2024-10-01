@@ -9,7 +9,7 @@
   {
     "title": "NSE Level 2: Silver Distinction",
     "recievedMonth": "May 2024",
-    "description": "89th percentile out of 21,422 national test takers on the Level Two National Spanish Exam.",
+    "description": "89th percentile out of 21,422 Level Two National Spanish Exam test takes.",
     "hideOnSite": false,
     "hideOnResume": false
   },
@@ -25,20 +25,20 @@
     "recievedMonth": "July 2023",
     "description": "100+ hours running nonprofit, and volunteering at local library, food drives, high school robotics team events, underserved Indian children healthcare foundation.",
     "hideOnSite": false,
-    "hideOnResume": false
+    "hideOnResume": true
   },
   {
     "title": "CFL Speech 2: Finalist",
     "recievedMonth": "December 2022",
     "description": "5th place speaker out of 190 regional competitors in competitive Silicon Valley NSDA speech competition.",
     "hideOnSite": false,
-    "hideOnResume": false
+    "hideOnResume": true
   },
   {
     "title": "SCU/SVUDL Invitational: PF Finalist",
     "recievedMonth": "November 2022",
     "description": "2nd place partnership out of 140 international competitors in NSDA debate competition. Personally ranked as 3rd speaker.",
     "hideOnSite": false,
-    "hideOnResume": false
+    "hideOnResume": true
   }
 ]
