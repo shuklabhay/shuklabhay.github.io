@@ -44,8 +44,8 @@ async function restQuery(
 
 // Read Github data & write to JSON
 export default async function compileAndWriteGHData() {
-  const outputPath = "sitedata/ghdata.json";
-  const jsonData = JSON.parse(fs.readFileSync(outputPath, "utf8"));
+  const jsonDataPath = "public/sitedata/ghdata.json";
+  const jsonData = JSON.parse(fs.readFileSync(jsonDataPath, "utf8"));
 
   const { username } = await getUserInfo();
   const today = new Date();
@@ -71,8 +71,8 @@ export default async function compileAndWriteGHData() {
     jsonData.contributions = totalContributions;
     jsonData.linesModified = totalLinesModified;
 
-    fs.writeFileSync(outputPath, JSON.stringify(jsonData, null, 2));
-    console.log(`json data updated at ${outputPath}`);
+    fs.writeFileSync(jsonDataPath, JSON.stringify(jsonData, null, 2));
+    console.log(`json data updated at ${jsonDataPath}`);
   } else {
     console.log("something is wrong with data");
   }
