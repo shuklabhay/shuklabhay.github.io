@@ -5,7 +5,7 @@
 
 ## App Info
 
-Compile personal portfolio data as a dynamic webapp and resume.
+Portfolio data repository and dynamic webapp + resume compilers.
 
 ## Setup
 
@@ -14,6 +14,8 @@ Compile personal portfolio data as a dynamic webapp and resume.
 - [Install](https://docs.oracle.com/en/java/javase/20/install/overview-jdk-installation.html) Java JDK 11 or higher
   - Confirm installation by running `java --version` in the command line
 - In the repo run `npm run setup`
+- In the root directory create a `.env` file where `ACCESS_TOKEN=your_github_access_token`
+- Run `npm run dev` to start the development application
 
 ## VSCode Setup
 

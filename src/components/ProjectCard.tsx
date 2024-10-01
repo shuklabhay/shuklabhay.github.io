@@ -1,8 +1,8 @@
 import { Carousel } from "@mantine/carousel";
 import { Button, Card, Grid, Group, Image, Text } from "@mantine/core";
-import { useState } from "react";
+import React, { useState } from "react";
 import { ProjectItem } from "../utils/types";
-import BulletPointList from "./CardComponents/BulletpointList";
+import BulletPointList from "./CardComponents/BulletPointList";
 import CardTitle from "./CardComponents/CardTitle";
 import ImageCarouselModal from "./CardComponents/ImageCarouselModal";
 
@@ -29,7 +29,7 @@ export default function ProjectCard({
     <Card padding="15" radius="md" c="white" mb={5}>
       <CardTitle title={title} smallerText={type} />
 
-      <Grid mb={areImages ? 20 : 0} mt={areImages ? 5 : 0}>
+      <Grid mb={areImages && areLinks ? 20 : 0} mt={areImages ? 5 : 0}>
         {areImages && (
           <Grid.Col span={{ base: 12, sm: 3 }} w={"100%"}>
             <Carousel
@@ -37,6 +37,7 @@ export default function ProjectCard({
               slideGap="15"
               loop
               controlSize={25}
+              mb={0}
               initialSlide={selectedImageIndex}
               onSlideChange={setSelectedImageIndex}
               styles={{
@@ -71,7 +72,7 @@ export default function ProjectCard({
           </Grid.Col>
         )}
 
-        <Grid.Col span={{ base: 12, sm: areImages ? 9 : 12 }} mb={-10}>
+        <Grid.Col span={{ base: 12, sm: areImages ? 9 : 12 }} mb={-5}>
           <BulletPointList
             HeaderComponent={bulletPointListHeader}
             details={details}

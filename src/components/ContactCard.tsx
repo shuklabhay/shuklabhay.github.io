@@ -1,4 +1,5 @@
 import { Card, Text } from "@mantine/core";
+import React from "react";
 import { ContactItem } from "../utils/types";
 
 export default function ContactCard({

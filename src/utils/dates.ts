@@ -12,7 +12,7 @@ export function getTimeframeLabel(
   ongoing: boolean,
 ) {
   if (ongoing) {
-    return `${startDate} - ${getCurrentFormattedDate()}: Ongoing`;
+    return `${startDate} - Present`;
   } else if (endDate) {
     return `${startDate} - ${endDate}`;
   } else {

@@ -1,0 +1,126 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Medium Length Professional CV
+% LaTeX Template
+% Version 3.0 (December 17, 2022)
+%
+% This template originates from:
+% https://www.LaTeXTemplates.com
+%
+% Author:
+% Vel (vel@latextemplates.com)
+%
+% Original author:
+% Trey Hunner (http://www.treyhunner.com/)
+%
+% License:
+% CC BY-NC-SA 4.0 (https://creativecommons.org/licenses/by-nc-sa/4.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[
+	%a4paper, % Uncomment for A4 paper size (default is US letter)
+	11pt, % Default font size, can use 10pt, 11pt or 12pt
+]{tex/resume} % Use the resume class
+
+\usepackage{ebgaramond} % Use the EB Garamond font
+\usepackage{hyperref}
+
+
+
+
+%------------------------------------------------
+
+\name{Abhay Shukla} % Your name to appear at the top
+
+% You can use the \address command up to 3 times for 3 different addresses or pieces of contact information
+% Any new lines (\\) you use in the \address commands will be converted to symbols, so each address will appear as a single line.
+\address{{{email}} $\vert$ \underline{\href{{{linkedin}}}{{{linkedin}}}} $\vert$ \underline{\href{{{github}}}{{{github}}}} $\vert$ \underline{\href{{{website}}}{{{website}}}}}% Contact information
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	WORK EXPERIENCE SECTION
+%----------------------------------------------------------------------------------------
+
+\begin{rSection}{Experience}
+
+	\begin{rSubsection}{{{experience_org}}}{{{experience_time}}}{{{experience_role}}}{{{experience_location}}}
+		\item {{experience_point}}   
+	\end{rSubsection}
+
+%------------------------------------------------
+
+\end{rSection}
+
+%----------------------------------------------------------------------------------------
+%	PROJECTS SECTION
+%----------------------------------------------------------------------------------------
+
+\begin{rSection}{Projects}
+
+	\begin{rSubsection}{{{project_name}}}{}{{{project_link_type}}: \underline{\href{{{project_link}}}{{{project_link}}}}}{}
+		\item {{project_point}}
+	\end{rSubsection}
+
+%------------------------------------------------
+
+\end{rSection}
+
+%----------------------------------------------------------------------------------------
+%	EDUCATION SECTION
+%----------------------------------------------------------------------------------------
+
+\begin{rSection}{Education}
+	
+	\textbf{Leland High School} \hfill \textit{Expected June 2026} \\ 
+	HS Junior \hfill \textit{San Jose, CA}
+	
+\end{rSection}
+
+%----------------------------------------------------------------------------------------
+    %	SKILLS SECTION
+%----------------------------------------------------------------------------------------
+
+\begin{rSection}{Skills}
+
+	\begin{tabular}{@{} >{\bfseries}l @{\hspace{6ex}} l @{}}
+		Relevant Fields & {{skills_list}} \\
+	\end{tabular}
+
+\end{rSection}
+
+
+%----------------------------------------------------------------------------------------
+    % HONORS & AWARDS SECTION
+%----------------------------------------------------------------------------------------
+
+\begin{rSection}{Honors \& Awards}
+
+    \begin{itemize}
+        \setlength\itemsep{-0.7em} % Adjust the space between items
+        \item {{award_title}} \hfill {{award_date}}
+
+
+    \end{itemize}
+
+\end{rSection}
+
+%----------------------------------------------------------------------------------------
+%	EXAMPLE SECTION
+%----------------------------------------------------------------------------------------
+
+%\begin{rSection}{Section Name}
+
+	%Section content\ldots
+
+%\end{rSection}
+
+%----------------------------------------------------------------------------------------
+
+\end{document}

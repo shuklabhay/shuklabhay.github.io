@@ -1,4 +1,5 @@
 import { Card, Text } from "@mantine/core";
+import React from "react";
 import { AwardItem } from "../utils/types";
 import CardTitle from "./CardComponents/CardTitle";
 
