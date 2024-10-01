@@ -7,16 +7,13 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Develop team's competition data collection application, contribute to team's particle filter, time-optimal trajectory optimization software, and yearly robot control architecture."
-      },
-      {
-        "point": "Enhance robot capabilities and localization with computer vision and environmental sensors."
+        "point": "Develop team's competition data collection application, enhance robot capabilities and localization with computer vision and environmental sensors, contribute to team software (particle filter, time-optimal trajectory optimization software, yearly robot control architecture)."
       },
       {
         "point": "Lead subteams in design, manufacturing, and programming of team robot while training new members to contribute to robot development."
       },
       {
-        "point": "Contributed to community FRC tool TheBlueAlliance: global competition data aggregation and insight platform. Attended 20+ STEM community outreach events."
+        "point": "Contribute to community FRC tool TheBlueAlliance: global competition data aggregation and insight platform. Attend/host STEM community outreach events (20+)."
       }
     ],
     "icon": {
@@ -55,10 +52,10 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Developed engaging curriculums, managed logistical aspects, recruited mentors, and effectively taught multiple in-person and online camps encompassing diverse STEM fields."
+        "point": "Developed engaging curriculums, recruited mentors, planned and effectively taught in-person and online camps encompassing diverse STEM fields."
       },
       {
-        "point": "Impacted 500+ students and raised $4800+ to support organization costs, local robotics team STEM outreach initiatives, and underserved Indian children healthcare foundation."
+        "point": "Impacted 500+ students and raised $4800+ to support organization costs, local STEM outreach initiatives, and Indian children healthcare foundation."
       }
     ],
     "icon": {
