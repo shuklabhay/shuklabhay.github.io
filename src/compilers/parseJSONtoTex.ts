@@ -54,7 +54,7 @@ function parseDataToTexTemplate(userData: ResumeData) {
 
 % You can use the \\address command up to 3 times for 3 different addresses or pieces of contact information
 % Any new lines you use in the \\address commands will be converted to symbols, so each address will appear as a single line.
-// \\address{${getContactLink("Email")} $\\vert$ \\underline{\\href{${getContactLink("Linkedin")}}{${getContactLink("Linkedin")}}} $\\vert$ \\underline{\\href{${getContactLink("GitHub")}}{${getContactLink("GitHub")}}} $\\vert$ \\underline{\\href{${getContactLink("Website")}}{${getContactLink("Website")}}}}% Contact information
+\\address{${getContactLink("Email")} $\\vert$ \\underline{\\href{${getContactLink("Linkedin")}}{${getContactLink("Linkedin")}}} $\\vert$ \\underline{\\href{${getContactLink("GitHub")}}{${getContactLink("GitHub")}}} $\\vert$ \\underline{\\href{${getContactLink("Website")}}{${getContactLink("Website")}}}}% Contact information
 
 %----------------------------------------------------------------------------------------
 
@@ -96,7 +96,7 @@ ${positions
     .map((project) => {
       if (!project.hide) {
         return `
-  \\begin{rSubsection}{${project.title}}{}{${project.links[0] ? project.links[0]?.displayText + ": " : ""}\\underline{${project.links[0] ? `\\href{${project.links[0]?.url}}{${project.links[0]?.url}}}` : ""}}{}
+  \\begin{rSubsection}{${project.title}}{}{${project.links[0] ? project.links[0]?.displayText + ": " : ""}\\underline{${project.links[0] ? `\\href{${project.links[0]?.url}}{${project.links[0]?.url}}` : ""}}{}
        ${project.details
          .map((detail) => {
            return `
@@ -168,7 +168,6 @@ async function saveTexResume() {
 
   // Process string
   let processedTexString = texString;
-  processedTexString = processedTexString.replace(/\$/g, "\\$");
 
   const remove = ["amp;"];
   for (const item of remove) {
@@ -178,6 +177,7 @@ async function saveTexResume() {
 
   const replacements = [
     { key: "&#x27;", value: "'" },
+    { key: "$4800+", value: "\\$4800+" },
     { key: "&lt;4.6%", value: "<4.6\\%" },
     { key: "&gt;", value: "<" },
   ];
