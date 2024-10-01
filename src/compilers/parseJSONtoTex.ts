@@ -6,9 +6,9 @@ import fs from "fs/promises";
 
 function parseDataToTexTemplate(userData: ResumeData) {
   const { awards, positions, projects, skills, contact } = userData;
-  const skillsToMap = skills.technical;
 
-  const skillList = skillsToMap.map((skill) => skill).join(", ");
+  const technicalSkillsList = skills.technical.map((skill) => skill).join(", ");
+  const otherSkillsList = skills.other.map((skill) => skill).join(", ");
   const getContactLink = (title: string) => {
     const titleLower = title.toLowerCase();
 
@@ -132,7 +132,8 @@ ${positions
 \\begin{rSection}{Skills}
 
   \\begin{tabular}{@{} >{\\bfseries}l @{\\hspace{6ex}} l @{}}
-		Relevant Fields & ${skillList} \\\\
+		Technical Fields & ${technicalSkillsList} \\\\
+    Other & ${otherSkillsList} \\\\
 	\\end{tabular}
 
 \\end{rSection}
