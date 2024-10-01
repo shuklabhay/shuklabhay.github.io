@@ -1,0 +1,60 @@
+name: Build Resume
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**.tex"
+      - "**.yml"
+      - "**.cls"
+    workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  build-resume:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+
+      - name: Install node dependencies
+        run: npm install
+
+      - name: Install TeX Live
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: tex/resume.tex
+
+      - name: Install Full TeX Live
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-full
+
+      - name: Update resume LaTeX file
+        run: npm run compile-tex-resume
+
+      - name: Create LaTeX pdf document
+        run: |
+          mkdir out
+          latexmk -pdf -outdir=out -interaction=nonstopmode public/resume/resume.tex
+
+      - name: Update formatting
+        run: npm run lint
+
+      - name: Commit PDF to repository
+        run: |
+          git config --global user.name "shuklabhay/portfolio"
+          git config --global user.email "portfolio[bot]@shuklabhay.github.io"
+          git add public/resume/resume.pdf
+          git commit -m "Update Resume PDF"
+          git push

@@ -43,7 +43,7 @@ function parseDataToTexTemplate(userData: ResumeData) {
 \\documentclass[
   %a4paper, % Uncomment for A4 paper size (default is US letter)
   11pt, % Default font size, can use 10pt, 11pt or 12pt
-]{src/resume/resume} % Use the resume class
+]{public/resume/resume} % Use the resume class
 
 \\usepackage{ebgaramond} % Use the EB Garamond font
 \\usepackage{hyperref}
@@ -162,7 +162,7 @@ ${positions
 
 async function saveTexResume() {
   // Read JSON Data
-  const texFilePath = "src/resume/resume.tex";
+  const texFilePath = "public/resume/resume.tex";
   const userData = await getJSONDataForResume();
   const texString = renderToStaticMarkup(parseDataToTexTemplate(userData));
 
