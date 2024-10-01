@@ -29,7 +29,8 @@
       "src": "public/static/icons/frc604.jpeg",
       "link": "https://604robotics.com/"
     },
-    "hide": false
+    "hideOnSite": false,
+    "hideOnResume": false
   },
   {
     "org": "UCLA COSMOS (2024 Cluster 1)",
@@ -52,7 +53,8 @@
       "src": "public/static/icons/cosmos.jpg",
       "link": "https://cosmos.ucla.edu/"
     },
-    "hide": false
+    "hideOnSite": false,
+    "hideOnResume": false
   },
   {
     "org": "Bay Area STEM Academy",
@@ -75,7 +77,8 @@
       "src": "public/static/icons/basa.jpeg",
       "link": "https://bayareastemacademy.net/"
     },
-    "hide": false
+    "hideOnSite": false,
+    "hideOnResume": false
   },
   {
     "org": "Leland Speech and Debate (NSDA)",
@@ -98,6 +101,7 @@
       "src": "public/static/icons/lsd.jpg",
       "link": "https://www.lelandsd.org/"
     },
-    "hide": false
+    "hideOnSite": false,
+    "hideOnResume": false
   }
 ]

@@ -30,7 +30,8 @@
         "displayText": "GitHub Repo"
       }
     ],
-    "hide": false
+    "hideOnSite": false,
+    "hideOnResume": false
   },
   {
     "title": "Quickscout",
@@ -79,8 +80,14 @@
         "alt": "Match Scouting Pages"
       }
     ],
-    "links": [],
-    "hide": false
+    "links": [
+      {
+        "url": "https://github.com/frc604",
+        "displayText": "GitHub Organization (Private Team Project)"
+      }
+    ],
+    "hideOnSite": false,
+    "hideOnResume": false
   },
   {
     "title": "Domotron (FRC604 2024 Robot)",
@@ -121,7 +128,8 @@
         "displayText": "Robot Website"
       }
     ],
-    "hide": false
+    "hideOnSite": false,
+    "hideOnResume": false
   },
   {
     "title": "VelocityDraft",
@@ -158,7 +166,8 @@
         "displayText": "GitHub Repo"
       }
     ],
-    "hide": false
+    "hideOnSite": false,
+    "hideOnResume": false
   },
   {
     "title": "Digital Audio Production",
@@ -177,6 +186,7 @@
     ],
     "images": [],
     "links": [],
-    "hide": false
+    "hideOnSite": false,
+    "hideOnResume": true
   }
 ]

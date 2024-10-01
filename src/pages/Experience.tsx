@@ -38,7 +38,7 @@ export default function Experience() {
             Positions and Programs:
           </Text>
           {positions.map((position) => {
-            if (!position.hide) {
+            if (!position.hideOnSite) {
               return (
                 <PositionCard positionInfo={position} key={position.position} />
               );
@@ -49,7 +49,7 @@ export default function Experience() {
             Projects:
           </Text>
           {projects.map((project) => {
-            if (!project.hide) {
+            if (!project.hideOnSite) {
               return <ProjectCard projectInfo={project} key={project.title} />;
             }
           })}
@@ -58,7 +58,7 @@ export default function Experience() {
             Awards:
           </Text>
           {awards.map((award) => {
-            if (!award.hide) {
+            if (!award.hideOnSite) {
               return <AwardCard awardInfo={award} key={award.title} />;
             }
           })}

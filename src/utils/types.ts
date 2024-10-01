@@ -31,7 +31,8 @@ export interface AwardItem {
   title: string;
   recievedMonth: string;
   description: string;
-  hide: boolean;
+  hideOnSite: boolean;
+  hideOnResume: boolean;
 }
 
 export interface GHData {
@@ -48,7 +49,8 @@ export interface PositionItem {
   ongoing: boolean;
   details: BulletPoint[];
   icon: RichIcon;
-  hide: boolean;
+  hideOnSite: boolean;
+  hideOnResume: boolean;
 }
 
 export interface ProjectItem {
@@ -59,7 +61,8 @@ export interface ProjectItem {
   experience: string;
   images: RichImage[];
   links: RichLink[];
-  hide: boolean;
+  hideOnSite: boolean;
+  hideOnResume: boolean;
 }
 
 export interface SkillItem {
