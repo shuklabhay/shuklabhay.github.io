@@ -36,7 +36,7 @@ jobs:
       - name: Install Full TeX Live
         run: |
           sudo apt-get update
-          sudo apt-get install -y texlive-full
+          sudo apt-get install texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
 
       - name: Create LaTeX pdf document
         run: |
@@ -49,6 +49,6 @@ jobs:
         run: |
           git config --global user.name "shuklabhay/portfolio"
           git config --global user.email "portfolio[bot]@shuklabhay.github.io"
-          git add public/resume/resume.pdf
+          git add public/resume/resume.pdf public/resume/resume.tex
           git commit -m "Update Resume PDF"
           git push
