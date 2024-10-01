@@ -7,19 +7,16 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Develop team's competition data collection application, contribute to team's Particle Filter, Holonomic Time Optimized Autonomous Path Planner, and Yearly Robot Control Software."
+        "point": "Develop team's competition data collection application, contribute to team's particle filter, time-optimal trajectory optimization software, and yearly robot control architecture."
       },
       {
-        "point": "Enhance robot capabilities and localization by utilizing computer vision and environmental sensors."
+        "point": "Enhance robot capabilities and localization with computer vision and environmental sensors."
       },
       {
         "point": "Lead subteams in design, manufacturing, and programming of team robot while training new members to contribute to robot development. Personally attended 20+ STEM community outreach events."
       },
       {
         "point": "Contribute to universally used FRC tool TheBlueAlliance: a global competition data aggregation and insight platform."
-      },
-      {
-        "point": "2024 Season: 4/300 California teams, 12/3500 nationally."
       }
     ],
     "icon": {

@@ -39,16 +39,13 @@
     "broadDescription": "Quickscout is an incredibly modular scouting application built to collect and insightfully visualize high volumes of FRC competition data",
     "details": [
       {
-        "point": "Provides intuitive and easily modifiable data collection interfaces for effective data collection and flexible control over data capture/visualization."
+        "point": "Flexible application for data capture and visualization allowing informed strategical decisions during competition."
       },
       {
-        "point": "Mainly led app development, trained 10+ team members in web dev to build app in a modular to build and adapt the app to yearly games."
+        "point": "Led app development, trained 10+ team members in web dev to build app and adapt to yearly games. Actively used by FRC604: 130+ users, data collected for 700+ robots."
       },
       {
-        "point": "Actively used by FRC604: 130+ users, data collected for 700+ robots."
-      },
-      {
-        "point": "Takeaways: Modular App Design, Insightful Data Visualization, Big Data Collection and Processing, Full Stack Development, Intuitive Interface Design"
+        "point": "Takeaways: Modular App Design, Big Data Collection and Visualization, Full Stack Development."
       }
     ],
     "images": [
@@ -56,7 +53,6 @@
         "src": "src/static/projects/quickscout/stats_page.png",
         "alt": "Stats Page"
       },
-
       {
         "src": "src/static/projects/quickscout/team_breakdown_page.png",
         "alt": "Team Breakdown Page"
@@ -89,16 +85,10 @@
     "broadDescription": "Domotron is a high-performance competitive robot designed excel in \"Crescendo\" – the 2024 FRC Game",
     "details": [
       {
-        "point": "Competitive FRC robot with speaker, amplifier, and trap scoring capabilities."
+        "point": "Ranked 4/300 California teams, 12/3500 internationally. World championship division and two time California regional event winning robot."
       },
       {
-        "point": "Developed physics-based shot calculations, driver control automation, competitive autonomous routines."
-      },
-      {
-        "point": "Designed climber winch mechanism and vertical elevator."
-      },
-      {
-        "point": "Won International World Championship Division and two California Regional Events."
+        "point": "Developed physics-based shot calculations, driver control automation, competitive autonomous routines. Designed climber winch mechanism and vertical elevator."
       }
     ],
     "images": [

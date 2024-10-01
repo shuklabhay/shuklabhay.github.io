@@ -121,7 +121,7 @@ ${positions
 \\begin{rSection}{Education}
 	
 	\\textbf{Leland High School} \\hfill \\textit{Expected June 2026} \\\\
-	HS Junior \\hfill \\textit{San Jose, CA}
+	Junior \\hfill \\textit{San Jose, CA}
 	
 \\end{rSection}
 
