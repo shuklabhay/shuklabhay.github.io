@@ -2,7 +2,7 @@
   {
     "org": "FRC 604: Quixilver Robotics",
     "position": "Controls/Software Lead (10-11)",
-    "startMonth": "June 2022",
+    "startMonth": "June 2023",
     "endMonth": "September 2024",
     "ongoing": true,
     "details": [
@@ -13,10 +13,10 @@
         "point": "Enhance robot capabilities and localization with computer vision and environmental sensors."
       },
       {
-        "point": "Lead subteams in design, manufacturing, and programming of team robot while training new members to contribute to robot development. Personally attended 20+ STEM community outreach events."
+        "point": "Lead subteams in design, manufacturing, and programming of team robot while training new members to contribute to robot development."
       },
       {
-        "point": "Contribute to universally used FRC tool TheBlueAlliance: a global competition data aggregation and insight platform."
+        "point": "Contributed to community FRC tool TheBlueAlliance: global competition data aggregation and insight platform. Attended 20+ STEM community outreach events."
       }
     ],
     "icon": {
@@ -27,17 +27,17 @@
     "hideOnResume": false
   },
   {
-    "org": "UCLA COSMOS (2024 Cluster 1)",
-    "position": "AI Cohort Student",
-    "startMonth": "July 2022",
+    "org": "CA State Summer School for Mathematics & Science, UCLA",
+    "position": "Brain-Inspired Computing Cohort Student",
+    "startMonth": "July 2024",
     "endMonth": "August 2024",
     "ongoing": false,
     "details": [
       {
-        "point": "Participated in highly selective 4 week UCLA Neurology and AI Summer Program (<4.6% acceptance rate)."
+        "point": "Investigated parallels of biological mechanisms to machine learning advancements (transformers, regression, etc)."
       },
       {
-        "point": "Developed comprehensive understanding of transformers, recurrent networks, advanced regression, reinforcement learning, convolutional models, and training optimization."
+        "point": "Developed audio generation ML architecture with UCLA funding."
       }
     ],
     "icon": {
