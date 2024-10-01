@@ -30,3 +30,5 @@ Portfolio website, data repository and dynamic resume compiler
 - Run `npm run setup` to install dependencies
 - Run `npm run dev` to start dev server
 - Run `npm run lint` to format code and fix lint issues
+- Run `npm run update-gh-data` to update JSON data from Gitub API
+- Run `npm run compile-tex-resume` to compile JSON information into LaTeX template

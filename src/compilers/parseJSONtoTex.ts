@@ -96,7 +96,7 @@ ${positions
     .map((project) => {
       if (!project.hide) {
         return `
-  \\begin{rSubsection}{{${project.title}}{}{${project.links[0] ? project.links[0]?.displayText + ": " : ""}\\underline{${project.links[0] ? `\\href{${project.links[0]?.url}}{${project.links[0]?.url}}}` : ""}}{}
+  \\begin{rSubsection}{${project.title}}{}{${project.links[0] ? project.links[0]?.displayText + ": " : ""}\\underline{${project.links[0] ? `\\href{${project.links[0]?.url}}{${project.links[0]?.url}}}` : ""}}{}
        ${project.details
          .map((detail) => {
            return `
