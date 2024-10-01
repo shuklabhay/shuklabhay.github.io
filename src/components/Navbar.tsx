@@ -11,7 +11,7 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import React, { useEffect, useState } from "react";
-import mainPhoto from "../../public/static/main_photo.jpg";
+import mainPhoto from "../static/main_photo.jpg";
 import { scrollViewportTo } from "../utils/scroll";
 import { useScrollContext } from "../utils/scrollContext";
 import { NavItem, ScrollInfo } from "../utils/types";
