@@ -59,6 +59,7 @@ function parseDataToTexTemplate(userData: ResumeData) {
 %----------------------------------------------------------------------------------------
 
 \\begin{document}
+\\sloppy
 
 %----------------------------------------------------------------------------------------
 %	WORK EXPERIENCE SECTION
@@ -176,7 +177,7 @@ async function saveTexResume() {
     { key: "&#x27;", value: "'" },
     { key: "\\$4800\\+", value: "\\$4800+" },
     { key: "&lt;4.6%", value: "<4.6\\%" },
-    { key: "&gt;", value: "<" },
+    { key: "&gt;", value: ">" },
   ];
   for (const { key, value } of replacements) {
     const regex = new RegExp(key, "g");
