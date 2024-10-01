@@ -1,29 +1,11 @@
-[
-  {
-    "skill": "AI/ML"
-  },
-  {
-    "skill": "Robotics"
-  },
-  {
-    "skill": "Signal Processing"
-  },
-  {
-    "skill": "CAD"
-  },
-  {
-    "skill": "3D Printing"
-  },
-  {
-    "skill": "Webdev/Appdev"
-  },
-  {
-    "skill": "Digital Audio Production"
-  },
-  {
-    "skill": "Graphic Design"
-  },
-  {
-    "skill": "Video Editing"
-  }
-]
+{
+  "technical": [
+    "AI/ML",
+    "Robotics",
+    "Signal Processing",
+    "CAD",
+    "3D Printing",
+    "Webdev/Appdev"
+  ],
+  "other": ["Digital Audio Production", "Graphic Design", "Video Editing"]
+}

@@ -8,7 +8,7 @@
         "point": "Introduces a novel machine learning architecture to generate stereo, time-frequency representations of audio samples."
       },
       {
-        "point": "Independent research project, pending publishing. Continuation of UCLA COSMOS 2024 Research."
+        "point": "Independent research project pending publishing, continuation of UCLA COSMOS 2024 Research."
       },
       {
         "point": "Takeaways: Advanced ML Training Techniques, Attention/Transformers, GANs, Signal Processing, Data Representation, Data Collection, AI Research."
@@ -42,19 +42,13 @@
         "point": "Provides intuitive and easily modifiable data collection interfaces for effective data collection and flexible control over data capture/visualization."
       },
       {
-        "point": "Integrates collected data and external sources to create insightful visualizations, enabling comprehensive competitive analysis."
-      },
-      {
-        "point": "Comprehensive data collection enables the creation of new metric visualizations on demand and ultra-informed strategic decisions."
-      },
-      {
         "point": "Mainly led app development, trained 10+ team members in web dev to build app in a modular to build and adapt the app to yearly games."
       },
       {
-        "point": "Actively used by FRC604: 100+ users, data collected for 670+ robots."
+        "point": "Actively used by FRC604: 130+ users, data collected for 700+ robots."
       },
       {
-        "point": "Takeaways: Dynamic App Design, Insightful Data Visualization, Big Data Collection and Processing, Full Stack Development, Intuitive Interface Design"
+        "point": "Takeaways: Modular App Design, Insightful Data Visualization, Big Data Collection and Processing, Full Stack Development, Intuitive Interface Design"
       }
     ],
     "images": [
@@ -95,13 +89,16 @@
     "broadDescription": "Domotron is a high-performance competitive robot designed excel in \"Crescendo\" – the 2024 FRC Game",
     "details": [
       {
-        "point": "Maximized ranking points by incorporating speaker, amplifier, and trap scoring capabilities."
+        "point": "Competitive FRC robot with speaker, amplifier, and trap scoring capabilities."
       },
       {
         "point": "Developed physics-based shot calculations, driver control automation, competitive autonomous routines."
       },
       {
         "point": "Designed climber winch mechanism and vertical elevator."
+      },
+      {
+        "point": "Won International World Championship Division and two California Regional Events."
       }
     ],
     "images": [
@@ -140,7 +137,7 @@
         "point": "Leverages user writing abilities and essay deadlines to algorithmically determine best order of essay writing to maximize writing and review time and prevent overwhelming users."
       },
       {
-        "point": "Recieved third place prize in OneHacks III Hackathon."
+        "point": "Third place project in OneHacks III Hackathon."
       },
       {
         "point": "Takeaways: GitHub Action Automation, Algorithmic Problem Solving, Website Interface Design"

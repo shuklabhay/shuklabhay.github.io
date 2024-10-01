@@ -6,8 +6,9 @@ import fs from "fs/promises";
 
 function parseDataToTexTemplate(userData: ResumeData) {
   const { awards, positions, projects, skills, contact } = userData;
+  const skillsToMap = skills.technical;
 
-  const skillList = skills.map((skillItem) => skillItem.skill).join(", ");
+  const skillList = skillsToMap.map((skill) => skill).join(", ");
   const getContactLink = (title: string) => {
     const titleLower = title.toLowerCase();
 
