@@ -33,11 +33,6 @@ jobs:
       - name: Update resume LaTeX file
         run: npm run compile-tex-resume
 
-      - name: Install TeX Live
-        uses: xu-cheng/latex-action@v2
-        with:
-          root_file: public/resume/resume.tex
-
       - name: Install Full TeX Live
         run: |
           sudo apt-get update
