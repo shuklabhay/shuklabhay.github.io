@@ -116,7 +116,7 @@ ${positions
 
 \\begin{rSection}{Education}
 	
-	\\textbf{Leland High School} \\hfill \\textit{Expected June 2026} \\ 
+	\\textbf{Leland High School} \\hfill \\textit{Expected June 2026} \\\\
 	HS Junior \\hfill \\textit{San Jose, CA}
 	
 \\end{rSection}
@@ -128,7 +128,7 @@ ${positions
 \\begin{rSection}{Skills}
 
   \\begin{tabular}{@{} >{\\bfseries}l @{\\hspace{6ex}} l @{}}
-		Relevant Fields & ${skillList} \\\\
+		Relevant Fields \\& ${skillList} \\\\
 	\\end{tabular}
 
 \\end{rSection}
@@ -168,12 +168,24 @@ async function saveTexResume() {
 
   // Process string
   let processedTexString = texString;
-
   processedTexString = processedTexString.replace(/\$/g, "\\$");
+
   const remove = ["amp;"];
   for (const item of remove) {
     const regex = new RegExp(item, "g");
     processedTexString = processedTexString.replace(regex, "");
+  }
+
+  const replacements = [
+    { key: "&#x27;", value: "'" },
+    { key: "&lt;4.6%", value: "<4.6\\%" },
+    { key: "&gt;", value: "<" },
+  ];
+  for (const replacement of replacements) {
+    processedTexString = processedTexString.replace(
+      replacement.key,
+      replacement.value
+    );
   }
 
   // Write tex file
