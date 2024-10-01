@@ -1,17 +1,14 @@
 [
   {
     "title": "StereoSampleGAN",
-    "type": "Independent AI Research",
+    "type": "AI Research",
     "broadDescription": "StereoSampleGAN is a lightweight machine learning approach high fidelity stereo audio sample generation",
     "details": [
       {
         "point": "Introduces a novel machine learning architecture to generate stereo, time-frequency representations of audio samples."
       },
       {
-        "point": "Independent research project pending publishing, continuation of UCLA COSMOS 2024 Research."
-      },
-      {
-        "point": "Takeaways: Advanced ML Training Techniques, Attention/Transformers, GANs, Signal Processing, Data Representation, Data Collection, AI Research."
+        "point": "Research project pending publishing, continuation of UCLA COSMOS 2024 Research."
       }
     ],
     "images": [
@@ -36,16 +33,13 @@
   {
     "title": "Quickscout",
     "type": "Team Scouting Application",
-    "broadDescription": "Quickscout is an incredibly modular scouting application built to collect and insightfully visualize high volumes of FRC competition data",
+    "broadDescription": "Quickscout is FRC604's novel scouting application",
     "details": [
       {
-        "point": "Flexible application for data capture and visualization allowing informed strategical decisions during competition."
+        "point": "Led development of flexible application to effectively capture and visualize FRC competition data."
       },
       {
-        "point": "Led app development, trained 10+ team members in web dev to build app and adapt to yearly games. Actively used by FRC604: 130+ users, data collected for 700+ robots."
-      },
-      {
-        "point": "Takeaways: Modular App Design, Big Data Collection and Visualization, Full Stack Development."
+        "point": "Trained 10+ team members in web dev to build app and adapt to yearly games. Actively used by FRC604: 130+ users, data collected for 700+ robots."
       }
     ],
     "images": [
@@ -128,9 +122,6 @@
       },
       {
         "point": "Third place project in OneHacks III Hackathon."
-      },
-      {
-        "point": "Takeaways: GitHub Action Automation, Algorithmic Problem Solving, Website Interface Design"
       }
     ],
     "images": [
@@ -173,7 +164,7 @@
     ],
     "images": [],
     "links": [],
-    "hideOnSite": false,
+    "hideOnSite": true,
     "hideOnResume": true
   }
 ]

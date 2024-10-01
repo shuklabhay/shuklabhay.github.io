@@ -178,7 +178,7 @@ async function saveTexResume() {
     { key: "&amp;", value: "&" },
     { key: "&#x27;", value: "'" },
     { key: "\\$4800\\+", value: "\\$4800+" },
-    { key: "&lt;4.6%", value: "<4.6\\%" },
+    { key: "&lt;4.6%", value: "\\<4.6\\%" },
     { key: "&gt;", value: ">" },
   ];
   for (const { key, value } of replacements) {
