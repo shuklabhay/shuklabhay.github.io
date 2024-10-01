@@ -95,13 +95,13 @@
     "broadDescription": "Domotron is a high-performance competitive robot designed excel in \"Crescendo\" – the 2024 FRC Game",
     "details": [
       {
-        "point": "The robot's design prioritized maximizing ranking points by incorporating speaker, amplifier, and trap scoring capabilities."
+        "point": "Maximized ranking points by incorporating speaker, amplifier, and trap scoring capabilities."
       },
       {
-        "point": "Mechanically focused on packaging the winch climber mechanism within space constraints and designing the vertical elevator."
+        "point": "Developed physics-based shot calculations, driver control automation, competitive autonomous routines."
       },
       {
-        "point": "Developed physics-based shot calculations to allow scoring from various distances and while in motion, simplified driver operation with control automation, developed multiple competitive autonomous routines."
+        "point": "Designed climber winch mechanism and vertical elevator."
       }
     ],
     "images": [
@@ -119,7 +119,7 @@
       },
       {
         "src": "src/static/projects/domotron/mbr_auto.png",
-        "alt": "Domotron deploying intake to continue its autonomous routine in Monterey Bay Regional QM8"
+        "alt": "Domotron's autonomous routine in action at the Monterey Bay Regional QM8"
       }
     ],
     "links": [
@@ -137,7 +137,7 @@
     "broadDescription": "VelocityDraft is a flexible essay writing scheduler webapp",
     "details": [
       {
-        "point": "Leverages user writing abilities and essay deadlines to algorithmically determine best order of essay writing to maximize writing and review time without overwhelming user."
+        "point": "Leverages user writing abilities and essay deadlines to algorithmically determine best order of essay writing to maximize writing and review time and prevent overwhelming users."
       },
       {
         "point": "Recieved third place prize in OneHacks III Hackathon."
