@@ -46,7 +46,7 @@ jobs:
       - name: Create LaTeX pdf document
         run: |
           mkdir out
-          latexmk -pdf -outdir=out -interaction=nonstopmode public/resume/resume.tex
+          latexmk -pdf -outdir=out -interaction=nonstopmode public/resume/resume.pdf
 
       - name: Update formatting
         run: npm run lint
