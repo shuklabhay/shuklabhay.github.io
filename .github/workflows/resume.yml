@@ -30,18 +30,18 @@ jobs:
       - name: Install node dependencies
         run: npm install
 
+      - name: Update resume LaTeX file
+        run: npm run compile-tex-resume
+
       - name: Install TeX Live
         uses: xu-cheng/latex-action@v2
         with:
-          root_file: tex/resume.tex
+          root_file: public/resume/resume.tex
 
       - name: Install Full TeX Live
         run: |
           sudo apt-get update
           sudo apt-get install -y texlive-full
-
-      - name: Update resume LaTeX file
-        run: npm run compile-tex-resume
 
       - name: Create LaTeX pdf document
         run: |
