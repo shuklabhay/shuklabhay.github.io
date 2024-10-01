@@ -2,6 +2,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { getJSONDataForResume } from "../utils/data.ts";
 import { ResumeData } from "../utils/types.ts";
 import { getTimeframeLabel } from "../utils/dates.ts";
+import fs from "fs/promises";
 
 function parseDataToTexTemplate(userData: ResumeData) {
   const { awards, positions, projects, skills, contact } = userData;
@@ -14,6 +15,7 @@ function parseDataToTexTemplate(userData: ResumeData) {
       ?.link;
   };
 
+  // you need to manually use \\ for each \
   return `
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Medium Length Professional CV
@@ -84,7 +86,7 @@ ${positions
 	
 \\end{rSection}
 
-----------------------------------------------------------------------------------
+%----------------------------------------------------------------------------------------
 %	PROJECTS SECTION
 %----------------------------------------------------------------------------------------
 
@@ -158,11 +160,29 @@ ${positions
 `;
 }
 
-async function getTexStrings() {
-  // Read JSON data
+async function saveTexResume() {
+  // Read JSON Data
+  const texFilePath = "src/resume/resume.tex";
   const userData = await getJSONDataForResume();
   const texString = renderToStaticMarkup(parseDataToTexTemplate(userData));
-  console.log(texString);
+
+  // Process string
+  let processedTexString = texString;
+
+  processedTexString = processedTexString.replace(/\$/g, "\\$");
+  const remove = ["amp;"];
+  for (const item of remove) {
+    const regex = new RegExp(item, "g");
+    processedTexString = processedTexString.replace(regex, "");
+  }
+
+  // Write tex file
+  try {
+    await fs.writeFile(texFilePath, processedTexString);
+    console.log(`Resume saved to ${texFilePath}`);
+  } catch (error) {
+    console.error("Error saving the resume:", error);
+  }
 }
 
-await getTexStrings();
+await saveTexResume();
