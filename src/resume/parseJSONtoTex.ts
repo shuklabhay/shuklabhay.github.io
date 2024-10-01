@@ -181,11 +181,8 @@ async function saveTexResume() {
     { key: "&lt;4.6%", value: "<4.6\\%" },
     { key: "&gt;", value: "<" },
   ];
-  for (const replacement of replacements) {
-    processedTexString = processedTexString.replace(
-      replacement.key,
-      replacement.value
-    );
+  for (const { key, value } of replacements) {
+    processedTexString = processedTexString.replace(key, value);
   }
 
   // Write tex file

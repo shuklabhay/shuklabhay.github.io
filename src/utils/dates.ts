@@ -9,7 +9,7 @@ export function getCurrentFormattedDate() {
 export function getTimeframeLabel(
   startDate: string,
   endDate: string | null,
-  ongoing: boolean
+  ongoing: boolean,
 ) {
   if (ongoing) {
     return `${startDate} - Present`;
