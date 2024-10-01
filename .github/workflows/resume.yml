@@ -44,10 +44,14 @@ jobs:
       - name: Update formatting
         run: npm run lint
 
-      - name: Commit PDF to repository
+      - name: Configure Git
         run: |
+          git config --global --add safe.directory /__w/portfolio/portfolio
           git config --global user.name "shuklabhay/portfolio"
           git config --global user.email "portfolio[bot]@shuklabhay.github.io"
+
+      - name: Commit changes to resume.tex and resume.pdf
+        run: |
           git add public/resume/resume.pdf public/resume/resume.tex
           git pull
           git commit -m "Build Resume PDF"
