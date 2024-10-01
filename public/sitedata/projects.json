@@ -36,10 +36,10 @@
     "broadDescription": "Quickscout is FRC604's novel scouting application",
     "details": [
       {
-        "point": "Led development of flexible application to effectively capture and visualize FRC competition data."
+        "point": "Led development of flexible application to effectively capture and visualize FRC competition data. Trained 10+ team members in web dev to build app and adapt to yearly games."
       },
       {
-        "point": "Trained 10+ team members in web dev to build app and adapt to yearly games. Actively used by FRC604: 130+ users, data collected for 700+ robots."
+        "point": "130+ users on FRC604, data collected for 700+ robots."
       }
     ],
     "images": [
@@ -79,10 +79,10 @@
     "broadDescription": "Domotron is a high-performance competitive robot designed excel in \"Crescendo\" – the 2024 FRC Game",
     "details": [
       {
-        "point": "Ranked 4/300 California teams, 12/3500 internationally. World championship division and two time California regional event winning robot."
+        "point": "Developed physics-based shot calculations, driver control automation, competitive autonomous routines. Designed climber winch mechanism and vertical elevator."
       },
       {
-        "point": "Developed physics-based shot calculations, driver control automation, competitive autonomous routines. Designed climber winch mechanism and vertical elevator."
+        "point": "Ranked 4/300 California teams, 12/3500 internationally. World championship division and two time California regional event winning robot."
       }
     ],
     "images": [
@@ -118,10 +118,7 @@
     "broadDescription": "VelocityDraft is a flexible essay writing scheduler webapp",
     "details": [
       {
-        "point": "Leverages user writing abilities and essay deadlines to algorithmically determine best order of essay writing to maximize writing and review time and prevent overwhelming users."
-      },
-      {
-        "point": "Third place project in OneHacks III Hackathon."
+        "point": "Leverages user writing abilities and essay deadlines to algorithmically determine best order of essay writing. Third place project in OneHacks III Hackathon."
       }
     ],
     "images": [
