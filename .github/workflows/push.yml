@@ -3,10 +3,14 @@ name: Push Checks
 on:
   push:
     branches:
-      - "main"
+      - "*"
   pull_request:
     branches:
-      - "main"
+      - "*"
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
 
 jobs:
   tests:
