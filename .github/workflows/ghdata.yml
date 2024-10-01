@@ -38,6 +38,6 @@ jobs:
         run: |
           git config --global user.name "shuklabhay/portfolio"
           git config --global user.email "portfolio[bot]@shuklabhay.github.io"
-          git add sitedata/ghdata.json
+          git add public/sitedata/ghdata.json
           git commit -m 'Update github data' || true
           git push
