@@ -58,16 +58,13 @@
     ],
     "images": [
       {
-        "src": "public/static/projects/quickscout/match_scouting_pages.png",
-        "alt": "Match Scouting Pages"
+        "src": "public/static/projects/quickscout/stats_page.png",
+        "alt": "Stats Page"
       },
+
       {
         "src": "public/static/projects/quickscout/team_breakdown_page.png",
         "alt": "Team Breakdown Page"
-      },
-      {
-        "src": "public/static/projects/quickscout/stats_page.png",
-        "alt": "Stats Page"
       },
       {
         "src": "public/static/projects/quickscout/match_preview_page.png",
@@ -76,14 +73,13 @@
       {
         "src": "public/static/projects/quickscout/rankings_page.png",
         "alt": "Rankings Page"
-      }
-    ],
-    "links": [
+      },
       {
-        "url": "https://github.com/frc604",
-        "displayText": "GitHub Org"
+        "src": "public/static/projects/quickscout/match_scouting_pages.png",
+        "alt": "Match Scouting Pages"
       }
     ],
+    "links": [],
     "hide": false
   },
   {
