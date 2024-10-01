@@ -130,7 +130,7 @@ ${positions
 \\begin{rSection}{Skills}
 
   \\begin{tabular}{@{} >{\\bfseries}l @{\\hspace{6ex}} l @{}}
-		Relevant Fields \\& ${skillList} \\\\
+		Relevant Fields & ${skillList} \\\\
 	\\end{tabular}
 
 \\end{rSection}
@@ -171,13 +171,8 @@ async function saveTexResume() {
   // Process string
   let processedTexString = texString;
 
-  const remove = ["amp;"];
-  for (const item of remove) {
-    const regex = new RegExp(item, "g");
-    processedTexString = processedTexString.replace(regex, "");
-  }
-
   const replacements = [
+    { key: "&amp;", value: "&" },
     { key: "&#x27;", value: "'" },
     { key: "\\$4800\\+", value: "\\$4800+" },
     { key: "&lt;4.6%", value: "<4.6\\%" },
