@@ -44,5 +44,6 @@ jobs:
           git config --global user.name "shuklabhay/portfolio"
           git config --global user.email "portfolio[bot]@shuklabhay.github.io"
           git add public/sitedata/ghdata.json
-          git commit -m 'Update github data' || true
+          git pull
+          git commit -m 'Update GitHub data' || true
           git push
