@@ -67,9 +67,8 @@ export default function Landing() {
               userSelect: "none",
             }}
           >
-            High School Student, AI Researcher, Roboticist, Digital Audio
-            Producer, Full Stack Developer, Nonprofit Founder, Speaker, and
-            Innovator.
+            High School Student, AI Researcher, Roboticist, Full Stack
+            Developer, Nonprofit Cofounder, Speaker, and Innovator.
           </Text>
         </Stack>
       </Stack>
