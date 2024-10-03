@@ -16,14 +16,14 @@ export interface SiteData {
   awards: AwardItem[];
   ghData: GHData;
   projects: ProjectItem[];
-  positions: PositionItem[];
+  activities: ActivityItem[];
   skills: SkillData;
   contact: ContactItem[];
 }
 export interface ResumeData {
   awards: AwardItem[];
   projects: ProjectItem[];
-  positions: PositionItem[];
+  activities: ActivityItem[];
   skills: SkillData;
   contact: ContactItem[];
 }
@@ -42,7 +42,7 @@ export interface GHData {
   linesModified: number;
 }
 
-export interface PositionItem {
+export interface ActivityItem {
   org: string;
   position: string;
   startMonth: string;

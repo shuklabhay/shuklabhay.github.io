@@ -5,7 +5,7 @@ import { getTimeframeLabel } from "../utils/dates.ts";
 import fs from "fs/promises";
 
 function parseDataToTexTemplate(userData: ResumeData) {
-  const { awards, positions, projects, skills, contact } = userData;
+  const { awards, activities, projects, skills, contact } = userData;
 
   const technicalSkillsList = skills.technical.map((skill) => skill).join(", ");
   const otherSkillsList = skills.other.map((skill) => skill).join(", ");
@@ -68,12 +68,12 @@ function parseDataToTexTemplate(userData: ResumeData) {
 
 \\begin{rSection}{Experience}
 
-${positions
-  .map((position) => {
-    if (!position.hideOnResume) {
+${activities
+  .map((activity) => {
+    if (!activity.hideOnResume) {
       return `
-  \\begin{rSubsection}{${position.org}}{${getTimeframeLabel(position.startMonth, position.endMonth, position.ongoing)}}{${position.position}}{California}
-    ${position.details
+  \\begin{rSubsection}{${activity.org}}{${getTimeframeLabel(activity.startMonth, activity.endMonth, activity.ongoing)}}{${activity.position}}{California}
+    ${activity.details
       .map((detail) => {
         return `
     \\item ${detail.point}

@@ -36,10 +36,10 @@
     "broadDescription": "Quickscout is FRC604's novel scouting application",
     "details": [
       {
-        "point": "Led development of flexible application to effectively capture and visualize FRC competition data. Trained 10+ team members in web dev to build app and adapt to yearly games."
+        "point": "Led development of flexible application to effectively capture and visualize FRC competition data."
       },
       {
-        "point": "130+ users on FRC604, data collected for 700+ robots."
+        "point": "Trained 10+ team members in web dev to build app and adapt to yearly games. 130+ users on FRC604, data collected for 700+ robots."
       }
     ],
     "images": [
@@ -63,7 +63,7 @@
     "links": [
       {
         "url": "https://github.com/frc604",
-        "displayText": "GitHub Organization (Private Team Project)"
+        "displayText": "GitHub Organization"
       }
     ],
     "hideOnSite": false,

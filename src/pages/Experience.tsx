@@ -1,7 +1,7 @@
 import { Stack, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import AwardCard from "../components/AwardCard";
-import PositionCard from "../components/PositionCard";
+import ActivityCard from "../components/ActivityCard";
 import ProjectCard from "../components/ProjectCard";
 import { getJSONDataForSite } from "../utils/data";
 import { SiteData } from "../utils/types";
@@ -19,7 +19,7 @@ export default function Experience() {
 
   if (siteData) {
     const awards = siteData.awards;
-    const positions = siteData.positions;
+    const activities = siteData.activities;
     const projects = siteData.projects;
 
     return (
@@ -34,18 +34,18 @@ export default function Experience() {
         </div>
 
         <Stack gap={12} px={5}>
-          <Text fz={{ base: 14, sm: 20 }} lh={0.5} pt={5}>
-            Positions and Programs:
+          <Text fz={{ base: 16, sm: 20 }} lh={0.5} pt={5}>
+            Activities:
           </Text>
-          {positions.map((position) => {
-            if (!position.hideOnSite) {
+          {activities.map((activity) => {
+            if (!activity.hideOnSite) {
               return (
-                <PositionCard positionInfo={position} key={position.position} />
+                <ActivityCard activityInfo={activity} key={activity.position} />
               );
             }
           })}
 
-          <Text fz={{ base: 14, sm: 20 }} lh={0.5} pt={5}>
+          <Text fz={{ base: 16, sm: 20 }} lh={0.5} pt={5}>
             Projects:
           </Text>
           {projects.map((project) => {
@@ -54,7 +54,7 @@ export default function Experience() {
             }
           })}
 
-          <Text fz={{ base: 14, sm: 20 }} lh={0.5} pt={5}>
+          <Text fz={{ base: 16, sm: 20 }} lh={0.5} pt={5}>
             Awards:
           </Text>
           {awards.map((award) => {
