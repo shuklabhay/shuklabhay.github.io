@@ -18,7 +18,7 @@ export default function ActivityCard({
   const ListHeader = () => {
     return (
       <Text fz={{ base: 14, sm: 16 }} lh={1.5}>
-        <Text span c="main" fw={700} inherit>
+        <Text span c="main.3" fw={700} inherit>
           {position}
         </Text>
       </Text>
