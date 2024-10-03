@@ -11,7 +11,7 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import React, { useEffect, useState } from "react";
-import mainPhoto from "../static/main_photo.jpg";
+import mainPhoto from "../static/main_photo.png";
 import { scrollViewportTo } from "../utils/scroll";
 import { useScrollContext } from "../utils/scrollContext";
 import { NavItem, ScrollInfo } from "../utils/types";
@@ -105,7 +105,6 @@ export function Navbar() {
             onClick={() => handleNavClick("landingPosition")}
             style={{ cursor: "pointer", paddingLeft: 8 }}
           >
-            <Image src={mainPhoto} alt="Logo" width={32} height={32} />
             <Text fz="15" style={{ fontWeight: "bold" }}>
               Abhay Shukla
             </Text>
