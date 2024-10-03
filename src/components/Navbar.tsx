@@ -70,7 +70,7 @@ export function Navbar() {
         top: 0,
         left: 0,
         right: 0,
-        zIndex: 9999,
+        zIndex: 20,
         transform: `translateY(${isVisible ? "0" : "-100%"})`,
         transition: "transform 0.3s ease-in-out",
       }}

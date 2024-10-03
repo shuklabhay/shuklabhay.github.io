@@ -83,7 +83,7 @@
       "src": "src/static/icons/lsd.jpg",
       "link": "https://www.lelandsd.org/"
     },
-    "hideOnSite": false,
+    "hideOnSite": true,
     "hideOnResume": true
   }
 ]
