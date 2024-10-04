@@ -5,10 +5,7 @@
     "broadDescription": "StereoSampleGAN is a lightweight machine learning approach high fidelity stereo audio sample generation",
     "details": [
       {
-        "point": "Introduces a novel machine learning architecture to generate stereo, time-frequency representations of audio samples."
-      },
-      {
-        "point": "Research project pending publishing, continuation of UCLA COSMOS 2024 Research."
+        "point": "Introduces a novel machine learning architecture to generate stereo, time-frequency representations of audio samples optimizing computational efficiency. Project partially funded by UCLA, research paper pending publication."
       }
     ],
     "images": [

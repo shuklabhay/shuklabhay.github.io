@@ -31,7 +31,7 @@
     "ongoing": false,
     "details": [
       {
-        "point": "Investigated parallels of biological mechanisms to machine learning advancements (transformers, regression, etc)."
+        "point": "Investigated parallels of biological mechanisms to machine learning advancements (attention, visual processing, recurrent systems, reinforcement, etc)."
       },
       {
         "point": "Developed audio generation ML architecture with UCLA funding."
