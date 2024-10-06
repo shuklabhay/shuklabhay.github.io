@@ -6,8 +6,9 @@ import Contact from "./Contact.tsx";
 import Experience from "./Experience.tsx";
 import Landing from "./Landing.tsx";
 import Skills from "./Skills.tsx";
+import { Navbar } from "../components/Navbar.tsx";
 
-export default function PageStack() {
+export default function InteractiveSite() {
   // Hooks
   const { setScrollInformation } = useScrollContext();
   const landingRef = useRef<HTMLDivElement>(null);
@@ -82,6 +83,8 @@ export default function PageStack() {
 
   return (
     <div>
+      <Navbar />
+
       <div ref={landingRef}>
         <Landing />
       </div>
