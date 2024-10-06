@@ -50,12 +50,22 @@ export default function ActivityCard({
             <OrgImage />
           </Grid.Col>
           <Grid.Col span={10} mx={-5}>
-            <CardTitle title={org} smallerText={timeframeLabel} />
+            <CardTitle
+              title={org}
+              smallerText={timeframeLabel}
+              linkTo={icon.link}
+            />
           </Grid.Col>
         </Grid>
       );
     } else {
-      return <CardTitle title={org} smallerText={timeframeLabel} />;
+      return (
+        <CardTitle
+          title={org}
+          smallerText={timeframeLabel}
+          linkTo={icon.link}
+        />
+      );
     }
   };
 

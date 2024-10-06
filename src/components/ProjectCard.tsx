@@ -1,11 +1,11 @@
 import { Carousel } from "@mantine/carousel";
-import { Button, Card, Grid, Group, Image, Text } from "@mantine/core";
+import { Button, Card, Grid, Image, Text } from "@mantine/core";
 import React, { useState } from "react";
 import { ProjectItem } from "../utils/types";
 import BulletPointList from "./CardComponents/BulletPointList";
-import CardTitle from "./CardComponents/CardTitle";
 import ImageLightboxGallery from "./CardComponents/ImageLightboxGallery";
 import { LeftArrowIcon, RightArrowIcon } from "./LRArrowButton";
+import CardTitle from "./CardComponents/CardTitle";
 
 export default function ProjectCard({
   projectInfo,
@@ -28,7 +28,11 @@ export default function ProjectCard({
 
   return (
     <Card padding="15" radius="md" c="white" mb={5}>
-      <CardTitle title={title} smallerText={""} />
+      <CardTitle
+        title={title}
+        smallerText={""}
+        linkTo={isLink ? link[0].url : "none"}
+      />
 
       <Grid mb={areImages && isLink ? 20 : 0} mt={areImages ? 5 : 0}>
         {areImages && (
