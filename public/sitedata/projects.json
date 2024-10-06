@@ -1,7 +1,6 @@
 [
   {
     "title": "StereoSampleGAN",
-    "type": "AI Research",
     "broadDescription": "StereoSampleGAN is a lightweight machine learning approach high fidelity stereo audio sample generation",
     "details": [
       {
@@ -36,7 +35,6 @@
   },
   {
     "title": "Quickscout",
-    "type": "Team Scouting Application",
     "broadDescription": "Quickscout is FRC604's novel scouting application",
     "details": [
       {
@@ -75,7 +73,6 @@
   },
   {
     "title": "Domotron (FRC604 2024 Robot)",
-    "type": "FRC Team 604 2024 Robot",
     "broadDescription": "Domotron is a high-performance competitive robot designed excel in the 2024 FRC Game \"Crescendo\"",
     "details": [
       {
@@ -114,7 +111,6 @@
   },
   {
     "title": "VelocityDraft",
-    "type": "Duo Hackathon Application",
     "broadDescription": "VelocityDraft is a flexible essay writing scheduler webapp",
     "details": [
       {
@@ -142,7 +138,6 @@
   },
   {
     "title": "Digital Audio Production",
-    "type": "Independent Passion Project",
     "broadDescription": "Create professional full length compositions and songs",
     "details": [
       {

@@ -12,7 +12,7 @@ export default function ProjectCard({
 }: {
   projectInfo: ProjectItem;
 }) {
-  const { title, type, broadDescription, details, images, link } = projectInfo;
+  const { title, broadDescription, details, images, link } = projectInfo;
   const [opened, setOpened] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
@@ -28,7 +28,7 @@ export default function ProjectCard({
 
   return (
     <Card padding="15" radius="md" c="white" mb={5}>
-      <CardTitle title={title} smallerText={type} />
+      <CardTitle title={title} smallerText={""} />
 
       <Grid mb={areImages && isLink ? 20 : 0} mt={areImages ? 5 : 0}>
         {areImages && (

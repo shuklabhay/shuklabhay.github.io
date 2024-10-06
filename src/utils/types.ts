@@ -56,7 +56,6 @@ export interface ActivityItem {
 
 export interface ProjectItem {
   title: string;
-  type: string;
   broadDescription: string;
   details: BulletPoint[];
   experience: string;
