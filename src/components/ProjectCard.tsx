@@ -4,14 +4,15 @@ import React, { useState } from "react";
 import { ProjectItem } from "../utils/types";
 import BulletPointList from "./CardComponents/BulletPointList";
 import CardTitle from "./CardComponents/CardTitle";
-import ImageCarouselModal from "./CardComponents/ImageCarouselModal";
+import ImageLightboxGallery from "./CardComponents/ImageLightboxGallery";
+import { LeftArrowIcon, RightArrowIcon } from "./LRArrowButton";
 
 export default function ProjectCard({
   projectInfo,
 }: {
   projectInfo: ProjectItem;
 }) {
-  const { title, type, broadDescription, details, images, links } = projectInfo;
+  const { title, type, broadDescription, details, images, link } = projectInfo;
   const [opened, setOpened] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
@@ -23,13 +24,13 @@ export default function ProjectCard({
     );
   };
   const areImages = images.length !== 0;
-  const areLinks = links.length !== 0;
+  const isLink = link.length == 1;
 
   return (
     <Card padding="15" radius="md" c="white" mb={5}>
       <CardTitle title={title} smallerText={type} />
 
-      <Grid mb={areImages && areLinks ? 20 : 0} mt={areImages ? 5 : 0}>
+      <Grid mb={areImages && isLink ? 20 : 0} mt={areImages ? 5 : 0}>
         {areImages && (
           <Grid.Col span={{ base: 12, sm: 3 }} w={"100%"}>
             <Carousel
@@ -37,9 +38,10 @@ export default function ProjectCard({
               slideGap="15"
               loop
               controlSize={25}
-              mb={0}
               initialSlide={selectedImageIndex}
               onSlideChange={setSelectedImageIndex}
+              previousControlIcon={<LeftArrowIcon large={false} />}
+              nextControlIcon={<RightArrowIcon large={false} />}
               styles={{
                 viewport: { borderRadius: 10 },
                 control: {
@@ -80,30 +82,28 @@ export default function ProjectCard({
         </Grid.Col>
       </Grid>
 
-      {areLinks && (
-        <Group gap={10} grow>
-          {links.map((linkObject) => (
-            <Button
-              component="a"
-              href={linkObject.url}
-              target="_blank"
-              variant="filled"
-              rel="noopener noreferrer"
-              key={linkObject.displayText}
-            >
-              {linkObject.displayText}
-            </Button>
-          ))}
-        </Group>
+      {isLink && (
+        <Button
+          component="a"
+          href={link[0].url}
+          target="_blank"
+          variant="filled"
+          rel="noopener noreferrer"
+          key={link[0].description}
+        >
+          {link[0].description}
+        </Button>
       )}
 
-      <ImageCarouselModal
-        opened={opened}
-        setOpened={setOpened}
-        images={images}
-        initialSlideIndex={selectedImageIndex}
-        setSlideIndex={setSelectedImageIndex}
-      />
+      {opened && (
+        <ImageLightboxGallery
+          opened={opened}
+          setOpened={setOpened}
+          images={images}
+          initialSlideIndex={selectedImageIndex}
+          setSlideIndex={setSelectedImageIndex}
+        />
+      )}
     </Card>
   );
 }

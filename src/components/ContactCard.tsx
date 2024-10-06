@@ -1,4 +1,4 @@
-import { Card, Text } from "@mantine/core";
+import { Card, Button } from "@mantine/core";
 import React from "react";
 import { ContactItem } from "../utils/types";
 
@@ -9,22 +9,19 @@ export default function ContactCard({
 }) {
   const { title, link } = contactItem;
 
+  const isEmail = link.includes("@");
+  const formattedLink = isEmail ? `mailto:${link}` : link;
+
   return (
-    <Card padding="15" radius="md" c="white" mb={15}>
-      <Text fz={{ base: 12, sm: 16 }} mb={-2}>
-        {title}:{" "}
-        <a
-          href={link}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            color: "#8a8ae6",
-            textDecoration: "underline",
-          }}
-        >
-          {link}
-        </a>
-      </Text>
-    </Card>
+    <Button
+      component="a"
+      href={formattedLink}
+      target="_blank"
+      rel="noopener noreferrer"
+      fullWidth
+      color="main.4"
+    >
+      {title}
+    </Button>
   );
 }

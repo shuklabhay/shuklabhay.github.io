@@ -5,7 +5,10 @@
     "broadDescription": "StereoSampleGAN is a lightweight machine learning approach high fidelity stereo audio sample generation",
     "details": [
       {
-        "point": "Introduces a novel machine learning architecture to generate stereo, time-frequency representations of audio samples optimizing computational efficiency. Project partially funded by UCLA, research paper pending publication."
+        "point": "Introduces a novel machine learning architecture to generate stereo, time-frequency representations of audio samples while optimizing computational efficiency."
+      },
+      {
+        "point": "Partially funded by UCLA, paper pending publishing."
       }
     ],
     "images": [
@@ -18,10 +21,10 @@
         "alt": "Generated Audio Example 2"
       }
     ],
-    "links": [
+    "link": [
       {
         "url": "https://github.com/shuklabhay/stereo-sample-gan",
-        "displayText": "GitHub Repo"
+        "description": "GitHub Repo"
       }
     ],
     "hideOnSite": false,
@@ -57,10 +60,10 @@
         "alt": "Rankings Page"
       }
     ],
-    "links": [
+    "link": [
       {
         "url": "https://github.com/frc604",
-        "displayText": "GitHub Organization"
+        "description": "GitHub Organization"
       }
     ],
     "hideOnSite": false,
@@ -80,26 +83,26 @@
     ],
     "images": [
       {
-        "src": "src/static/projects/domotron/champs_zoom.jpg",
-        "alt": "Domotron in motion at the World Championships"
+        "src": "src/static/projects/domotron/sac_peek_shot.jpg",
+        "alt": "Domotron Firing a Note in Sacramento Regional QM?"
       },
       {
         "src": "src/static/projects/domotron/sac_climb.jpg",
-        "alt": "Domotron climbing the stage at the end of a Sacramento Regional QM75"
+        "alt": "Domotron Trap Scoring in Sacramento Regional QM75"
       },
       {
-        "src": "src/static/projects/domotron/sac_peek_shot.jpg",
-        "alt": "Domotron shooting a note in some Sacramento Reiognal match"
+        "src": "src/static/projects/domotron/champs_zoom.jpg",
+        "alt": "Domotron Cycling at the World Championships"
       },
       {
         "src": "src/static/projects/domotron/mbr_auto.png",
-        "alt": "Domotron's autonomous routine in action at the Monterey Bay Regional QM8"
+        "alt": "Domotron's Autonomous Routine in Monterey Bay Regional QM8"
       }
     ],
-    "links": [
+    "link": [
       {
         "url": "https://604robotics.com/2023-2024-crescendo/",
-        "displayText": "Robot Website"
+        "description": "Robot Website"
       }
     ],
     "hideOnSite": false,
@@ -111,7 +114,7 @@
     "broadDescription": "VelocityDraft is a flexible essay writing scheduler webapp",
     "details": [
       {
-        "point": "Leverages user writing abilities and essay deadlines to algorithmically determine best order of essay writing. Third place project in OneHacks III Hackathon."
+        "point": "Open source webapp leverages user writing abilities and essay deadlines to algorithmically determine best order of essay writing. Third place project in OneHacks III Hackathon."
       }
     ],
     "images": [
@@ -124,14 +127,10 @@
         "alt": "VelocityDraft Icon"
       }
     ],
-    "links": [
+    "link": [
       {
         "url": "https://shuklabhay.github.io/velocity-draft/",
-        "displayText": "Website"
-      },
-      {
-        "url": "https://github.com/shuklabhay/velocity-draft",
-        "displayText": "GitHub Repo"
+        "description": "Application Website"
       }
     ],
     "hideOnSite": false,
@@ -153,7 +152,7 @@
       }
     ],
     "images": [],
-    "links": [],
+    "link": [],
     "hideOnSite": true,
     "hideOnResume": true
   }

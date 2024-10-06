@@ -7,7 +7,7 @@ export type GitHubRepo = any;
 //  Data Types
 export type RichImage = { src: string; alt: string };
 export type RichIcon = { src: string; link: string };
-export type RichLink = { url: string; displayText: string };
+export type RichLink = [{ url: string; description: string }];
 
 export type BulletPoint = { point: string };
 export type Skill = string;
@@ -61,7 +61,7 @@ export interface ProjectItem {
   details: BulletPoint[];
   experience: string;
   images: RichImage[];
-  links: RichLink[];
+  link: RichLink;
   hideOnSite: boolean;
   hideOnResume: boolean;
 }
