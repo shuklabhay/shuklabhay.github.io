@@ -19,7 +19,7 @@ export default function ContactCard({
       target="_blank"
       rel="noopener noreferrer"
       fullWidth
-      color="main.4"
+      color="main"
     >
       {title}
     </Button>
