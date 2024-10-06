@@ -13,12 +13,16 @@
     ],
     "images": [
       {
-        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/main/paper/static/generated_audio_example_1.png",
-        "alt": "Generated Audio Example 1"
+        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/refs/heads/main/static/curated_kick_generated_examples.png",
+        "alt": "Generated Audio From Pretrained Model Instance 1"
       },
       {
-        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/main/paper/static/generated_audio_example_2.png",
-        "alt": "Generated Audio Example 2"
+        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/refs/heads/main/static/diverse_kick_generated_examples.png",
+        "alt": "Generated Audio From Pretrained Model Instance 2"
+      },
+      {
+        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/refs/heads/main/static/instrument_one_shot_generated_examples.png",
+        "alt": "Generated Audio From Pretrained Model Instance 3"
       }
     ],
     "link": [

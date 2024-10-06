@@ -1,4 +1,3 @@
-import { Carousel } from "@mantine/carousel";
 import { Card, CloseButton, Grid, Text } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { RichImage } from "../../utils/types";
@@ -29,7 +28,9 @@ function LightboxHeader({
         zIndex: 200,
       }}
     >
-      <Text size="lg">{titleText}</Text>
+      <Text size="lg" mr={25} ml={25}>
+        {titleText}
+      </Text>
 
       <CloseButton
         size="md"
