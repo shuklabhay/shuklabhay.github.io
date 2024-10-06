@@ -4,17 +4,17 @@ import {
   AwardItem,
   ContactItem,
   GHData,
-  PositionItem,
+  ActivityItem,
   ProjectItem,
   ResumeData,
   SiteData,
-  SkillItem,
+  SkillData,
 } from "./types";
 
 // File names
 const awardFileName = "awards.json";
 const ghDataFileName = "ghdata.json";
-const positionsFileName = "positions.json";
+const activitiesFileName = "activities.json";
 const projectsFileName = "projects.json";
 const skillsFileName = "skills.json";
 const contactFileName = "contact.json";
@@ -23,7 +23,7 @@ const contactFileName = "contact.json";
 export async function getJSONDataForSite() {
   const awards = await getAwardDataForSite();
   const ghData = await getGHDataForSite();
-  const positions = await getPositionsDataForSite();
+  const activities = await getActivitiesDataForSite();
   const projects = await getProjectsDataForSite();
   const skills = await getSkillsDataForSite();
   const contact = await getContactDataForSite();
@@ -31,7 +31,7 @@ export async function getJSONDataForSite() {
   return {
     awards,
     ghData,
-    positions,
+    activities,
     projects,
     skills,
     contact,
@@ -61,16 +61,16 @@ async function getGHDataForSite(): Promise<GHData> {
   return readJSONForSite<GHData>(ghDataFileName);
 }
 
-async function getPositionsDataForSite(): Promise<PositionItem[]> {
-  return readJSONForSite<PositionItem[]>(positionsFileName);
+async function getActivitiesDataForSite(): Promise<ActivityItem[]> {
+  return readJSONForSite<ActivityItem[]>(activitiesFileName);
 }
 
 async function getProjectsDataForSite(): Promise<ProjectItem[]> {
   return readJSONForSite<ProjectItem[]>(projectsFileName);
 }
 
-async function getSkillsDataForSite(): Promise<SkillItem[]> {
-  return readJSONForSite<SkillItem[]>(skillsFileName);
+async function getSkillsDataForSite(): Promise<SkillData> {
+  return readJSONForSite<SkillData>(skillsFileName);
 }
 
 async function getContactDataForSite(): Promise<ContactItem[]> {
@@ -80,14 +80,14 @@ async function getContactDataForSite(): Promise<ContactItem[]> {
 // Access data to use on resume
 export async function getJSONDataForResume() {
   const awards = await getAwardDataForResume();
-  const positions = await getPositionsDataForResume();
+  const activities = await getActivitiesDataForResume();
   const projects = await getProjectsDataForResume();
   const skills = await getSkillsDataForResume();
   const contact = await getContactDataForResume();
 
   return {
     awards,
-    positions,
+    activities,
     projects,
     skills,
     contact,
@@ -111,16 +111,16 @@ async function getAwardDataForResume(): Promise<AwardItem[]> {
   return readJSONFileForResume<AwardItem[]>(awardFileName);
 }
 
-async function getPositionsDataForResume(): Promise<PositionItem[]> {
-  return readJSONFileForResume<PositionItem[]>(positionsFileName);
+async function getActivitiesDataForResume(): Promise<ActivityItem[]> {
+  return readJSONFileForResume<ActivityItem[]>(activitiesFileName);
 }
 
 async function getProjectsDataForResume(): Promise<ProjectItem[]> {
   return readJSONFileForResume<ProjectItem[]>(projectsFileName);
 }
 
-async function getSkillsDataForResume(): Promise<SkillItem[]> {
-  return readJSONFileForResume<SkillItem[]>(skillsFileName);
+async function getSkillsDataForResume(): Promise<SkillData> {
+  return readJSONFileForResume<SkillData>(skillsFileName);
 }
 
 async function getContactDataForResume(): Promise<ContactItem[]> {

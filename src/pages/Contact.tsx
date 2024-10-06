@@ -1,4 +1,4 @@
-import { Grid, Text } from "@mantine/core";
+import { Card, Grid, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import ContactCard from "../components/ContactCard";
 import { getJSONDataForSite } from "../utils/data";
@@ -32,11 +32,7 @@ export default function Contact() {
         <Grid gutter="sm">
           {contact.map((contactItem) => {
             return (
-              <Grid.Col
-                span={{ base: 12, sm: 6 }}
-                mb={-15}
-                key={contactItem.title}
-              >
+              <Grid.Col span={{ base: 12, sm: 6 }} key={contactItem.title}>
                 <ContactCard contactItem={contactItem} />
               </Grid.Col>
             );

@@ -2,23 +2,22 @@ import { Card, Grid, Image, Text } from "@mantine/core";
 import React from "react";
 import { getTimeframeLabel } from "../utils/dates";
 import { isSmallScreen } from "../utils/scroll";
-import { PositionItem } from "../utils/types";
+import { ActivityItem } from "../utils/types";
 import BulletPointList from "./CardComponents/BulletPointList";
 import CardTitle from "./CardComponents/CardTitle";
 
-export default function PositionCard({
-  positionInfo,
+export default function ActivityCard({
+  activityInfo,
 }: {
-  positionInfo: PositionItem;
+  activityInfo: ActivityItem;
 }) {
   const { org, position, startMonth, endMonth, ongoing, details, icon } =
-    positionInfo;
+    activityInfo;
 
   const timeframeLabel = getTimeframeLabel(startMonth, endMonth, ongoing);
   const ListHeader = () => {
     return (
       <Text fz={{ base: 14, sm: 16 }} lh={1.5}>
-        My position(s):{" "}
         <Text span c="main.3" fw={700} inherit>
           {position}
         </Text>

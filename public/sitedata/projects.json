@@ -5,26 +5,30 @@
     "broadDescription": "StereoSampleGAN is a lightweight machine learning approach high fidelity stereo audio sample generation",
     "details": [
       {
-        "point": "Introduces a novel machine learning architecture to generate stereo, time-frequency representations of audio samples."
+        "point": "Introduces a novel machine learning architecture to generate stereo, time-frequency representations of audio samples while optimizing computational efficiency."
       },
       {
-        "point": "Research project pending publishing, continuation of UCLA COSMOS 2024 Research."
+        "point": "Partially funded by UCLA, paper pending publishing."
       }
     ],
     "images": [
       {
-        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/main/paper/static/generated_audio_example_1.png",
-        "alt": "Generated Audio Example 1"
+        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/refs/heads/main/static/curated_kick_generated_examples.png",
+        "alt": "Generated Audio From Pretrained Model Instance 1"
       },
       {
-        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/main/paper/static/generated_audio_example_2.png",
-        "alt": "Generated Audio Example 2"
+        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/refs/heads/main/static/diverse_kick_generated_examples.png",
+        "alt": "Generated Audio From Pretrained Model Instance 2"
+      },
+      {
+        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/refs/heads/main/static/instrument_one_shot_generated_examples.png",
+        "alt": "Generated Audio From Pretrained Model Instance 3"
       }
     ],
-    "links": [
+    "link": [
       {
         "url": "https://github.com/shuklabhay/stereo-sample-gan",
-        "displayText": "GitHub Repo"
+        "description": "GitHub Repo"
       }
     ],
     "hideOnSite": false,
@@ -36,10 +40,10 @@
     "broadDescription": "Quickscout is FRC604's novel scouting application",
     "details": [
       {
-        "point": "Led development of flexible application to effectively capture and visualize FRC competition data. Trained 10+ team members in web dev to build app and adapt to yearly games."
+        "point": "Led development of flexible application to effectively capture and visualize FRC competition data."
       },
       {
-        "point": "130+ users on FRC604, data collected for 700+ robots."
+        "point": "Trained 10+ team members in web dev to build app and adapt to yearly games. 130+ users on FRC604, data collected for 700+ robots."
       }
     ],
     "images": [
@@ -60,10 +64,10 @@
         "alt": "Rankings Page"
       }
     ],
-    "links": [
+    "link": [
       {
         "url": "https://github.com/frc604",
-        "displayText": "GitHub Organization (Private Team Project)"
+        "description": "GitHub Organization"
       }
     ],
     "hideOnSite": false,
@@ -83,26 +87,26 @@
     ],
     "images": [
       {
-        "src": "src/static/projects/domotron/champs_zoom.jpg",
-        "alt": "Domotron in motion at the World Championships"
+        "src": "src/static/projects/domotron/sac_peek_shot.jpg",
+        "alt": "Domotron Firing a Note in Sacramento Regional QM?"
       },
       {
         "src": "src/static/projects/domotron/sac_climb.jpg",
-        "alt": "Domotron climbing the stage at the end of a Sacramento Regional QM75"
+        "alt": "Domotron Trap Scoring in Sacramento Regional QM75"
       },
       {
-        "src": "src/static/projects/domotron/sac_peek_shot.jpg",
-        "alt": "Domotron shooting a note in some Sacramento Reiognal match"
+        "src": "src/static/projects/domotron/champs_zoom.jpg",
+        "alt": "Domotron Cycling at the World Championships"
       },
       {
         "src": "src/static/projects/domotron/mbr_auto.png",
-        "alt": "Domotron's autonomous routine in action at the Monterey Bay Regional QM8"
+        "alt": "Domotron's Autonomous Routine in Monterey Bay Regional QM8"
       }
     ],
-    "links": [
+    "link": [
       {
         "url": "https://604robotics.com/2023-2024-crescendo/",
-        "displayText": "Robot Website"
+        "description": "Robot Website"
       }
     ],
     "hideOnSite": false,
@@ -114,7 +118,7 @@
     "broadDescription": "VelocityDraft is a flexible essay writing scheduler webapp",
     "details": [
       {
-        "point": "Leverages user writing abilities and essay deadlines to algorithmically determine best order of essay writing. Third place project in OneHacks III Hackathon."
+        "point": "Open source webapp leverages user writing abilities and essay deadlines to algorithmically determine best order of essay writing. Third place project in OneHacks III Hackathon."
       }
     ],
     "images": [
@@ -127,14 +131,10 @@
         "alt": "VelocityDraft Icon"
       }
     ],
-    "links": [
+    "link": [
       {
         "url": "https://shuklabhay.github.io/velocity-draft/",
-        "displayText": "Website"
-      },
-      {
-        "url": "https://github.com/shuklabhay/velocity-draft",
-        "displayText": "GitHub Repo"
+        "description": "Application Website"
       }
     ],
     "hideOnSite": false,
@@ -156,7 +156,7 @@
       }
     ],
     "images": [],
-    "links": [],
+    "link": [],
     "hideOnSite": true,
     "hideOnResume": true
   }
