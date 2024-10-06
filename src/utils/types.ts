@@ -4,36 +4,24 @@ import { RefObject } from "react";
 export type GitHubRestReturn = any;
 export type GitHubRepo = any;
 
-//  Data Types
-export type RichImage = { src: string; alt: string };
-export type RichIcon = { src: string; link: string };
-export type RichLink = [{ url: string; description: string }];
-
-export type BulletPoint = { point: string };
-export type Skill = string;
+// Compiled data types
 
 export interface SiteData {
+  activities: ActivityItem[];
   awards: AwardItem[];
+  contact: ContactItem[];
+  education: EducationItem[];
   ghData: GHData;
   projects: ProjectItem[];
-  activities: ActivityItem[];
   skills: SkillData;
-  contact: ContactItem[];
 }
 export interface ResumeData {
-  awards: AwardItem[];
-  projects: ProjectItem[];
   activities: ActivityItem[];
-  skills: SkillData;
+  awards: AwardItem[];
   contact: ContactItem[];
-}
-
-export interface AwardItem {
-  title: string;
-  recievedMonth: string;
-  description: string;
-  hideOnSite: boolean;
-  hideOnResume: boolean;
+  education: EducationItem[];
+  projects: ProjectItem[];
+  skills: SkillData;
 }
 
 export interface GHData {
@@ -41,6 +29,14 @@ export interface GHData {
   contributions: number;
   linesModified: number;
 }
+
+// Individual data types
+export type RichImage = { src: string; alt: string };
+export type RichIcon = { src: string; link: string };
+export type RichLink = [{ url: string; description: string }];
+
+export type BulletPoint = { point: string };
+export type Skill = string;
 
 export interface ActivityItem {
   org: string;
@@ -52,6 +48,24 @@ export interface ActivityItem {
   icon: RichIcon;
   hideOnSite: boolean;
   hideOnResume: boolean;
+}
+
+export interface AwardItem {
+  title: string;
+  recievedMonth: string;
+  description: string;
+  hideOnSite: boolean;
+  hideOnResume: boolean;
+}
+
+export interface ContactItem {
+  title: string;
+  link: string;
+}
+
+export interface EducationItem {
+  school: string;
+  degree: string;
 }
 
 export interface ProjectItem {
@@ -70,12 +84,7 @@ export interface SkillData {
   other: Skill[];
 }
 
-export interface ContactItem {
-  title: string;
-  link: string;
-}
-
-// Counting Label Animation
+// Counting Animation
 export type counterAnimationInfo = { label: string; finalValue: number };
 export interface CountHookResult {
   ref: RefObject<HTMLSpanElement>;
@@ -90,11 +99,11 @@ export type ScrollInfo = {
   landingPosition: number;
   experiencePosition: number;
   skillsPosition: number;
-  contactPosition: number;
+  aboutMePosition: number;
   isLandingFocused: boolean;
   isExperienceFocused: boolean;
   isSkillsFocused: boolean;
-  isContactFocused: boolean;
+  isAboutMeFocused: boolean;
 };
 
 export type ScrollContextType = {

@@ -24,9 +24,9 @@ const navItems: NavItem[] = [
     focused: "isExperienceFocused",
   },
   {
-    label: "Contact",
-    position: "contactPosition",
-    focused: "isContactFocused",
+    label: "About Me",
+    position: "aboutMePosition",
+    focused: "isAboutMeFocused",
   },
 ];
 

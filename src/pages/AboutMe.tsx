@@ -4,7 +4,7 @@ import ContactCard from "../components/ContactCard";
 import { getJSONDataForSite } from "../utils/data";
 import { SiteData } from "../utils/types";
 
-export default function Contact() {
+export default function AboutMe() {
   const [siteData, setSiteData] = useState<SiteData>();
 
   useEffect(() => {
@@ -17,15 +17,21 @@ export default function Contact() {
 
   if (siteData) {
     const contact = siteData.contact;
+    const education = siteData.education;
 
     return (
       <div style={{ paddingBlock: 10 }}>
         <div style={{ paddingBlock: 10, marginBottom: -10 }}>
-          <Text fz={{ base: 18, sm: 24 }} lh={1.5} mt={-10}>
-            Here's how you can{" "}
+          <Text fz={{ base: 18, sm: 24 }} lh={1.5} mt={-10} mb={10}>
+            Hi! My name is Abhay Shukla, I'm a{" "}
             <Text span c="main" fw={700} inherit>
-              reach out:
-            </Text>
+              {education[0]?.degree}
+            </Text>{" "}
+            at{" "}
+            <Text span c="main" fw={700} inherit>
+              {education[0]?.school}
+            </Text>{" "}
+            who's really passionate about AI and Robotics. Let's get in touch!
           </Text>
         </div>
 

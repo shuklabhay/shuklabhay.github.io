@@ -5,7 +5,7 @@ import { getTimeframeLabel } from "../utils/dates.ts";
 import fs from "fs/promises";
 
 function parseDataToTexTemplate(userData: ResumeData) {
-  const { awards, activities, projects, skills, contact } = userData;
+  const { activities, awards, contact, education, projects, skills } = userData;
 
   const technicalSkillsList = skills.technical.map((skill) => skill).join(", ");
   const otherSkillsList = skills.other.map((skill) => skill).join(", ");
@@ -98,7 +98,7 @@ ${activities
     .map((project) => {
       if (!project.hideOnResume) {
         return `
-  \\begin{rSubsection}{${project.title}}{}{${project.links[0] ? project.links[0].displayText + `: \\underline{\\href{${project.links[0].url}}{${project.links[0].url}}}` : ""}}{}
+  \\begin{rSubsection}{${project.title}}{}{${project.link[0] ? project.link[0].description + `: \\underline{\\href{${project.link[0].url}}{${project.link[0].url}}}` : ""}}{}
        ${project.details
          .map((detail) => {
            return `
@@ -120,8 +120,7 @@ ${activities
 
 \\begin{rSection}{Education}
 	
-	\\textbf{Leland High School} \\hfill \\textit{Expected June 2026} \\\\
-	Junior \\hfill \\textit{San Jose, CA}
+	\\textbf{${education[0]?.school}} \\hfill \\textit{${education[0]?.degree}} \\\\
 	
 \\end{rSection}
 
