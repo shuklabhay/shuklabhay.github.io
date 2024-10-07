@@ -137,7 +137,7 @@ export function Navbar() {
                 {item.label}
               </Button>
             ))}
-            <SwitchViewButton navigateTo="/plaintext" />
+            <SwitchViewButton navigateTo="/plaintext" closeEye={true} />
           </Group>
         </Group>
         {navMenuOpen && (

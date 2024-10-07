@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>404 Routing</title>
+    <script type="text/javascript">
+      // Single Page Apps for GitHub Pages
+      var pathSegmentsToKeep = 0;
+      var l = window.location;
+      if (l.pathname.includes("/plaintext")) {
+        pathSegmentsToKeep = 1;
+      }
+      l.replace(
+        l.protocol +
+          "//" +
+          l.hostname +
+          (l.port ? ":" + l.port : "") +
+          (pathSegmentsToKeep === 1 ? "/plaintext" : "") +
+          "/?/" +
+          l.pathname
+            .slice(1)
+            .split("/")
+            .slice(pathSegmentsToKeep)
+            .join("/")
+            .replace(/&/g, "~and~") +
+          (l.search ? "&" + l.search.slice(1).replace(/&/g, "~and~") : "") +
+          l.hash
+      );
+    </script>
+  </head>
+  <body></body>
+</html>

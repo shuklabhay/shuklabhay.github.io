@@ -153,7 +153,13 @@ export default function PlainTextSite() {
             Abhay Shukla
           </Text>
 
-          <div style={{ position: "absolute", top: 20, right: 20 }}>
+          <div
+            style={{
+              position: "absolute",
+              top: isSmallScreen ? 20 : 15,
+              right: isSmallScreen ? 20 : 10,
+            }}
+          >
             <SwitchViewButton navigateTo="/" />
           </div>
 
