@@ -7,6 +7,7 @@ import Experience from "../components/SiteSubpages/Experience.tsx";
 import Landing from "../components/SiteSubpages/Landing.tsx";
 import Skills from "../components/SiteSubpages/Skills.tsx";
 import { Navbar } from "../components/Navbar.tsx";
+import ChooseSitePopup from "../components/ChooseSitePopup.tsx";
 
 export default function InteractiveSite() {
   // Hooks
@@ -83,6 +84,8 @@ export default function InteractiveSite() {
 
   return (
     <div>
+      <ChooseSitePopup />
+
       <Navbar />
 
       <div ref={landingRef}>

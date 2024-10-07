@@ -34,7 +34,7 @@ export default function AboutMe() {
             {education.map((education) => {
               const Header = () => {
                 return (
-                  <Text fz={{ base: 18, sm: 20 }} key={education.school}>
+                  <Text fz={{ base: 16, sm: 20 }} key={education.school}>
                     <Text span inherit>
                       {education.school}
                     </Text>{" "}

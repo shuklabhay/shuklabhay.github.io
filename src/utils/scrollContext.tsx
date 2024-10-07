@@ -20,11 +20,11 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({
     landingPosition: 0,
     experiencePosition: 0,
     skillsPosition: 0,
-    contactPosition: 0,
+    aboutMePosition: 0,
     isLandingFocused: false,
     isExperienceFocused: false,
     isSkillsFocused: false,
-    isContactFocused: false,
+    isAboutMeFocused: false,
   });
   const [scrollProgress, setScrollProgress] = useState(0);
 
