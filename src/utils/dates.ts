@@ -10,7 +10,7 @@ export function getTimeframeLabel(
   startDate: string,
   endDate: string | null,
   ongoing: boolean,
-  compact = false
+  compact = false,
 ) {
   if (ongoing) {
     if (compact) {
