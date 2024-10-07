@@ -31,7 +31,7 @@ export default function ProjectCard({
       <CardTitle
         title={title}
         smallerText={""}
-        linkTo={isLink ? link[0].url : "none"}
+        linkTo={isLink ? link[0].url : undefined}
       />
 
       <Grid mb={areImages && isLink ? 20 : 0} mt={areImages ? 5 : 0}>

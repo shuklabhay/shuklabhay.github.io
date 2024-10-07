@@ -1,6 +1,6 @@
 import { Text } from "@mantine/core";
 import { isSmallScreen } from "../../utils/scroll";
-import { useMantineTheme } from "@mantine/core";
+import HoverHighlightText from "../HoverHighlightText";
 
 export default function CardTitle({
   title,
@@ -9,14 +9,9 @@ export default function CardTitle({
 }: {
   title: string;
   smallerText: string;
-  linkTo: "none" | string;
+  linkTo?: string;
 }) {
-  const theme = useMantineTheme();
-  const isLink = linkTo !== "none";
-  const titleSize = { base: 16, sm: 20 };
   const labelSize = { base: 12, sm: 14 };
-
-  const highlightColor = theme.colors.main ? theme.colors.main[3] : "inherit";
 
   return (
     <div
@@ -27,31 +22,7 @@ export default function CardTitle({
         flexDirection: isSmallScreen ? "column" : "row",
       }}
     >
-      <Text
-        component="a"
-        href={isLink ? linkTo : undefined}
-        target={isLink ? "_blank" : undefined}
-        rel="noopener noreferrer"
-        style={{
-          cursor: isLink ? "pointer" : "default",
-          color: "white",
-          transition: "color 0.2s",
-        }}
-        onMouseEnter={(e) => {
-          if (isLink) {
-            e.currentTarget.style.color = highlightColor;
-          }
-        }}
-        onMouseLeave={(e) => {
-          if (isLink) {
-            e.currentTarget.style.color = "white";
-          }
-        }}
-        fz={titleSize}
-        fw={700}
-      >
-        {title}
-      </Text>
+      <HoverHighlightText link={linkTo} text={title} />
 
       <Text
         fz={labelSize}

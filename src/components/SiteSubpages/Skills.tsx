@@ -1,9 +1,9 @@
 import { Grid, Stack, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
-import GHCard from "../components/CardComponents/GHCard";
-import SkillCard from "../components/SkillCard";
-import { getJSONDataForSite } from "../utils/data";
-import { SiteData } from "../utils/types";
+import { getJSONDataForSite } from "../../utils/data";
+import { SiteData } from "../../utils/types";
+import GHCard from "../CardComponents/GHCard";
+import SkillCard from "../SkillCard";
 
 export default function Skills() {
   const [siteData, setSiteData] = useState<SiteData>();

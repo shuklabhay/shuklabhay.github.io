@@ -1,11 +1,11 @@
 import { Container } from "@mantine/core";
 import { useEffect, useRef } from "react";
 import { scrollOffet, useScrollContext } from "../utils/scrollContext.tsx";
-import AboutMe from "./AboutMe.tsx";
+import AboutMe from "../components/SiteSubpages/AboutMe.tsx";
 
-import Experience from "./Experience.tsx";
-import Landing from "./Landing.tsx";
-import Skills from "./Skills.tsx";
+import Experience from "../components/SiteSubpages/Experience.tsx";
+import Landing from "../components/SiteSubpages/Landing.tsx";
+import Skills from "../components/SiteSubpages/Skills.tsx";
 import { Navbar } from "../components/Navbar.tsx";
 
 export default function InteractiveSite() {
