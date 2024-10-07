@@ -37,7 +37,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     loadFromLocalStorage("appInfo", {
       isViewingSelectOpen: true,
       defaultView: undefined,
-    })
+    }),
   );
   const [scrollInfo, setScrollInfo] = useState<ScrollInfo>({
     landingPosition: 0,

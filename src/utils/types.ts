@@ -101,9 +101,10 @@ export interface CountingAnimationLabelProps {
 }
 
 // Application handliing
+export type AppViews = undefined | "interactive" | "plaintext";
 export type AppInfo = {
   isViewingSelectOpen: boolean;
-  defaultView: undefined | "interactive" | "plaintext";
+  defaultView: AppViews;
 };
 
 export type ScrollInfo = {

@@ -1,22 +1,45 @@
 import React, { useState } from "react";
 import { Modal, Button, Checkbox } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../utils/appContext";
+import { AppViews } from "../utils/types";
 
 export default function ChooseSitePopup() {
-  const [opened, setOpened] = useState(true);
+  const {
+    appInformation: appInformation,
+    setAppInformation: setAppInformation,
+  } = useAppContext();
   const [rememberSelection, setRememberSelection] = useState(false);
+  const [selectedView, setSelectedView] = useState<AppViews>(undefined);
   const navigate = useNavigate();
+
+  const handleClose = () => {
+    if (rememberSelection) {
+      setAppInformation({
+        isViewingSelectOpen: false,
+        defaultView: selectedView,
+      });
+    } else {
+      setAppInformation({
+        ...appInformation,
+        isViewingSelectOpen: false,
+      });
+    }
+  };
 
   return (
     <>
       <Modal
-        opened={opened}
-        onClose={() => setOpened(false)}
+        opened={appInformation.isViewingSelectOpen}
+        onClose={handleClose}
         title="Choose Viewing Experience"
         trapFocus={false}
       >
         <Button
-          onClick={() => setOpened(false)}
+          onClick={() => {
+            setSelectedView("interactive");
+            handleClose;
+          }}
           fullWidth
           mb={10}
           autoFocus={false}
@@ -35,7 +58,10 @@ export default function ChooseSitePopup() {
           Interactive, visual layout
         </Button>
         <Button
-          onClick={() => navigate("/plaintext")}
+          onClick={() => {
+            setSelectedView("plaintext");
+            navigate("/plaintext");
+          }}
           fullWidth
           mb={10}
           autoFocus={false}
