@@ -1,4 +1,4 @@
-import { Card, CloseButton, Grid, Text } from "@mantine/core";
+import { Card, CloseButton, Text } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { RichImage } from "../../utils/types";
 import Lightbox from "react-spring-lightbox";

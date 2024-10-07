@@ -1,4 +1,4 @@
-import { Card, Button } from "@mantine/core";
+import { Button } from "@mantine/core";
 import React from "react";
 import { ContactItem } from "../utils/types";
 
