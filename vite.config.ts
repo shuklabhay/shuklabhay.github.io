@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import fs from "fs";
+import path from "path";
 
 export default defineConfig({
   plugins: [
@@ -8,7 +9,10 @@ export default defineConfig({
     {
       name: "copy-404",
       closeBundle: () => {
-        fs.copyFileSync("404.html", "dist/404.html");
+        fs.copyFileSync(
+          path.join(process.cwd(), "404.html"),
+          path.join(process.cwd(), "dist", "404.html")
+        );
       },
     },
   ],
