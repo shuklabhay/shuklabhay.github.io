@@ -155,7 +155,7 @@ export default function PlainTextSite() {
 
           <div
             style={{
-              position: "absolute",
+              position: isSmallScreen ? "absolute" : "fixed",
               top: isSmallScreen ? 20 : 15,
               right: isSmallScreen ? 20 : 10,
             }}
