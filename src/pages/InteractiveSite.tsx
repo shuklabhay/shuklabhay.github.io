@@ -10,10 +10,7 @@ import { Navbar } from "../components/Navbar.tsx";
 
 export default function InteractiveSite() {
   // Hooks
-  const {
-    setScrollInformation: setScrollInformation,
-    appInformation: appInformation,
-  } = useAppContext();
+  const { setScrollInformation: setScrollInformation } = useAppContext();
 
   const landingRef = useRef<HTMLDivElement>(null);
   const skillsRef = useRef<HTMLDivElement>(null);
