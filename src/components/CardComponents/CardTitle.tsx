@@ -27,7 +27,7 @@ export default function CardTitle({
       <Text
         fz={labelSize}
         c="gray"
-        mt={5}
+        mt={isSmallScreen ? 0 : 5}
         mb={5}
         style={{ fontStyle: "italic" }}
       >

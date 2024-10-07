@@ -38,7 +38,7 @@ export function Navbar() {
     setScrollProgress,
   } = useAppContext();
   const [isVisible, setIsVisible] = useState(false);
-  const [opened, { toggle }] = useDisclosure(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,18 +48,21 @@ export function Navbar() {
       const newProgress = (window.scrollY / scrollableDistance) * 100;
       setScrollProgress(Math.min(newProgress, 100));
       setIsVisible(window.scrollY > 30);
+      if (window.scrollY < 30 && open) {
+        setOpen(false);
+      }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [setScrollProgress]);
+  }, [setScrollProgress, open]);
 
   const handleNavClick = (position: Extract<keyof ScrollInfo, string>) => {
     const scrollPosition = scrollInformation[position];
     if (typeof scrollPosition === "number") {
       scrollViewportTo(scrollPosition);
-      if (opened) {
-        toggle();
+      if (open) {
+        setOpen(false);
       }
     } else {
       console.error(`Invalid scroll position for ${position}`);
@@ -93,7 +96,7 @@ export function Navbar() {
           justify="space-between"
           style={{
             paddingBottom: 10,
-            borderBottom: opened
+            borderBottom: open
               ? undefined
               : `2px solid ${theme.colors.dark[5]}`,
             display: "flex",
@@ -115,8 +118,10 @@ export function Navbar() {
           <Group gap={0} hiddenFrom="xs" mt={-3}>
             <ConfigButton />
             <Burger
-              opened={opened}
-              onClick={toggle}
+              opened={open}
+              onClick={() => {
+                setOpen(!open);
+              }}
               size="sm"
               transitionDuration={250}
             />
@@ -136,7 +141,7 @@ export function Navbar() {
             <ConfigButton />
           </Group>
         </Group>
-        {opened && (
+        {open && (
           <Stack gap={0} hiddenFrom="xs">
             {navItems.map((item) => (
               <Button

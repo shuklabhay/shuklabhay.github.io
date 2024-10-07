@@ -71,6 +71,7 @@ export default function HoverHighlightText({
       onMouseEnter={() => setColor(highlightColor)}
       onMouseLeave={() => setColor("white")}
       fz={size ? size : defaultTitleSize}
+      lh={1.25}
       fw={700}
     >
       {text}

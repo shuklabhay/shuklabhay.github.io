@@ -7,8 +7,6 @@ import Experience from "../components/SiteSubpages/Experience.tsx";
 import Landing from "../components/SiteSubpages/Landing.tsx";
 import Skills from "../components/SiteSubpages/Skills.tsx";
 import { Navbar } from "../components/Navbar.tsx";
-import ChooseSitePopup from "../components/ChooseSitePopup.tsx";
-import { useNavigate } from "react-router-dom";
 
 export default function InteractiveSite() {
   // Hooks
@@ -16,7 +14,6 @@ export default function InteractiveSite() {
     setScrollInformation: setScrollInformation,
     appInformation: appInformation,
   } = useAppContext();
-  const navigate = useNavigate();
 
   const landingRef = useRef<HTMLDivElement>(null);
   const skillsRef = useRef<HTMLDivElement>(null);
@@ -90,8 +87,6 @@ export default function InteractiveSite() {
 
   return (
     <div>
-      <ChooseSitePopup />
-
       <Navbar />
 
       <div ref={landingRef}>

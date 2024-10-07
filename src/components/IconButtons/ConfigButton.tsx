@@ -2,10 +2,16 @@ import { ActionIcon } from "@mantine/core";
 import { useState } from "react";
 
 export default function ConfigButton() {
+  const [open, setOpen] = useState(false);
   const [iconColor, setIconColor] = useState<"main.1" | "main.3">("main.1");
 
   const handleClick = () => {
-    setIconColor("main.3");
+    setOpen(!open);
+    if (open) {
+      setIconColor("main.1");
+    } else {
+      setIconColor("main.3");
+    }
   };
 
   return (
