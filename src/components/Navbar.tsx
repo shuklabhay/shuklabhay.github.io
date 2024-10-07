@@ -8,12 +8,11 @@ import {
   Text,
   useMantineTheme,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
 import React, { useEffect, useState } from "react";
 import { scrollViewportTo } from "../utils/scroll";
 import { useAppContext } from "../utils/appContext";
 import { NavItem, ScrollInfo } from "../utils/types";
-import ConfigButton from "./IconButtons/ConfigButton";
+import SwitchViewButton from "./IconButtons/SwitchViewButton";
 
 const navItems: NavItem[] = [
   { label: "Home", position: "landingPosition", focused: "isLandingFocused" },
@@ -38,7 +37,7 @@ export function Navbar() {
     setScrollProgress,
   } = useAppContext();
   const [isVisible, setIsVisible] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [navMenuOpen, setNavMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,21 +47,21 @@ export function Navbar() {
       const newProgress = (window.scrollY / scrollableDistance) * 100;
       setScrollProgress(Math.min(newProgress, 100));
       setIsVisible(window.scrollY > 30);
-      if (window.scrollY < 30 && open) {
-        setOpen(false);
+      if (window.scrollY < 30 && navMenuOpen) {
+        setNavMenuOpen(false);
       }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [setScrollProgress, open]);
+  }, [setScrollProgress, navMenuOpen]);
 
   const handleNavClick = (position: Extract<keyof ScrollInfo, string>) => {
     const scrollPosition = scrollInformation[position];
     if (typeof scrollPosition === "number") {
       scrollViewportTo(scrollPosition);
-      if (open) {
-        setOpen(false);
+      if (navMenuOpen) {
+        setNavMenuOpen(false);
       }
     } else {
       console.error(`Invalid scroll position for ${position}`);
@@ -89,14 +88,14 @@ export function Navbar() {
         bg="dark.6"
         style={{ height: "5px" }}
       />
-      <Box bg="dark.6">
+      <Box bg="dark.6" mt={-1}>
         <Group
           p={5}
           align="center"
           justify="space-between"
           style={{
             paddingBottom: 10,
-            borderBottom: open
+            borderBottom: navMenuOpen
               ? undefined
               : `2px solid ${theme.colors.dark[5]}`,
             display: "flex",
@@ -116,11 +115,11 @@ export function Navbar() {
           </Group>
 
           <Group gap={0} hiddenFrom="xs" mt={-3}>
-            <ConfigButton />
+            <SwitchViewButton navigateTo="/plaintext" />
             <Burger
-              opened={open}
+              opened={navMenuOpen}
               onClick={() => {
-                setOpen(!open);
+                setNavMenuOpen(!navMenuOpen);
               }}
               size="sm"
               transitionDuration={250}
@@ -138,10 +137,10 @@ export function Navbar() {
                 {item.label}
               </Button>
             ))}
-            <ConfigButton />
+            <SwitchViewButton navigateTo="/plaintext" />
           </Group>
         </Group>
-        {open && (
+        {navMenuOpen && (
           <Stack gap={0} hiddenFrom="xs">
             {navItems.map((item) => (
               <Button

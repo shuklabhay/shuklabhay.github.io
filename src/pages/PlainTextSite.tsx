@@ -1,4 +1,4 @@
-import { Container, Stack, Text } from "@mantine/core";
+import { Box, Container, Group, Stack, Text } from "@mantine/core";
 import { getJSONDataForSite } from "../utils/data";
 import { useEffect, useState } from "react";
 import {
@@ -14,6 +14,7 @@ import { getTimeframeLabel } from "../utils/dates";
 import BulletPointList from "../components/CardComponents/BulletPointList";
 import { useNavigate } from "react-router-dom";
 import { isSmallScreen } from "../utils/scroll";
+import SwitchViewButton from "../components/IconButtons/SwitchViewButton";
 
 const ActivityDescription = ({
   activityInfo,
@@ -137,16 +138,24 @@ export default function PlainTextSite() {
             fz={26}
             lh={1.5}
             mt={10}
-            ta={"center"}
+            ta="center"
             c="main"
             fw={700}
-            style={{ cursor: "pointer" }}
+            style={{
+              flex: 1,
+              textAlign: "center",
+              cursor: "pointer",
+            }}
             onClick={() => {
               navigate("/");
             }}
           >
             Abhay Shukla
           </Text>
+
+          <div style={{ position: "absolute", top: 20, right: 20 }}>
+            <SwitchViewButton navigateTo="/" />
+          </div>
 
           <div
             style={{
@@ -164,7 +173,7 @@ export default function PlainTextSite() {
                   key={item.title}
                   style={{
                     margin: isSmallScreen ? 10 : 20,
-                    marginTop: isSmallScreen ? -5 : 5,
+                    marginTop: isSmallScreen ? -3 : 5,
                     marginBottom: 0,
                   }}
                 >
