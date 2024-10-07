@@ -3,6 +3,25 @@ import react from "@vitejs/plugin-react";
 import fs from "fs";
 import path from "path";
 
+function copyDirectory(src: string, dest: string) {
+  if (!fs.existsSync(dest)) {
+    fs.mkdirSync(dest, { recursive: true });
+  }
+
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+
+    if (entry.isDirectory()) {
+      copyDirectory(srcPath, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+    }
+  }
+}
+
 export default defineConfig({
   plugins: [
     react(),
@@ -14,15 +33,7 @@ export default defineConfig({
         const srcDir = path.resolve(__dirname, "src/static");
         const destDir = path.resolve(__dirname, "dist/static");
 
-        if (!fs.existsSync(destDir)) {
-          fs.mkdirSync(destDir, { recursive: true });
-        }
-
-        fs.readdirSync(srcDir).forEach((file) => {
-          const srcFile = path.join(srcDir, file);
-          const destFile = path.join(destDir, file);
-          fs.copyFileSync(srcFile, destFile);
-        });
+        copyDirectory(srcDir, destDir);
       },
     },
   ],
