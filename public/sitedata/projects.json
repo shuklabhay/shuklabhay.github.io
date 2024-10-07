@@ -1,8 +1,7 @@
 [
   {
     "title": "StereoSampleGAN",
-    "type": "AI Research",
-    "broadDescription": "StereoSampleGAN is a lightweight machine learning approach high fidelity stereo audio sample generation",
+    "broadDescription": "A lightweight machine learning approach high fidelity stereo audio sample generation",
     "details": [
       {
         "point": "Introduces a novel machine learning architecture to generate stereo, time-frequency representations of audio samples while optimizing computational efficiency."
@@ -36,8 +35,7 @@
   },
   {
     "title": "Quickscout",
-    "type": "Team Scouting Application",
-    "broadDescription": "Quickscout is FRC604's novel scouting application",
+    "broadDescription": "FRC604's novel scouting application",
     "details": [
       {
         "point": "Led development of flexible application to effectively capture and visualize FRC competition data."
@@ -74,9 +72,8 @@
     "hideOnResume": false
   },
   {
-    "title": "Domotron (FRC604 2024 Robot)",
-    "type": "FRC Team 604 2024 Robot",
-    "broadDescription": "Domotron is a high-performance competitive robot designed excel in the 2024 FRC Game \"Crescendo\"",
+    "title": "Domotron ",
+    "broadDescription": "FRC604's Robot for the 2024 FRC Game \"Crescendo\"",
     "details": [
       {
         "point": "Developed physics-based shot calculations, driver control automation, competitive autonomous routines. Designed climber winch mechanism and vertical elevator."
@@ -114,8 +111,7 @@
   },
   {
     "title": "VelocityDraft",
-    "type": "Duo Hackathon Application",
-    "broadDescription": "VelocityDraft is a flexible essay writing scheduler webapp",
+    "broadDescription": "A flexible essay writing scheduler webapp",
     "details": [
       {
         "point": "Open source webapp leverages user writing abilities and essay deadlines to algorithmically determine best order of essay writing. Third place project in OneHacks III Hackathon."
@@ -142,8 +138,7 @@
   },
   {
     "title": "Digital Audio Production",
-    "type": "Independent Passion Project",
-    "broadDescription": "Create professional full length compositions and songs",
+    "broadDescription": "full length songs and compositions",
     "details": [
       {
         "point": "Learning audio production, synthesis, and engineering since July 2022, building artist brand, participating in wordwide music collaborations and production competitions."

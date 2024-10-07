@@ -10,11 +10,20 @@ export function getTimeframeLabel(
   startDate: string,
   endDate: string | null,
   ongoing: boolean,
+  compact = false,
 ) {
   if (ongoing) {
-    return `${startDate} - Present`;
+    if (compact) {
+      return `${startDate}-`;
+    } else {
+      return `${startDate} - Present`;
+    }
   } else if (endDate) {
-    return `${startDate} - ${endDate}`;
+    if (startDate !== endDate) {
+      return `${startDate} - ${endDate}`;
+    } else {
+      return `${startDate}`;
+    }
   } else {
     return "Error creating date label";
   }

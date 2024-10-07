@@ -3,17 +3,16 @@ import {
   Burger,
   Button,
   Group,
-  Image,
   Progress,
   Stack,
   Text,
   useMantineTheme,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
 import React, { useEffect, useState } from "react";
 import { scrollViewportTo } from "../utils/scroll";
-import { useScrollContext } from "../utils/scrollContext";
+import { useAppContext } from "../utils/appContext";
 import { NavItem, ScrollInfo } from "../utils/types";
+import SwitchViewButton from "./IconButtons/SwitchViewButton";
 
 const navItems: NavItem[] = [
   { label: "Home", position: "landingPosition", focused: "isLandingFocused" },
@@ -24,18 +23,21 @@ const navItems: NavItem[] = [
     focused: "isExperienceFocused",
   },
   {
-    label: "Contact",
-    position: "contactPosition",
-    focused: "isContactFocused",
+    label: "About",
+    position: "aboutMePosition",
+    focused: "isAboutMeFocused",
   },
 ];
 
 export function Navbar() {
   const theme = useMantineTheme();
-  const { scrollInformation, scrollProgress, setScrollProgress } =
-    useScrollContext();
+  const {
+    scrollInformation: scrollInformation,
+    scrollProgress,
+    setScrollProgress,
+  } = useAppContext();
   const [isVisible, setIsVisible] = useState(false);
-  const [opened, { toggle }] = useDisclosure(false);
+  const [navMenuOpen, setNavMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,18 +47,21 @@ export function Navbar() {
       const newProgress = (window.scrollY / scrollableDistance) * 100;
       setScrollProgress(Math.min(newProgress, 100));
       setIsVisible(window.scrollY > 30);
+      if (window.scrollY < 30 && navMenuOpen) {
+        setNavMenuOpen(false);
+      }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [setScrollProgress]);
+  }, [setScrollProgress, navMenuOpen]);
 
   const handleNavClick = (position: Extract<keyof ScrollInfo, string>) => {
     const scrollPosition = scrollInformation[position];
     if (typeof scrollPosition === "number") {
       scrollViewportTo(scrollPosition);
-      if (opened) {
-        toggle();
+      if (navMenuOpen) {
+        setNavMenuOpen(false);
       }
     } else {
       console.error(`Invalid scroll position for ${position}`);
@@ -83,14 +88,14 @@ export function Navbar() {
         bg="dark.6"
         style={{ height: "5px" }}
       />
-      <Box bg="dark.6">
+      <Box bg="dark.6" mt={-1}>
         <Group
           p={5}
           align="center"
           justify="space-between"
           style={{
             paddingBottom: 10,
-            borderBottom: opened
+            borderBottom: navMenuOpen
               ? undefined
               : `2px solid ${theme.colors.dark[5]}`,
             display: "flex",
@@ -109,16 +114,19 @@ export function Navbar() {
             </Text>
           </Group>
 
-          <Burger
-            opened={opened}
-            onClick={toggle}
-            hiddenFrom="xs"
-            size="sm"
-            transitionDuration={250}
-            mt={-3}
-          />
+          <Group gap={0} hiddenFrom="xs" mt={-3}>
+            <SwitchViewButton navigateTo="/plaintext" />
+            <Burger
+              opened={navMenuOpen}
+              onClick={() => {
+                setNavMenuOpen(!navMenuOpen);
+              }}
+              size="sm"
+              transitionDuration={250}
+            />
+          </Group>
 
-          <Group gap={5} visibleFrom="xs">
+          <Group gap={5} visibleFrom="xs" mr={5}>
             {navItems.map((item) => (
               <Button
                 key={item.label}
@@ -129,9 +137,10 @@ export function Navbar() {
                 {item.label}
               </Button>
             ))}
+            <SwitchViewButton navigateTo="/plaintext" closeEye={true} />
           </Group>
         </Group>
-        {opened && (
+        {navMenuOpen && (
           <Stack gap={0} hiddenFrom="xs">
             {navItems.map((item) => (
               <Button

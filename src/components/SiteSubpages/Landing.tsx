@@ -1,11 +1,12 @@
 import { Stack, Text } from "@mantine/core";
 import { useEffect } from "react";
-import { GradientBackground } from "../components/GradientBackground";
-import { useScrollContext } from "../utils/scrollContext";
+import { useAppContext } from "../../utils/appContext";
+import { GradientBackground } from "../GradientBackground";
 
 export default function Landing() {
   // Hooks and constants
-  const { scrollInformation, setScrollProgress } = useScrollContext();
+  const { scrollInformation: scrollInformation, setScrollProgress } =
+    useAppContext();
 
   // Scrolling control
   useEffect(() => {

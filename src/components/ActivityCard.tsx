@@ -11,10 +11,10 @@ export default function ActivityCard({
 }: {
   activityInfo: ActivityItem;
 }) {
-  const { org, position, startMonth, endMonth, ongoing, details, icon } =
+  const { org, position, startYear, endYear, ongoing, details, icon } =
     activityInfo;
 
-  const timeframeLabel = getTimeframeLabel(startMonth, endMonth, ongoing);
+  const timeframeLabel = getTimeframeLabel(startYear, endYear, ongoing);
   const ListHeader = () => {
     return (
       <Text fz={{ base: 14, sm: 16 }} lh={1.5}>
@@ -50,12 +50,22 @@ export default function ActivityCard({
             <OrgImage />
           </Grid.Col>
           <Grid.Col span={10} mx={-5}>
-            <CardTitle title={org} smallerText={timeframeLabel} />
+            <CardTitle
+              title={org}
+              smallerText={timeframeLabel}
+              linkTo={icon.link}
+            />
           </Grid.Col>
         </Grid>
       );
     } else {
-      return <CardTitle title={org} smallerText={timeframeLabel} />;
+      return (
+        <CardTitle
+          title={org}
+          smallerText={timeframeLabel}
+          linkTo={icon.link}
+        />
+      );
     }
   };
 

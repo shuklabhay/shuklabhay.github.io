@@ -1,34 +1,46 @@
 import { Carousel } from "@mantine/carousel";
-import { Button, Card, Grid, Group, Image, Text } from "@mantine/core";
+import { Button, Card, Grid, Image, Text } from "@mantine/core";
 import React, { useState } from "react";
 import { ProjectItem } from "../utils/types";
 import BulletPointList from "./CardComponents/BulletPointList";
-import CardTitle from "./CardComponents/CardTitle";
 import ImageLightboxGallery from "./CardComponents/ImageLightboxGallery";
-import { LeftArrowIcon, RightArrowIcon } from "./LRArrowButton";
+import { LeftArrowIcon, RightArrowIcon } from "./IconButtons/LRArrowButton";
+import CardTitle from "./CardComponents/CardTitle";
+
+const formatBroadDescription = (description: string) => {
+  if (description.charAt(0) == "A") {
+    return description.charAt(0).toLowerCase() + description.slice(1);
+  }
+  return description;
+};
 
 export default function ProjectCard({
   projectInfo,
 }: {
   projectInfo: ProjectItem;
 }) {
-  const { title, type, broadDescription, details, images, link } = projectInfo;
+  const { title, broadDescription, details, images, link } = projectInfo;
   const [opened, setOpened] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
+  const areImages = images.length !== 0;
+  const isLink = link.length == 1;
+  const formattedBroadDescription = formatBroadDescription(broadDescription);
   const bulletPointListHeader = () => {
     return (
       <Text fz={{ base: 14, sm: 16 }} lh={1.5}>
-        {broadDescription}:
+        {title} is {formattedBroadDescription}:
       </Text>
     );
   };
-  const areImages = images.length !== 0;
-  const isLink = link.length == 1;
 
   return (
     <Card padding="15" radius="md" c="white" mb={5}>
-      <CardTitle title={title} smallerText={type} />
+      <CardTitle
+        title={title}
+        smallerText={""}
+        linkTo={isLink ? link[0].url : undefined}
+      />
 
       <Grid mb={areImages && isLink ? 20 : 0} mt={areImages ? 5 : 0}>
         {areImages && (
