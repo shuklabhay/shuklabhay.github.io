@@ -16,7 +16,7 @@
           window.history.replaceState(
             null,
             null,
-            l.pathname.slice(0, -1) + decoded + l.hash,
+            l.pathname.slice(0, -1) + decoded + l.hash
           );
         }
       })(window.location);
@@ -30,6 +30,6 @@
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module" src="./src/main.tsx"></script>
   </body>
 </html>
