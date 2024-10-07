@@ -1,4 +1,5 @@
 import { Text, useMantineTheme } from "@mantine/core";
+import { useEffect, useState } from "react";
 
 export default function HoverHighlightText({
   link,
@@ -36,24 +37,39 @@ export default function HoverHighlightText({
     ? theme.colors.main[shadeNumber] || "inherit"
     : "inherit";
 
+  const [color, setColor] = useState("white");
+
+  useEffect(() => {
+    const handleBlur = () => setColor("white");
+
+    window.addEventListener("blur", handleBlur);
+
+    return () => {
+      window.removeEventListener("blur", handleBlur);
+    };
+  }, []);
+
+  const handleClick = () => {
+    setColor("white");
+    if (onClick) {
+      onClick();
+    }
+  };
+
   return (
     <Text
       component="a"
       href={isLink ? link : undefined}
       target={isLink ? "_blank" : undefined}
       rel="noopener noreferrer"
-      c={"white"}
+      c={color}
       style={{
         cursor: "pointer",
         transition: "color 0.2s",
       }}
-      onClick={onClick}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.color = highlightColor;
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.color = "white";
-      }}
+      onClick={handleClick}
+      onMouseEnter={() => setColor(highlightColor)}
+      onMouseLeave={() => setColor("white")}
       fz={size ? size : defaultTitleSize}
       fw={700}
     >

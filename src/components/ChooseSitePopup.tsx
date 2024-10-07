@@ -5,6 +5,7 @@ import { useAppContext } from "../utils/appContext";
 import { AppViews } from "../utils/types";
 
 export default function ChooseSitePopup() {
+  // Constants and helpers
   const {
     appInformation: appInformation,
     setAppInformation: setAppInformation,
@@ -21,11 +22,16 @@ export default function ChooseSitePopup() {
       });
     } else {
       setAppInformation({
-        ...appInformation,
         isViewingSelectOpen: false,
+        defaultView: selectedView,
       });
     }
   };
+
+  // Redirect on page load if applicable
+  if (appInformation.defaultView == "plaintext") {
+    navigate("/plaintext");
+  }
 
   return (
     <>
@@ -38,7 +44,7 @@ export default function ChooseSitePopup() {
         <Button
           onClick={() => {
             setSelectedView("interactive");
-            handleClose;
+            handleClose();
           }}
           fullWidth
           mb={10}
@@ -55,7 +61,7 @@ export default function ChooseSitePopup() {
             },
           }}
         >
-          Interactive, visual layout
+          Interactive, Visual Layout
         </Button>
         <Button
           onClick={() => {
@@ -77,10 +83,10 @@ export default function ChooseSitePopup() {
             },
           }}
         >
-          Informative, plaintext layout
+          Informative, Plaintext Layout
         </Button>
         <Checkbox
-          label="Remember choice"
+          label="Remember Viewing Selection"
           checked={rememberSelection}
           onChange={(event) =>
             setRememberSelection(event.currentTarget.checked)

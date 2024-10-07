@@ -13,6 +13,7 @@ import HoverHighlightText from "../components/HoverHighlightText";
 import { getTimeframeLabel } from "../utils/dates";
 import BulletPointList from "../components/CardComponents/BulletPointList";
 import { useNavigate } from "react-router-dom";
+import { isSmallScreen } from "../utils/scroll";
 
 const ActivityDescription = ({
   activityInfo,
@@ -159,11 +160,18 @@ export default function PlainTextSite() {
               const formattedLink = isEmail ? `mailto:${item.link}` : item.link;
 
               return (
-                <div key={item.title} style={{ margin: 20, marginTop: 10 }}>
+                <div
+                  key={item.title}
+                  style={{
+                    margin: isSmallScreen ? 10 : 20,
+                    marginTop: isSmallScreen ? -5 : 5,
+                    marginBottom: 0,
+                  }}
+                >
                   <HoverHighlightText
                     text={item.title}
                     link={item.title == "Website" ? undefined : formattedLink}
-                    size={16}
+                    size={isSmallScreen ? 14 : 16}
                     onClick={
                       item.title == "Website"
                         ? () => {
@@ -175,13 +183,19 @@ export default function PlainTextSite() {
                 </div>
               );
             })}
-            <div style={{ margin: 20, marginTop: 10 }}>
+            <div
+              style={{
+                margin: isSmallScreen ? 10 : 20,
+                marginTop: isSmallScreen ? -5 : 5,
+                marginBottom: 0,
+              }}
+            >
               <HoverHighlightText
                 text={"PDF"}
                 onClick={() => {
                   navigate("/portfolio/resume.pdf");
                 }}
-                size={16}
+                size={isSmallScreen ? 14 : 16}
               />
             </div>
           </div>
@@ -234,7 +248,7 @@ export default function PlainTextSite() {
             {education.map((education) => {
               const Header = () => {
                 return (
-                  <Text fz={16} key={education.school} mb={-15}>
+                  <Text fz={16} mb={-15}>
                     <Text span c={"white"} fw={700} inherit>
                       {education.school}
                     </Text>{" "}
@@ -249,7 +263,11 @@ export default function PlainTextSite() {
               ];
 
               return (
-                <BulletPointList HeaderComponent={Header} details={details} />
+                <BulletPointList
+                  key={education.school}
+                  HeaderComponent={Header}
+                  details={details}
+                />
               );
             })}
           </Stack>
@@ -273,7 +291,7 @@ export default function PlainTextSite() {
           <Stack mb={20}>
             {awards.map((award) => {
               if (!award.hideOnResume) {
-                return <AwardDescription awardInfo={award} />;
+                return <AwardDescription key={award.title} awardInfo={award} />;
               }
             })}
           </Stack>

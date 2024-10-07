@@ -54,7 +54,10 @@ const startY = isSmallScreen
 
 export function GradientBackground() {
   // Hooks
-  const { scrollInformation: scrollInformation } = useAppContext();
+  const {
+    appInformation: appInformation,
+    scrollInformation: scrollInformation,
+  } = useAppContext();
   const theme = useMantineTheme();
   const [gradientActivePos, setGradientActivePos] = useState({
     x: startX,
@@ -78,83 +81,87 @@ export function GradientBackground() {
 
   useEffect(() => {
     // Control scrolling
-    const handleScroll = useThrottle(() => {
-      const scrollProgress =
-        nextSectionStart !== 0
-          ? calculateScrollProgressOpacity(nextSectionStart)
-          : 1;
-      setGradientOpacity(scrollProgress);
+    if (!appInformation.isViewingSelectOpen) {
+      const handleScroll = useThrottle(() => {
+        const scrollProgress =
+          nextSectionStart !== 0
+            ? calculateScrollProgressOpacity(nextSectionStart)
+            : 1;
+        setGradientOpacity(scrollProgress);
 
-      if (window.scrollY === 0) {
-        window.addEventListener("mousemove", handleMouseAction, {
-          passive: true,
-        });
-      } else {
-        window.removeEventListener("mousemove", handleMouseAction);
-      }
-    });
+        if (window.scrollY === 0) {
+          window.addEventListener("mousemove", handleMouseAction, {
+            passive: true,
+          });
+        } else {
+          window.removeEventListener("mousemove", handleMouseAction);
+        }
+      });
 
-    // Control gradient/gradient animation
-    const followSpeed = 0.03;
-    let targetPos = { x: startX, y: startY };
+      // Control gradient/gradient animation
+      const followSpeed = 0.03;
+      let targetPos = { x: startX, y: startY };
 
-    const handleMouseAction = useThrottle((event: MouseEvent) => {
-      targetPos = { x: event.clientX, y: event.clientY };
-      lastActivePosition.current = { x: targetPos.x, y: targetPos.y };
-      setIsMouseInactive(false);
-      clearTimeout(mouseTimer.current);
-      setTimeout(() => {
-        setIsMouseInactive(true);
-      }, 5000);
-    });
+      // Follow mouse
+      const handleMouseAction = useThrottle((event: MouseEvent) => {
+        targetPos = { x: event.clientX, y: event.clientY };
+        lastActivePosition.current = { x: targetPos.x, y: targetPos.y };
+        setIsMouseInactive(false);
+        clearTimeout(mouseTimer.current);
+        setTimeout(() => {
+          setIsMouseInactive(true);
+        }, 5000);
+      });
 
-    const randomlyChangePosition = () => {
-      const currentTime = Date.now();
-      lastUpdateTime.current = currentTime;
+      // Randomly move
+      const randomlyChangePosition = () => {
+        const currentTime = Date.now();
+        lastUpdateTime.current = currentTime;
 
-      if (
-        isMouseInactive &&
-        currentTime - lastUpdateTime.current > directionDuration.current &&
-        gradientOpacity == 1
-      ) {
-        targetPos = {
-          x: isSmallScreen
-            ? Math.random() * window.innerWidth
-            : (Math.random() * window.innerWidth) / 2,
-          y: isSmallScreen
-            ? Math.random() * window.innerHeight
-            : (Math.random() * window.innerHeight) / 2,
-        };
+        if (
+          isMouseInactive &&
+          currentTime - lastUpdateTime.current > directionDuration.current &&
+          gradientOpacity == 1
+        ) {
+          targetPos = {
+            x: isSmallScreen
+              ? Math.random() * window.innerWidth
+              : (Math.random() * window.innerWidth) / 2,
+            y: isSmallScreen
+              ? Math.random() * window.innerHeight
+              : (Math.random() * window.innerHeight) / 2,
+          };
 
-        directionDuration.current = (Math.random() * 2 + 1) * 1000;
-      }
-    };
+          directionDuration.current = (Math.random() * 2 + 1) * 1000;
+        }
+      };
 
-    const animateGradient = () => {
-      randomlyChangePosition();
+      const animateGradient = () => {
+        randomlyChangePosition();
 
-      setGradientActivePos((prev) => ({
-        x: prev.x + (targetPos.x - prev.x) * followSpeed,
-        y: prev.y + (targetPos.y - prev.y) * followSpeed,
-      }));
+        setGradientActivePos((prev) => ({
+          x: prev.x + (targetPos.x - prev.x) * followSpeed,
+          y: prev.y + (targetPos.y - prev.y) * followSpeed,
+        }));
+        animationRef.current = requestAnimationFrame(animateGradient);
+      };
+
+      window.addEventListener("scroll", handleScroll, { passive: true });
       animationRef.current = requestAnimationFrame(animateGradient);
-    };
+      handleScroll();
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    animationRef.current = requestAnimationFrame(animateGradient);
-    handleScroll();
+      const arrowFadeInTimer = setTimeout(() => {
+        setArrowInOpacity(1);
+      }, 750);
 
-    const arrowFadeInTimer = setTimeout(() => {
-      setArrowInOpacity(1);
-    }, 750);
+      return () => {
+        window.removeEventListener("mousemove", handleMouseAction);
+        window.removeEventListener("scroll", handleScroll);
+        clearTimeout(arrowFadeInTimer);
 
-    return () => {
-      window.removeEventListener("mousemove", handleMouseAction);
-      window.removeEventListener("scroll", handleScroll);
-      clearTimeout(arrowFadeInTimer);
-
-      if (animationRef.current) cancelAnimationFrame(animationRef.current);
-    };
+        if (animationRef.current) cancelAnimationFrame(animationRef.current);
+      };
+    }
   }, [isMouseInactive]);
 
   // Define Gradient
