@@ -8,7 +8,7 @@ import {
 import { useAppContext } from "../utils/appContext";
 import { hexToRgb } from "../utils/theme";
 import useThrottle from "../utils/throttle";
-import DownArrowButton from "./DownArrowButton";
+import DownArrowButton from "./IconButtons/DownArrowButton";
 
 const gradientAngleRange = 30;
 

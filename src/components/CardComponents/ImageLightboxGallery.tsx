@@ -2,7 +2,7 @@ import { Card, CloseButton, Grid, Text } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { RichImage } from "../../utils/types";
 import Lightbox from "react-spring-lightbox";
-import LRArrowButton from "../LRArrowButton";
+import LRArrowButton from "../IconButtons/LRArrowButton";
 
 function LightboxHeader({
   images,

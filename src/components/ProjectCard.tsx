@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { ProjectItem } from "../utils/types";
 import BulletPointList from "./CardComponents/BulletPointList";
 import ImageLightboxGallery from "./CardComponents/ImageLightboxGallery";
-import { LeftArrowIcon, RightArrowIcon } from "./LRArrowButton";
+import { LeftArrowIcon, RightArrowIcon } from "./IconButtons/LRArrowButton";
 import CardTitle from "./CardComponents/CardTitle";
 
 const formatBroadDescription = (description: string) => {
