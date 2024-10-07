@@ -13,6 +13,7 @@ import React, { useEffect, useState } from "react";
 import { scrollViewportTo } from "../utils/scroll";
 import { useAppContext } from "../utils/appContext";
 import { NavItem, ScrollInfo } from "../utils/types";
+import ConfigButton from "./IconButtons/ConfigButton";
 
 const navItems: NavItem[] = [
   { label: "Home", position: "landingPosition", focused: "isLandingFocused" },
@@ -111,16 +112,17 @@ export function Navbar() {
             </Text>
           </Group>
 
-          <Burger
-            opened={opened}
-            onClick={toggle}
-            hiddenFrom="xs"
-            size="sm"
-            transitionDuration={250}
-            mt={-3}
-          />
+          <Group gap={0} hiddenFrom="xs" mt={-3}>
+            <ConfigButton />
+            <Burger
+              opened={opened}
+              onClick={toggle}
+              size="sm"
+              transitionDuration={250}
+            />
+          </Group>
 
-          <Group gap={5} visibleFrom="xs">
+          <Group gap={5} visibleFrom="xs" mr={5}>
             {navItems.map((item) => (
               <Button
                 key={item.label}
@@ -131,6 +133,7 @@ export function Navbar() {
                 {item.label}
               </Button>
             ))}
+            <ConfigButton />
           </Group>
         </Group>
         {opened && (
