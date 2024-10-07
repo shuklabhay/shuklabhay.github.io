@@ -41,8 +41,8 @@ export type Skill = string;
 export interface ActivityItem {
   org: string;
   position: string;
-  startMonth: string;
-  endMonth: string;
+  startYear: string;
+  endYear: string;
   ongoing: boolean;
   details: BulletPoint[];
   icon: RichIcon;
@@ -52,7 +52,7 @@ export interface ActivityItem {
 
 export interface AwardItem {
   title: string;
-  recievedMonth: string;
+  recievedYear: string;
   description: string;
   hideOnSite: boolean;
   hideOnResume: boolean;

@@ -7,6 +7,13 @@ import ImageLightboxGallery from "./CardComponents/ImageLightboxGallery";
 import { LeftArrowIcon, RightArrowIcon } from "./LRArrowButton";
 import CardTitle from "./CardComponents/CardTitle";
 
+const formatBroadDescription = (description: string) => {
+  if (description.charAt(0) == "A") {
+    return description.charAt(0).toLowerCase() + description.slice(1);
+  }
+  return description;
+};
+
 export default function ProjectCard({
   projectInfo,
 }: {
@@ -16,15 +23,16 @@ export default function ProjectCard({
   const [opened, setOpened] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
+  const areImages = images.length !== 0;
+  const isLink = link.length == 1;
+  const formattedBroadDescription = formatBroadDescription(broadDescription);
   const bulletPointListHeader = () => {
     return (
       <Text fz={{ base: 14, sm: 16 }} lh={1.5}>
-        {broadDescription}:
+        {title} is {formattedBroadDescription}:
       </Text>
     );
   };
-  const areImages = images.length !== 0;
-  const isLink = link.length == 1;
 
   return (
     <Card padding="15" radius="md" c="white" mb={5}>

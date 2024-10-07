@@ -72,7 +72,7 @@ ${activities
   .map((activity) => {
     if (!activity.hideOnResume) {
       return `
-  \\begin{rSubsection}{${activity.org}}{${getTimeframeLabel(activity.startMonth, activity.endMonth, activity.ongoing)}}{${activity.position}}{California}
+  \\begin{rSubsection}{${activity.org}}{${getTimeframeLabel(activity.startYear, activity.endYear, activity.ongoing)}}{${activity.position}}{California}
     ${activity.details
       .map((detail) => {
         return `
@@ -149,7 +149,7 @@ ${activities
           .map((award) => {
             if (!award.hideOnResume) {
               return `
-      \\item ${award.title} \\hfill ${award.recievedMonth}
+      \\item ${award.title} \\hfill ${award.recievedYear}
               `;
             }
           })

@@ -22,7 +22,7 @@ export default function CardTitle({
         flexDirection: isSmallScreen ? "column" : "row",
       }}
     >
-      <HoverHighlightText link={linkTo} text={title} />
+      <HoverHighlightText link={linkTo} text={title} shade="light" />
 
       <Text
         fz={labelSize}
