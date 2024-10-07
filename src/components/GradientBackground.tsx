@@ -5,7 +5,7 @@ import {
   isSmallScreen,
   scrollViewportTo,
 } from "../utils/scroll";
-import { useScrollContext } from "../utils/scrollContext";
+import { useAppContext } from "../utils/appContext";
 import { hexToRgb } from "../utils/theme";
 import useThrottle from "../utils/throttle";
 import DownArrowButton from "./DownArrowButton";
@@ -54,7 +54,7 @@ const startY = isSmallScreen
 
 export function GradientBackground() {
   // Hooks
-  const { scrollInformation } = useScrollContext();
+  const { scrollInformation: scrollInformation } = useAppContext();
   const theme = useMantineTheme();
   const [gradientActivePos, setGradientActivePos] = useState({
     x: startX,

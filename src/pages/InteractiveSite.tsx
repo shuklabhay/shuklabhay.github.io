@@ -1,6 +1,6 @@
 import { Container } from "@mantine/core";
 import { useEffect, useRef } from "react";
-import { scrollOffet, useScrollContext } from "../utils/scrollContext.tsx";
+import { scrollOffet, useAppContext } from "../utils/appContext.tsx";
 import AboutMe from "../components/SiteSubpages/AboutMe.tsx";
 
 import Experience from "../components/SiteSubpages/Experience.tsx";
@@ -11,7 +11,7 @@ import ChooseSitePopup from "../components/ChooseSitePopup.tsx";
 
 export default function InteractiveSite() {
   // Hooks
-  const { setScrollInformation } = useScrollContext();
+  const { setScrollInformation: setScrollInformation } = useAppContext();
   const landingRef = useRef<HTMLDivElement>(null);
   const skillsRef = useRef<HTMLDivElement>(null);
   const experienceRef = useRef<HTMLDivElement>(null);

@@ -100,7 +100,12 @@ export interface CountingAnimationLabelProps {
   counterAnimationInfo: counterAnimationInfo[];
 }
 
-// Scrolling and Navigation
+// Application handliing
+export type AppInfo = {
+  isViewingSelectOpen: boolean;
+  defaultView: undefined | "interactive" | "plaintext";
+};
+
 export type ScrollInfo = {
   landingPosition: number;
   experiencePosition: number;
@@ -112,7 +117,9 @@ export type ScrollInfo = {
   isAboutMeFocused: boolean;
 };
 
-export type ScrollContextType = {
+export type AppContextType = {
+  appInformation: AppInfo;
+  setAppInformation: React.Dispatch<React.SetStateAction<AppInfo>>;
   scrollInformation: ScrollInfo;
   setScrollInformation: React.Dispatch<React.SetStateAction<ScrollInfo>>;
   scrollProgress: number;

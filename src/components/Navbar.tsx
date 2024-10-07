@@ -11,7 +11,7 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import React, { useEffect, useState } from "react";
 import { scrollViewportTo } from "../utils/scroll";
-import { useScrollContext } from "../utils/scrollContext";
+import { useAppContext } from "../utils/appContext";
 import { NavItem, ScrollInfo } from "../utils/types";
 
 const navItems: NavItem[] = [
@@ -31,8 +31,11 @@ const navItems: NavItem[] = [
 
 export function Navbar() {
   const theme = useMantineTheme();
-  const { scrollInformation, scrollProgress, setScrollProgress } =
-    useScrollContext();
+  const {
+    scrollInformation: scrollInformation,
+    scrollProgress,
+    setScrollProgress,
+  } = useAppContext();
   const [isVisible, setIsVisible] = useState(false);
   const [opened, { toggle }] = useDisclosure(false);
 
