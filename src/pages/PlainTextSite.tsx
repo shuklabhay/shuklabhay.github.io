@@ -208,7 +208,7 @@ export default function PlainTextSite() {
               <HoverHighlightText
                 text={"PDF"}
                 onClick={() => {
-                  navigate("/portfolio/resume.pdf");
+                  navigate("/resume.pdf");
                 }}
                 size={isSmallScreen ? 14 : 16}
               />
