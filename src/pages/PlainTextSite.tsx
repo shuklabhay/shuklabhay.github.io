@@ -121,10 +121,6 @@ export default function PlainTextSite() {
     fetchData();
   }, []);
 
-  const navigateHome = () => {
-    navigate("/");
-  };
-
   if (siteData) {
     const activities = siteData.activities;
     const awards = siteData.awards;
@@ -136,7 +132,18 @@ export default function PlainTextSite() {
     return (
       <Container>
         <div>
-          <Text fz={26} lh={1.5} mt={10} ta={"center"} c="main" fw={700}>
+          <Text
+            fz={26}
+            lh={1.5}
+            mt={10}
+            ta={"center"}
+            c="main"
+            fw={700}
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              navigate("/");
+            }}
+          >
             Abhay Shukla
           </Text>
 
@@ -157,11 +164,26 @@ export default function PlainTextSite() {
                     text={item.title}
                     link={item.title == "Website" ? undefined : formattedLink}
                     size={16}
-                    onClick={item.title == "Website" ? navigateHome : undefined}
+                    onClick={
+                      item.title == "Website"
+                        ? () => {
+                            navigate("/");
+                          }
+                        : undefined
+                    }
                   />
                 </div>
               );
             })}
+            <div style={{ margin: 20, marginTop: 10 }}>
+              <HoverHighlightText
+                text={"PDF"}
+                onClick={() => {
+                  navigate("/portfolio/resume.pdf");
+                }}
+                size={16}
+              />
+            </div>
           </div>
         </div>
 

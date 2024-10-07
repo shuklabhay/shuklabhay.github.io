@@ -49,7 +49,11 @@ export default function AboutMe() {
               ];
 
               return (
-                <BulletPointList HeaderComponent={Header} details={details} />
+                <BulletPointList
+                  key={education.school}
+                  HeaderComponent={Header}
+                  details={details}
+                />
               );
             })}
           </div>

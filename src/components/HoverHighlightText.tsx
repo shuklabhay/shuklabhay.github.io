@@ -44,7 +44,7 @@ export default function HoverHighlightText({
       rel="noopener noreferrer"
       c={"white"}
       style={{
-        cursor: isLink ? "pointer" : "default",
+        cursor: "pointer",
         transition: "color 0.2s",
       }}
       onClick={onClick}
