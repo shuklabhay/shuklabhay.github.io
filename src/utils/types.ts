@@ -66,6 +66,8 @@ export interface ContactItem {
 export interface EducationItem {
   school: string;
   degree: string;
+  gpa: string;
+  location: string;
 }
 
 export interface ProjectItem {

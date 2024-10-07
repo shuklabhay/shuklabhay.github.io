@@ -143,6 +143,36 @@ export default function PlainTextSite() {
             })}
           </Stack>
         </div>
+
+        <div>
+          <Text fz={22} lh={1.5} mt={10} ta={"left"} c="main" fw={700}>
+            Education
+          </Text>
+
+          <Stack>
+            {education.map((education) => {
+              const Header = () => {
+                return (
+                  <Text fz={16} key={education.school} mb={-15}>
+                    <Text span c={"white"} fw={700} inherit>
+                      {education.school}
+                    </Text>{" "}
+                    | {education.degree}
+                  </Text>
+                );
+              };
+              const details = [
+                {
+                  point: `${education.degree} – ${education.gpa}`,
+                },
+              ];
+
+              return (
+                <BulletPointList HeaderComponent={Header} details={details} />
+              );
+            })}
+          </Stack>
+        </div>
       </Container>
     );
   }

@@ -120,7 +120,13 @@ ${activities
 
 \\begin{rSection}{Education}
 	
-	\\textbf{${education[0]?.school}} \\hfill \\textit{${education[0]?.degree}} \\\\
+  ${education
+    .map((item) => {
+      return `
+  \\textbf{${item.school}} \\hfill \\textit{${item.gpa}} \\\\
+  ${item.degree} \\hfill \\textit{${item.location}}`;
+    })
+    .join("")}
 	
 \\end{rSection}
 

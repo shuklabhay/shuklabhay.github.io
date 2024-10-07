@@ -40,9 +40,9 @@ export default function HoverHighlightText({
       href={isLink ? link : undefined}
       target={isLink ? "_blank" : undefined}
       rel="noopener noreferrer"
+      c={"white"}
       style={{
         cursor: isLink ? "pointer" : "default",
-        color: "white",
         transition: "color 0.2s",
       }}
       onMouseEnter={(e) => {
