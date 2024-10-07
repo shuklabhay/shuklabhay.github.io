@@ -1,7 +1,14 @@
 import { Container, Stack, Text } from "@mantine/core";
 import { getJSONDataForSite } from "../utils/data";
 import { useEffect, useState } from "react";
-import { SiteData, ActivityItem, ProjectItem } from "../utils/types";
+import {
+  SiteData,
+  SkillData,
+  ActivityItem,
+  ProjectItem,
+  AwardItem,
+  stringToDetails,
+} from "../utils/types";
 import HoverHighlightText from "../components/HoverHighlightText";
 import { getTimeframeLabel } from "../utils/dates";
 import BulletPointList from "../components/CardComponents/BulletPointList";
@@ -13,9 +20,7 @@ const ActivityDescription = ({
 }) => {
   const { org, position, startYear, endYear, ongoing, details, icon } =
     activityInfo;
-
   const timeframeLabel = getTimeframeLabel(startYear, endYear, ongoing, true);
-
   const Header = () => {
     return (
       <Text fz={16} lh={1.5} mb={-15}>
@@ -38,7 +43,6 @@ const ActivityDescription = ({
 
 const ProjectDescription = ({ projectInfo }: { projectInfo: ProjectItem }) => {
   const { title, broadDescription, details, images, link } = projectInfo;
-
   const Header = () => {
     return (
       <Text fz={16} lh={1.5} mb={-15}>
@@ -54,6 +58,54 @@ const ProjectDescription = ({ projectInfo }: { projectInfo: ProjectItem }) => {
   };
 
   return <BulletPointList HeaderComponent={Header} details={details} />;
+};
+
+const SkillsDescription = ({ skills }: { skills: SkillData }) => {
+  const technicalSkillsList = skills.technical.map((skill) => skill).join(", ");
+  const otherSkillsList = skills.other.map((skill) => skill).join(", ");
+  const Header = ({ skillType }: { skillType: string }) => {
+    return (
+      <Text fz={16} lh={1.5} mb={-15} fw={700} c={"white"}>
+        {skillType} Skills
+      </Text>
+    );
+  };
+
+  return (
+    <>
+      <Stack style={{ marginBottom: -15 }}>
+        <BulletPointList
+          HeaderComponent={() => <Header skillType="Technical" />}
+          details={stringToDetails(technicalSkillsList)}
+        />
+      </Stack>
+
+      <BulletPointList
+        HeaderComponent={() => <Header skillType="Other" />}
+        details={stringToDetails(otherSkillsList)}
+      />
+    </>
+  );
+};
+
+const AwardDescription = ({ awardInfo }: { awardInfo: AwardItem }) => {
+  const { title, recievedYear, description } = awardInfo;
+  const Header = () => {
+    return (
+      <Text fz={16} lh={1.5} mb={-15} fw={700} c={"white"}>
+        ({recievedYear}) {title}
+      </Text>
+    );
+  };
+
+  return (
+    <Stack mb={-10}>
+      <BulletPointList
+        HeaderComponent={() => <Header />}
+        details={stringToDetails(description)}
+      />
+    </Stack>
+  );
 };
 
 export default function PlainTextSite() {
@@ -163,13 +215,37 @@ export default function PlainTextSite() {
               };
               const details = [
                 {
-                  point: `${education.degree} – ${education.gpa}`,
+                  point: `${education.degree} - ${education.gpa}`,
                 },
               ];
 
               return (
                 <BulletPointList HeaderComponent={Header} details={details} />
               );
+            })}
+          </Stack>
+        </div>
+
+        <div>
+          <Text fz={22} lh={1.5} mt={10} ta={"left"} c="main" fw={700}>
+            Skills
+          </Text>
+
+          <Stack>
+            <SkillsDescription skills={skills} />
+          </Stack>
+        </div>
+
+        <div>
+          <Text fz={22} lh={1.5} mt={10} ta={"left"} c="main" fw={700}>
+            Awards
+          </Text>
+
+          <Stack mb={20}>
+            {awards.map((award) => {
+              if (!award.hideOnResume) {
+                return <AwardDescription awardInfo={award} />;
+              }
             })}
           </Stack>
         </div>

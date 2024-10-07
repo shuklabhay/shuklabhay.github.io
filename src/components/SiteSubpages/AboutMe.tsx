@@ -44,7 +44,7 @@ export default function AboutMe() {
               };
               const details = [
                 {
-                  point: `${education.degree} – ${education.gpa}`,
+                  point: `${education.degree} - ${education.gpa}`,
                 },
               ];
 

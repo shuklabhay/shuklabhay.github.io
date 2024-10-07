@@ -86,6 +86,10 @@ export interface SkillData {
   other: Skill[];
 }
 
+export const stringToDetails = (info: string) => {
+  return [{ point: info }];
+};
+
 // Counting Animation
 export type counterAnimationInfo = { label: string; finalValue: number };
 export interface CountHookResult {
