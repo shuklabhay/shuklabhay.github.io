@@ -1,4 +1,4 @@
-import { Box, Container, Group, Stack, Text } from "@mantine/core";
+import { Card, Container, Stack, Text } from "@mantine/core";
 import { getJSONDataForSite } from "../utils/data";
 import { useEffect, useState } from "react";
 import {
@@ -180,7 +180,7 @@ export default function PlainTextSite() {
                   style={{
                     margin: isSmallScreen ? 10 : 20,
                     marginTop: isSmallScreen ? -3 : 5,
-                    marginBottom: 0,
+                    marginBottom: 20,
                   }}
                 >
                   <HoverHighlightText
@@ -202,7 +202,7 @@ export default function PlainTextSite() {
               style={{
                 margin: isSmallScreen ? 10 : 20,
                 marginTop: isSmallScreen ? -5 : 5,
-                marginBottom: 0,
+                marginBottom: 20,
               }}
             >
               <HoverHighlightText
@@ -217,7 +217,7 @@ export default function PlainTextSite() {
         </div>
 
         <div>
-          <Text fz={22} lh={1.5} mt={10} ta={"left"} c="main" fw={700}>
+          <Text fz={22} lh={1.5} ta={"left"} c="main" fw={700}>
             Experience
           </Text>
 
