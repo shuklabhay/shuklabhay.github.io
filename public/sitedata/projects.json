@@ -46,19 +46,19 @@
     ],
     "images": [
       {
-        "src": "public/static/projects/quickscout/stats_page.png",
+        "src": "static/projects/quickscout/stats_page.png",
         "alt": "Stats Page"
       },
       {
-        "src": "public/static/projects/quickscout/team_breakdown_page.png",
+        "src": "static/projects/quickscout/team_breakdown_page.png",
         "alt": "Team Breakdown Page"
       },
       {
-        "src": "public/static/projects/quickscout/match_preview_page.png",
+        "src": "static/projects/quickscout/match_preview_page.png",
         "alt": "Match Preview Page"
       },
       {
-        "src": "public/static/projects/quickscout/rankings_page.png",
+        "src": "static/projects/quickscout/rankings_page.png",
         "alt": "Rankings Page"
       }
     ],
@@ -84,19 +84,19 @@
     ],
     "images": [
       {
-        "src": "public/static/projects/domotron/sac_peek_shot.jpg",
+        "src": "static/projects/domotron/sac_peek_shot.jpg",
         "alt": "Domotron Firing a Note in Sacramento Regional QM?"
       },
       {
-        "src": "public/static/projects/domotron/sac_climb.jpg",
+        "src": "static/projects/domotron/sac_climb.jpg",
         "alt": "Domotron Trap Scoring in Sacramento Regional QM75"
       },
       {
-        "src": "public/static/projects/domotron/champs_zoom.jpg",
+        "src": "static/projects/domotron/champs_zoom.jpg",
         "alt": "Domotron Cycling at the World Championships"
       },
       {
-        "src": "public/static/projects/domotron/mbr_auto.png",
+        "src": "static/projects/domotron/mbr_auto.png",
         "alt": "Domotron's Autonomous Routine in Monterey Bay Regional QM8"
       }
     ],
