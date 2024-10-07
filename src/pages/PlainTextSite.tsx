@@ -12,6 +12,7 @@ import {
 import HoverHighlightText from "../components/HoverHighlightText";
 import { getTimeframeLabel } from "../utils/dates";
 import BulletPointList from "../components/CardComponents/BulletPointList";
+import { useNavigate } from "react-router-dom";
 
 const ActivityDescription = ({
   activityInfo,
@@ -110,6 +111,7 @@ const AwardDescription = ({ awardInfo }: { awardInfo: AwardItem }) => {
 
 export default function PlainTextSite() {
   const [siteData, setSiteData] = useState<SiteData>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
@@ -118,6 +120,10 @@ export default function PlainTextSite() {
     }
     fetchData();
   }, []);
+
+  const navigateHome = () => {
+    navigate("/");
+  };
 
   if (siteData) {
     const activities = siteData.activities;
@@ -149,8 +155,9 @@ export default function PlainTextSite() {
                 <div key={item.title} style={{ margin: 20, marginTop: 10 }}>
                   <HoverHighlightText
                     text={item.title}
-                    link={formattedLink}
+                    link={item.title == "Website" ? undefined : formattedLink}
                     size={16}
+                    onClick={item.title == "Website" ? navigateHome : undefined}
                   />
                 </div>
               );

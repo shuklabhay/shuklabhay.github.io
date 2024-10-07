@@ -5,11 +5,13 @@ export default function HoverHighlightText({
   text,
   size,
   shade,
+  onClick,
 }: {
   link?: string;
   text: string;
   size?: number | "inherit";
   shade?: "light" | "normal" | "dark";
+  onClick?: () => void;
 }) {
   const isLink = link !== undefined;
   const theme = useMantineTheme();
@@ -45,15 +47,12 @@ export default function HoverHighlightText({
         cursor: isLink ? "pointer" : "default",
         transition: "color 0.2s",
       }}
+      onClick={onClick}
       onMouseEnter={(e) => {
-        if (isLink) {
-          e.currentTarget.style.color = highlightColor;
-        }
+        e.currentTarget.style.color = highlightColor;
       }}
       onMouseLeave={(e) => {
-        if (isLink) {
-          e.currentTarget.style.color = "white";
-        }
+        e.currentTarget.style.color = "white";
       }}
       fz={size ? size : defaultTitleSize}
       fw={700}

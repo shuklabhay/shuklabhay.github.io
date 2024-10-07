@@ -22,7 +22,7 @@ export default function AboutMe() {
 
     return (
       <div style={{ paddingBlock: 10 }}>
-        <Text fz={{ base: 18, sm: 24 }} lh={1.5} mt={-10} mb={10}>
+        <Text fz={{ base: 18, sm: 24 }} lh={1.5} mt={-10}>
           Information{" "}
           <Text span c="main" fw={700} inherit>
             about me:

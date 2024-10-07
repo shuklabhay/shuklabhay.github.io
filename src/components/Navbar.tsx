@@ -3,7 +3,6 @@ import {
   Burger,
   Button,
   Group,
-  Image,
   Progress,
   Stack,
   Text,
@@ -24,7 +23,7 @@ const navItems: NavItem[] = [
     focused: "isExperienceFocused",
   },
   {
-    label: "About Me",
+    label: "About",
     position: "aboutMePosition",
     focused: "isAboutMeFocused",
   },
