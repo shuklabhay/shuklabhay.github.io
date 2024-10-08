@@ -51,3 +51,11 @@ jobs:
           git pull
           git commit -m 'Update GitHub data' || true
           git push
+
+      - name: Redeploy page
+        run: |
+          curl -X POST \
+          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/shuklabhay/shuklabhay.github.io/dispatches \
+          -d '{"event_type": "deploy-github-page"}'
