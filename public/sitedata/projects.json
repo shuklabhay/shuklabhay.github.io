@@ -84,20 +84,16 @@
     ],
     "images": [
       {
-        "src": "/static/projects/domotron/sac_peek_shot.jpg",
+        "src": "/static/projects/domotron/sac_peek_shot.jpeg",
         "alt": "Domotron Firing a Note in Sacramento Regional QM?"
       },
       {
-        "src": "/static/projects/domotron/sac_climb.jpg",
+        "src": "/static/projects/domotron/sac_climb.jpeg",
         "alt": "Domotron Trap Scoring in Sacramento Regional QM75"
       },
       {
         "src": "/static/projects/domotron/champs_zoom.jpg",
         "alt": "Domotron Cycling at the World Championships"
-      },
-      {
-        "src": "/static/projects/domotron/mbr_auto.png",
-        "alt": "Domotron's Autonomous Routine in Monterey Bay Regional QM8"
       }
     ],
     "link": [
