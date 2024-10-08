@@ -208,7 +208,11 @@ export default function PlainTextSite() {
               <HoverHighlightText
                 text={"PDF"}
                 onClick={() => {
-                  navigate("/resume/resume.pdf");
+                  window.open(
+                    "/resume/resume.pdf",
+                    "_blank",
+                    "noopener,noreferrer"
+                  );
                 }}
                 size={isSmallScreen ? 14 : 16}
               />
