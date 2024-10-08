@@ -8,6 +8,7 @@ on:
       - "**.tex"
       - "**.yml"
       - "**.cls"
+      - "public/sitedata/**.json"
   workflow_dispatch:
 
 permissions:
