@@ -211,7 +211,7 @@ export default function PlainTextSite() {
                   window.open(
                     "/resume/resume.pdf",
                     "_blank",
-                    "noopener,noreferrer"
+                    "noopener,noreferrer",
                   );
                 }}
                 size={isSmallScreen ? 14 : 16}
