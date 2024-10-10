@@ -301,7 +301,7 @@ export default function PlainTextSite() {
             Awards
           </Text>
 
-          <Stack mb={20}>
+          <Stack mb={30}>
             {awards.map((award) => {
               if (!award.hideOnResume) {
                 return <AwardDescription key={award.title} awardInfo={award} />;
