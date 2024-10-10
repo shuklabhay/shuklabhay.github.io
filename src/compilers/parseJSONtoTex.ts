@@ -44,7 +44,7 @@ function parseDataToTexTemplate(userData: ResumeData) {
 \\documentclass[
   %a4paper, % Uncomment for A4 paper size (default is US letter)
   10pt, % Default font size, can use 10pt, 11pt or 12pt
-]{public/resume/resume} % Use the resume class
+]{resume} % Use the resume class
 
 \\usepackage{ebgaramond} % Use the EB Garamond font
 \\usepackage{hyperref}
