@@ -6,12 +6,14 @@ export default function HoverHighlightText({
   text,
   size,
   shade,
+  highlight = true,
   onClick,
 }: {
   link?: string;
   text: string;
   size?: number | "inherit";
   shade?: "light" | "normal" | "dark";
+  highlight?: boolean;
   onClick?: () => void;
 }) {
   const isLink = link !== undefined;
@@ -33,9 +35,10 @@ export default function HoverHighlightText({
       shadeNumber = 5;
       break;
   }
-  const highlightColor = theme.colors.main
-    ? theme.colors.main[shadeNumber] || "inherit"
-    : "inherit";
+  const highlightColor =
+    theme.colors.main && theme.colors.main[shadeNumber] && highlight
+      ? theme.colors.main[shadeNumber] || "inherit"
+      : "inherit";
 
   const [color, setColor] = useState("white");
 
@@ -64,14 +67,14 @@ export default function HoverHighlightText({
       rel="noopener noreferrer"
       c={color}
       style={{
-        cursor: "pointer",
+        cursor: highlight ? "pointer" : undefined,
         transition: "color 0.2s",
       }}
       onClick={handleClick}
       onMouseEnter={() => setColor(highlightColor)}
       onMouseLeave={() => setColor("white")}
       fz={size ? size : defaultTitleSize}
-      lh={1.25}
+      lh={1.5}
       fw={700}
     >
       {text}

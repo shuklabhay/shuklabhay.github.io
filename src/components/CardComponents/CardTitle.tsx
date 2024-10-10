@@ -6,10 +6,12 @@ export default function CardTitle({
   title,
   smallerText,
   linkTo,
+  mb = 5,
 }: {
   title: string;
   smallerText: string;
   linkTo?: string;
+  mb?: number;
 }) {
   const labelSize = { base: 12, sm: 14 };
 
@@ -22,13 +24,18 @@ export default function CardTitle({
         flexDirection: isSmallScreen ? "column" : "row",
       }}
     >
-      <HoverHighlightText link={linkTo} text={title} shade="light" />
+      <HoverHighlightText
+        link={linkTo}
+        text={title}
+        shade="light"
+        highlight={false}
+      />
 
       <Text
         fz={labelSize}
         c="gray"
         mt={isSmallScreen ? 0 : 5}
-        mb={5}
+        mb={mb}
         style={{ fontStyle: "italic" }}
       >
         {smallerText}

@@ -92,23 +92,19 @@ const SkillsDescription = ({ skills }: { skills: SkillData }) => {
 };
 
 const AwardDescription = ({ awardInfo }: { awardInfo: AwardItem }) => {
-  const { title, recievedYear, description } = awardInfo;
+  const { title, recievedYear } = awardInfo;
   const Header = () => {
     return (
-      <Text fz={16} lh={1.5} mb={-15} fw={700} c={"white"}>
-        ({recievedYear}) {title}
+      <Text fz={16} mb={-10}>
+        <Text span c={"white"} fw={700} inherit>
+          ({recievedYear})
+        </Text>{" "}
+        {title}
       </Text>
     );
   };
 
-  return (
-    <Stack mb={-10}>
-      <BulletPointList
-        HeaderComponent={() => <Header />}
-        details={stringToDetails(description)}
-      />
-    </Stack>
-  );
+  return <Header />;
 };
 
 export default function PlainTextSite() {
@@ -211,7 +207,7 @@ export default function PlainTextSite() {
                   window.open(
                     "/resume/resume.pdf",
                     "_blank",
-                    "noopener,noreferrer",
+                    "noopener,noreferrer"
                   );
                 }}
                 size={isSmallScreen ? 14 : 16}
