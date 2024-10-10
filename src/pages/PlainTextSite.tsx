@@ -1,4 +1,4 @@
-import { Card, Container, Stack, Text } from "@mantine/core";
+import { Container, Stack, Text } from "@mantine/core";
 import { getJSONDataForSite } from "../utils/data";
 import { useEffect, useState } from "react";
 import {
@@ -111,6 +111,10 @@ export default function PlainTextSite() {
   const [siteData, setSiteData] = useState<SiteData>();
   const navigate = useNavigate();
 
+  const openResumeInNewTab = () => {
+    window.open("/resume/resume.pdf", "_blank", "noopener,noreferrer");
+  };
+
   useEffect(() => {
     async function fetchData() {
       const newSiteData = await getJSONDataForSite();
@@ -203,13 +207,7 @@ export default function PlainTextSite() {
             >
               <HoverHighlightText
                 text={"PDF"}
-                onClick={() => {
-                  window.open(
-                    "/resume/resume.pdf",
-                    "_blank",
-                    "noopener,noreferrer",
-                  );
-                }}
+                onClick={openResumeInNewTab}
                 size={isSmallScreen ? 14 : 16}
               />
             </div>

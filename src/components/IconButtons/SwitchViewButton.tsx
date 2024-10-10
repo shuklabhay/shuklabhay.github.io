@@ -1,4 +1,4 @@
-import { ActionIcon } from "@mantine/core";
+import { ActionIcon, Tooltip } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 
 export default function SwitchViewButton({
@@ -54,21 +54,30 @@ export default function SwitchViewButton({
   };
 
   return (
-    <ActionIcon
-      radius="xl"
-      size={22}
-      onClick={() => {
-        navigate(navigateTo);
-      }}
-      style={{
-        backgroundColor: "rgba(0,0,0,0)",
-        zIndex: 200,
-      }}
-      c="main.1"
-      mr={5}
+    <Tooltip
+      label={
+        closeEye
+          ? "View information in plain text"
+          : "View information visually"
+      }
+      withArrow
+      styles={{ tooltip: { backgroundColor: "#333", color: "#fff" } }}
     >
-      {closeEye && <ClosedEyeIcon />}
-      {!closeEye && <OpenEyeIcon />}
-    </ActionIcon>
+      <ActionIcon
+        radius="xl"
+        size={22}
+        onClick={() => {
+          navigate(navigateTo);
+        }}
+        style={{
+          backgroundColor: "rgba(0,0,0,0)",
+          zIndex: 200,
+        }}
+        c="main.1"
+        mr={5}
+      >
+        {closeEye ? <ClosedEyeIcon /> : <OpenEyeIcon />}
+      </ActionIcon>
+    </Tooltip>
   );
 }
