@@ -53,7 +53,6 @@ export interface ActivityItem {
 export interface AwardItem {
   title: string;
   recievedYear: string;
-  description: string;
   hideOnSite: boolean;
   hideOnResume: boolean;
 }
