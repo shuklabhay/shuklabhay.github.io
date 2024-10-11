@@ -16,7 +16,6 @@ Portfolio website, data repository and dynamic resume compiler
 - [Install](https://docs.oracle.com/en/java/javase/20/install/overview-jdk-installation.html) Java JDK 11 or higher
   - Confirm installation by running `java --version` in the command line
 - In the repo run `npm run setup`
-- In the root directory create a `.env` file where `ACCESS_TOKEN=your_github_access_token`
 - Run `npm run dev` to start the development application
 
 ## VSCode Setup
@@ -24,7 +23,7 @@ Portfolio website, data repository and dynamic resume compiler
 - Install [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) and [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) extensions
 - In VSCode settings enable formatOnSave
 - In VSCode settings select "Prettier - Code formatter" for the Default Formatter
-- Setup a `.env` file with a variable `ACCESS_TOKEN=your_github_access_token`
+- In the root directory create a `.env` with `ACCESS_TOKEN=YOUR_GITHUB_ACCESS_TOKEN` and `VITE_TRACKING_ID=YOUR_GOOGLE_ANALYTICS_TRACKING_ID`
 
 ## Development
 
