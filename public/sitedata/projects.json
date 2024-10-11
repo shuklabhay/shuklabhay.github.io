@@ -76,7 +76,7 @@
     "broadDescription": "FRC604's Robot for the 2024 FRC Game \"Crescendo\"",
     "details": [
       {
-        "point": "Developed physics-based shot calculations utilizing CV, driver control automation, competitive autonomous routines. Designed climber winch mechanism and robot vertical elevator."
+        "point": "Developed CV and physics based shot calculations, driver control automation, competitive autonomous routines. Designed climber winch mechanism and robot vertical elevator."
       }
     ],
     "images": [
