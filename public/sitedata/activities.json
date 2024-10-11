@@ -24,17 +24,17 @@
     "hideOnResume": false
   },
   {
-    "org": "CA State Summer School for Mathematics & Science, UCLA",
+    "org": "UCLA COSMOS (CA Summer School for Mathematics & Science)",
     "position": "Brain-Inspired Computing Cohort Member",
     "startYear": "2024",
     "endYear": "2024",
     "ongoing": false,
     "details": [
       {
-        "point": "Investigated parallels of biological mechanisms to machine learning advancements (attention, visual processing, recurrent systems, reinforcement, etc)."
+        "point": "Investigated machine learning advancements (attention, visual processing, recurrent systems, reinforcement, etc) alongside their neurological foundations."
       },
       {
-        "point": "Developed audio generation ML architecture with UCLA funding."
+        "point": "Developed novel audio generation ML framework with UC funding."
       }
     ],
     "icon": {
@@ -52,10 +52,10 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Developed engaging curriculums, recruited mentors, planned and effectively taught in-person and online camps encompassing diverse STEM fields."
+        "point": "Developed engaging curricula, recruited mentors, planned and effectively in-person and online camps encompassing diverse STEM fields."
       },
       {
-        "point": "Impacted 700+ students and raised $6000+ to support organization costs, local STEM outreach initiatives, child health foundations."
+        "point": "Impacted 700+ students and raised $6000+ to support organization costs, local STEM outreach initiatives for underrepresented communities, and children health foundations."
       }
     ],
     "icon": {

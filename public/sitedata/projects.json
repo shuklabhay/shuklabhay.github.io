@@ -38,10 +38,10 @@
     "broadDescription": "FRC604's novel scouting application",
     "details": [
       {
-        "point": "Led development of flexible application to effectively capture and visualize FRC competition data."
+        "point": "Led development of large scale, flexible robot performance analysis application for multimodal FRC event data collection and real-time visualization. Facilitates informed strategic decisions, drives team's international success."
       },
       {
-        "point": "Trained 10+ team members in web dev to build app and adapt to yearly games. 130+ users on FRC604, data collected for 700+ robots."
+        "point": "130+ users on FRC604, data collected for 700+ team robots. Trained 10+ team members in webdev to build app and adapt to yearly games."
       }
     ],
     "images": [
@@ -76,7 +76,7 @@
     "broadDescription": "FRC604's Robot for the 2024 FRC Game \"Crescendo\"",
     "details": [
       {
-        "point": "Developed CV and physics based shot calculations, driver control automation, competitive autonomous routines. Designed climber winch mechanism and robot vertical elevator."
+        "point": "Developed computer vision and physics-based shot calculations, driver control automation, competitive autonomous routines. Designed climber winch mechanism and robot vertical elevator."
       }
     ],
     "images": [
