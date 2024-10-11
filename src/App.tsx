@@ -12,10 +12,10 @@ import ReactGA from "react-ga4";
 
 // Route Tracking
 const AnalyticsTrackingID = import.meta.env.VITE_TRACKING_ID;
+ReactGA.initialize(AnalyticsTrackingID);
 
 function RouteTracker() {
   const location = useLocation();
-  ReactGA.initialize(AnalyticsTrackingID);
 
   useEffect(() => {
     ReactGA.send({
