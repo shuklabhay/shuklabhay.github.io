@@ -107,7 +107,7 @@ export function GradientBackground() {
       clearTimeout(mouseTimer.current);
       setTimeout(() => {
         setIsMouseInactive(true);
-      }, 5000);
+      }, 7500);
     });
 
     // Randomly move
