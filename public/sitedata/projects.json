@@ -38,10 +38,10 @@
     "broadDescription": "FRC604's novel scouting application",
     "details": [
       {
-        "point": "Led development of large scale, flexible robot performance analysis application for multimodal FRC event data collection and real-time visualization. Facilitates informed strategic decisions, drives team's international success."
+        "point": "Developed flexible robot performance analysis application for multimodal FRC event data collection and real-time visualization. New, comprehensive team insights drive critical strategic decisions and facilitate team's success at events."
       },
       {
-        "point": "130+ users on FRC604, data collected for 700+ team robots. Trained 10+ team members in webdev to build app and adapt to yearly games."
+        "point": "130+ users on FRC604, data collected for 700+ team robots, trained 10+ team members in webdev to build app and adapt to yearly games."
       }
     ],
     "images": [
@@ -76,7 +76,10 @@
     "broadDescription": "FRC604's Robot for the 2024 FRC Game \"Crescendo\"",
     "details": [
       {
-        "point": "Developed computer vision and physics-based shot calculations, driver control automation, competitive autonomous routines. Designed climber winch mechanism and robot vertical elevator."
+        "point": "Developed computer vision and physics-based shot calculations, driver control automation, competitive autonomous routines."
+      },
+      {
+        "point": "Designed climber winch mechanism and robot vertical elevator. Robot's advanced capabilites led to international team success in 2024."
       }
     ],
     "images": [
@@ -107,7 +110,7 @@
     "broadDescription": "A flexible essay writing scheduler webapp",
     "details": [
       {
-        "point": "Open source webapp leverages user writing abilities and essay deadlines to algorithmically determine best order of essay writing. Third place project in OneHacks III Hackathon."
+        "point": "Open source webapp that analyzes user writing abilities and essay deadlines to prioritize essay writing order and improve essay quality by reducing user stress. Won third place at OneHacks III Hackathon."
       }
     ],
     "images": [
