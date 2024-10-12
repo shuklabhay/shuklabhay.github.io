@@ -19,7 +19,6 @@ function RouteTracker() {
   }, [AnalyticsTrackingID]);
 
   useEffect(() => {
-    console.log("Current path:", location.pathname);
     ReactGA.send({
       hitType: "pageview",
       page: location.pathname,
