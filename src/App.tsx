@@ -3,21 +3,23 @@ import { MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
 import { theme } from "./utils/theme.ts";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-
 import InteractiveSite from "./pages/InteractiveSite.tsx";
 import { AppProvider } from "./utils/appContext.tsx";
 import PlainTextSite from "./pages/PlainTextSite.tsx";
 import { useEffect } from "react";
 import ReactGA from "react-ga4";
 
-// Route Tracking
 const AnalyticsTrackingID = import.meta.env.VITE_TRACKING_ID;
-ReactGA.initialize(AnalyticsTrackingID);
 
 function RouteTracker() {
   const location = useLocation();
 
   useEffect(() => {
+    ReactGA.initialize(AnalyticsTrackingID);
+  }, [AnalyticsTrackingID]);
+
+  useEffect(() => {
+    console.log("Current path:", location.pathname);
     ReactGA.send({
       hitType: "pageview",
       page: location.pathname,
