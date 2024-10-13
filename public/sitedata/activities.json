@@ -7,13 +7,13 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Develop team's competition data collection application, enhance robot capabilities and localization with computer vision and environmental sensors, contribute to team software (particle filter, time-optimal trajectory optimizer, yearly robot control architecture)."
+        "point": "Develop team's competition data collection application, enhance robot capabilities with computer vision and sensor integration, contribute to SOTA team software (particle filter localizer, time-optimal trajectory optimizer, yearly robot control architecture)."
       },
       {
         "point": "Lead subteams in design, manufacturing, and programming of team robot while training new members to contribute to robot development. Attend/host 20+ STEM community outreach events."
       },
       {
-        "point": "Develop progressive web app for TheBlueAlliance, a community-driven global platform for aggregating and providing real time insights for extensive FRC competition data."
+        "point": "Develop a progressive web app for TheBlueAlliance, modernizing the universally used platform and enabling effective, real-time access for FRC competition data and insights internationally."
       }
     ],
     "icon": {
@@ -52,7 +52,7 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Developed engaging curricula, recruited mentors, planned and effectively in-person and online camps encompassing diverse STEM fields."
+        "point": "Develop engaging curricula, recruit mentors, plann and effectively deliver in-person and online camps encompassing diverse STEM fields."
       },
       {
         "point": "Impacted 700+ students and raised $6000+ to support organization costs, local STEM outreach initiatives for underrepresented communities, and children health foundations."
