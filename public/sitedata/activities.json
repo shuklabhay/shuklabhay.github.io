@@ -31,10 +31,10 @@
     "ongoing": false,
     "details": [
       {
-        "point": "Investigated machine learning advancements (attention, visual processing, recurrent systems, reinforcement, etc) alongside their neurological foundations."
+        "point": "Conducted deep analyses of the computational principles and neurological correlations of 20+ key machine learning advancements (attention, visual processing, recurrent systems, reinforcement, etc)."
       },
       {
-        "point": "Developed novel audio generation ML framework with UC funding."
+        "point": "Developed StereoSampleGAN with UCLA funding to display viability of high quality audio sample generation without excessive computational cost."
       }
     ],
     "icon": {
