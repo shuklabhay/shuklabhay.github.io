@@ -4,7 +4,7 @@
     "broadDescription": "A lightweight machine learning approach high fidelity stereo audio sample generation",
     "details": [
       {
-        "point": "Introduces a novel WGAN based aproach to high fidelity stereo audio sample generation that utilizes attention, loss optimization, and effective signal processing to maintain a reasonable computational cost."
+        "point": "Introduces a novel, computationally efficient WGAN-based approach for generating high-fidelity stereo audio samples. Leverages attention mechanisms, optimized loss functions, and effective signal processing while achieving a 99.5% reduction in training epoch count compared to SpecGAN."
       },
       {
         "point": "Overcame existing low-quality and monophonic limitations of audio generation methods by evaluating numerous approaches to stereo, high-fidelity audio generation. Research partially funded by UCLA and pending publication."
