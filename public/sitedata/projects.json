@@ -4,10 +4,10 @@
     "broadDescription": "A lightweight machine learning approach high fidelity stereo audio sample generation",
     "details": [
       {
-        "point": "Introduces a novel WGAN based aproach to high fidelity stereo audio sample generation that utilizes Utilizes attention, loss optimization, and effective signal processing to maintain a reasonable computational cost."
+        "point": "Introduces a novel WGAN based aproach to high fidelity stereo audio sample generation that utilizes attention, loss optimization, and effective signal processing to maintain a reasonable computational cost."
       },
       {
-        "point": "Evaluated numerous approaches to high fidelity audio image representation generation, creating an approach that challenges existing standards of sacrificing audio quality and highlighting need for further research in stereo audio generation. Partially funded by UCLA, paper pending publishing."
+        "point": "Overcame existing low-quality and monophonic limitations of audio generation methods by evaluating numerous approaches to stereo, high-fidelity audio generation. Research partially funded by UCLA and pending publication."
       }
     ],
     "images": [
@@ -38,10 +38,10 @@
     "broadDescription": "FRC604's novel scouting application",
     "details": [
       {
-        "point": "Led development of large scale, flexible robot performance analysis application for multimodal FRC event data collection and real-time visualization. Facilitates informed strategic decisions, drives team's international success."
+        "point": "Led development of large scale, flexible robot performance analysis application for multimodal FRC event data collection and real-time visualization. Facilitates informed partnership decisions at high stakes competition and drives team's international success."
       },
       {
-        "point": "130+ users on FRC604, data collected for 700+ team robots. Trained 10+ team members in webdev to build app and adapt to yearly games."
+        "point": "130+ users on FRC604, data collected for 700+ team robots over 1 year. Trained 10+ team members in webdev to build app and expand application capabilities to fit annual challenges."
       }
     ],
     "images": [
@@ -76,7 +76,7 @@
     "broadDescription": "FRC604's Robot for the 2024 FRC Game \"Crescendo\"",
     "details": [
       {
-        "point": "Developed computer vision and physics-based shot calculations, driver control automation, competitive autonomous routines. Designed climber winch mechanism and robot vertical elevator."
+        "point": "Developed computer vision and physics-based shot calculations, driver control automation, and competitive autonomous routines for world championship division winning robot. Designed climber winch mechanism and robot vertical elevator."
       }
     ],
     "images": [

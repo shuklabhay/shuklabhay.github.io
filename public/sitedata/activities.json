@@ -7,13 +7,13 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Develop team's competition data collection application, enhance robot capabilities with computer vision and sensor integration, contribute to SOTA team software (particle filter localizer, time-optimal trajectory optimizer, yearly robot control architecture)."
+        "point": "Enhanced robot capabilities with computer vision and sensor integration, contributed to SOTA team software (particle filter localizer, time-optimal trajectory optimizer, annual robot control architecture). Developed team's competition data collection application Quickscout."
       },
       {
-        "point": "Lead subteams in design, manufacturing, and programming of team robot while training new members to contribute to robot development. Attend/host 20+ STEM community outreach events."
+        "point": "Developed a progressive web app for TheBlueAlliance, modernizing the universally used platform and enabling effective, real-time access for FRC competition data and insights internationally."
       },
       {
-        "point": "Develop a progressive web app for TheBlueAlliance, modernizing the universally used platform and enabling effective, real-time access for FRC competition data and insights internationally."
+        "point": "Led subteams in design, manufacturing, and programming of team robot while training new members to contribute to robot development."
       }
     ],
     "icon": {
@@ -31,10 +31,10 @@
     "ongoing": false,
     "details": [
       {
-        "point": "Conducted deep analyses of the computational principles and neurological correlations of 20+ key machine learning advancements (attention, visual processing, recurrent systems, reinforcement, etc)."
+        "point": "Conducted deep analyses of the computational principles and neurological correlations of 20+ key machine learning mechanisms (attention, visual processing, recurrent systems, reinforcement, etc)."
       },
       {
-        "point": "Developed StereoSampleGAN with UCLA funding to display viability of high quality audio sample generation without excessive computational cost."
+        "point": "Developed StereoSampleGAN with UCLA funding to generate high quality stereo audio samples without excessive computational cost, addressing limitations of current low-quality and monophonic audio generation."
       }
     ],
     "icon": {
@@ -52,10 +52,10 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Develop engaging curricula, recruit mentors, plann and effectively deliver in-person and online camps encompassing diverse STEM fields."
+        "point": "Impacted 700+ students with high quality free STEM education, raised $6000+ to support organization costs, local STEM outreach initiatives for underrepresented communities, and children health foundations."
       },
       {
-        "point": "Impacted 700+ students and raised $6000+ to support organization costs, local STEM outreach initiatives for underrepresented communities, and children health foundations."
+        "point": "Developed engaging curriculum for elementary to high schoolers, recruited mentors, planed and effectively delivered in-person and online camps regarding Robotics, Engineering, Machine Learning, and Programming."
       }
     ],
     "icon": {
