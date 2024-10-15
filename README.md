@@ -23,7 +23,7 @@ Portfolio website, data repository and dynamic resume compiler
 - Install [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) and [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) extensions
 - In VSCode settings enable formatOnSave
 - In VSCode settings select "Prettier - Code formatter" for the Default Formatter
-- In the root directory create a `.env` with `ACCESS_TOKEN=YOUR_GITHUB_ACCESS_TOKEN` and `VITE_TRACKING_ID=YOUR_GOOGLE_ANALYTICS_TRACKING_ID`
+- In the root directory create a `.env` with `ACCESS_TOKEN=YOUR_GITHUB_ACCESS_TOKEN`
 
 ## Development
 
