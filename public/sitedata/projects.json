@@ -127,7 +127,7 @@
       }
     ],
     "hideOnSite": false,
-    "hideOnResume": false
+    "hideOnResume": true
   },
   {
     "title": "Digital Audio Production",
