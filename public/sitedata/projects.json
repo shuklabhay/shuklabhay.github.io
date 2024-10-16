@@ -4,7 +4,7 @@
     "broadDescription": "A lightweight machine learning approach high fidelity stereo audio sample generation",
     "details": [
       {
-        "point": "Introduces a novel, computationally efficient WGAN-based approach for generating high-fidelity stereo audio samples. Leverages attention mechanisms, optimized loss functions, and effective signal processing while achieving a 99.5% reduction in training epoch count compared to SpecGAN."
+        "point": "WGAN-based computationally effiicent approach for generating high-fidelity stereo audio samples. Leverages attention mechanisms, optimized loss functions, and effective signal processing while achieving a 99.5% reduction in training epoch count compared to SpecGAN."
       },
       {
         "point": "Overcame existing low-quality and monophonic limitations of audio generation methods by evaluating numerous approaches to stereo, high-fidelity audio generation. Research partially funded by UCLA and pending publication."
@@ -38,7 +38,7 @@
     "broadDescription": "FRC604's novel scouting application",
     "details": [
       {
-        "point": "Led development of large scale, flexible robot performance analysis application for multimodal FRC event data collection and real-time visualization. Facilitates informed partnership decisions at high stakes competition and drives team's international success."
+        "point": "Developed scalable and flexible robot performance analysis application for multimodal FRC event data collection and visualization. New captured metrics empower informed strategic decisions at high-stakes competitions, contributing to the team's international success."
       },
       {
         "point": "130+ users on FRC604, data collected for 700+ team robots over 1 year. Trained 10+ team members in webdev to build app and expand application capabilities to fit annual challenges."
@@ -76,7 +76,10 @@
     "broadDescription": "FRC604's Robot for the 2024 FRC Game \"Crescendo\"",
     "details": [
       {
-        "point": "Developed computer vision and physics-based shot calculations, driver control automation, and competitive autonomous routines for world championship division winning robot. Designed climber winch mechanism and robot vertical elevator."
+        "point": "Developed computer vision and physics-based shot calculations, driver control automation, and competitive autonomous routines for world championship division winning robot."
+      },
+      {
+        "point": "Designed climber winch mechanism and robot vertical elevator, maximizing robot's competitive capabilities and earning the robot the Industrial Design, Innovation in Control, and Autonomous Awards."
       }
     ],
     "images": [
