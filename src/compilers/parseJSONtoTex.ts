@@ -180,7 +180,7 @@ async function saveTexResume() {
   let processedTexString = texString;
 
   const replacements = [
-    { key: "99.5%", value: "99.5\\%" },
+    { key: "99.77%", value: "99.77\\%" },
     { key: "&amp;", value: "&" },
     { key: "&#x27;", value: "'" },
     { key: "Raised \\$", value: "Raised \\$" },
