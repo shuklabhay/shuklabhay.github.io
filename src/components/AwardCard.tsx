@@ -13,6 +13,7 @@ export default function AwardCard({ awardInfo }: { awardInfo: AwardItem }) {
         title={title}
         smallerText={recievedYear}
         mb={isSmallScreen ? -10 : -20}
+        highlight={false}
       />
     </Card>
   );
