@@ -15,7 +15,6 @@ import BulletPointList from "../components/CardComponents/BulletPointList";
 import { useNavigate } from "react-router-dom";
 import { isSmallScreen } from "../utils/scroll";
 import SwitchViewButton from "../components/IconButtons/SwitchViewButton";
-import PageHelmet from "../utils/PageHelmet";
 
 const ActivityDescription = ({
   activityInfo,
@@ -134,11 +133,6 @@ export default function PlainTextSite() {
 
     return (
       <Container>
-        <PageHelmet
-          description="Plain Text Portfolio Webpage"
-          page="/plaintext"
-        />
-
         <div>
           <Text
             fz={26}
