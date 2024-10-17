@@ -1,19 +1,17 @@
 import { Helmet } from "react-helmet-async";
 
 export default function PageHelmet({
-  title,
   description,
   page,
 }: {
-  title: string;
   description: string;
   page: "/" | "/plaintext";
 }) {
   return (
     <Helmet>
-      <title>{title}</title>
+      <title>Abhay Shukla</title>
 
-      <meta property="og:title" content={title} />
+      <meta property="og:title" content="Abhay Shukla" />
       <meta name="description" content={description} />
       <meta property="og:description" content={description} />
       <meta

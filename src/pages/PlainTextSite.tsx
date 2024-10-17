@@ -135,8 +135,7 @@ export default function PlainTextSite() {
     return (
       <Container>
         <PageHelmet
-          title="Plain Text Portfolio Webpage"
-          description=""
+          description="Plain Text Portfolio Webpage"
           page="/plaintext"
         />
 

@@ -84,11 +84,7 @@ export default function InteractiveSite() {
 
   return (
     <div>
-      <PageHelmet
-        title="Interactive Portfolio Webpage"
-        description=""
-        page="/"
-      />
+      <PageHelmet description="Interactive Portfolio Webpage" page="/" />
       <Navbar />
 
       <div ref={landingRef}>
