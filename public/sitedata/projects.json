@@ -7,20 +7,20 @@
         "point": "WGAN-based computationally effiicent approach for generating high-fidelity stereo audio samples. Leverages attention mechanisms, optimized loss functions, and effective signal processing while achieving a 99.77% reduction in training epoch count compared to SpecGAN."
       },
       {
-        "point": "Overcame existing low-quality and monophonic limitations of audio generation methods by evaluating numerous approaches to stereo, high-fidelity audio generation. Research partially funded by UCLA and pending publication."
+        "point": "Overcame existing low-quality and monophonic limitations of audio generation methods by evaluating numerous approaches to generating stereo, high-fidelity audio. Research partially funded by UCLA and pending publication."
       }
     ],
     "images": [
       {
-        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/refs/heads/main/static/curated_kick_generated_examples.png",
+        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/main/static/curated_kick_generated_examples.png",
         "alt": "Generated Audio From Pretrained Model Instance 1"
       },
       {
-        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/refs/heads/main/static/diverse_kick_generated_examples.png",
+        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/main/static/diverse_kick_generated_examples.png",
         "alt": "Generated Audio From Pretrained Model Instance 2"
       },
       {
-        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/refs/heads/main/static/instrument_one_shot_generated_examples.png",
+        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/main/static/instrument_one_shot_generated_examples.png",
         "alt": "Generated Audio From Pretrained Model Instance 3"
       }
     ],
@@ -41,7 +41,7 @@
         "point": "Developed scalable and flexible robot performance analysis application for multimodal FRC event data collection and visualization. New captured metrics empower informed strategic decisions at high-stakes competitions, contributing to the team's international success."
       },
       {
-        "point": "130+ users on FRC604, data collected for 700+ team robots over 1 year. Trained 10+ team members in webdev to build app and expand application capabilities to fit annual challenges."
+        "point": "Supports 130+ users on FRC604, data collected for 700+ team robots over 1 year. Trained 10+ team members in webdev to build app and expand application capabilities to fit annual challenges."
       }
     ],
     "images": [
@@ -88,12 +88,12 @@
         "alt": "Domotron Firing a Note in Sacramento Regional QM?"
       },
       {
-        "src": "/static/projects/domotron/sac_climb.jpeg",
-        "alt": "Domotron Trap Scoring in Sacramento Regional QM75"
-      },
-      {
         "src": "/static/projects/domotron/champs_zoom.jpg",
         "alt": "Domotron Cycling at the World Championships"
+      },
+      {
+        "src": "/static/projects/domotron/sac_climb.jpeg",
+        "alt": "Domotron Trap Scoring in Sacramento Regional QM75"
       }
     ],
     "link": [
@@ -115,11 +115,11 @@
     ],
     "images": [
       {
-        "src": "https://raw.githubusercontent.com/shuklabhay/velocity-draft/refs/heads/main/public/app-interfaces.png",
+        "src": "https://raw.githubusercontent.com/shuklabhay/velocity-draft/main/public/app-interfaces.png",
         "alt": "VelocityDraft Interface"
       },
       {
-        "src": "https://raw.githubusercontent.com/shuklabhay/velocity-draft/refs/heads/main/public/logo512.png",
+        "src": "https://raw.githubusercontent.com/shuklabhay/velocity-draft/main/public/logo512.png",
         "alt": "VelocityDraft Icon"
       }
     ],

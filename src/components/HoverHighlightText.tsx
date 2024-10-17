@@ -1,5 +1,6 @@
 import { Text, useMantineTheme } from "@mantine/core";
 import { useEffect, useState } from "react";
+import { isSmallScreen } from "../utils/scroll";
 
 export default function HoverHighlightText({
   link,
@@ -74,8 +75,8 @@ export default function HoverHighlightText({
       onMouseEnter={() => setColor(highlightColor)}
       onMouseLeave={() => setColor("white")}
       fz={size ? size : defaultTitleSize}
-      lh={1.5}
       fw={700}
+      mb={isSmallScreen ? 0 : -10}
     >
       {text}
     </Text>

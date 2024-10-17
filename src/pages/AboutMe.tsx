@@ -1,9 +1,9 @@
 import { Grid, Stack, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
-import { SiteData } from "../../utils/types";
-import { getJSONDataForSite } from "../../utils/data";
-import ContactCard from "../ContactCard";
-import BulletPointList from "../CardComponents/BulletPointList";
+import { SiteData } from "../utils/types";
+import BulletPointList from "../components/CardComponents/BulletPointList";
+import ContactCard from "../components/ContactCard";
+import { getJSONDataForSite } from "../utils/data";
 
 export default function AboutMe() {
   const [siteData, setSiteData] = useState<SiteData>();
