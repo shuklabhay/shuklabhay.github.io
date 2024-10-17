@@ -6,6 +6,7 @@ import BulletPointList from "./CardComponents/BulletPointList";
 import ImageLightboxGallery from "./CardComponents/ImageLightboxGallery";
 import { LeftArrowIcon, RightArrowIcon } from "./IconButtons/LRArrowButton";
 import CardTitle from "./CardComponents/CardTitle";
+import { isSmallScreen } from "../utils/scroll";
 
 const formatBroadDescription = (description: string) => {
   if (description.charAt(0) == "A") {
@@ -36,11 +37,13 @@ export default function ProjectCard({
 
   return (
     <Card padding="15" radius="md" c="white" mb={5}>
-      <CardTitle
-        title={title}
-        smallerText={""}
-        linkTo={isLink ? link[0].url : undefined}
-      />
+      <div style={{ marginBottom: isSmallScreen ? 0 : 10 }}>
+        <CardTitle
+          title={title}
+          smallerText={""}
+          linkTo={isLink ? link[0].url : undefined}
+        />
+      </div>
 
       <Grid mb={areImages && isLink ? 20 : 0} mt={areImages ? 5 : 0}>
         {areImages && (

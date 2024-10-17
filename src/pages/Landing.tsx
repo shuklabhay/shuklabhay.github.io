@@ -1,7 +1,7 @@
 import { Stack, Text } from "@mantine/core";
 import { useEffect } from "react";
-import { useAppContext } from "../../utils/appContext";
-import { GradientBackground } from "../GradientBackground";
+import { GradientBackground } from "../components/GradientBackground";
+import { useAppContext } from "../utils/appContext";
 
 export default function Landing() {
   // Hooks and constants
