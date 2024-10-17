@@ -7,7 +7,7 @@
         "point": "WGAN-based computationally effiicent approach for generating high-fidelity stereo audio samples. Leverages attention mechanisms, optimized loss functions, and effective signal processing while achieving a 99.77% reduction in training epoch count compared to SpecGAN."
       },
       {
-        "point": "Overcame existing low-quality and monophonic limitations of audio generation methods by evaluating numerous approaches to stereo, high-fidelity audio generation. Research partially funded by UCLA and pending publication."
+        "point": "Overcame existing low-quality and monophonic limitations of audio generation methods by evaluating numerous approaches to generating stereo, high-fidelity audio. Research partially funded by UCLA and pending publication."
       }
     ],
     "images": [
@@ -41,7 +41,7 @@
         "point": "Developed scalable and flexible robot performance analysis application for multimodal FRC event data collection and visualization. New captured metrics empower informed strategic decisions at high-stakes competitions, contributing to the team's international success."
       },
       {
-        "point": "130+ users on FRC604, data collected for 700+ team robots over 1 year. Trained 10+ team members in webdev to build app and expand application capabilities to fit annual challenges."
+        "point": "Supports 130+ users on FRC604, data collected for 700+ team robots over 1 year. Trained 10+ team members in webdev to build app and expand application capabilities to fit annual challenges."
       }
     ],
     "images": [
