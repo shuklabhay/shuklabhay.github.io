@@ -12,15 +12,15 @@
     ],
     "images": [
       {
-        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/refs/heads/main/static/curated_kick_generated_examples.png",
+        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/main/static/curated_kick_generated_examples.png",
         "alt": "Generated Audio From Pretrained Model Instance 1"
       },
       {
-        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/refs/heads/main/static/diverse_kick_generated_examples.png",
+        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/main/static/diverse_kick_generated_examples.png",
         "alt": "Generated Audio From Pretrained Model Instance 2"
       },
       {
-        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/refs/heads/main/static/instrument_one_shot_generated_examples.png",
+        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/main/static/instrument_one_shot_generated_examples.png",
         "alt": "Generated Audio From Pretrained Model Instance 3"
       }
     ],
@@ -88,12 +88,12 @@
         "alt": "Domotron Firing a Note in Sacramento Regional QM?"
       },
       {
-        "src": "/static/projects/domotron/sac_climb.jpeg",
-        "alt": "Domotron Trap Scoring in Sacramento Regional QM75"
-      },
-      {
         "src": "/static/projects/domotron/champs_zoom.jpg",
         "alt": "Domotron Cycling at the World Championships"
+      },
+      {
+        "src": "/static/projects/domotron/sac_climb.jpeg",
+        "alt": "Domotron Trap Scoring in Sacramento Regional QM75"
       }
     ],
     "link": [
@@ -115,11 +115,11 @@
     ],
     "images": [
       {
-        "src": "https://raw.githubusercontent.com/shuklabhay/velocity-draft/refs/heads/main/public/app-interfaces.png",
+        "src": "https://raw.githubusercontent.com/shuklabhay/velocity-draft/main/public/app-interfaces.png",
         "alt": "VelocityDraft Interface"
       },
       {
-        "src": "https://raw.githubusercontent.com/shuklabhay/velocity-draft/refs/heads/main/public/logo512.png",
+        "src": "https://raw.githubusercontent.com/shuklabhay/velocity-draft/main/public/logo512.png",
         "alt": "VelocityDraft Icon"
       }
     ],

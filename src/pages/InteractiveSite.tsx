@@ -6,6 +6,7 @@ import AboutMe from "./AboutMe.tsx";
 import Experience from "./Experience.tsx";
 import Landing from "./Landing.tsx";
 import Skills from "./Skills.tsx";
+import PageHelmet from "../utils/PageHelmet.tsx";
 
 export default function InteractiveSite() {
   // Hooks
@@ -83,6 +84,11 @@ export default function InteractiveSite() {
 
   return (
     <div>
+      <PageHelmet
+        title="Interactive Portfolio Webpage"
+        description=""
+        page="/"
+      />
       <Navbar />
 
       <div ref={landingRef}>
