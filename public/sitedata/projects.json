@@ -7,7 +7,7 @@
         "point": "WGAN-based computationally effiicent approach for generating high-fidelity stereo audio samples. Leverages attention mechanisms, optimized loss functions, and effective signal processing. Research partially funded by UCLA and pending publication."
       },
       {
-        "point": "Overcame low-quality and monophonic limitations of existing audio generation methods with a 99.77% reduction in training epoch count and 9.56x reduction in parameter count compared to compared to monophonic audio generation models SpecGAN and WaveFlow."
+        "point": "New architecture overcame low-quality and monophonic limitations of existing audio generation methods with a 99.77% reduction in training epoch count and 9.56x reduction in parameter count compared to compared to monophonic audio generation models SpecGAN and WaveFlow."
       }
     ],
     "images": [
