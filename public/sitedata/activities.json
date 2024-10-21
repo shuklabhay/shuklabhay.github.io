@@ -34,7 +34,7 @@
         "point": "Conducted deep analyses of the computational principles and neurological correlations of 20+ key machine learning mechanisms (attention, visual processing, recurrent systems, reinforcement, etc), gaining a comprehensive understanding of their capabilities and limitations."
       },
       {
-        "point": "Developed StereoSampleGAN with UCLA funding to generate high quality stereo audio samples with a 99.77% reduction in training epoch count compared to monophonic audio generation model SpecGAN."
+        "point": "Developed StereoSampleGAN with UCLA funding to generate high quality stereo audio samples with a 99.77% reduction in training epoch count and and 9.56x reduction in parameter count compared to compared to monophonic audio generation models SpecGAN and WaveFlow."
       }
     ],
     "icon": {
