@@ -1,7 +1,7 @@
 # portfolio
 
 [![Build Resume](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/resume.yml/badge.svg)](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/resume.yml)
-[![Deploy GitHub Page](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/page.yml/badge.svg)](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/page.yml)
+[![Deploy GitHub Page](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/deploy.yml/badge.svg)](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/deploy.yml)
 [![On Push](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/push.yml/badge.svg)](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/push.yml/badge.svg)
 [![Update GitHub Data](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/ghdata.yml/badge.svg)](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/ghdata.yml/badge.svg)
 
