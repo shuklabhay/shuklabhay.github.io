@@ -7,10 +7,10 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Enhanced robot capabilities with computer vision and sensor integration, contributed to team software (particle filter localizer, time-optimal trajectory optimizer, annual robot control architecture). Developed team's competition data collection application Quickscout."
+        "point": "Enhanced robot capabilities with computer vision and sensor integration, contributed to team software (particle filter localizer, time-optimal trajectory optimizer)."
       },
       {
-        "point": "Developed a progressive web app for TheBlueAlliance, modernizing the univerally used platform and providing comprehensive, real-time access to all competition and team data over 30+ years."
+        "point": "Developed progressive web app for TheBlueAlliance, modernizing the widely-used platform providing real-time access to 30 years of competition and team data."
       },
       {
         "point": "Led subteams in design, manufacturing, and programming of FRC team robot while teaching new members about robot development."
@@ -31,10 +31,10 @@
     "ongoing": false,
     "details": [
       {
-        "point": "Conducted deep analyses of the computational principles and neurological correlations of 20+ key machine learning mechanisms (attention, visual processing, recurrent systems, reinforcement, etc), gaining a comprehensive understanding of their capabilities and limitations."
+        "point": "Gained proficiency in 20+ key machine learning mechanisms under mentorship of Dr. Hugh Tad Blair. Explored intersection of biological mechanisms and computing."
       },
       {
-        "point": "Developed StereoSampleGAN with UCLA funding to generate high quality stereo audio samples with a 99.77% reduction in training epoch count and and 9.56x reduction in parameter count compared to compared to monophonic audio generation models SpecGAN and WaveFlow."
+        "point": "Developed ML problem-solving and data analysis skills by applying theoretical learnings to practical assignments."
       }
     ],
     "icon": {
@@ -52,10 +52,10 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Taught 700+ elementary to high school students diverse STEM topics via numerous in-person and online workshops covering Robotics, Engineering, Machine Learning, and Programming Fundamentals."
+        "point": "Introduced 700+ 3rd-9th grade students to diverse STEM topics including robotics, machine learning, programming, and 3d design."
       },
       {
-        "point": "Raised $6000+ to support local STEM outreach initiatives for underrepresented communities and children health foundations, recruited 15+ academy mentors."
+        "point": "Raised $6000+ to support local STEM education and children health foundations. Recruited 15+ academy mentors."
       }
     ],
     "icon": {
@@ -73,7 +73,7 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Refine argumentation skills and rapidly synthesize speeches to compete on an international level."
+        "point": "Refined argumentation skills and rapidly synthesize speeches to compete on an international level."
       },
       {
         "point": "Competed in 20+ tournaments as member of 3/3550+ ranked NSDA program."

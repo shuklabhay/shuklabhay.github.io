@@ -4,10 +4,10 @@
     "broadDescription": "A lightweight machine learning approach high fidelity stereo audio sample generation",
     "details": [
       {
-        "point": "WGAN-based computationally effiicent approach for generating high-fidelity stereo audio samples. Leverages attention mechanisms, optimized loss functions, and effective signal processing. Research partially funded by UCLA and pending publication."
+        "point": "WGAN-based approach for generating high-fidelity stereo audio samples by leveraging attention mechanisms, optimized loss functions, and effective signal processing. Research partially funded by UCLA and pending publication."
       },
       {
-        "point": "New architecture overcame low-quality and monophonic limitations of existing audio generation methods with a 99.77% reduction in training epoch count and 9.56x reduction in parameter count compared to compared to SpecGAN and WaveFlow architectures."
+        "point": "Overcame low-quality monophonic limitations of existing audio generation methods with a 99.77% reduction in training epoch count and 9.56x reduction in parameter count."
       }
     ],
     "images": [
@@ -38,10 +38,10 @@
     "broadDescription": "FRC604's novel scouting application",
     "details": [
       {
-        "point": "Developed scalable and flexible robot performance analysis application for multimodal FRC event data collection and visualization. New captured metrics empower informed strategic decisions at high-stakes competitions, contributing to the team's international success."
+        "point": "Developed scalable application for multimodal FRC event data collection and visualization. New captured metrics empower informed strategic decisions at high-stakes competitions, contributing to the team's international success."
       },
       {
-        "point": "Supports 130+ users on FRC604, data collected for 700+ team robots over 1 year. Trained 10+ team members in webdev to build app and expand application capabilities to fit annual challenges."
+        "point": "Supports 130+ users on FRC604, collected data for 700+ team robots over 1 year. Trained 10+ team members in webdev to build app and expand application capabilities to fit annual challenges."
       }
     ],
     "images": [
