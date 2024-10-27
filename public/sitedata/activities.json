@@ -1,7 +1,28 @@
 [
   {
+    "org": "UCLA COSMOS (CA Summer School for Mathematics & Science)",
+    "position": "Brain-Inspired Computing Cohort Member",
+    "startYear": "2024",
+    "endYear": "2024",
+    "ongoing": false,
+    "details": [
+      {
+        "point": "Gained proficiency in 20+ key machine learning mechanisms under mentorship of Dr. Hugh Tad Blair. Explored intersection of biological mechanisms and computing."
+      },
+      {
+        "point": "Developed ML problem-solving and data analysis skills by applying theoretical learnings to practical assignments."
+      }
+    ],
+    "icon": {
+      "src": "/static/icons/cosmos.jpg",
+      "link": "https://cosmos.ucla.edu/"
+    },
+    "hideOnSite": false,
+    "hideOnResume": false
+  },
+  {
     "org": "FRC 604: Quixilver Robotics",
-    "position": "Controls/Software Lead (10-11)",
+    "position": "Controls/Software Lead (10)",
     "startYear": "2022",
     "endYear": "2024",
     "ongoing": true,
@@ -19,27 +40,6 @@
     "icon": {
       "src": "/static/icons/frc604.jpeg",
       "link": "https://604robotics.com/"
-    },
-    "hideOnSite": false,
-    "hideOnResume": false
-  },
-  {
-    "org": "UCLA COSMOS (CA Summer School for Mathematics & Science)",
-    "position": "Brain-Inspired Computing Cohort Member",
-    "startYear": "2024",
-    "endYear": "2024",
-    "ongoing": false,
-    "details": [
-      {
-        "point": "Gained proficiency in 20+ key machine learning mechanisms under mentorship of Dr. Hugh Tad Blair. Explored intersection of biological mechanisms and computing."
-      },
-      {
-        "point": "Developed ML problem-solving and data analysis skills by applying theoretical learnings to practical assignments."
-      }
-    ],
-    "icon": {
-      "src": "/static/icons/cosmos.jpg",
-      "link": "https://cosmos.ucla.edu/"
     },
     "hideOnSite": false,
     "hideOnResume": false
