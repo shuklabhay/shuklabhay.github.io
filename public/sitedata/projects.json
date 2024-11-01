@@ -103,7 +103,7 @@
       }
     ],
     "hideOnSite": false,
-    "hideOnResume": false
+    "hideOnResume": true
   },
   {
     "title": "VelocityDraft",
