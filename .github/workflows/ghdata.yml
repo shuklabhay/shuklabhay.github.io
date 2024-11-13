@@ -35,7 +35,7 @@ jobs:
         id: hiatus-check
         run: |
           if [[ "${{ secrets.HIATUS }}" == "true" ]]; then
-            echo "HIATUS=true, skipping data updates."
+            echo "User is on HIATUS, skipping data updating."
             echo "SKIP_COMMIT=true" >> $GITHUB_ENV
           fi
 
