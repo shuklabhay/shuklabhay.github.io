@@ -14,7 +14,6 @@ concurrency:
 
 jobs:
   update-gh-data:
-    if: ${{ secrets.HIATUS != 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -32,7 +31,16 @@ jobs:
       - name: Check formatting
         run: npm run format-check
 
+      - name: Determine if on HIATUS
+        id: hiatus-check
+        run: |
+          if [[ "${{ secrets.HIATUS }}" == "true" ]]; then
+            echo "HIATUS=true, skipping data updates."
+            echo "SKIP_COMMIT=true" >> $GITHUB_ENV
+          fi
+
       - name: Update GitHub data
+        if: ${{ env.SKIP_COMMIT != 'true' }}
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         run: npm run update-gh-data
@@ -47,6 +55,7 @@ jobs:
           git config --global user.email "portfolio[bot]@shuklabhay.github.io"
 
       - name: Commit changes to ghdata.json
+        if: ${{ env.SKIP_COMMIT != 'true' }}
         run: |
           git add public/sitedata/ghdata.json
           git pull
