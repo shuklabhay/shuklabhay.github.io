@@ -172,7 +172,7 @@ ${activities
 
 async function saveTexResume() {
   // Read JSON Data
-  const texFilePath = "public/resume/resume.tex";
+  const texFilePath = "public/resume.tex";
   const userData = await getJSONDataForResume();
   const texString = renderToStaticMarkup(parseDataToTexTemplate(userData));
 

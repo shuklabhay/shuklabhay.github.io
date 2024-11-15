@@ -134,24 +134,5 @@
     ],
     "hideOnSite": false,
     "hideOnResume": true
-  },
-  {
-    "title": "Digital Audio Production",
-    "broadDescription": "full length songs and compositions",
-    "details": [
-      {
-        "point": "Learning audio production, synthesis, and engineering since July 2022, building artist brand, participating in wordwide music collaborations and production competitions."
-      },
-      {
-        "point": "Understand physical applications of signal processing and manipulation to produce desired sounds"
-      },
-      {
-        "point": "Create professional full length compositions and song, gained 300,000+ streams in 2 years."
-      }
-    ],
-    "images": [],
-    "link": [],
-    "hideOnSite": true,
-    "hideOnResume": true
   }
 ]

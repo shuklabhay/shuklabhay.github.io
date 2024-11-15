@@ -66,6 +66,27 @@
     "hideOnResume": false
   },
   {
+    "org": "Digital Audio Production",
+    "position": "Self Taught Digital Audio Producer",
+    "startYear": "2022",
+    "endYear": "2024",
+    "ongoing": true,
+    "details": [
+      {
+        "point": "Self-taught electronic audio production, audio editing, musical composition, and music theory without any prior knowledge."
+      },
+      {
+        "point": "Developed expertise in advanced signal processing and manipulation, enabling the creation of high-quality, commercially viable tracks."
+      },
+      {
+        "point": "Amassed 300,000+ streams in 2 years by performing data-driven music promotion and optimizing music promotion strategies."
+      }
+    ],
+    "icon": null,
+    "hideOnSite": false,
+    "hideOnResume": true
+  },
+  {
     "org": "Leland Speech and Debate (NSDA)",
     "position": "Varsity Speaker",
     "startYear": "2022",
@@ -83,7 +104,7 @@
       "src": "/static/icons/lsd.jpg",
       "link": "https://www.lelandsd.org/"
     },
-    "hideOnSite": true,
+    "hideOnSite": false,
     "hideOnResume": true
   }
 ]

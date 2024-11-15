@@ -1,5 +1,11 @@
 [
   {
+    "title": "FRC604: City of San Jose Recoginition for STEM Outreach and Team Performance",
+    "recievedYear": "2024",
+    "hideOnSite": false,
+    "hideOnResume": false
+  },
+  {
     "title": "FRC604: World Championship Milstein Division Winner (12/3500 Internationally + 4/300 in CA)",
     "recievedYear": "2024",
     "hideOnSite": false,
@@ -24,7 +30,7 @@
     "hideOnResume": false
   },
   {
-    "title": "PSVA: Gold Award",
+    "title": "PSVA: Gold Award (250+ Hours Commmunity Service)",
     "recievedYear": "2023",
     "hideOnSite": false,
     "hideOnResume": true
@@ -39,6 +45,6 @@
     "title": "SCU/SVUDL Invitational: PF Debate Finalist (2/140 Internationally)",
     "recievedYear": "2022",
     "hideOnSite": false,
-    "hideOnResume": false
+    "hideOnResume": true
   }
 ]

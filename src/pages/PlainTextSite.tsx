@@ -28,7 +28,7 @@ const ActivityDescription = ({
     return (
       <Text fz={16} lh={1.5} mb={-15}>
         <HoverHighlightText
-          link={icon.link}
+          link={icon ? icon.link : undefined}
           text={`(${timeframeLabel}) ${org}`}
           size={"inherit"}
           shade="light"
