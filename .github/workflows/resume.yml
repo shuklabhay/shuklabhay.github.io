@@ -53,7 +53,7 @@ jobs:
 
       - name: Commit changes to resume.tex and resume.pdf
         run: |
-          git add public/resume/resume.pdf public/resume/resume.tex
+          git add public/resume.pdf public/resume.tex
           git pull
           git commit -m "Build Resume PDF"
           git push
