@@ -1,4 +1,4 @@
-import { Grid, Stack, Text } from "@mantine/core";
+import { Card, Grid, Stack, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { SiteData } from "../utils/types";
 import BulletPointList from "../components/CardComponents/BulletPointList";
@@ -21,20 +21,26 @@ export default function AboutMe() {
     const education = siteData.education;
 
     return (
-      <div style={{ paddingBlock: 10 }}>
-        <Text fz={{ base: 18, sm: 24 }} lh={1.5} mt={-10}>
-          Information{" "}
-          <Text span c="main" fw={700} inherit>
-            about me:
+      <div>
+        <div style={{ paddingBlock: 10 }}>
+          <Text fz={{ base: 18, sm: 24 }} lh={1.5}>
+            Information{" "}
+            <Text span c="main" fw={700} inherit>
+              about me:
+            </Text>{" "}
           </Text>
-        </Text>
+        </div>
 
         <Stack px={5}>
-          <div>
+          <Card padding="15" radius="md" c="white" mt={0}>
             {education.map((education) => {
               const Header = () => {
                 return (
-                  <Text fz={{ base: 16, sm: 20 }} key={education.school}>
+                  <Text
+                    fz={{ base: 16, sm: 20 }}
+                    key={education.school}
+                    mt={-10}
+                  >
                     <Text span inherit>
                       {education.school}
                     </Text>{" "}
@@ -53,10 +59,11 @@ export default function AboutMe() {
                   key={education.school}
                   HeaderComponent={Header}
                   details={details}
+                  mb={-5}
                 />
               );
             })}
-          </div>
+          </Card>
 
           <Grid gutter="sm" mt={-5}>
             {contact.map((contactItem) => {

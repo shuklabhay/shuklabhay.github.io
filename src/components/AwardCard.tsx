@@ -8,7 +8,7 @@ export default function AwardCard({ awardInfo }: { awardInfo: AwardItem }) {
   const { title, recievedYear } = awardInfo;
 
   return (
-    <Card padding="15" radius="md" c="white">
+    <Card padding="15" radius="md" c="white" mb={-2}>
       <CardTitle
         title={title}
         smallerText={recievedYear}
