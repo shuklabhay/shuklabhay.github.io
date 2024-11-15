@@ -45,7 +45,7 @@ export interface ActivityItem {
   endYear: string;
   ongoing: boolean;
   details: BulletPoint[];
-  icon: RichIcon;
+  icon: RichIcon | null;
   hideOnSite: boolean;
   hideOnResume: boolean;
 }
