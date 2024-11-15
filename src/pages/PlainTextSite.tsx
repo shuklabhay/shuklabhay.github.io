@@ -112,7 +112,7 @@ export default function PlainTextSite() {
   const navigate = useNavigate();
 
   const openResumeInNewTab = () => {
-    window.open("/resume/resume.pdf", "_blank", "noopener,noreferrer");
+    window.open("/resume.pdf", "_blank", "noopener,noreferrer");
   };
 
   useEffect(() => {
