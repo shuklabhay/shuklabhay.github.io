@@ -168,6 +168,7 @@ export default function PlainTextSite() {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
+              marginTop: 5,
             }}
           >
             {contact.map((item) => {
