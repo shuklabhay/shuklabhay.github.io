@@ -32,7 +32,7 @@
       }
     ],
     "icon": {
-      "src": "/static/icons/cosmos.jpg",
+      "src": "/static/icons/cosmos.jpeg",
       "link": "https://cosmos.ucla.edu/"
     },
     "hideOnSite": false,
@@ -140,7 +140,7 @@
       }
     ],
     "icon": {
-      "src": "/static/icons/lsd.jpg",
+      "src": "/static/icons/lsd.jpeg",
       "link": "https://www.lelandsd.org/"
     },
     "hideOnSite": false,
