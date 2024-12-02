@@ -84,27 +84,6 @@
     "hideOnResume": true
   },
   {
-    "org": "NEXUS Research Club",
-    "position": "Chapter Manager",
-    "startYear": "2024",
-    "endYear": "2024",
-    "ongoing": true,
-    "details": [
-      {
-        "point": "Coordinated with school club leaders to facilitate collaboration and communication between different school chapters."
-      },
-      {
-        "point": "Oversaw the activities and operations of 8+ NEXUS-affiliated school chapters to ensure impactful and collaborative research opportunities for high school students."
-      }
-    ],
-    "icon": {
-      "src": "/static/icons/nexus.jpeg",
-      "link": "https://nexusresearch.framer.website/"
-    },
-    "hideOnSite": false,
-    "hideOnResume": true
-  },
-  {
     "org": "Digital Audio Production",
     "position": "Digital Audio Producer",
     "startYear": "2020",
@@ -122,6 +101,27 @@
       }
     ],
     "icon": null,
+    "hideOnSite": false,
+    "hideOnResume": true
+  },
+  {
+    "org": "NEXUS Research Club",
+    "position": "Chapter Manager",
+    "startYear": "2024",
+    "endYear": "2024",
+    "ongoing": true,
+    "details": [
+      {
+        "point": "Coordinated with school club leaders to facilitate collaboration and communication between different school chapters."
+      },
+      {
+        "point": "Oversaw the activities and operations of 8+ NEXUS-affiliated school chapters to ensure impactful and collaborative research opportunities for high school students."
+      }
+    ],
+    "icon": {
+      "src": "/static/icons/nexus.jpeg",
+      "link": "https://nexusresearch.framer.website/"
+    },
     "hideOnSite": false,
     "hideOnResume": true
   },
