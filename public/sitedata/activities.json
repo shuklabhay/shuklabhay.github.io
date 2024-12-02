@@ -1,5 +1,23 @@
 [
   {
+    "org": "Stanford Center for Biomedical Informatics Research",
+    "position": "Gevaert Lab Student Researcher",
+    "startYear": "2024",
+    "endYear": "2024",
+    "ongoing": true,
+    "details": [
+      {
+        "point": "Developed early breast cancer diagnosis and prevention machine learning model."
+      }
+    ],
+    "icon": {
+      "src": "/static/icons/bmir.jpeg",
+      "link": "https://med.stanford.edu/gevaertlab.html/"
+    },
+    "hideOnSite": false,
+    "hideOnResume": false
+  },
+  {
     "org": "UCLA COSMOS (CA Summer School for Mathematics & Science)",
     "position": "Brain-Inspired Computing Cohort Member",
     "startYear": "2024",
@@ -63,7 +81,28 @@
       "link": "https://bayareastemacademy.net/"
     },
     "hideOnSite": false,
-    "hideOnResume": false
+    "hideOnResume": true
+  },
+  {
+    "org": "NEXUS Research Club",
+    "position": "Chapter Manager",
+    "startYear": "2024",
+    "endYear": "2024",
+    "ongoing": true,
+    "details": [
+      {
+        "point": "Coordinated with school club leaders to facilitate collaboration and communication between different school chapters."
+      },
+      {
+        "point": "Oversaw the activities and operations of 8+ NEXUS-affiliated school chapters to ensure impactful and collaborative research opportunities for high school students."
+      }
+    ],
+    "icon": {
+      "src": "/static/icons/nexus.jpeg",
+      "link": "https://nexusresearch.framer.website/"
+    },
+    "hideOnSite": false,
+    "hideOnResume": true
   },
   {
     "org": "Digital Audio Production",
