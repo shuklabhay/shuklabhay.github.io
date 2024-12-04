@@ -38,7 +38,7 @@
     "broadDescription": "FRC604's novel scouting application",
     "details": [
       {
-        "point": "Developed a scalable \"scouting\" application for FRC event data collection and visualization. New captured metrics empower informed strategic decisions at high-stakes competitions, contributing to the team's international success."
+        "point": "Developed a scalable scouting application for FRC event data collection and visualization. New captured metrics empower informed strategic decisions at high-stakes competitions, contributing to the team's international success."
       },
       {
         "point": "Supports 130+ users on FRC604, collected data for 750+ team robots over 2 years. Trained 10+ team members in web development to build application and expand capabilities to fit annual challenges."
