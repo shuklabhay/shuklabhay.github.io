@@ -186,6 +186,7 @@ async function saveTexResume() {
     { key: "Raised \\$", value: "Raised \\$" },
     { key: "&lt;4.6%", value: "\\<4.6\\%" },
     { key: "&gt;", value: ">" },
+    { key: "#71 to #12", value: "\\#71 to \\#12" },
     { key: "Mathematics & Science", value: "Mathematics \\& Science" },
   ];
   for (const { key, value } of replacements) {
