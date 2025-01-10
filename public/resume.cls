@@ -97,7 +97,7 @@
 \newcommand{\printname}{
 	\begingroup
 		\hfil{\MakeUppercase{\huge\bfseries\name}}\hfil % Style and output the user's name
-		\vspace{0.5em}\break % Vertical whitespace below name
+		\vspace{0.2em}\break % Vertical whitespace below name
 		
 	\endgroup
 }
