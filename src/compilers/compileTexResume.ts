@@ -48,6 +48,8 @@ function parseDataToTexTemplate(userData: ResumeData) {
 
 \\usepackage{times}
 \\usepackage{hyperref}
+\\hyphenpenalty=10000
+\\exhyphenpenalty=10000
 
 %------------------------------------------------
 
