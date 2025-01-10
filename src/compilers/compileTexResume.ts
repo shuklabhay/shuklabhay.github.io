@@ -137,14 +137,14 @@ ${activities
     %	SKILLS SECTION
 %----------------------------------------------------------------------------------------
 
-\\begin{rSection}{Skills}
-
-  \\begin{tabular}{@{} >{\\bfseries}l @{\\hspace{6ex}} l @{}}
-		Technical Fields & ${technicalSkillsList} \\\\
-    Other & ${otherSkillsList} \\\\
-	\\end{tabular}
-
-\\end{rSection}
+%\\begin{rSection}{Skills}
+% 
+%  \\begin{tabular}{@{} >{\\bfseries}l @{\\hspace{6ex}} l @{}}
+%		Technical Fields & ${technicalSkillsList} \\\\
+%    Other & ${otherSkillsList} \\\\
+%	\\end{tabular}
+%
+%\\end{rSection}
 
 %----------------------------------------------------------------------------------------
     % HONORS & AWARDS SECTION
