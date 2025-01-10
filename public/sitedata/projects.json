@@ -7,7 +7,7 @@
         "point": "Developed a generative AI architecture for high-quality stereo audio generation. Used advanced signal processing, attention mechanisms, and time-series analysis."
       },
       {
-        "point": "Architecture pioneers stereo audio generate at 44.1 KHz while reducing training epochs by 99.77% and parameter count by 9.56x compared to WaveNet."
+        "point": "Architecture pioneers stereo audio generate at 44.1 kHz while reducing training epochs by 99.77% and parameter count by 9.56x compared to WaveNet."
       }
     ],
     "images": [
@@ -129,11 +129,11 @@
     "link": [
       {
         "url": "https://shuklabhay.github.io/static/projects/sporestrike/FlexFactor_SporeStrike_pitch.pdf",
-        "description": "SporeStrike Pitch Slide Deck"
+        "description": "Pitch Slide Deck"
       }
     ],
     "hideOnSite": false,
-    "hideOnResume": true
+    "hideOnResume": false
   },
   {
     "title": "VelocityDraft",
