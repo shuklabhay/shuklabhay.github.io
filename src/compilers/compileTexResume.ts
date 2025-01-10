@@ -46,8 +46,7 @@ function parseDataToTexTemplate(userData: ResumeData) {
   11pt, % Default font size, can use 10pt, 11pt or 12pt
 ]{resume}
 
-\\usepackage{fontspec}
-\\setmainfont{Georgia}
+\\usepackage{times}
 \\usepackage{hyperref}
 
 %------------------------------------------------
