@@ -42,9 +42,8 @@ export default function AboutMe() {
                     mt={-10}
                   >
                     <Text span inherit>
-                      {education.school}
-                    </Text>{" "}
-                    ({education.location})
+                      {education.school} ({education.location})
+                    </Text>
                   </Text>
                 );
               };
@@ -59,7 +58,7 @@ export default function AboutMe() {
                   key={education.school}
                   HeaderComponent={Header}
                   details={details}
-                  mb={-5}
+                  mb={-10}
                 />
               );
             })}

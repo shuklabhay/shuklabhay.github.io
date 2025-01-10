@@ -4,10 +4,10 @@
     "broadDescription": "A lightweight machine learning approach high fidelity stereo audio sample generation",
     "details": [
       {
-        "point": "Developed a WGAN-based approach for high-fidelity stereo audio sample generation. Leveraged attention mechanisms, optimized loss functions, and effective signal processing. Research partially funded by UCLA and pending publication."
+        "point": "Developed a generative AI architecture for high-quality stereo audio generation. Used advanced signal processing, attention mechanisms, and time-series analysis."
       },
       {
-        "point": "Overcame low-quality monophonic limitations of existing audio generation methods with a 99.77% reduction in training epoch count and 9.56x reduction in parameter count."
+        "point": "Architecture pioneers stereo audio generate at 44.1 KHz while reducing training epochs by 99.77% and parameter count by 9.56x compared to WaveNet."
       }
     ],
     "images": [
@@ -34,14 +34,48 @@
     "hideOnResume": false
   },
   {
+    "title": "Domotron",
+    "broadDescription": "FRC604's Robot for the 2024 FRC Game \"Crescendo\"",
+    "details": [
+      {
+        "point": "Developed CV/physics-based shot calculations, driver control automation, competitive autonomous routines, and chain climbing mechanism for FRC 2024 robot ranked 12th/3500 Internationally and 4th/300 in CA."
+      },
+      {
+        "point": "Robot performed with 100% reliability, playing on the prestigious Einstein field after winning the Milstein World Championship division, 3 California regional events, and 5 event awards."
+      }
+    ],
+    "images": [
+      {
+        "src": "/static/projects/domotron/sac_peek_shot.jpeg",
+        "alt": "Domotron Firing a Note in Sacramento Regional QM?"
+      },
+      {
+        "src": "/static/projects/domotron/champs_zoom.jpg",
+        "alt": "Domotron Cycling at the World Championships"
+      },
+      {
+        "src": "/static/projects/domotron/sac_climb.jpeg",
+        "alt": "Domotron Trap Scoring in Sacramento Regional QM75"
+      }
+    ],
+    "link": [
+      {
+        "url": "https://604robotics.com/2023-2024-crescendo/",
+        "description": "Robot Website"
+      }
+    ],
+    "hideOnSite": false,
+    "hideOnResume": true
+  },
+  {
     "title": "Quickscout",
     "broadDescription": "FRC604's novel scouting application",
     "details": [
       {
-        "point": "Developed a scalable scouting application for FRC event data collection and visualization. New captured metrics empower informed strategic decisions at high-stakes competitions, contributing to the team's international success."
+        "point": "Developed a scalable scouting app to capture and visualize large-scale FRC event data. Access to new metrics allows informed strategic decisions and fuels the team's international success."
       },
       {
-        "point": "Supports 130+ users on FRC604, collected data for 750+ team robots over 2 years. Trained 10+ team members in web development to build application and expand capabilities to fit annual challenges."
+        "point": "App supports 150+ users on FRC604 and has been used to collect all actions during 1000+ event matches over 2 years. Trained 10+ team members in app development and design."
       }
     ],
     "images": [
@@ -72,34 +106,30 @@
     "hideOnResume": false
   },
   {
-    "title": "Domotron",
-    "broadDescription": "FRC604's Robot for the 2024 FRC Game \"Crescendo\"",
+    "title": "SporeStrike",
+    "broadDescription": "An effective fungicide disposal system",
     "details": [
       {
-        "point": "Developed computer vision and physics-based shot calculations, driver control automation, and competitive autonomous routines for world championship division winning robot."
+        "point": "Developed an affordable and high-drone-based fungicide disposal system, 3D-printed drone design prototypes, and theoretical market strategy."
       },
       {
-        "point": "Designed climber winch mechanism and robot vertical elevator, maximizing robot's competitive capabilities and earning the robot the Industrial Design, Innovation in Control, and Autonomous Awards."
+        "point": "Product reduces inefficiencies with manual fungicide disposal, preventing food waste equivalent to feeding 4 billion people and winning first place in the 2024 FlexFactor Championships."
       }
     ],
     "images": [
       {
-        "src": "/static/projects/domotron/sac_peek_shot.jpeg",
-        "alt": "Domotron Firing a Note in Sacramento Regional QM?"
+        "src": "static/projects/sporestrike/sporestrike_icon.jpg",
+        "alt": "SporeStrike Iconography"
       },
       {
-        "src": "/static/projects/domotron/champs_zoom.jpg",
-        "alt": "Domotron Cycling at the World Championships"
-      },
-      {
-        "src": "/static/projects/domotron/sac_climb.jpeg",
-        "alt": "Domotron Trap Scoring in Sacramento Regional QM75"
+        "src": "static/projects/sporestrike/3dp_components.jpg",
+        "alt": "3D Printed Components for Fungus Detection Identification"
       }
     ],
     "link": [
       {
-        "url": "https://604robotics.com/2023-2024-crescendo/",
-        "description": "Robot Website"
+        "url": "https://shuklabhay.github.io/static/projects/sporestrike/FlexFactor_SporeStrike_pitch.pdf",
+        "description": "SporeStrike Pitch Slide Deck"
       }
     ],
     "hideOnSite": false,
@@ -110,10 +140,10 @@
     "broadDescription": "A flexible essay writing scheduler webapp",
     "details": [
       {
-        "point": "Developed an open source webapp that uses user writing abilities and essay deadlines to algorithmically create an effective essay writing plan."
+        "point": "Developed an open source webapp to algorithmically determine the most-effective and least stressful essay writing plan with user writing abilities and essay deadlines."
       },
       {
-        "point": "Recieved third place project in OneHacks III Hackathon and Wolfram Award distinction. Serves 200+ users."
+        "point": "App recieved third place project in OneHacks III Hackathon and serves 200+ users."
       }
     ],
     "images": [
