@@ -44,9 +44,10 @@ function parseDataToTexTemplate(userData: ResumeData) {
 \\documentclass[
   %a4paper, % Uncomment for A4 paper size (default is US letter)
   11pt, % Default font size, can use 10pt, 11pt or 12pt
-]{resume} % Use the resume class
+]{resume}
 
-\\usepackage{ebgaramond} % Use the EB Garamond font
+\\usepackage{fontspec}
+\\setmainfont{Georgia}
 \\usepackage{hyperref}
 
 %------------------------------------------------
@@ -55,7 +56,7 @@ function parseDataToTexTemplate(userData: ResumeData) {
 
 % You can use the \\address command up to 3 times for 3 different addresses or pieces of contact information
 % Any new lines you use in the \\address commands will be converted to symbols, so each address will appear as a single line.
-\\address{${getContactLink("Email")} $\\vert$ \\underline{\\href{${getContactLink("Linkedin")}}{${getContactLink("Linkedin")}}} $\\vert$ \\underline{\\href{${getContactLink("GitHub")}}{${getContactLink("GitHub")}}} $\\vert$ \\underline{\\href{${getContactLink("Website")}}{${getContactLink("Website")}}}}% Contact information
+\\address{${getContactLink("Email")} $\\vert$ \\underline{\\href{${getContactLink("LinkedIn")}}{${getContactLink("Linkedin")}}} $\\vert$ \\underline{\\href{${getContactLink("GitHub")}}{${getContactLink("GitHub")}}} $\\vert$ \\underline{\\href{${getContactLink("Website")}}{${getContactLink("Website")}}}}% Contact information
 
 %----------------------------------------------------------------------------------------
 

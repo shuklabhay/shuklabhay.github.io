@@ -1,30 +1,30 @@
 [
   {
-    "title": "WCP CADathon (Robot Design Challenge) Finalist (100+ competitors)",
-    "recievedYear": "2024",
-    "hideOnSite": false,
-    "hideOnResume": true
-  },
-  {
     "title": "FRC604: City of San Jose Recognition for STEM Outreach and Team Performance",
     "recievedYear": "2024",
     "hideOnSite": false,
     "hideOnResume": false
   },
   {
-    "title": "FRC604: World Championship Milstein Division Winner (4/300 in CA, 12/3500 Internationally)",
+    "title": "WCP CADathon (Robot Design Challenge) Finalist (Top 10 Internationally)",
     "recievedYear": "2024",
     "hideOnSite": false,
     "hideOnResume": false
   },
   {
-    "title": "NextFlex FlexFactor: Entrepreneurship Competition Winner (1/260 in Santa Clara)",
+    "title": "FRC604: World Championship Milstein Division Winner (12/3500 Internationally, 4/300 in CA)",
+    "recievedYear": "2024",
+    "hideOnSite": true,
+    "hideOnResume": true
+  },
+  {
+    "title": "NextFlex: FlexFactor Innovation Competition Championship Winner (1/260 Regionally)",
     "recievedYear": "2024",
     "hideOnSite": false,
     "hideOnResume": false
   },
   {
-    "title": "NSE Level 2: Silver Distinction (89th percentile/21,500 Nationally)",
+    "title": "NSE: Silver Distinction (89th percentile out of 21,500 Nationally)",
     "recievedYear": "2024",
     "hideOnSite": true,
     "hideOnResume": true
@@ -36,7 +36,7 @@
     "hideOnResume": false
   },
   {
-    "title": "PSVA: Gold Award (250+ Hours Community Service)",
+    "title": "PSVA: Gold Award (350+ Hours Community Service)",
     "recievedYear": "2023",
     "hideOnSite": false,
     "hideOnResume": true
@@ -44,7 +44,7 @@
   {
     "title": "CFL Speech 2: Impromptu Speech Finalist (5/190 Regionally)",
     "recievedYear": "2022",
-    "hideOnSite": false,
+    "hideOnSite": true,
     "hideOnResume": true
   },
   {
