@@ -34,40 +34,6 @@
     "hideOnResume": false
   },
   {
-    "title": "Domotron",
-    "broadDescription": "FRC604's Robot for the 2024 FRC Game \"Crescendo\"",
-    "details": [
-      {
-        "point": "Developed CV/physics-based shot calculations, driver control automation, competitive autonomous routines, and chain climbing mechanism for FRC 2024 robot ranked 12th/3500 Internationally and 4th/300 in CA."
-      },
-      {
-        "point": "Robot performed with 100% reliability, playing on the prestigious Einstein field after winning the Milstein World Championship division, 3 California regional events, and 5 event awards."
-      }
-    ],
-    "images": [
-      {
-        "src": "/static/projects/domotron/sac_peek_shot.jpeg",
-        "alt": "Domotron Firing a Note in Sacramento Regional QM?"
-      },
-      {
-        "src": "/static/projects/domotron/champs_zoom.jpg",
-        "alt": "Domotron Cycling at the World Championships"
-      },
-      {
-        "src": "/static/projects/domotron/sac_climb.jpeg",
-        "alt": "Domotron Trap Scoring in Sacramento Regional QM75"
-      }
-    ],
-    "link": [
-      {
-        "url": "https://604robotics.com/2023-2024-crescendo/",
-        "description": "Robot Website"
-      }
-    ],
-    "hideOnSite": false,
-    "hideOnResume": true
-  },
-  {
     "title": "Quickscout",
     "broadDescription": "FRC604's novel scouting application",
     "details": [
@@ -104,6 +70,40 @@
     ],
     "hideOnSite": false,
     "hideOnResume": false
+  },
+  {
+    "title": "Domotron",
+    "broadDescription": "FRC604's Robot for the 2024 FRC Game \"Crescendo\"",
+    "details": [
+      {
+        "point": "Developed CV/physics-based shot calculations, driver control automation, competitive autonomous routines, and chain climbing mechanism for FRC 2024 robot ranked 12th/3500 Internationally and 4th/300 in CA."
+      },
+      {
+        "point": "Robot performed with 100% reliability, playing on the prestigious Einstein field after winning the Milstein World Championship division, 3 California regional events, and 5 event awards."
+      }
+    ],
+    "images": [
+      {
+        "src": "/static/projects/domotron/sac_peek_shot.jpeg",
+        "alt": "Domotron Firing a Note in Sacramento Regional QM?"
+      },
+      {
+        "src": "/static/projects/domotron/champs_zoom.jpg",
+        "alt": "Domotron Cycling at the World Championships"
+      },
+      {
+        "src": "/static/projects/domotron/sac_climb.jpeg",
+        "alt": "Domotron Trap Scoring in Sacramento Regional QM75"
+      }
+    ],
+    "link": [
+      {
+        "url": "https://604robotics.com/2023-2024-crescendo/",
+        "description": "Robot Website"
+      }
+    ],
+    "hideOnSite": false,
+    "hideOnResume": true
   },
   {
     "title": "SporeStrike",

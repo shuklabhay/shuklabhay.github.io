@@ -98,7 +98,7 @@ ${activities
     .map((project) => {
       if (!project.hideOnResume) {
         return `
-  \\begin{rSubsection}{${project.title}}{}{${project.link[0] ? project.link[0].description + `: \\underline{\\href{${project.link[0].url}}{${project.link[0].url}}}` : ""}}{}
+  \\begin{rSubsection}{${project.title}}{}{${project.link[0] ? `\\underline{\\href{${project.link[0].url}}{${project.link[0].description}}}` : ""}}{}
        ${project.details
          .map((detail) => {
            return `
