@@ -182,6 +182,7 @@ async function saveTexResume() {
   const replacements = [
     { key: "99.77%", value: "99.77\\%" },
     { key: "&amp;", value: "&" },
+    { key: "&quot;", value: '"' },
     { key: "&#x27;", value: "'" },
     { key: "Raised \\$", value: "Raised \\$" },
     { key: "&lt;4.6%", value: "\\<4.6\\%" },
