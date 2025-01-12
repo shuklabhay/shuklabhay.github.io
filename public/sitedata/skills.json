@@ -2,10 +2,11 @@
   "technical": [
     "AI/ML",
     "Robotics",
+    "Research",
     "Signal Processing",
     "3D Printing",
     "CAD",
     "Webdev/Appdev"
   ],
-  "other": ["Digital Audio Production", "Graphic Design", "Video Editing"]
+  "other": ["Public Speaking", "Digital Audio Production", "Graphic Design"]
 }
