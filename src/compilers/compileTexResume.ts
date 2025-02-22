@@ -8,7 +8,7 @@ function parseDataToTexTemplate(userData: ResumeData) {
   const { activities, awards, contact, education, projects, skills } = userData;
 
   const technicalSkillsList = skills.technical.map((skill) => skill).join(", ");
-  const otherSkillsList = skills.other.map((skill) => skill).join(", ");
+  // const otherSkillsList = skills.other.map((skill) => skill).join(", ");
   const getContactLink = (title: string) => {
     const titleLower = title.toLowerCase();
 
@@ -141,7 +141,6 @@ ${activities
  
   \\begin{tabular}{@{} >{\\bfseries}l @{\\hspace{6ex}} l @{}}
 		Technical Fields & ${technicalSkillsList} \\\\
-    Other & ${otherSkillsList} \\\\
 	\\end{tabular}
 
 \\end{rSection}
@@ -189,9 +188,13 @@ async function saveTexResume() {
     { key: "&#x27;", value: "'" },
     { key: "Raised \\$", value: "Raised \\$" },
     { key: "&lt;4.6%", value: "\\<4.6\\%" },
+    { key: "0.1%", value: "0.1\\%" },
     { key: "&gt;", value: ">" },
     { key: "#71 to #12", value: "\\#71 to \\#12" },
     { key: "Mathematics & Science", value: "Mathematics \\& Science" },
+    { key: "supervised & unsupervised", value: "supervised \\& unsupervised" },
+    { key: "85%", value: "85\\%" },
+    { key: "DrumGAN & WaveGAN", value: "DrumGAN \\& WaveGAN" },
   ];
   for (const { key, value } of replacements) {
     const regex = new RegExp(key, "g");

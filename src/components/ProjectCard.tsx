@@ -45,7 +45,7 @@ export default function ProjectCard({
         />
       </div>
 
-      <Grid mb={areImages && isLink ? 20 : 0} mt={areImages ? 5 : 0}>
+      <Grid mb={areImages && isLink ? 20 : 20} mt={areImages ? 5 : 0}>
         {areImages && (
           <Grid.Col span={{ base: 12, sm: 3 }} w={"100%"}>
             <Carousel

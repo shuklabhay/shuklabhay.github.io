@@ -4,10 +4,10 @@
     "broadDescription": "A lightweight machine learning approach high fidelity stereo audio sample generation",
     "details": [
       {
-        "point": "Developed a generative AI architecture for high-quality stereo audio generation. Used advanced signal processing, attention mechanisms, and time-series analysis."
+        "point": "Developed a novel generative AI architecture for high-quality stereo audio generation leveraging custom-collected drum data, effective signal processing representations, and efficient training techniques"
       },
       {
-        "point": "Architecture pioneers stereo audio generate at 44.1 kHz while reducing training epochs by 99.77% and parameter count by 9.56x compared to WaveNet."
+        "point": "Architecture pioneers stereo audio generation at 44.1 kHz while increasing audio quality by 85% and reducing training time by 25x (compared to DrumGAN & WaveGAN respectively)."
       }
     ],
     "images": [
@@ -28,6 +28,54 @@
       {
         "url": "https://github.com/shuklabhay/stereo-sample-gan",
         "description": "GitHub Repo"
+      }
+    ],
+    "hideOnSite": false,
+    "hideOnResume": false
+  },
+  {
+    "title": "Vox Transformis",
+    "broadDescription": "An AI tool designed to preserve linguistic diversity by facilitating musical translation",
+    "details": [
+      {
+        "point": "Utilized multimodal LLMs, voice cloning, and phonetically constrained DTW to pioneer free and effective audio translation while preserving rhythmic, literal, and melodic elements."
+      }
+    ],
+    "images": [],
+    "link": [
+      {
+        "url": "https://science-fair.org/",
+        "description": "Science Fair"
+      }
+    ],
+    "hideOnSite": false,
+    "hideOnResume": false
+  },
+  {
+    "title": "SporeStrike",
+    "broadDescription": "An effective fungicide disposal system",
+    "details": [
+      {
+        "point": "Developed an affordable drone-based fungicide disposal system, 3D-printed design prototypes, and theoretical market strategy."
+      },
+      {
+        "point": "Product reduces inefficiencies with manual fungicide disposal, preventing food waste equivalent to feeding 4 billion people and winning first place in the 2024 FlexFactor Championships."
+      }
+    ],
+    "images": [
+      {
+        "src": "static/projects/sporestrike/sporestrike_icon.jpg",
+        "alt": "SporeStrike Iconography"
+      },
+      {
+        "src": "static/projects/sporestrike/3dp_components.jpg",
+        "alt": "3D Printed Components for Fungus Identification"
+      }
+    ],
+    "link": [
+      {
+        "url": "https://shuklabhay.github.io/static/projects/sporestrike/FlexFactor_SporeStrike_pitch.pdf",
+        "description": "Pitch Slide Deck"
       }
     ],
     "hideOnSite": false,
@@ -100,36 +148,6 @@
       {
         "url": "https://604robotics.com/2023-2024-crescendo/",
         "description": "Robot Website"
-      }
-    ],
-    "hideOnSite": false,
-    "hideOnResume": true
-  },
-  {
-    "title": "SporeStrike",
-    "broadDescription": "An effective fungicide disposal system",
-    "details": [
-      {
-        "point": "Developed an affordable and high-drone-based fungicide disposal system, 3D-printed design prototypes, and theoretical market strategy."
-      },
-      {
-        "point": "Product reduces inefficiencies with manual fungicide disposal, preventing food waste equivalent to feeding 4 billion people and winning first place in the 2024 FlexFactor Championships."
-      }
-    ],
-    "images": [
-      {
-        "src": "static/projects/sporestrike/sporestrike_icon.jpg",
-        "alt": "SporeStrike Iconography"
-      },
-      {
-        "src": "static/projects/sporestrike/3dp_components.jpg",
-        "alt": "3D Printed Components for Fungus Detection Identification"
-      }
-    ],
-    "link": [
-      {
-        "url": "https://shuklabhay.github.io/static/projects/sporestrike/FlexFactor_SporeStrike_pitch.pdf",
-        "description": "Pitch Slide Deck"
       }
     ],
     "hideOnSite": false,
