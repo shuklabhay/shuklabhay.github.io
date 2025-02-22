@@ -101,11 +101,11 @@ ${activities
     .map((project) => {
       if (!project.hideOnResume) {
         const linkSection = project.link[0]
-          ? ` - \\underline{\\href{${project.link[0].url}}{${project.link[0].description}}}`
-          : "";
+          ? `\\mbox{${project.title} - \\underline{\\href{${project.link[0].url}}{${project.link[0].description}}}}`
+          : project.title;
 
         return `
-    \\begin{rSubsection}{${project.title}${linkSection}}{}{}{}
+    \\begin{rSubsection}{\\normalfont${linkSection}}{}{}{}
         ${project.details
           .map((detail) => {
             return `
@@ -118,6 +118,7 @@ ${activities
       }
     })
     .join("")}
+
 \\end{rSection}
     
 %----------------------------------------------------------------------------------------
