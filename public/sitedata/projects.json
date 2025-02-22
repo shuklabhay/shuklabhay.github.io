@@ -117,7 +117,7 @@
       }
     ],
     "hideOnSite": false,
-    "hideOnResume": false
+    "hideOnResume": true
   },
   {
     "title": "Domotron",
@@ -151,7 +151,7 @@
       }
     ],
     "hideOnSite": false,
-    "hideOnResume": false
+    "hideOnResume": true
   },
   {
     "title": "VelocityDraft",
