@@ -100,21 +100,24 @@ ${activities
   ${projects
     .map((project) => {
       if (!project.hideOnResume) {
+        const linkSection = project.link[0]
+          ? ` - \\underline{\\href{${project.link[0].url}}{${project.link[0].description}}}`
+          : "";
+
         return `
-  \\begin{rSubsection}{${project.title}}{}{${project.link[0] ? `\\underline{\\href{${project.link[0].url}}{${project.link[0].description}}}` : ""}}{}
-       ${project.details
-         .map((detail) => {
-           return `
-    \\item ${detail.point}
+    \\begin{rSubsection}{${project.title}${linkSection}}{}{}{}
+        ${project.details
+          .map((detail) => {
+            return `
+      \\item ${detail.point}
+          `;
+          })
+          .join("")}
+    \\end{rSubsection}
         `;
-         })
-         .join("")}
-  \\end{rSubsection}
-      `;
       }
     })
     .join("")}
-	
 \\end{rSection}
     
 %----------------------------------------------------------------------------------------
