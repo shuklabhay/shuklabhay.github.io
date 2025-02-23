@@ -21,19 +21,22 @@
     "hideOnResume": false
   },
   {
-    "org": "UCLA COSMOS (Brain-Inspired Computing/Artificial Intellegence Cohort)",
-    "position": "Student Researcher",
-    "startYear": "July 2024",
-    "endYear": "August 2024",
-    "ongoing": false,
+    "org": "FRC 604: Quixilver Robotics",
+    "position": "Controls/Software Lead (10)",
+    "startYear": "June 2022",
+    "endYear": "Present",
+    "ongoing": true,
     "details": [
       {
-        "point": "Integrated foundational neurobiological principles into machine learning models for image geolocation, rat neuron behavior decoding, and handwritten character recognition under the mentorship of UCLA Prof. Hugh Tad Blair."
+        "point": "Designed and implemented high-performance FRC robot components, integrating strategic mechanism design, real-time computer vision, and multi-modal sensor fusion to boost autonomous and teleoperated robot performance and achieve a top 0.1% team ranking (12/10,000+) internationally."
+      },
+      {
+        "point": "Led 15+ members in developing a real-time FRC competition data collection and visualization platform, empowering data-driven competitive match strategy and optimal partner selection. App currently serves 175+ users and has collected data for 1000+ matches."
       }
     ],
     "icon": {
-      "src": "/static/icons/cosmos.jpeg",
-      "link": "https://cosmos.ucla.edu/"
+      "src": "/static/icons/frc604.jpeg",
+      "link": "https://604robotics.com/"
     },
     "hideOnSite": false,
     "hideOnResume": false
@@ -54,27 +57,6 @@
       "link": "https://www.pavyl.com/"
     },
     "hideOnSite": true,
-    "hideOnResume": false
-  },
-  {
-    "org": "FRC 604: Quixilver Robotics",
-    "position": "Controls/Software Lead (10)",
-    "startYear": "June 2022",
-    "endYear": "Present",
-    "ongoing": true,
-    "details": [
-      {
-        "point": "Designed and implemented high-performance FRC robot components, integrating strategic mechanism design, real-time computer vision, and multi-modal sensor fusion to boost autonomous and teleoperated robot performance and achieve a top 0.1% team ranking (12/10,000+) internationally."
-      },
-      {
-        "point": "Led 15+ members in developing a real-time FRC competition data collection and visualization platform, empowering data-driven competitive match strategy and optimal partner selection. App currently serves 175+ users and has collected data for 1000+ matches."
-      }
-    ],
-    "icon": {
-      "src": "/static/icons/frc604.jpeg",
-      "link": "https://604robotics.com/"
-    },
-    "hideOnSite": false,
     "hideOnResume": false
   },
   {
