@@ -199,6 +199,7 @@ async function saveTexResume() {
     { key: "supervised & unsupervised", value: "supervised \\& unsupervised" },
     { key: "85%", value: "85\\%" },
     { key: "DrumGAN & WaveGAN", value: "DrumGAN \\& WaveGAN" },
+    { key: "2%", value: "2\\%" },
   ];
   for (const { key, value } of replacements) {
     const regex = new RegExp(key, "g");
