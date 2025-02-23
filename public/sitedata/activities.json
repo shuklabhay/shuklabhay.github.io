@@ -7,7 +7,7 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Developed scalable Machine Learning/Computer Vision foundation models for segmenting microscopic and massive anatomical structures in medical imagery."
+        "point": "Developed scalable Machine Learning/Computer Vision foundation models for segmenting microscopic to massive anatomical structures in medical imagery."
       },
       {
         "point": "Produced detailed scientific documentation to communicate research findings. All research done under the mentorship of researcher Chris Sadée."
@@ -21,7 +21,7 @@
     "hideOnResume": false
   },
   {
-    "org": "UCLA COSMOS (Brain-Inspired Computing/Artificial Intellegence Cluster)",
+    "org": "UCLA COSMOS (Brain-Inspired Computing/Artificial Intellegence Cohort)",
     "position": "Student Researcher",
     "startYear": "July 2024",
     "endYear": "August 2024",
@@ -36,6 +36,24 @@
       "link": "https://cosmos.ucla.edu/"
     },
     "hideOnSite": false,
+    "hideOnResume": false
+  },
+  {
+    "org": "Pavyl",
+    "position": "Software Advisor",
+    "startYear": "January 2025",
+    "endYear": "Present",
+    "ongoing": true,
+    "details": [
+      {
+        "point": "Advised on the creation of innovative large language model tools with unlimited context windows, enabling AI to grow with users and transforming AI-powered applications."
+      }
+    ],
+    "icon": {
+      "src": "/static/icons/pavyl.jpeg",
+      "link": "https://www.pavyl.com/"
+    },
+    "hideOnSite": true,
     "hideOnResume": false
   },
   {
