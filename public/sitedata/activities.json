@@ -40,13 +40,13 @@
   },
   {
     "org": "Pavyl",
-    "position": "Software Advisor",
+    "position": "Software Design Advisor",
     "startYear": "January 2025",
     "endYear": "Present",
     "ongoing": true,
     "details": [
       {
-        "point": "Advised on the creation of innovative large language model tools with unlimited context windows, enabling AI to grow with users and transforming AI-powered applications."
+        "point": "Advised development of innovative large language model tools with unlimited context windows and effective user interfaces, enabling AI to grow with users and transforming AI-powered applications."
       }
     ],
     "icon": {
@@ -118,7 +118,7 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Coordinated with leaders of 8+ NEXUS chapters in California high schools to ensure access to high-impact research opportunities and increase club membership."
+        "point": "Coordinate with local leaders of 8+ NEXUS chapters in California high schools to ensure access to high-impact research opportunities and increase club membership."
       }
     ],
     "icon": {
@@ -126,7 +126,7 @@
       "link": "https://nexusresearch.framer.website/"
     },
     "hideOnSite": false,
-    "hideOnResume": true
+    "hideOnResume": false
   },
   {
     "org": "Leland Speech and Debate (NSDA)",
