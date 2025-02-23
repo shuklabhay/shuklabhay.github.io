@@ -7,7 +7,7 @@
         "point": "Developed a novel generative AI architecture for high-quality stereo audio generation leveraging custom-collected drum data, effective signal processing representations, and efficient training techniques"
       },
       {
-        "point": "Architecture pioneers stereo audio generation at 44.1 kHz while increasing audio quality by 85% and reducing training time by 25x (compared to DrumGAN & WaveGAN respectively)."
+        "point": "Architecture is one of th first models to generate stereo audio at 44.1 kHz. Also increased audio quality by 85% and reducied training time by 25x (compared to DrumGAN & WaveGAN respectively)."
       }
     ],
     "images": [
@@ -38,7 +38,7 @@
     "broadDescription": "An AI tool designed to preserve linguistic diversity by facilitating musical translation",
     "details": [
       {
-        "point": "Developed an AI-based framework to translate audio while preserving rhythmic, literal, and melodic creatures by utilizing multimodal LLMs, voice cloning, and a phonetically constrained DTW algorithm."
+        "point": "Developed an AI-based framework to expand exposure to rare languages by using mutlimodal large language models to translate audio while preserving rhythmic, literal, and melodic features."
       }
     ],
     "images": [],
@@ -56,7 +56,7 @@
     "broadDescription": "An effective fungicide disposal system",
     "details": [
       {
-        "point": "Engineered an affordable drone-based fungicide disposal system and 3D-printed prototypes to improve efficiency of farm fungicide disposal and prevent food waste equivalent to feeding 4 billion people. First place project at the 2024 FlexFactor Entrepreneurship Championships (1/260)."
+        "point": "Engineered an affordable drone-based fungicide disposal system and 3D-printed prototypes to prevent food waste equivalent to feeding 4 billion people. Project won first place at the 2024 FlexFactor Entrepreneurship Championships (1/260)."
       }
     ],
     "images": [

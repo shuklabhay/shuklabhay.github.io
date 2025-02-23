@@ -7,7 +7,7 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Developed multi-GPU ML/CV algorithms for microscopic and large medical imager region segmentation (supervised & unsupervised)."
+        "point": "Developed scalable Machine Learning/Computer Vision foundation models for segmenting microscopic and massive anatomical structures in medical imagery."
       },
       {
         "point": "Produced detailed scientific documentation to communicate research findings. All research done under the mentorship of researcher Chris Sadée."
@@ -21,14 +21,14 @@
     "hideOnResume": false
   },
   {
-    "org": "UCLA COSMOS (CA Summer School for Mathematics & Science)",
-    "position": "Brain-Inspired Computing Cohort Member",
+    "org": "UCLA COSMOS (Brain-Inspired Computing/Artificial Intellegence Cluster)",
+    "position": "Student Researcher",
     "startYear": "July 2024",
     "endYear": "August 2024",
     "ongoing": false,
     "details": [
       {
-        "point": "Integrated foundational neurobiological principles into machine learning models for rat neuron behavior, image geolocation, and character recognition under the mentorship of UCLA Prof. Hugh Tad Blair."
+        "point": "Integrated foundational neurobiological principles into machine learning models for image geolocation, rat neuron behavior decoding, and handwritten character recognition under the mentorship of UCLA Prof. Hugh Tad Blair."
       }
     ],
     "icon": {
@@ -46,10 +46,10 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Designed and implemented high-performance tele-autonomous FRC robots, integrating real-time computer vision, multi-modal sensor integration, and strategic mechanism design to boost autonomous performance and achieve a top 0.1% team ranking (12/10,000+) internationally."
+        "point": "Designed and implemented high-performance FRC robot components, integrating real-time computer vision, multi-modal sensor integration, and strategic mechanism design to boost autonomous and teleoperated robot performance and achieve a top 0.1% team ranking (12/10,000+) internationally."
       },
       {
-        "point": "Led 15+ members in developing a real-time FRC competition data collection and visualization platform, transforming 8 years of team knowledge into informed strategic decision-making. App currently serves 175+ users who have collected data for 1000+ matches."
+        "point": "Led 15+ members in developing a real-time FRC competition data collection and visualization platform, empowering data-driven competitive match strategy and optimal partner selection. App currently serves 175+ users and has collected data for 1000+ matches."
       }
     ],
     "icon": {
