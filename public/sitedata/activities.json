@@ -21,6 +21,24 @@
     "hideOnResume": false
   },
   {
+    "org": "UCLA COSMOS (Brain-Inspired Computing/Artificial Intellegence Cohort)",
+    "position": "Student Researcher",
+    "startYear": "July 2024",
+    "endYear": "August 2024",
+    "ongoing": false,
+    "details": [
+      {
+        "point": "Integrated foundational neurobiological principles into machine learning models for image geolocation, rat neuron behavior decoding, and handwritten character recognition under the mentorship of UCLA Prof. Hugh Tad Blair."
+      }
+    ],
+    "icon": {
+      "src": "/static/icons/cosmos.jpeg",
+      "link": "https://cosmos.ucla.edu/"
+    },
+    "hideOnSite": false,
+    "hideOnResume": false
+  },
+  {
     "org": "FRC 604: Quixilver Robotics",
     "position": "Controls/Software Lead (10)",
     "startYear": "June 2022",
