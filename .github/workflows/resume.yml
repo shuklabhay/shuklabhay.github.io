@@ -21,7 +21,7 @@ concurrency:
 jobs:
   build-resume:
     runs-on: ubuntu-latest
-    container: texlive/texlive:latest
+    container: texlive/texlive-minimal:latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
