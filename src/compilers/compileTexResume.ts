@@ -190,7 +190,6 @@ async function saveTexResume() {
     { key: "&amp;", value: "&" },
     { key: "&quot;", value: '"' },
     { key: "&#x27;", value: "'" },
-    { key: "$6,000+", value: "$\\6,000+" },
     { key: "&lt;4.6%", value: "\\<4.6\\%" },
     { key: "0.1%", value: "0.1\\%" },
     { key: "&gt;", value: ">" },
@@ -201,6 +200,7 @@ async function saveTexResume() {
     { key: "DrumGAN & WaveGAN", value: "DrumGAN \\& WaveGAN" },
     { key: "2%", value: "2\\%" },
     { key: "1%", value: "1\\%" },
+    { key: "\\$6,000", value: "\\$6,000" },
   ];
   for (const { key, value } of replacements) {
     const regex = new RegExp(key, "g");
