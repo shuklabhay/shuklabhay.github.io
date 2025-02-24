@@ -1,13 +1,13 @@
 [
   {
     "title": "StereoSampleGAN",
-    "broadDescription": "A lightweight machine learning approach high fidelity stereo audio sample generation",
+    "broadDescription": "A lightweight machine learning approach high-fidelity stereo audio sample generation",
     "details": [
       {
-        "point": "Developed a generative AI architecture for high-quality stereo audio generation. Used advanced signal processing, attention mechanisms, and time-series analysis."
+        "point": "Developed one of the first generative AI architectures capable of high-quality stereo audio generation using effective signal processing, efficient training techniques, and custom-collected drum data."
       },
       {
-        "point": "Architecture pioneers stereo audio generate at 44.1 kHz while reducing training epochs by 99.77% and parameter count by 9.56x compared to WaveNet."
+        "point": "Model pioneered neural high-fidelity stereo audio generation while increasing audio quality by 85% and reducing training time by 25x (compared to DrumGAN & WaveGAN respectively)."
       }
     ],
     "images": [
@@ -28,6 +28,51 @@
       {
         "url": "https://github.com/shuklabhay/stereo-sample-gan",
         "description": "GitHub Repo"
+      }
+    ],
+    "hideOnSite": false,
+    "hideOnResume": false
+  },
+  {
+    "title": "Vox Transformis",
+    "broadDescription": "An AI tool designed to preserve linguistic diversity by facilitating musical translation",
+    "details": [
+      {
+        "point": "Developed an AI-based framework to expand user exposure to rare languages by taking a novel approach to audio translation using multimodal large language models with tool use to preserve rhythmic, literal, and melodic features."
+      }
+    ],
+    "images": [],
+    "link": [
+      {
+        "url": "https://science-fair.org/",
+        "description": "Science Fair"
+      }
+    ],
+    "hideOnSite": false,
+    "hideOnResume": false
+  },
+  {
+    "title": "SporeStrike",
+    "broadDescription": "An effective fungicide disposal system",
+    "details": [
+      {
+        "point": "Designed an affordable drone-based fungicide disposal system and manufactured 3D-printed prototypes to reduce fungal infection destruction on farms and corresponding food waste. Project won first place out of 260 teams at the 2024 FlexFactor Entrepreneurship Championships."
+      }
+    ],
+    "images": [
+      {
+        "src": "static/projects/sporestrike/sporestrike_icon.jpg",
+        "alt": "SporeStrike Iconography"
+      },
+      {
+        "src": "static/projects/sporestrike/3dp_components.jpg",
+        "alt": "3D Printed Components for Fungus Identification"
+      }
+    ],
+    "link": [
+      {
+        "url": "https://shuklabhay.github.io/static/projects/sporestrike/FlexFactor_SporeStrike_pitch.pdf",
+        "description": "Pitch Slide Deck"
       }
     ],
     "hideOnSite": false,
@@ -69,7 +114,7 @@
       }
     ],
     "hideOnSite": false,
-    "hideOnResume": false
+    "hideOnResume": true
   },
   {
     "title": "Domotron",
@@ -104,36 +149,6 @@
     ],
     "hideOnSite": false,
     "hideOnResume": true
-  },
-  {
-    "title": "SporeStrike",
-    "broadDescription": "An effective fungicide disposal system",
-    "details": [
-      {
-        "point": "Developed an affordable and high-drone-based fungicide disposal system, 3D-printed design prototypes, and theoretical market strategy."
-      },
-      {
-        "point": "Product reduces inefficiencies with manual fungicide disposal, preventing food waste equivalent to feeding 4 billion people and winning first place in the 2024 FlexFactor Championships."
-      }
-    ],
-    "images": [
-      {
-        "src": "static/projects/sporestrike/sporestrike_icon.jpg",
-        "alt": "SporeStrike Iconography"
-      },
-      {
-        "src": "static/projects/sporestrike/3dp_components.jpg",
-        "alt": "3D Printed Components for Fungus Detection Identification"
-      }
-    ],
-    "link": [
-      {
-        "url": "https://shuklabhay.github.io/static/projects/sporestrike/FlexFactor_SporeStrike_pitch.pdf",
-        "description": "Pitch Slide Deck"
-      }
-    ],
-    "hideOnSite": false,
-    "hideOnResume": false
   },
   {
     "title": "VelocityDraft",

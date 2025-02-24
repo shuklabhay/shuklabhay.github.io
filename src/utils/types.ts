@@ -42,7 +42,7 @@ export interface ActivityItem {
   org: string;
   position: string;
   startYear: string;
-  endYear: string;
+  endYear: string | "Present";
   ongoing: boolean;
   details: BulletPoint[];
   icon: RichIcon | null;

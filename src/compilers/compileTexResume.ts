@@ -8,7 +8,7 @@ function parseDataToTexTemplate(userData: ResumeData) {
   const { activities, awards, contact, education, projects, skills } = userData;
 
   const technicalSkillsList = skills.technical.map((skill) => skill).join(", ");
-  const otherSkillsList = skills.other.map((skill) => skill).join(", ");
+  // const otherSkillsList = skills.other.map((skill) => skill).join(", ");
   const getContactLink = (title: string) => {
     const titleLower = title.toLowerCase();
 
@@ -43,7 +43,7 @@ function parseDataToTexTemplate(userData: ResumeData) {
 
 \\documentclass[
   %a4paper, % Uncomment for A4 paper size (default is US letter)
-  11pt, % Default font size, can use 10pt, 11pt or 12pt
+  10pt, % Default font size, can use 10pt, 11pt or 12pt
 ]{resume}
 
 \\usepackage{times}
@@ -100,21 +100,25 @@ ${activities
   ${projects
     .map((project) => {
       if (!project.hideOnResume) {
+        const linkSection = project.link[0]
+          ? ` - \\textit{\\underline{\\href{${project.link[0].url}}{${project.link[0].description}}}}`
+          : "";
+
         return `
-  \\begin{rSubsection}{${project.title}}{}{${project.link[0] ? `\\underline{\\href{${project.link[0].url}}{${project.link[0].description}}}` : ""}}{}
-       ${project.details
-         .map((detail) => {
-           return `
-    \\item ${detail.point}
+    \\begin{rSubsection}{${project.title}${linkSection}}{}{}{}
+        ${project.details
+          .map((detail) => {
+            return `
+      \\item ${detail.point}
+          `;
+          })
+          .join("")}
+    \\end{rSubsection}
         `;
-         })
-         .join("")}
-  \\end{rSubsection}
-      `;
       }
     })
     .join("")}
-	
+
 \\end{rSection}
     
 %----------------------------------------------------------------------------------------
@@ -141,7 +145,6 @@ ${activities
  
   \\begin{tabular}{@{} >{\\bfseries}l @{\\hspace{6ex}} l @{}}
 		Technical Fields & ${technicalSkillsList} \\\\
-    Other & ${otherSkillsList} \\\\
 	\\end{tabular}
 
 \\end{rSection}
@@ -187,11 +190,17 @@ async function saveTexResume() {
     { key: "&amp;", value: "&" },
     { key: "&quot;", value: '"' },
     { key: "&#x27;", value: "'" },
-    { key: "Raised \\$", value: "Raised \\$" },
     { key: "&lt;4.6%", value: "\\<4.6\\%" },
+    { key: "0.1%", value: "0.1\\%" },
     { key: "&gt;", value: ">" },
     { key: "#71 to #12", value: "\\#71 to \\#12" },
     { key: "Mathematics & Science", value: "Mathematics \\& Science" },
+    { key: "supervised & unsupervised", value: "supervised \\& unsupervised" },
+    { key: "85%", value: "85\\%" },
+    { key: "DrumGAN & WaveGAN", value: "DrumGAN \\& WaveGAN" },
+    { key: "2%", value: "2\\%" },
+    { key: "1%", value: "1\\%" },
+    { key: "\\$6,000", value: "\\$6,000" },
   ];
   for (const { key, value } of replacements) {
     const regex = new RegExp(key, "g");

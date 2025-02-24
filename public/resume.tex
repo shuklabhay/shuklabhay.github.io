@@ -24,7 +24,7 @@
 
 \documentclass[
   %a4paper, % Uncomment for A4 paper size (default is US letter)
-  11pt, % Default font size, can use 10pt, 11pt or 12pt
+  10pt, % Default font size, can use 10pt, 11pt or 12pt
 ]{resume}
 
 \usepackage{times}
@@ -53,23 +53,37 @@
 \begin{rSection}{Experience}
 
 
-  \begin{rSubsection}{Stanford Center for Biomedical Informatics Research}{2024 - Present}{Gevaert Lab Student Researcher}{California}
+  \begin{rSubsection}{Stanford Center for Biomedical Informatics Research}{November 2024 - Present}{Gevaert Lab Student Researcher}{California}
     
-    \item Utilized ML and CV for 3D breast region reconstruction and microcalcification/tumor detection for breast cancer research under the guidance of Dr Chris Sadée.
+    \item Developed Machine Learning/Computer Vision foundation models for breast cancer research, leveraging CNNs, ViTs, unlabeled data, and medical priors to accuratly segmente microscopic tumors, significant anatomical structures, and general breast regions under Stanford Researcher Chris Sadée.
     
-  \end{rSubsection}
-        
-  \begin{rSubsection}{FRC 604: Quixilver Robotics}{2022 - Present}{Controls/Software Lead (10)}{California}
-    
-    \item Utilized computer vision, sensor integration, SOTA team software, and strategic mechanism design to create competitive 150-lb 30"x30" FRC robots.
-    
-    \item Leadership in robot design, manufacturing, programming, strategic analysis, and community outreach led the team's international ranking to increase from \#71 to \#12.
+    \item Produced detailed scientific documentation to communicate research findings.
     
   \end{rSubsection}
         
-  \begin{rSubsection}{UCLA COSMOS (CA Summer School for Mathematics \& Science)}{2024}{Brain-Inspired Computing Cohort Member}{California}
+  \begin{rSubsection}{UCLA COSMOS (Brain-Inspired Computing/Artificial Intellegence Cohort)}{July 2024 - August 2024}{Student Researcher}{California}
     
-    \item Explored neurobiological mechanisms and 20+ ML mechanisms under UCLA Prof. Hugh Tad Blair, creating basic ML solutions to address problems on campus.
+    \item Integrated foundational neurobiological principles into machine learning models for image geolocation, rat neuron behavior decoding, and handwritten character recognition under the mentorship of UCLA Behavioral Neuroscience Prof. Hugh Blair.
+    
+  \end{rSubsection}
+        
+  \begin{rSubsection}{FRC Team 604: Quixilver Robotics}{June 2022 - Present}{Controls/Software Lead (10)}{California}
+    
+    \item Designed and implemented high-performance FRC robot components, integrating strategic mechanism design, real-time computer vision, and multi-modal sensor fusion to boost autonomous and teleoperated robot performance and achieve a top 0.1\% team ranking internationally (12th place/10,000+ teams).
+    
+    \item Led 15+ members in developing a real-time FRC competition data collection and visualization app, empowering data-driven competitive match strategy and optimal partner selection. App currently serves 175+ users and has collected data for 1000+ matches.
+    
+  \end{rSubsection}
+        
+  \begin{rSubsection}{Pavyl}{January 2025 - Present}{Software Design Advisor}{California}
+    
+    \item Evaluated an innovative large language model with infinite context (chat history) and provided recommendations to optimize memory capabilities, model accuracy, external tool use, and response time, enabling an improved user experience.
+    
+  \end{rSubsection}
+        
+  \begin{rSubsection}{Bay Area STEM Academy}{January 2023 - Present}{Co-founder}{California}
+    
+    \item Introduced 500+ 3rd-9th grade students to STEM (robotics, astrophysics, 3D design, ML, etc), raised \$6,000+ to support local STEM education, recruited 20+ academy mentors, and received grants from the city of San Jose, CA.
     
   \end{rSubsection}
         
@@ -83,31 +97,27 @@
 \begin{rSection}{Projects}
 
   
-  \begin{rSubsection}{StereoSampleGAN}{}{\underline{\href{https://github.com/shuklabhay/stereo-sample-gan}{GitHub Repo}}}{}
-       
-    \item Developed a generative AI architecture for high-quality stereo audio generation. Used advanced signal processing, attention mechanisms, and time-series analysis.
+    \begin{rSubsection}{StereoSampleGAN - \textit{\underline{\href{https://github.com/shuklabhay/stereo-sample-gan}{GitHub Repo}}}}{}{}{}
         
-    \item Architecture pioneers stereo audio generate at 44.1 kHz while reducing training epochs by 99.77\% and parameter count by 9.56x compared to WaveNet.
+      \item Developed one of the first generative AI architectures capable of high-quality stereo audio generation using effective signal processing, efficient training techniques, and custom-collected drum data.
+          
+      \item Model pioneered neural high-fidelity stereo audio generation while increasing audio quality by 85\% and reducing training time by 25x (compared to DrumGAN \& WaveGAN respectively).
+          
+    \end{rSubsection}
         
-  \end{rSubsection}
-      
-  \begin{rSubsection}{Quickscout}{}{\underline{\href{https://github.com/frc604}{GitHub Organization}}}{}
-       
-    \item Developed a scalable scouting app to capture and visualize large-scale FRC event data. Access to new metrics allows informed strategic decisions and fuels the team's international success.
+    \begin{rSubsection}{Vox Transformis - \textit{\underline{\href{https://science-fair.org/}{Science Fair}}}}{}{}{}
         
-    \item App supports 150+ users on FRC604 and has been used to record all actions during 1000+ event matches over 2 years. Trained 10+ team members in app development and design.
+      \item Developed an AI-based framework to expand user exposure to rare languages by taking a novel approach to audio translation using multimodal large language models with tool use to preserve rhythmic, literal, and melodic features.
+          
+    \end{rSubsection}
         
-  \end{rSubsection}
-      
-  \begin{rSubsection}{SporeStrike}{}{\underline{\href{https://shuklabhay.github.io/static/projects/sporestrike/FlexFactor_SporeStrike_pitch.pdf}{Pitch Slide Deck}}}{}
-       
-    \item Developed an affordable and high-drone-based fungicide disposal system, 3D-printed design prototypes, and theoretical market strategy.
+    \begin{rSubsection}{SporeStrike - \textit{\underline{\href{https://shuklabhay.github.io/static/projects/sporestrike/FlexFactor_SporeStrike_pitch.pdf}{Pitch Slide Deck}}}}{}{}{}
         
-    \item Product reduces inefficiencies with manual fungicide disposal, preventing food waste equivalent to feeding 4 billion people and winning first place in the 2024 FlexFactor Championships.
+      \item Designed an affordable drone-based fungicide disposal system and manufactured 3D-printed prototypes to reduce fungal infection destruction on farms and corresponding food waste. Project won first place out of 260 teams at the 2024 FlexFactor Entrepreneurship Championships.
+          
+    \end{rSubsection}
         
-  \end{rSubsection}
-      
-	
+
 \end{rSection}
     
 %----------------------------------------------------------------------------------------
@@ -130,7 +140,6 @@
  
   \begin{tabular}{@{} >{\bfseries}l @{\hspace{6ex}} l @{}}
 		Technical Fields & AI/ML, Robotics, Research, Signal Processing, 3D Printing, CAD, Webdev/Appdev \\
-    Other & Public Speaking, Digital Audio Production, Graphic Design \\
 	\end{tabular}
 
 \end{rSection}
@@ -146,7 +155,9 @@
         
       \item FRC604: City of San Jose Recognition for STEM Outreach and Team Performance \hfill 2024
               
-      \item WCP CADathon/Robot Design Challenge Finalist (Top 10 Internationally) \hfill 2024
+      \item WCP CADathon/Robot Design Challenge Finalist (Top 1\% Internationally) \hfill 2024
+              
+      \item FRC604: World Championship Milstein Division Winner (12/3500 Internationally, 4/300 in CA) \hfill 2024
               
       \item OneHacks III Hackathon: Third Place (3/120 Internationally) \hfill 2023
               

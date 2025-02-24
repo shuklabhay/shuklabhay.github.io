@@ -2,12 +2,15 @@
   {
     "org": "Stanford Center for Biomedical Informatics Research",
     "position": "Gevaert Lab Student Researcher",
-    "startYear": "2024",
-    "endYear": "2024",
+    "startYear": "November 2024",
+    "endYear": "Present",
     "ongoing": true,
     "details": [
       {
-        "point": "Utilized ML and CV for 3D breast region reconstruction and microcalcification/tumor detection for breast cancer research under the guidance of Dr Chris Sadée."
+        "point": "Developed Machine Learning/Computer Vision foundation models for breast cancer research, leveraging CNNs, ViTs, unlabeled data, and medical priors to accuratly segmente microscopic tumors, significant anatomical structures, and general breast regions under Stanford Researcher Chris Sadée."
+      },
+      {
+        "point": "Produced detailed scientific documentation to communicate research findings."
       }
     ],
     "icon": {
@@ -18,35 +21,14 @@
     "hideOnResume": false
   },
   {
-    "org": "FRC 604: Quixilver Robotics",
-    "position": "Controls/Software Lead (10)",
-    "startYear": "2022",
-    "endYear": "2024",
-    "ongoing": true,
-    "details": [
-      {
-        "point": "Utilized computer vision, sensor integration, SOTA team software, and strategic mechanism design to create competitive 150-lb 30\"x30\" FRC robots."
-      },
-      {
-        "point": "Leadership in robot design, manufacturing, programming, strategic analysis, and community outreach led the team's international ranking to increase from #71 to #12."
-      }
-    ],
-    "icon": {
-      "src": "/static/icons/frc604.jpeg",
-      "link": "https://604robotics.com/"
-    },
-    "hideOnSite": false,
-    "hideOnResume": false
-  },
-  {
-    "org": "UCLA COSMOS (CA Summer School for Mathematics & Science)",
-    "position": "Brain-Inspired Computing Cohort Member",
-    "startYear": "2024",
-    "endYear": "2024",
+    "org": "UCLA COSMOS (Brain-Inspired Computing/Artificial Intellegence Cohort)",
+    "position": "Student Researcher",
+    "startYear": "July 2024",
+    "endYear": "August 2024",
     "ongoing": false,
     "details": [
       {
-        "point": "Explored neurobiological mechanisms and 20+ ML mechanisms under UCLA Prof. Hugh Tad Blair, creating basic ML solutions to address problems on campus."
+        "point": "Integrated foundational neurobiological principles into machine learning models for image geolocation, rat neuron behavior decoding, and handwritten character recognition under the mentorship of UCLA Behavioral Neuroscience Prof. Hugh Blair."
       }
     ],
     "icon": {
@@ -57,14 +39,53 @@
     "hideOnResume": false
   },
   {
-    "org": "Bay Area STEM Academy",
-    "position": "Cofounder",
-    "startYear": "2023",
-    "endYear": "2024",
+    "org": "FRC Team 604: Quixilver Robotics",
+    "position": "Controls/Software Lead (10)",
+    "startYear": "June 2022",
+    "endYear": "Present",
     "ongoing": true,
     "details": [
       {
-        "point": "Introduced 475+ 3rd-9th grade students to STEM (robotics, programming, 3D design machine learning, etc), raised $5,900+ to support local STEM education, recruited 20+ academy mentors."
+        "point": "Designed and implemented high-performance FRC robot components, integrating strategic mechanism design, real-time computer vision, and multi-modal sensor fusion to boost autonomous and teleoperated robot performance and achieve a top 0.1% team ranking internationally (12th place/10,000+ teams)."
+      },
+      {
+        "point": "Led 15+ members in developing a real-time FRC competition data collection and visualization app, empowering data-driven competitive match strategy and optimal partner selection. App currently serves 175+ users and has collected data for 1000+ matches."
+      }
+    ],
+    "icon": {
+      "src": "/static/icons/frc604.jpeg",
+      "link": "https://604robotics.com/"
+    },
+    "hideOnSite": false,
+    "hideOnResume": false
+  },
+  {
+    "org": "Pavyl",
+    "position": "Software Design Advisor",
+    "startYear": "January 2025",
+    "endYear": "Present",
+    "ongoing": true,
+    "details": [
+      {
+        "point": "Evaluated an innovative large language model with infinite context (chat history) and provided recommendations to optimize memory capabilities, model accuracy, external tool use, and response time, enabling an improved user experience."
+      }
+    ],
+    "icon": {
+      "src": "/static/icons/pavyl.jpeg",
+      "link": "https://www.pavyl.com/"
+    },
+    "hideOnSite": true,
+    "hideOnResume": false
+  },
+  {
+    "org": "Bay Area STEM Academy",
+    "position": "Co-founder",
+    "startYear": "January 2023",
+    "endYear": "Present",
+    "ongoing": true,
+    "details": [
+      {
+        "point": "Introduced 500+ 3rd-9th grade students to STEM (robotics, astrophysics, 3D design, ML, etc), raised $6,000+ to support local STEM education, recruited 20+ academy mentors, and received grants from the city of San Jose, CA."
       }
     ],
     "icon": {
@@ -72,17 +93,17 @@
       "link": "https://bayareastemacademy.net/"
     },
     "hideOnSite": false,
-    "hideOnResume": true
+    "hideOnResume": false
   },
   {
     "org": "Digital Audio Production",
     "position": "Digital Audio Producer",
-    "startYear": "2020",
-    "endYear": "2024",
+    "startYear": "June 2020",
+    "endYear": "Present",
     "ongoing": true,
     "details": [
       {
-        "point": "Self-taught digital audio production, editing, composition, and theory with no prior experience and amassed 300,000+ streams over 2 years."
+        "point": "Self-taught digital audio production, composition, and music theory with no prior experience. Amassed 300,000+ streams over 2 years."
       }
     ],
     "icon": null,
@@ -92,12 +113,12 @@
   {
     "org": "NEXUS Research Club",
     "position": "Chapter Manager",
-    "startYear": "2024",
-    "endYear": "2024",
+    "startYear": "August 2024",
+    "endYear": "Present",
     "ongoing": true,
     "details": [
       {
-        "point": "Coordinated with leaders of 8+ NEXUS chapters throughout California to ensure access to high-impact research opportunities and increase club membership."
+        "point": "Coordinate with local leaders of 8+ NEXUS chapters in California high schools to ensure access to high-impact research opportunities and increase club membership."
       }
     ],
     "icon": {
@@ -110,12 +131,12 @@
   {
     "org": "Leland Speech and Debate (NSDA)",
     "position": "Varsity Speaker",
-    "startYear": "2022",
-    "endYear": "2024",
+    "startYear": "August 2022",
+    "endYear": "Present",
     "ongoing": true,
     "details": [
       {
-        "point": "Competed in 25+ NSDA tournaments, refining communication skills, synthesizing effective speeches, and contributing to the team's national ranking of 4th out of 3,550 in the U.S."
+        "point": "Competed in 25+ NSDA tournaments, developing effective speeches and contributing to team's national ranking of 3/3,500+."
       }
     ],
     "icon": {

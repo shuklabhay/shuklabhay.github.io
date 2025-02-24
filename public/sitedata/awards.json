@@ -6,7 +6,7 @@
     "hideOnResume": false
   },
   {
-    "title": "WCP CADathon/Robot Design Challenge Finalist (Top 10 Internationally)",
+    "title": "WCP CADathon/Robot Design Challenge Finalist (Top 1% Internationally)",
     "recievedYear": "2024",
     "hideOnSite": false,
     "hideOnResume": false
@@ -14,8 +14,8 @@
   {
     "title": "FRC604: World Championship Milstein Division Winner (12/3500 Internationally, 4/300 in CA)",
     "recievedYear": "2024",
-    "hideOnSite": true,
-    "hideOnResume": true
+    "hideOnSite": false,
+    "hideOnResume": false
   },
   {
     "title": "NextFlex: FlexFactor Innovation Competition Championship Winner (1/260 Regionally)",
@@ -48,7 +48,7 @@
     "hideOnResume": true
   },
   {
-    "title": "SCU/SVUDL Invitational: PF Debate Finalist (2/140 Internationally)",
+    "title": "Santa Clara University Debate Invitational: Finalist (2/140 Internationally)",
     "recievedYear": "2022",
     "hideOnSite": false,
     "hideOnResume": true
