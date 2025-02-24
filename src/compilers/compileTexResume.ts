@@ -190,7 +190,7 @@ async function saveTexResume() {
     { key: "&amp;", value: "&" },
     { key: "&quot;", value: '"' },
     { key: "&#x27;", value: "'" },
-    { key: "Raised \\$", value: "Raised \\$" },
+    { key: "raised $6,000+ to", value: "raised \\$6,000+ to" },
     { key: "&lt;4.6%", value: "\\<4.6\\%" },
     { key: "0.1%", value: "0.1\\%" },
     { key: "&gt;", value: ">" },
