@@ -7,7 +7,7 @@
         "point": "Developed one of the first generative AI architectures capable of high-quality stereo audio generation using effective signal processing, efficient training techniques, and custom-collected drum data."
       },
       {
-        "point": "Model pioneered high-fidelity stereo audio while increasing audio quality by 85% and reducing training time by 25x (compared to DrumGAN & WaveGAN respectively)."
+        "point": "Model pioneered neural high-fidelity stereo audio generation while increasing audio quality by 85% and reducing training time by 25x (compared to DrumGAN & WaveGAN respectively)."
       }
     ],
     "images": [
@@ -56,7 +56,7 @@
     "broadDescription": "An effective fungicide disposal system",
     "details": [
       {
-        "point": "Engineered an affordable drone-based fungicide disposal system and 3D-printed prototypes to reduce fungal infection destruction on farms and corresponding food waste. Project won first place out of 260 teams at the 2024 FlexFactor Entrepreneurship Championships."
+        "point": "Designed an affordable drone-based fungicide disposal system and manufactured 3D-printed prototypes to reduce fungal infection destruction on farms and corresponding food waste. Project won first place out of 260 teams at the 2024 FlexFactor Entrepreneurship Championships."
       }
     ],
     "images": [
