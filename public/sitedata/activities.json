@@ -7,7 +7,7 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Developed Machine Learning/Computer Vision foundation models for breast cancer research, leveraging CNNs, ViTs, unlabeled data, and medical priors to accuratly segmente microscopic tumors, significant anatomical structures, and general breast regions under Stanford Researcher Chris Sadée."
+        "point": "Developed Machine Learning/Computer Vision foundation models for breast cancer research, leveraging CNNs, ViTs, unlabeled data, and medical priors to accurately segment microscopic tumors, significant anatomical structures, and general breast regions under Stanford Researcher Chris Sadée."
       },
       {
         "point": "Produced detailed scientific documentation to communicate research findings."
