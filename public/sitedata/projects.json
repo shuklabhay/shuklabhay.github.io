@@ -4,30 +4,32 @@
     "broadDescription": "A lightweight machine learning approach high-fidelity stereo audio sample generation",
     "details": [
       {
-        "point": "Developed one of the first generative AI architectures capable of high-quality stereo audio generation using effective signal processing, efficient training techniques, and custom-collected drum data."
+        "point": "Developed pioneering generative adversarial network addressing critical research gaps in high-quality stereo audio synthesis."
       },
       {
-        "point": "Model pioneered neural high-fidelity stereo audio generation while increasing audio quality by 85% and reducing training time by 25x (compared to DrumGAN & WaveGAN respectively)."
+        "point": "Implemented efficient image-like audio representations and efficient model training techniques."
+      },
+      {
+        "point": "Achieved 85% quality improvement and 25x training time reduction compared to industry benchmarks"
+      },
+      {
+        "point": "Skills: Time-Series Data, PyTorch, NumPy, DSP"
       }
     ],
     "images": [
       {
-        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/main/static/curated_kick_generated_examples.png",
-        "alt": "Generated Audio From Pretrained Model Instance 1"
+        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/refs/heads/main/static/kickdrum_best_val_spectrograms.png",
+        "alt": "Generated stereo kickdrum spectrograms"
       },
       {
-        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/main/static/diverse_kick_generated_examples.png",
-        "alt": "Generated Audio From Pretrained Model Instance 2"
-      },
-      {
-        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/main/static/instrument_one_shot_generated_examples.png",
-        "alt": "Generated Audio From Pretrained Model Instance 3"
+        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/refs/heads/main/static/snare_best_val_spectrograms.png",
+        "alt": "Generated stereo snaredrum spectrograms"
       }
     ],
     "link": [
       {
         "url": "https://github.com/shuklabhay/stereo-sample-gan",
-        "description": "GitHub Repo"
+        "description": "Independent Research Project"
       }
     ],
     "hideOnSite": false,
@@ -38,14 +40,22 @@
     "broadDescription": "An AI tool designed to preserve linguistic diversity by facilitating musical translation",
     "details": [
       {
-        "point": "Developed an AI-based framework to expand user exposure to rare languages by taking a novel approach to audio translation using multimodal large language models with tool use to preserve rhythmic, literal, and melodic features."
+        "point": "Developed LLM-based multimodal musical translation system preserving rhythmic, melodic, and artistic features of sung audio."
+      },
+      {
+        "point": "Skills: Model Ensembling, LLM Manipulation, Signal Processing, Multimodality"
       }
     ],
-    "images": [],
+    "images": [
+      {
+        "url": "static/projects/vox_transformis/vt_poster.png",
+        "description": "Science Fair Research Project"
+      }
+    ],
     "link": [
       {
-        "url": "https://science-fair.org/",
-        "description": "Science Fair"
+        "url": "https://shuklabhay.github.io/static/projects/vox-transformis/vt_poster.png",
+        "description": "Science Fair Research Project"
       }
     ],
     "hideOnSite": false,
@@ -56,7 +66,13 @@
     "broadDescription": "An effective fungicide disposal system",
     "details": [
       {
-        "point": "Designed an affordable drone-based fungicide disposal system and manufactured 3D-printed prototypes to reduce fungal infection destruction on farms and corresponding food waste. Project won first place out of 260 teams at the 2024 FlexFactor Entrepreneurship Championships."
+        "point": "Designed computational models for drone-based fungal infection treatment system and created prototype 3D printed hardware components."
+      },
+      {
+        "point": "Won first place/260 teams at 2024 FlexFactor Entrepreneurship Championships."
+      },
+      {
+        "point": "Skills: Real-World System Design, CAD, 3D Printing"
       }
     ],
     "images": [
@@ -66,13 +82,13 @@
       },
       {
         "src": "static/projects/sporestrike/3dp_components.jpg",
-        "alt": "3D Printed Components for Fungus Identification"
+        "alt": "3D Printed Drone Components (Prototypes)"
       }
     ],
     "link": [
       {
         "url": "https://shuklabhay.github.io/static/projects/sporestrike/FlexFactor_SporeStrike_pitch.pdf",
-        "description": "Pitch Slide Deck"
+        "description": "Entrepreneurship Project Pitch"
       }
     ],
     "hideOnSite": false,
@@ -110,7 +126,7 @@
     "link": [
       {
         "url": "https://github.com/frc604",
-        "description": "GitHub Organization"
+        "description": "Team Project"
       }
     ],
     "hideOnSite": false,
@@ -144,7 +160,7 @@
     "link": [
       {
         "url": "https://604robotics.com/2023-2024-crescendo/",
-        "description": "Robot Website"
+        "description": "FRC Robot"
       }
     ],
     "hideOnSite": false,
@@ -174,7 +190,7 @@
     "link": [
       {
         "url": "https://shuklabhay.github.io/velocity-draft/",
-        "description": "Application Website"
+        "description": "Webapplication"
       }
     ],
     "hideOnSite": false,
