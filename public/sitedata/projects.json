@@ -13,7 +13,7 @@
         "point": "Achieved 85% quality improvement and 25x training time reduction compared to industry benchmarks"
       },
       {
-        "point": "Skills: Time-Series Data, PyTorch, NumPy, DSP"
+        "point": "Skills: Time-Series Data, Multimodality, PyTorch, NumPy, DSP"
       }
     ],
     "images": [
@@ -43,7 +43,7 @@
         "point": "Developed LLM-based multimodal musical translation system preserving rhythmic, melodic, and artistic features of sung audio."
       },
       {
-        "point": "Skills: Model Ensembling, LLM Manipulation, Signal Processing, Multimodality"
+        "point": "Skills: Model Ensembling, LLM Manipulation, Signal Processing, Model Context Protocol"
       }
     ],
     "images": [
@@ -88,7 +88,7 @@
     "link": [
       {
         "url": "https://shuklabhay.github.io/static/projects/sporestrike/FlexFactor_SporeStrike_pitch.pdf",
-        "description": "Entrepreneurship Project Pitch"
+        "description": "Entrepreneurship Project"
       }
     ],
     "hideOnSite": false,
@@ -99,10 +99,16 @@
     "broadDescription": "FRC604's novel scouting application",
     "details": [
       {
-        "point": "Developed a scalable scouting app to capture and visualize large-scale FRC event data. Access to new metrics allows informed strategic decisions and fuels the team's international success."
+        "point": "Designed and implemented a scalable data collection and visualization platform for FRC competition analysis."
       },
       {
-        "point": "App supports 150+ users on FRC604 and has been used to record all actions during 1000+ event matches over 2 years. Trained 10+ team members in app development and design."
+        "point": "Developed intuitive interfaces driven by user feedback, enabling team members to easily capture comprehensive match data in real-time."
+      },
+      {
+        "point": "Trained and mentored 10+ team members in application development and user interface design."
+      },
+      {
+        "point": "Implemented advanced analytics features enabling data-driven strategic decisions and alliance selections"
       }
     ],
     "images": [
@@ -137,10 +143,16 @@
     "broadDescription": "FRC604's Robot for the 2024 FRC Game \"Crescendo\"",
     "details": [
       {
-        "point": "Developed CV/physics-based shot calculations, driver control automation, competitive autonomous routines, and chain climbing mechanism for FRC 2024 robot ranked 12th/3500 Internationally and 4th/300 in CA."
+        "point": "Implemented computer vision and physics-based shot calculation systems for precise game piece targeting."
       },
       {
-        "point": "Robot performed with 100% reliability, playing on the prestigious Einstein field after winning the Milstein World Championship division, 3 California regional events, and 5 event awards."
+        "point": "Developed driver control automation and competitive autonomous routines for optimal match performance."
+      },
+      {
+        "point": "Designed and implemented chain climbing mechanism critical to end-game scoring strategy."
+      },
+      {
+        "point": "Directly contributed to robot winning Milstein World Championship division, 3 California regional events, and 5 additional awards."
       }
     ],
     "images": [
@@ -171,10 +183,13 @@
     "broadDescription": "A flexible essay writing scheduler webapp",
     "details": [
       {
-        "point": "Developed an open source webapp to algorithmically determine the most-effective and least stressful essay writing plan with user writing abilities and essay deadlines."
+        "point": "Created algorithm-driven web application to optimize college application essay writing schedules based on deadlines and user capabilities."
       },
       {
-        "point": "App recieved third place project in OneHacks III Hackathon and serves 200+ users."
+        "point": "Implemented stress-reduction features to balance workload and improve student productivity."
+      },
+      {
+        "point": "Application won third place in OneHacks III International Hackathon out of 120 competing teams and currently serves 200+ users."
       }
     ],
     "images": [

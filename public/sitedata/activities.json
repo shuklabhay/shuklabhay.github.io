@@ -10,7 +10,7 @@
         "point": "Implemented computer vision models (CNNs, Vision Transformers) for breast cancer region segmentation in medical imaging."
       },
       {
-        "point": "Developed physics-inspired neural networks to model correct unrealistic compression in breast medical imagery."
+        "point": "Developed physics-inspired neural networks to correct unrealistic breast compression during the medical imaging process."
       },
       {
         "point": "Designed Python data processing pipelines for efficient handling of large-scale biomedical datasets on multi-node systems."
@@ -121,7 +121,13 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Self-taught digital audio production, composition, and music theory with no prior experience. Amassed 300,000+ streams over 2 years."
+        "point": "Self-taught audio production, composition, and music theory with no prior musical background."
+      },
+      {
+        "point": "Created full-length original compositions amassing 300,000+ streams across platforms within two years."
+      },
+      {
+        "point": "Developed proficiency in digital audio workstations, sound design, and audio engineering techniques."
       }
     ],
     "icon": null,
@@ -136,7 +142,10 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Coordinate with local leaders of 8+ NEXUS chapters in California high schools to ensure access to high-impact research opportunities and increase club membership."
+        "point": "Coordinate network of 8+ California high school NEXUS chapters to enhance research accessibility."
+      },
+      {
+        "point": "Develop strategies to increase club membership and engagement, connect studnets with research opportunities and mentorship resources."
       }
     ],
     "icon": {
@@ -154,7 +163,10 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Competed in 25+ NSDA tournaments, developing effective speeches and contributing to team's national ranking of 3/3,500+."
+        "point": "Competed in 25+ National Speech and Debate Association tournaments across multiple speech and debate events."
+      },
+      {
+        "point": "Developed advanced public speaking, critical thinking, and persuasive communication skills."
       }
     ],
     "icon": {
