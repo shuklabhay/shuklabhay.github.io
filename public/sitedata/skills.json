@@ -1,12 +1,11 @@
 {
   "technical": [
     "AI/ML",
+    "Data Visualization and Analysis",
     "Robotics",
-    "Research",
     "Signal Processing",
     "3D Printing",
-    "CAD",
-    "Webdev/Appdev"
+    "Web Development"
   ],
   "other": ["Public Speaking", "Digital Audio Production", "Graphic Design"]
 }
