@@ -10,7 +10,7 @@
         "point": "Implemented computer vision models (CNNs, Vision Transformers) for breast cancer region segmentation in medical imaging."
       },
       {
-        "point": "Developed physics-inspired neural networks to correct unrealistic breast compression during the medical imaging process."
+        "point": "Developed physics-inspired neural networks to correct systematic breast compression error during breast medical imaging."
       },
       {
         "point": "Designed Python data processing pipelines for efficient handling of large-scale biomedical datasets on multi-node systems."
