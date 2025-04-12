@@ -7,10 +7,10 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Implemented computer vision models (CNNs, Vision Transformers) for breast cancer region segmentation in medical imaging."
+        "point": "Developed novel physics-based neural networks utilizing PDEs to transform single medical images into multiple anatomical states (varying breast compression levels, respiratory phases, cardiac cycles, etc), increasing training data diversity and helping model generalizability."
       },
       {
-        "point": "Developed physics-inspired neural networks to correct systematic breast compression error during breast medical imaging."
+        "point": "Implemented computer vision models (CNNs, Vision Transformers) for precise breast region segmentation."
       },
       {
         "point": "Designed Python data processing pipelines for efficient handling of large-scale biomedical datasets on multi-node systems."
