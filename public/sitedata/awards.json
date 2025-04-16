@@ -1,6 +1,6 @@
 [
   {
-    "title": "City of San Jose Recognition for AI-driven Efforts for Local Language Preservation",
+    "title": "City of San Jose Recognition for AI-driven Local Language Preservation Efforts",
     "recievedYear": "2025",
     "hideOnSite": false,
     "hideOnResume": false
@@ -9,7 +9,7 @@
     "title": "2025 Synopsys Science Fair Honorable Mention (Top 10%, 975+ Participants)",
     "recievedYear": "2024",
     "hideOnSite": false,
-    "hideOnResume": true
+    "hideOnResume": false
   },
   {
     "title": "University of Kentucky Tournament of Champions Digital Series: Extemporaneous Speaking Semifinalist Award",
@@ -54,7 +54,7 @@
     "hideOnResume": false
   },
   {
-    "title": "PSVA: Gold Award (350+ Hours Community Service)",
+    "title": "PSVA: Gold Award (550+ Hours Community Service)",
     "recievedYear": "2023",
     "hideOnSite": false,
     "hideOnResume": true
@@ -68,7 +68,7 @@
   {
     "title": "Santa Clara University Debate Invitational: Finalist (2/140 Internationally)",
     "recievedYear": "2022",
-    "hideOnSite": false,
+    "hideOnSite": true,
     "hideOnResume": true
   }
 ]
