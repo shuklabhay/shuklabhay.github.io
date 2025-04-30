@@ -18,11 +18,11 @@
     ],
     "images": [
       {
-        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/refs/heads/main/static/kickdrum_best_val_spectrograms.png",
+        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/refs/heads/main/outputs/kickdrum_comparison.png",
         "alt": "Generated stereo kickdrum spectrograms"
       },
       {
-        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/refs/heads/main/static/snare_best_val_spectrograms.png",
+        "src": "https://raw.githubusercontent.com/shuklabhay/stereo-sample-gan/refs/heads/main/outputs/snaredrum_comparison.png",
         "alt": "Generated stereo snaredrum spectrograms"
       }
     ],
