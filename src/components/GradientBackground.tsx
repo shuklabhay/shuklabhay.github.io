@@ -1,150 +1,32 @@
-import { Stack, useMantineTheme } from "@mantine/core";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Stack } from "@mantine/core";
+import { useCallback, useEffect, useState } from "react";
 import {
   calculateScrollProgressOpacity,
-  isSmallScreen,
   scrollViewportTo,
 } from "../utils/scroll";
 import { useAppContext } from "../utils/appContext";
-import { hexToRgb } from "../utils/theme";
-import useThrottle from "../utils/throttle";
 import DownArrowButton from "./IconButtons/DownArrowButton";
 
-const gradientAngleRange = 30;
-
-const gradientAngle = isSmallScreen
-  ? Math.random() < 0.5
-    ? 315 - Math.random() * gradientAngleRange // Top right
-    : 45 + Math.random() * gradientAngleRange // Top left
-  : (() => {
-      const random = Math.random();
-      if (random < 0.333) {
-        // Top
-        return Math.random() < 0.5
-          ? Math.random() * gradientAngleRange
-          : 360 - Math.random() * gradientAngleRange;
-      } else if (random < 0.666) {
-        // Right
-        return 240 + Math.random() * 60;
-      } else {
-        // Left
-        return 60 + Math.random() * 60;
-      }
-    })();
-
-const startX = isSmallScreen
-  ? Math.random() * window.innerWidth
-  : (() => {
-      let x = Math.random() * window.innerWidth;
-      if (x >= window.innerWidth / 3 && x <= window.innerWidth * (2 / 3)) {
-        x = Math.random() < 0.5 ? x / 2 : x + window.innerWidth / 4;
-      }
-      return x;
-    })();
-
-const startY = isSmallScreen
-  ? Math.random() * (window.innerHeight / 3) + window.innerHeight / 8
-  : (() => {
-      let y = Math.random() * window.innerHeight;
-      if (y >= window.innerHeight / 3 && y <= window.innerHeight * (2 / 3)) {
-        y = Math.random() < 0.5 ? y / 2 : y + window.innerHeight / 4;
-      }
-      return y;
-    })();
-
 export function GradientBackground() {
-  // Hooks
-  const { scrollInformation: scrollInformation } = useAppContext();
-  const theme = useMantineTheme();
-  const [gradientActivePos, setGradientActivePos] = useState({
-    x: startX,
-    y: startY,
-  });
+  const { scrollInformation } = useAppContext();
   const [gradientOpacity, setGradientOpacity] = useState(1);
-  const [isMouseInactive, setIsMouseInactive] = useState(false);
   const [arrowInOpacity, setArrowInOpacity] = useState(0);
-
-  const mouseTimer = useRef<number | undefined>(undefined);
-  const animationRef = useRef<number | undefined>(undefined);
-  const lastUpdateTime = useRef(Date.now());
-  const directionDuration = useRef(0);
-  const lastActivePosition = useRef({ x: startX, y: startY });
   const nextSectionStart = scrollInformation.skillsPosition;
 
-  // Scroll and Animation Control
   const handleArrowClick = useCallback(() => {
     scrollViewportTo(nextSectionStart);
   }, [nextSectionStart]);
 
   useEffect(() => {
-    // Control scrolling
-
-    const handleScroll = useThrottle(() => {
+    const handleScroll = () => {
       const scrollProgress =
         nextSectionStart !== 0
           ? calculateScrollProgressOpacity(nextSectionStart)
           : 1;
       setGradientOpacity(scrollProgress);
-
-      if (window.scrollY === 0) {
-        window.addEventListener("mousemove", handleMouseAction, {
-          passive: true,
-        });
-      } else {
-        window.removeEventListener("mousemove", handleMouseAction);
-      }
-    });
-
-    // Control gradient/gradient animation
-    const followSpeed = 0.03;
-    let targetPos = { x: startX, y: startY };
-
-    // Follow mouse
-    const handleMouseAction = useThrottle((event: MouseEvent) => {
-      targetPos = { x: event.clientX, y: event.clientY };
-      lastActivePosition.current = { x: targetPos.x, y: targetPos.y };
-      setIsMouseInactive(false);
-      clearTimeout(mouseTimer.current);
-      setTimeout(() => {
-        setIsMouseInactive(true);
-      }, 7500);
-    });
-
-    // Randomly move
-    const randomlyChangePosition = () => {
-      const currentTime = Date.now();
-      lastUpdateTime.current = currentTime;
-
-      if (
-        isMouseInactive &&
-        currentTime - lastUpdateTime.current > directionDuration.current &&
-        gradientOpacity == 1
-      ) {
-        targetPos = {
-          x: isSmallScreen
-            ? Math.random() * window.innerWidth
-            : (Math.random() * window.innerWidth) / 2,
-          y: isSmallScreen
-            ? Math.random() * window.innerHeight
-            : (Math.random() * window.innerHeight) / 2,
-        };
-
-        directionDuration.current = (Math.random() * 2 + 1) * 1000;
-      }
-    };
-
-    const animateGradient = () => {
-      randomlyChangePosition();
-
-      setGradientActivePos((prev) => ({
-        x: prev.x + (targetPos.x - prev.x) * followSpeed,
-        y: prev.y + (targetPos.y - prev.y) * followSpeed,
-      }));
-      animationRef.current = requestAnimationFrame(animateGradient);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    animationRef.current = requestAnimationFrame(animateGradient);
     handleScroll();
 
     const arrowFadeInTimer = setTimeout(() => {
@@ -152,65 +34,178 @@ export function GradientBackground() {
     }, 750);
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseAction);
       window.removeEventListener("scroll", handleScroll);
       clearTimeout(arrowFadeInTimer);
-
-      if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
-  }, [isMouseInactive]);
+  }, [nextSectionStart]);
 
-  // Define Gradient
-  if (theme.colors.gradMain && theme.colors.main) {
-    const gradientMainColor = hexToRgb(theme.colors.gradMain[9]);
-    const gradientAccentColor = hexToRgb(theme.colors.main[8]);
+  const colorPalette = {
+    deepPurple: ["#4338CA", "#5B21B6"],
+    richPurple: ["#7C3AED", "#8B5CF6", "#A855F7"],
+    vibrantBlue: ["#1D4ED8", "#2563EB", "#3B82F6"],
+    saturatedBlue: ["#1E40AF", "#2563EB", "#60A5FA"],
+    mediumPurple: ["#9333EA", "#A855F7", "#A462F5"],
+    lightBlue: ["#60A5FA", "#6FA8FC", "#8FB5FD"],
+    accent: ["#B8C4F0"],
+  };
 
-    const grainGradient = {
-      height: "100vh",
-      filter: "contrast(125%) brightness(365%) blur(12px)",
-      background: `
-        linear-gradient(
-          ${gradientAngle}deg,
-          rgba(${gradientMainColor.r}, ${gradientMainColor.g}, ${gradientMainColor.b}, 1),
-          rgba(${gradientAccentColor.r}, ${gradientAccentColor.g}, ${gradientAccentColor.b}, 0.6) 
-        ),
-        radial-gradient(
-          at ${gradientActivePos.x}px ${gradientActivePos.y}px,
-          rgba(50, 50, 50, 0.2), 
-          rgba(0, 0, 0, 0.5)
-        ),
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 350 350' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")
-      `,
-      backgroundBlendMode: "overlay, normal, normal",
-    };
+  const gradientLayers = {
+    position: "absolute" as const,
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    opacity: gradientOpacity,
+    transition: "opacity 0.3s ease",
+    zIndex: -1,
+  };
 
-    return (
-      <Stack>
-        <div
-          style={{
-            ...grainGradient,
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            opacity: gradientOpacity,
-            transition: "opacity 0.3s ease",
-            clipPath: "inset(0 0 0 0)",
-            willChange: "background",
-            transform: "translateZ(0)",
-            zIndex: -1,
-          }}
+  const grainOverlay = {
+    position: "absolute" as const,
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    opacity: 0.3 * gradientOpacity,
+    mixBlendMode: "overlay" as const,
+    background: `url("data:image/svg+xml,%3Csvg viewBox='0 0 500 500' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.45' numOctaves='8' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+    filter: "contrast(1.2) brightness(1.05) saturate(1.1) blur(0.5px)",
+    pointerEvents: "none" as const,
+    transition: "opacity 0.3s ease",
+  };
+
+  return (
+    <Stack
+      style={{
+        position: "absolute",
+        width: "100%",
+        height: "100%",
+        overflow: "hidden",
+      }}
+    >
+      <div
+        style={{
+          ...gradientLayers,
+          background: `linear-gradient(135deg, ${colorPalette.deepPurple[0]} 0%, ${colorPalette.deepPurple[1]} 100%)`,
+        }}
+      />
+
+      <div
+        style={{
+          ...gradientLayers,
+          background: `
+            radial-gradient(circle 1000px, ${colorPalette.richPurple[0]} 0%, ${colorPalette.richPurple[0]}22 40%, transparent 85%),
+            radial-gradient(circle 1200px, ${colorPalette.saturatedBlue[0]} 0%, ${colorPalette.saturatedBlue[0]}18 45%, transparent 90%),
+            radial-gradient(circle 800px, ${colorPalette.mediumPurple[0]} 0%, ${colorPalette.mediumPurple[0]}25 35%, transparent 80%)
+          `,
+          backgroundSize: "200% 200%, 250% 250%, 180% 180%",
+          animation: "moveBackground1 180s ease-in-out infinite",
+        }}
+      />
+
+      <div
+        style={{
+          ...gradientLayers,
+          background: `
+            radial-gradient(circle 1100px, ${colorPalette.richPurple[1]} 0%, ${colorPalette.richPurple[1]}20 42%, transparent 88%),
+            radial-gradient(circle 900px, ${colorPalette.vibrantBlue[1]} 0%, ${colorPalette.vibrantBlue[1]}16 38%, transparent 82%),
+            radial-gradient(circle 700px, ${colorPalette.lightBlue[0]} 0%, ${colorPalette.lightBlue[0]}28 32%, transparent 78%)
+          `,
+          backgroundSize: "220% 220%, 190% 190%, 160% 160%",
+          animation: "moveBackground2 220s ease-in-out infinite",
+          animationDelay: "-8s",
+        }}
+      />
+
+      <div
+        style={{
+          ...gradientLayers,
+          background: `
+            radial-gradient(circle 600px, ${colorPalette.mediumPurple[1]}77 0%, ${colorPalette.mediumPurple[1]}33 28%, transparent 75%),
+            radial-gradient(circle 800px, ${colorPalette.saturatedBlue[2]}55 0%, ${colorPalette.saturatedBlue[2]}22 35%, transparent 80%),
+            radial-gradient(circle 500px, ${colorPalette.lightBlue[1]}66 0%, ${colorPalette.lightBlue[1]}28 25%, transparent 70%)
+          `,
+          backgroundSize: "150% 150%, 170% 170%, 130% 130%",
+          animation: "moveBackground3 160s ease-in-out infinite",
+          animationDelay: "-12s",
+        }}
+      />
+
+      <div style={grainOverlay} />
+
+      <div
+        style={{
+          ...gradientLayers,
+          background: "rgba(121, 0, 208, 0.25)",
+          mixBlendMode: "multiply" as const,
+        }}
+      />
+
+      <style>{`
+        @keyframes moveBackground1 {
+          0% {
+            background-position: 40% 40%, 80% 80%, 50% 50%;
+          }
+          25% {
+            background-position: 50% 60%, 70% 30%, 60% 40%;
+          }
+          50% {
+            background-position: 60% 50%, 30% 70%, 40% 60%;
+          }
+          75% {
+            background-position: 50% 70%, 40% 20%, 80% 40%;
+          }
+          100% {
+            background-position: 40% 40%, 80% 80%, 50% 50%;
+          }
+        }
+
+        @keyframes moveBackground2 {
+          0% {
+            background-position: 60% 50%, 20% 70%, 60% 40%;
+          }
+          20% {
+            background-position: 50% 65%, 35% 25%, 30% 65%;
+          }
+          40% {
+            background-position: 45% 55%, 75% 40%, 85% 25%;
+          }
+          60% {
+            background-position: 55% 45%, 55% 75%, 25% 75%;
+          }
+          80% {
+            background-position: 65% 60%, 15% 30%, 70% 50%;
+          }
+          100% {
+            background-position: 60% 50%, 20% 70%, 60% 40%;
+          }
+        }
+
+        @keyframes moveBackground3 {
+          0% {
+            background-position: 20% 90%, 80% 10%, 10% 40%;
+          }
+          30% {
+            background-position: 90% 20%, 10% 80%, 85% 65%;
+          }
+          60% {
+            background-position: 5% 80%, 95% 20%, 35% 15%;
+          }
+          90% {
+            background-position: 75% 45%, 25% 55%, 70% 85%;
+          }
+          100% {
+            background-position: 20% 90%, 80% 10%, 10% 40%;
+          }
+        }
+      `}</style>
+
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <DownArrowButton
+          onClick={handleArrowClick}
+          opacity={Math.min(arrowInOpacity, gradientOpacity)}
         />
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <DownArrowButton
-            onClick={handleArrowClick}
-            opacity={Math.min(arrowInOpacity, gradientOpacity)}
-          />
-        </div>
-      </Stack>
-    );
-  }
-
-  return null;
+      </div>
+    </Stack>
+  );
 }

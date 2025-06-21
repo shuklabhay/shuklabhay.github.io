@@ -59,17 +59,6 @@ export default function Landing() {
           >
             Abhay Shukla
           </Text>
-          <Text
-            fz={{ base: 14, sm: 18 }}
-            ta="center"
-            w={{ base: "60%", sm: "65%" }}
-            style={{
-              mixBlendMode: "plus-lighter",
-              userSelect: "none",
-            }}
-          >
-            AI Extraordinaire.
-          </Text>
         </Stack>
       </Stack>
     </div>
