@@ -99,7 +99,7 @@ export function GradientBackground() {
             radial-gradient(circle 800px, ${colorPalette.mediumPurple[0]} 0%, ${colorPalette.mediumPurple[0]}25 35%, transparent 80%)
           `,
           backgroundSize: "200% 200%, 250% 250%, 180% 180%",
-          animation: "moveBackground1 180s ease-in-out infinite",
+          animation: "moveBackground1 120s ease-in-out infinite",
         }}
       />
 
@@ -112,7 +112,7 @@ export function GradientBackground() {
             radial-gradient(circle 700px, ${colorPalette.lightBlue[0]} 0%, ${colorPalette.lightBlue[0]}28 32%, transparent 78%)
           `,
           backgroundSize: "220% 220%, 190% 190%, 160% 160%",
-          animation: "moveBackground2 220s ease-in-out infinite",
+          animation: "moveBackground2 150s ease-in-out infinite",
           animationDelay: "-8s",
         }}
       />
@@ -126,7 +126,7 @@ export function GradientBackground() {
             radial-gradient(circle 500px, ${colorPalette.lightBlue[1]}66 0%, ${colorPalette.lightBlue[1]}28 25%, transparent 70%)
           `,
           backgroundSize: "150% 150%, 170% 170%, 130% 130%",
-          animation: "moveBackground3 160s ease-in-out infinite",
+          animation: "moveBackground3 100s ease-in-out infinite",
           animationDelay: "-12s",
         }}
       />
