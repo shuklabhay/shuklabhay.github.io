@@ -23,47 +23,64 @@ export default function Experience() {
     const projects = siteData.projects;
 
     return (
-      <>
-        <div style={{ paddingBlock: 10 }}>
-          <Text fz={{ base: 18, sm: 24 }} lh={1.5} mb={-5}>
+      <Stack gap={12}>
+        <Stack gap={4}>
+          <Text fz={{ base: 18, sm: 24 }} lh={1.3}>
             Some of my{" "}
             <Text span c="main" fw={700} inherit>
               significant experience:
             </Text>{" "}
           </Text>
-        </div>
-
-        <Stack gap={12} px={5}>
-          <Text fz={{ base: 16, sm: 20 }} lh={0.5} pt={5}>
-            Activities:
-          </Text>
-          {activities.map((activity) => {
-            if (!activity.hideOnSite) {
-              return (
-                <ActivityCard activityInfo={activity} key={activity.position} />
-              );
-            }
-          })}
-
-          <Text fz={{ base: 16, sm: 20 }} lh={0.5} pt={5}>
-            Projects:
-          </Text>
-          {projects.map((project) => {
-            if (!project.hideOnSite) {
-              return <ProjectCard projectInfo={project} key={project.title} />;
-            }
-          })}
-
-          <Text fz={{ base: 16, sm: 20 }} lh={0.5} pt={5}>
-            Awards:
-          </Text>
-          {awards.map((award) => {
-            if (!award.hideOnSite) {
-              return <AwardCard awardInfo={award} key={award.title} />;
-            }
-          })}
         </Stack>
-      </>
+
+        <Stack gap={16} px={5}>
+          <Stack gap={16}>
+            <Text fz={{ base: 16, sm: 20 }} lh={1.3} c="main" fw={600}>
+              Activities:
+            </Text>
+            <Stack gap={12}>
+              {activities.map((activity) => {
+                if (!activity.hideOnSite) {
+                  return (
+                    <ActivityCard
+                      activityInfo={activity}
+                      key={activity.position}
+                    />
+                  );
+                }
+              })}
+            </Stack>
+          </Stack>
+
+          <Stack gap={16}>
+            <Text fz={{ base: 16, sm: 20 }} lh={1.3} c="main" fw={600}>
+              Projects:
+            </Text>
+            <Stack gap={12}>
+              {projects.map((project) => {
+                if (!project.hideOnSite) {
+                  return (
+                    <ProjectCard projectInfo={project} key={project.title} />
+                  );
+                }
+              })}
+            </Stack>
+          </Stack>
+
+          <Stack gap={16}>
+            <Text fz={{ base: 16, sm: 20 }} lh={1.3} c="main" fw={600}>
+              Awards:
+            </Text>
+            <Stack gap={12}>
+              {awards.map((award) => {
+                if (!award.hideOnSite) {
+                  return <AwardCard awardInfo={award} key={award.title} />;
+                }
+              })}
+            </Stack>
+          </Stack>
+        </Stack>
+      </Stack>
     );
   }
 }

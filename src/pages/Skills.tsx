@@ -23,18 +23,18 @@ export default function Skills() {
     const allSkills = technical.concat(other);
 
     return (
-      <>
-        <div style={{ paddingBlock: 10 }}>
-          <Text fz={{ base: 18, sm: 24 }} lh={1.5}>
+      <Stack gap={12}>
+        <Stack gap={4}>
+          <Text fz={{ base: 18, sm: 24 }} lh={1.3}>
             I've worked in{" "}
             <Text span c="main" fw={700} inherit>
               various different fields:
             </Text>{" "}
           </Text>
-        </div>
+        </Stack>
 
-        <Stack gap={0}>
-          <Grid justify="center" gutter="sm" mb={10}>
+        <Stack gap={16}>
+          <Grid justify="center" gutter="sm">
             {allSkills.map((skill) => (
               <Grid.Col span={{ base: 4, sm: 2 }} key={skill}>
                 <SkillCard skill={skill} />
@@ -42,7 +42,7 @@ export default function Skills() {
             ))}
           </Grid>
 
-          <Grid gutter="sm" mb={0}>
+          <Grid gutter="sm">
             <Grid.Col span={{ base: 4, sm: 2 }}>
               <SkillCard skill={"Git: "} />
             </Grid.Col>
@@ -51,7 +51,7 @@ export default function Skills() {
             </Grid.Col>
           </Grid>
         </Stack>
-      </>
+      </Stack>
     );
   }
 }

@@ -42,16 +42,17 @@ export default function Landing() {
 
         <Stack
           align="center"
-          gap={2}
+          gap={8}
           h={{ base: "75vh", sm: "90vh" }}
           w={"100%"}
           justify="center"
-          p={{ base: "1rem", sm: 0 }}
+          p={{ base: "1.5rem", sm: "2rem" }}
         >
           <Text
             fz={{ base: 32, sm: 54 }}
             fw={700}
             ta="center"
+            lh={1.2}
             style={{
               mixBlendMode: "overlay",
               userSelect: "none",

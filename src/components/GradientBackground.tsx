@@ -141,6 +141,15 @@ export function GradientBackground() {
         }}
       />
 
+      <div
+        style={{
+          ...gradientLayers,
+          background:
+            "linear-gradient(135deg, rgb(111, 18, 199) 0%, rgba(84, 7, 139, 0.15) 100%)",
+          mixBlendMode: "saturation" as const,
+        }}
+      />
+
       <style>{`
         @keyframes moveBackground1 {
           0% {

@@ -21,60 +21,72 @@ export default function AboutMe() {
     const education = siteData.education;
 
     return (
-      <div>
-        <div style={{ paddingBlock: 10 }}>
-          <Text fz={{ base: 18, sm: 24 }} lh={1.5}>
+      <Stack gap={12}>
+        <Stack gap={4}>
+          <Text fz={{ base: 18, sm: 24 }} lh={1.3}>
             Information{" "}
             <Text span c="main" fw={700} inherit>
               about me:
             </Text>{" "}
           </Text>
-        </div>
+        </Stack>
 
-        <Stack px={5}>
-          <Card padding="15" radius="md" c="white" mt={0}>
-            {education.map((education) => {
-              const Header = () => {
-                return (
-                  <Text
-                    fz={{ base: 16, sm: 20 }}
-                    key={education.school}
-                    mt={-10}
-                  >
-                    <Text span inherit>
-                      {education.school} ({education.location})
-                    </Text>
-                  </Text>
-                );
-              };
-              const details = [
-                {
-                  point: `${education.degree} - ${education.gpa}`,
-                },
-              ];
+        <Stack gap={16} px={5}>
+          <Grid gutter="md">
+            <Grid.Col span={{ base: 12, sm: 6 }}>
+              <Card padding="16" radius="md" c="white">
+                {education.map((education) => {
+                  const Header = () => {
+                    return (
+                      <Text
+                        fz={{ base: 16, sm: 18 }}
+                        lh={1.3}
+                        key={education.school}
+                        mb={2}
+                        fw={600}
+                      >
+                        <Text span inherit c="main">
+                          {education.school}
+                        </Text>
+                        <Text span inherit c="dimmed" fz="sm" display="block">
+                          {education.location}
+                        </Text>
+                      </Text>
+                    );
+                  };
+                  const details = [
+                    {
+                      point: `${education.degree} - ${education.gpa}`,
+                    },
+                  ];
 
-              return (
-                <BulletPointList
-                  key={education.school}
-                  HeaderComponent={Header}
-                  details={details}
-                  mb={-10}
-                />
-              );
-            })}
-          </Card>
+                  return (
+                    <BulletPointList
+                      key={education.school}
+                      HeaderComponent={Header}
+                      details={details}
+                      mb={0}
+                    />
+                  );
+                })}
+              </Card>
+            </Grid.Col>
 
-          <Grid gutter="sm" mt={-5}>
-            {contact.map((contactItem) => {
-              return (
-                <Grid.Col span={{ base: 12, sm: 6 }} key={contactItem.title}>
-                  <ContactCard contactItem={contactItem} />
-                </Grid.Col>
-              );
-            })}
+            <Grid.Col span={{ base: 12, sm: 6 }}>
+              <Stack gap={12}>
+                {contact.map((contactItem) => {
+                  return (
+                    <ContactCard
+                      contactItem={contactItem}
+                      key={contactItem.title}
+                    />
+                  );
+                })}
+              </Stack>
+            </Grid.Col>
           </Grid>
         </Stack>
-      </div>
+      </Stack>
     );
   }
 }

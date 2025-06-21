@@ -89,15 +89,15 @@ export default function InteractiveSite() {
         <Landing />
       </div>
 
-      <Container size="sx" ref={skillsRef}>
+      <Container size="sx" ref={skillsRef} py={16}>
         <Skills />
       </Container>
 
-      <Container size="sx" ref={experienceRef}>
+      <Container size="sx" ref={experienceRef} py={16}>
         <Experience />
       </Container>
 
-      <Container size="sx" ref={aboutMeRef}>
+      <Container size="sx" ref={aboutMeRef} py={16}>
         <AboutMe />
       </Container>
     </div>

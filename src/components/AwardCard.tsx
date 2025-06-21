@@ -8,11 +8,11 @@ export default function AwardCard({ awardInfo }: { awardInfo: AwardItem }) {
   const { title, recievedYear } = awardInfo;
 
   return (
-    <Card padding="15" radius="md" c="white" mb={-2}>
+    <Card padding="16" radius="md" c="white">
       <CardTitle
         title={title}
         smallerText={recievedYear}
-        mb={isSmallScreen ? -10 : -20}
+        mb={0}
         highlight={false}
       />
     </Card>
