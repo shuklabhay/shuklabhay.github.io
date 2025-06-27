@@ -1,12 +1,6 @@
 import { extend, Canvas, useThree } from "@react-three/fiber";
 import { useMemo, useRef, useEffect } from "react";
-import {
-  ShaderMaterial,
-  Vector2,
-  Vector3,
-  Color,
-  RawShaderMaterial,
-} from "three";
+import { Vector2, Color, RawShaderMaterial } from "three";
 import { Stack } from "@mantine/core";
 
 declare global {
@@ -228,8 +222,6 @@ export function GradientBackground() {
           position: "absolute",
           inset: 0,
           zIndex: -1,
-          filter: "blur(120px)",
-          transform: "scale(1.1)",
         }}
         frameloop="demand"
       >
