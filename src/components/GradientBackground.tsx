@@ -21,7 +21,7 @@ function shaderMaterial(
   uniforms: { [key: string]: any },
   vertexShader: string,
   fragmentShader: string,
-  onInit?: (material?: RawShaderMaterial) => void
+  onInit?: (material?: RawShaderMaterial) => void,
 ) {
   const material = class extends RawShaderMaterial {
     constructor() {
@@ -33,7 +33,7 @@ function shaderMaterial(
           acc[name] = uniform;
           return acc;
         },
-        {} as { [key: string]: { value: any } }
+        {} as { [key: string]: { value: any } },
       );
 
       super({
@@ -47,7 +47,7 @@ function shaderMaterial(
         Object.defineProperty(this, name, {
           get: () => this.uniforms[name]!.value,
           set: (v) => (this.uniforms[name]!.value = v),
-        })
+        }),
       );
 
       if (onInit) onInit(this);
@@ -65,7 +65,7 @@ const GradientShaderMaterial = shaderMaterial(
       new Color("#0E3E1E"),
       new Color("#8A05DB"),
       new Color("#DE37CC"),
-      new Color("#E7EE9D"),
+      new Color("#F8FACF"),
     ],
     u_shapeColA: new Color("#ABE4FF"),
     u_shapeColB: new Color("#420084"),
@@ -155,7 +155,7 @@ const GradientShaderMaterial = shaderMaterial(
       // Rotated gradient
       float angle = u_gradientAngle * 3.14159 / 180.0;
       vec2 dir = vec2(cos(angle), sin(angle));
-      float t = dot(uv - vec2(0.5), dir) + 0.5;
+      float t = dot(uv - vec2(0.5), dir) + 0.55;
       vec3 col = getRamp(t);
 
       // Radial tints (aspect-correct circles)
@@ -187,7 +187,7 @@ const GradientShaderMaterial = shaderMaterial(
       // Final colour
       gl_FragColor = vec4(finalColor, 1.0);
     }
-  `
+  `,
 );
 
 extend({ GradientShaderMaterial });
@@ -200,7 +200,7 @@ function GradientPlane() {
     if (materialRef.current) {
       materialRef.current.uniforms.u_resolution.value.set(
         size.width,
-        size.height
+        size.height,
       );
       invalidate();
     }
@@ -224,8 +224,14 @@ export function GradientBackground() {
         orthographic
         dpr={1.1}
         gl={{ powerPreference: "high-performance", antialias: false }}
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: -1,
+          filter: "blur(120px)",
+          transform: "scale(1.1)",
+        }}
         frameloop="demand"
-        style={{ position: "absolute", inset: 0, zIndex: -1 }}
       >
         <GradientPlane />
       </Canvas>
