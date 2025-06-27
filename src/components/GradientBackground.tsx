@@ -217,7 +217,7 @@ function BlurLayer() {
   const blurPass = useMemo(
     () =>
       new KawaseBlurPass({
-        kernelSize: KernelSize.HUGE,
+        kernelSize: KernelSize.VERY_LARGE,
       }),
     [],
   );
