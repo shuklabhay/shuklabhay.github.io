@@ -137,10 +137,18 @@ const GradientShaderMaterial = shaderMaterial(
     }
 
     vec3 getRamp(float t){
-      // Non-uniform stop positions to match reference
-      if(t < 0.20){ return mix(u_ramp[0], u_ramp[1], t / 0.20); }
-      if(t < 0.55){ return mix(u_ramp[1], u_ramp[2], (t - 0.20) / 0.35); }
-      return mix(u_ramp[2], u_ramp[3], (t - 0.55) / 0.45);
+      // Segmented smoothstep for slightly crisper edges
+      if(t < 0.25){
+        float f = smoothstep(0.00, 0.25, t);
+        return mix(u_ramp[0], u_ramp[1], f);
+      }
+      if(t < 0.50){
+        float f = smoothstep(0.25, 0.50, t);
+        return mix(u_ramp[1], u_ramp[2], f);
+      }
+      // Start blending into yellow a bit later and reach full yellow beyond normal UV to reduce pure yellow area
+      float f = smoothstep(0.55, 1.20, t);
+      return mix(u_ramp[2], u_ramp[3], f);
     }
 
     vec3 baseColour(vec2 uv) {
