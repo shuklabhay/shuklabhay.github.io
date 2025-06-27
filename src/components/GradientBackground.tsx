@@ -1,7 +1,10 @@
 import { extend, Canvas, useThree } from "@react-three/fiber";
-import { useMemo, useRef, useEffect } from "react";
+import { useRef, useEffect, useMemo } from "react";
 import { Vector2, Color, RawShaderMaterial } from "three";
 import { Stack } from "@mantine/core";
+import { EffectComposer } from "@react-three/postprocessing";
+import { KernelSize, KawaseBlurPass } from "postprocessing";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 
 declare global {
   namespace JSX {
@@ -47,7 +50,6 @@ function shaderMaterial(
       if (onInit) onInit(this);
     }
   };
-  (material as any).key = `${vertexShader}${fragmentShader}`;
   return material;
 }
 
@@ -64,7 +66,7 @@ const GradientShaderMaterial = shaderMaterial(
     u_shapeColA: new Color("#ABE4FF"),
     u_shapeColB: new Color("#420084"),
     u_shapePosA: new Vector2(0.65, 0.8),
-    u_shapePosB: new Vector2(0.35, 0.21),
+    u_shapePosB: new Vector2(0.32, 0.21),
     u_shapeRadA: 0.58,
     u_shapeRadB: 0.58,
     u_gradientAngle: -28.0,
@@ -173,10 +175,7 @@ const GradientShaderMaterial = shaderMaterial(
     void main() {
       vec2 uv = vUv;
       vec3 bColor = baseColour(uv);
-
       vec3 finalColor = bColor;
-      // Convert from linear to sRGB for perceptual match
-      finalColor = pow(finalColor, vec3(1.0/2.2));
 
       // Final colour
       gl_FragColor = vec4(finalColor, 1.0);
@@ -203,11 +202,31 @@ function GradientPlane() {
   return (
     <mesh>
       <planeGeometry args={[2, 2]} />
-      <gradientShaderMaterial
-        ref={materialRef}
-        key={(GradientShaderMaterial as any).key}
-      />
+      <gradientShaderMaterial ref={materialRef} />
     </mesh>
+  );
+}
+
+function BlurLayer() {
+  const { scene, camera } = useThree();
+
+  const renderPass = useMemo(
+    () => new RenderPass(scene, camera),
+    [scene, camera],
+  );
+  const blurPass = useMemo(
+    () =>
+      new KawaseBlurPass({
+        kernelSize: KernelSize.HUGE,
+      }),
+    [],
+  );
+
+  return (
+    <EffectComposer multisampling={0}>
+      <primitive object={renderPass} attachArray="passes" />
+      <primitive object={blurPass} attachArray="passes" />
+    </EffectComposer>
   );
 }
 
@@ -226,6 +245,7 @@ export function GradientBackground() {
         frameloop="demand"
       >
         <GradientPlane />
+        <BlurLayer />
       </Canvas>
     </Stack>
   );
