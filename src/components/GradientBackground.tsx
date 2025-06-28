@@ -1,6 +1,23 @@
 import { Stack } from "@mantine/core";
+import { useEffect, useState } from "react";
 
 export function GradientBackground() {
+  const [fadeStart, setFadeStart] = useState(100);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const value = Math.max(100 - window.scrollY / 10, 0);
+      setFadeStart(value);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const useMask = fadeStart < 100;
+  const mask = `linear-gradient(to bottom, black ${fadeStart}%, transparent 100%)`;
+
   return (
     <Stack
       style={{
@@ -8,6 +25,10 @@ export function GradientBackground() {
         inset: 0,
         overflow: "hidden",
         pointerEvents: "none",
+        ...(useMask && {
+          maskImage: mask,
+          WebkitMaskImage: mask,
+        }),
       }}
     >
       <div
@@ -15,7 +36,7 @@ export function GradientBackground() {
           position: "absolute",
           inset: 0,
           background:
-            "linear-gradient(-54deg, #023413 0%, #8A05DB 35%, #D60DC4 5%, #E7F26D 100%)",
+            "linear-gradient(-54deg, #06300d -10%, #9A37FD 55%, #D60DC4 65%, #E7F26D 100%)",
           filter: "blur(120px)",
           transform: "translateZ(0)",
           zIndex: -3,
