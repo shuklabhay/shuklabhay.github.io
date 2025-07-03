@@ -7,7 +7,7 @@
         "point": "Full-stack AI translator/dubber preserving rhythm, emotion, and artistic intent across languages."
       },
       {
-        "point": "Efficient GPU-accelerated DSP pipeline optimised for <4 GB VRAM consumer GPUs."
+        "point": "Efficient GPU-accelerated DSP pipeline optimised for 4 GB VRAM consumer GPUs."
       },
       {
         "point": "Drag-and-drop uploads, YouTube import, real-time progress dashboard, and inline media player for a seamless user experience."
@@ -43,7 +43,7 @@
         "point": "End-to-end conversational voice agent designed for auditory rehabilitation through adaptive listening exercises."
       },
       {
-        "point": "Session state managed entirely by an LLM session, enabling personalised progression in a lightweight (<30 MB) app ready for clinical use."
+        "point": "Session state managed entirely by an LLM session, enabling personalised progression in a lightweight (30 MB) app ready for clinical use."
       }
     ],
     "images": [],
