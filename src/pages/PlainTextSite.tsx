@@ -91,12 +91,12 @@ const SkillsDescription = ({ skills }: { skills: SkillData }) => {
 };
 
 const AwardDescription = ({ awardInfo }: { awardInfo: AwardItem }) => {
-  const { title, recievedYear } = awardInfo;
+  const { title, receivedYear } = awardInfo;
   const Header = () => {
     return (
       <Text fz={16} lh={1.4} mb={-4}>
         <Text span c={"white"} fw={700} inherit>
-          ({recievedYear})
+          ({receivedYear})
         </Text>{" "}
         {title}
       </Text>

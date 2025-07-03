@@ -1,19 +1,73 @@
 [
   {
-    "title": "PercGAN",
-    "broadDescription": "A lightweight machine learning approach high-fidelity stereo audio sample generation",
+    "title": "Voquel",
+    "broadDescription": "A full-stack AI platform for audio translation and dubbing",
     "details": [
       {
-        "point": "Developed pioneering generative adversarial network addressing critical research gaps in high-quality stereo audio synthesis."
+        "point": "Full-stack AI translator/dubber preserving rhythm, emotion, and artistic intent across languages."
       },
       {
-        "point": "Implemented efficient image-like audio representations and efficient model training techniques."
+        "point": "Efficient GPU-accelerated DSP pipeline optimised for ≤4 GB VRAM consumer GPUs."
       },
       {
-        "point": "Achieved 85% quality improvement and 25x training time reduction compared to industry benchmarks"
+        "point": "Drag-and-drop uploads, YouTube import, real-time progress dashboard, and inline media player for a seamless user experience."
       },
       {
-        "point": "Skills: Time-Series Data, Multimodality, PyTorch, NumPy, DSP"
+        "point": "Honorable Mention at the 2025 Synopsys Science Fair (top 10% out of ~1000 competitors); 30+ hours of Voquel-translated content watched on YouTube."
+      }
+    ],
+    "images": [
+      {
+        "src": "https://shuklabhay.github.io/static/projects/voquel/dashboard.png",
+        "alt": "Voquel Website Dashboard"
+      }
+    ],
+    "link": [
+      {
+        "url": "https://www.youtube.com/@translateanyaudio",
+        "description": "Algorithm Demos"
+      },
+      {
+        "url": "https://shuklabhay.github.io/static/projects/voquel/vt_poster.png",
+        "description": "Science Fair Research Project"
+      }
+    ],
+    "hideOnSite": false,
+    "hideOnResume": false
+  },
+  {
+    "title": "Tessera",
+    "broadDescription": "A Lightweight LLM-driven auditory rehabilitation agent",
+    "details": [
+      {
+        "point": "End-to-end conversational voice agent designed for auditory rehabilitation through adaptive listening exercises."
+      },
+      {
+        "point": "Session state managed entirely by an LLM session, enabling personalised progression in a lightweight (<30 MB) app ready for clinical use."
+      }
+    ],
+    "images": [],
+    "link": [
+      {
+        "url": "https://github.com/shuklabhay/tessera",
+        "description": "Clinical Research Prototype"
+      }
+    ],
+    "hideOnSite": false,
+    "hideOnResume": false
+  },
+  {
+    "title": "PercGAN",
+    "broadDescription": "A lightweight machine learning approach for high-fidelity stereo audio sample generation",
+    "details": [
+      {
+        "point": "Developed a generative adversarial network addressing critical research gaps in lightweight high-quality stereo audio synthesis."
+      },
+      {
+        "point": "Implemented image-like audio representations and efficient model training techniques."
+      },
+      {
+        "point": "Achieved an 85% quality improvement and a 25× training-time reduction compared with industry benchmarks."
       }
     ],
     "images": [
@@ -36,33 +90,6 @@
     "hideOnResume": false
   },
   {
-    "title": "Voquel",
-    "broadDescription": "An AI tool designed to preserve linguistic diversity by facilitating musical translation",
-    "details": [
-      {
-        "point": "Developed LLM-based multimodal musical translation system preserving rhythmic, melodic, and artistic features of sung audio."
-      },
-      {
-        "point": "Won Honorable Mention Award out of 977 participants at 2025 Santa Clara Synopsys Science Fair."
-      },
-      {
-        "point": "Project presented to San Jose Mayor Matt Mahan and recognizd by the City of San Jose for impact on local language preservation."
-      },
-      {
-        "point": "Skills: Model Ensembling, LLM Manipulation, Signal Processing, Model Context Protocol"
-      }
-    ],
-    "images": [],
-    "link": [
-      {
-        "url": "https://shuklabhay.github.io/static/projects/vox-transformis/vt_poster.png",
-        "description": "Science Fair Research Project"
-      }
-    ],
-    "hideOnSite": false,
-    "hideOnResume": false
-  },
-  {
     "title": "SporeStrike",
     "broadDescription": "An effective fungicide disposal system",
     "details": [
@@ -70,10 +97,7 @@
         "point": "Designed computational models for drone-based fungal infection treatment system, created prototype 3D printed components."
       },
       {
-        "point": "Presented project to civil and aerospace engineering pannel; won first place/260 competitors at 2024 FlexFactor Entrepreneurship Championships."
-      },
-      {
-        "point": "Skills: Real-World System Design, CAD, 3D Printing"
+        "point": "Presented the project to a civil and aerospace engineering panel; won first place out of 260 competitors at the 2024 FlexFactor Entrepreneurship Championships."
       }
     ],
     "images": [
@@ -109,7 +133,7 @@
         "point": "Trained and mentored 10+ team members in application development and user interface design."
       },
       {
-        "point": "Implemented advanced analytics features enabling data-driven strategic decisions and alliance selections"
+        "point": "Implemented advanced analytics features enabling data-driven strategic decisions and alliance selections."
       }
     ],
     "images": [

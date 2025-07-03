@@ -35,7 +35,7 @@
         "point": "Implemented real-time computer vision systems for autonomous robot navigation and object detection."
       },
       {
-        "point": "Designed stratgic robotic mechanisms and integrated multi-modal sensors for optimal robot performance and reliability."
+        "point": "Designed strategic robotic mechanisms and integrated multi-modal sensors for maximum performance and reliability."
       },
       {
         "point": "Developed competition data collection infrastructure and visualization tools analyzing 1000+ competition matches with 200+ users."
@@ -91,7 +91,7 @@
       "link": "https://www.pavyl.com/"
     },
     "hideOnSite": true,
-    "hideOnResume": false
+    "hideOnResume": true
   },
   {
     "org": "Bay Area STEM Academy",
@@ -101,10 +101,10 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Created and led nonprofit organization teaching 525+ students to robotics, astrophysics, 3D design, and machine learning."
+        "point": "Created and led a nonprofit organization that taught 525+ students robotics, astrophysics, 3D design, and machine learning."
       },
       {
-        "point": "Secured $6,000+ in funding and city grants to support local STEM education initiatives, recruited and managed 25+ academy mentors"
+        "point": "Secured $6,000+ in funding and city grants to support local STEM initiatives, and recruited and managed 25+ academy mentors."
       }
     ],
     "icon": {
@@ -146,7 +146,7 @@
         "point": "Coordinate network of 8+ California high school NEXUS chapters to enhance research accessibility."
       },
       {
-        "point": "Develop strategies to increase club membership and engagement, connect studnets with research opportunities and mentorship resources."
+        "point": "Develop strategies to increase club membership and engagement, and connect students with research opportunities and mentorship resources."
       }
     ],
     "icon": {

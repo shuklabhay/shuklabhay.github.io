@@ -161,7 +161,7 @@ ${activities
           .map((award) => {
             if (!award.hideOnResume) {
               return `
-      \\item ${award.title} \\hfill ${award.recievedYear}
+      \\item ${award.title} \\hfill ${award.receivedYear}
               `;
             }
           })
