@@ -190,9 +190,9 @@ async function saveTexResume() {
     { key: "&amp;", value: "&" },
     { key: "&quot;", value: '"' },
     { key: "&#x27;", value: "'" },
-    { key: "&lt;4.6%", value: "$<4.6$\\%" },
+    { key: "&lt;4.6%", value: "<4.6\\%" },
     { key: "0.1%", value: "0.1\\%" },
-    { key: "&gt;", value: "$>$" },
+    { key: "&gt;", value: ">" },
     { key: "#71 to #12", value: "\\#71 to \\#12" },
     { key: "Mathematics & Science", value: "Mathematics \\& Science" },
     { key: "supervised & unsupervised", value: "supervised \\& unsupervised" },
@@ -203,8 +203,6 @@ async function saveTexResume() {
     { key: "10%", value: "10\\%" },
     { key: "\\$6,000", value: "\\$6,000" },
     { key: "≤", value: "$\\leq$" },
-    { key: "&lt;", value: "$<$" },
-    { key: "&gt;", value: "$>$" },
   ];
   for (const { key, value } of replacements) {
     const regex = new RegExp(key, "g");
