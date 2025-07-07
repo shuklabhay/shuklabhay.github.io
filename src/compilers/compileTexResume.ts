@@ -203,6 +203,7 @@ async function saveTexResume() {
     { key: "10%", value: "10\\%" },
     { key: "\\$6,000", value: "\\$6,000" },
     { key: "&lt;", value: "<" },
+    { key: "4–20%", value: "4–20\\%" },
   ];
   for (const { key, value } of replacements) {
     const regex = new RegExp(key, "g");

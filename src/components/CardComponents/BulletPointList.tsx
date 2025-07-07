@@ -13,7 +13,7 @@ export default function BulletPointList({
   return (
     <>
       <HeaderComponent />
-      <List mr={40} withPadding mb={mb} mt={-4}>
+      <List mr={40} withPadding mb={mb} mt={4}>
         {details.map(({ point }, index) => (
           <List.Item key={`Point ${index + 1}`}>
             <Text fz={{ base: 14, sm: 16 }} mb={{ base: 1, sm: 2 }} lh={1.4}>
