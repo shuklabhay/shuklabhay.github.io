@@ -4,16 +4,13 @@
     "broadDescription": "A full-stack AI platform for audio translation and dubbing",
     "details": [
       {
-        "point": "Full-stack AI translator/dubber preserving rhythm, emotion, and artistic intent across languages."
+        "point": "Developed a full-stack AI translator/dubber preserving rhythm, emotion, and artistic intent across languages."
       },
       {
-        "point": "Efficient GPU-accelerated DSP pipeline optimised for 4 GB VRAM consumer GPUs."
+        "point": "Created efficient GPU-accelerated DSP pipeline optimised for 4 GB VRAM consumer GPUs."
       },
       {
-        "point": "Drag-and-drop uploads, YouTube import, real-time progress dashboard, and inline media player for a seamless user experience."
-      },
-      {
-        "point": "Honorable Mention at the 2025 Synopsys Science Fair (top 10% out of ~1000 competitors); 30+ hours of Voquel-translated content watched on YouTube."
+        "point": "Received Honorable Mention at the 2025 Synopsys Science Fair (top 10% out of ~1000 competitors); 30+ hours of Voquel-translated content watched on YouTube."
       }
     ],
     "images": [
@@ -40,10 +37,10 @@
     "broadDescription": "A Lightweight LLM-driven auditory rehabilitation agent",
     "details": [
       {
-        "point": "End-to-end conversational voice agent designed for auditory rehabilitation through adaptive listening exercises."
+        "point": "Developed an end-to-end conversational voice agent for auditory rehabilitation through adaptive listening exercises."
       },
       {
-        "point": "Session state managed entirely by an LLM session, enabling personalised progression in a lightweight (30 MB) app ready for clinical use."
+        "point": "Engineered context-aware LLM-managed session state, enabling personalised progression in a lightweight (30 MB) app ready for clinical use."
       }
     ],
     "images": [],

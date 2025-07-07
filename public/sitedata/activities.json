@@ -76,8 +76,8 @@
     "org": "Pavyl",
     "position": "Software Design Advisor",
     "startYear": "January 2025",
-    "endYear": "Present",
-    "ongoing": true,
+    "endYear": "May 2025",
+    "ongoing": false,
     "details": [
       {
         "point": "Evaluated memory and computational efficiency of infinite context large language models."

@@ -10,7 +10,7 @@ function parseDataToTexTemplate(userData: ResumeData) {
   const e = escapeLatex;
 
   const technicalSkillsList = e(
-    skills.technical.map((skill) => skill).join(", ")
+    skills.technical.map((skill) => skill).join(", "),
   );
   // const otherSkillsList = skills.other.map((skill) => skill).join(", ");
   const getContactLink = (title: string) => {
@@ -62,7 +62,7 @@ function parseDataToTexTemplate(userData: ResumeData) {
 
 % You can use the \\address command up to 3 times for 3 different addresses or pieces of contact information
 % Any new lines you use in the \\address commands will be converted to symbols, so each address will appear as a single line.
-\\address{${getContactLink("Email")} $\\vert$ \\underline{\href{${getContactLink("LinkedIn")}}{${e(getContactLink("LinkedIn") || "")}}} $vert$ \\underline{\href{${getContactLink("GitHub")}}{${e(getContactLink("GitHub") || "")}}} $\\vert$ \\underline{\href{${getContactLink("Website")}}{${e(getContactLink("Website") || "")}}}}% Contact information
+\\address{${getContactLink("Email")} $\\vert$ \\underline{\\href{${getContactLink("LinkedIn")}}{${e(getContactLink("LinkedIn") || "")}}} $\\vert$ \\underline{\\href{${getContactLink("GitHub")}}{${e(getContactLink("GitHub") || "")}}} $\\vert$ \\underline{\\href{${getContactLink("Website")}}{${e(getContactLink("Website") || "")}}}}% Contact information
 
 %----------------------------------------------------------------------------------------
 
@@ -105,7 +105,7 @@ ${activities
     .map((project) => {
       if (!project.hideOnResume) {
         const linkSection = project.link[0]
-          ? ` - \\textit{\\underline{\\href{${project.link[0].url}}{${e(project.link[0].description)}}}}`
+          ? ` - \\textit{\\underline{\\\href{${project.link[0].url}}{${e(project.link[0].description)}}}}`
           : "";
 
         return `
