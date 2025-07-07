@@ -1,4 +1,4 @@
-import { renderToStaticMarkup } from "react-dom/server";
+import escapeLatex from "escape-latex";
 import { getJSONDataForResume } from "../utils/data.ts";
 import { ResumeData } from "../utils/types.ts";
 import { getTimeframeLabel } from "../utils/dates.ts";
@@ -7,7 +7,11 @@ import fs from "fs/promises";
 function parseDataToTexTemplate(userData: ResumeData) {
   const { activities, awards, contact, education, projects, skills } = userData;
 
-  const technicalSkillsList = skills.technical.map((skill) => skill).join(", ");
+  const e = escapeLatex;
+
+  const technicalSkillsList = e(
+    skills.technical.map((skill) => skill).join(", ")
+  );
   // const otherSkillsList = skills.other.map((skill) => skill).join(", ");
   const getContactLink = (title: string) => {
     const titleLower = title.toLowerCase();
@@ -58,7 +62,7 @@ function parseDataToTexTemplate(userData: ResumeData) {
 
 % You can use the \\address command up to 3 times for 3 different addresses or pieces of contact information
 % Any new lines you use in the \\address commands will be converted to symbols, so each address will appear as a single line.
-\\address{${getContactLink("Email")} $\\vert$ \\underline{\\href{${getContactLink("LinkedIn")}}{${getContactLink("Linkedin")}}} $\\vert$ \\underline{\\href{${getContactLink("GitHub")}}{${getContactLink("GitHub")}}} $\\vert$ \\underline{\\href{${getContactLink("Website")}}{${getContactLink("Website")}}}}% Contact information
+\\address{${getContactLink("Email")} $\\vert$ \\underline{\href{${getContactLink("LinkedIn")}}{${e(getContactLink("LinkedIn") || "")}}} $vert$ \\underline{\href{${getContactLink("GitHub")}}{${e(getContactLink("GitHub") || "")}}} $\\vert$ \\underline{\href{${getContactLink("Website")}}{${e(getContactLink("Website") || "")}}}}% Contact information
 
 %----------------------------------------------------------------------------------------
 
@@ -75,11 +79,11 @@ ${activities
   .map((activity) => {
     if (!activity.hideOnResume) {
       return `
-  \\begin{rSubsection}{${activity.org}}{${getTimeframeLabel(activity.startYear, activity.endYear, activity.ongoing)}}{${activity.position}}{California}
+  \\begin{rSubsection}{${e(activity.org)}}{${getTimeframeLabel(activity.startYear, activity.endYear, activity.ongoing)}}{${e(activity.position)}}{California}
     ${activity.details
       .map((detail) => {
         return `
-    \\item ${detail.point}
+    \\item ${e(detail.point)}
     `;
       })
       .join("")}
@@ -101,15 +105,15 @@ ${activities
     .map((project) => {
       if (!project.hideOnResume) {
         const linkSection = project.link[0]
-          ? ` - \\textit{\\underline{\\href{${project.link[0].url}}{${project.link[0].description}}}}`
+          ? ` - \\textit{\\underline{\\href{${project.link[0].url}}{${e(project.link[0].description)}}}}`
           : "";
 
         return `
-    \\begin{rSubsection}{${project.title}${linkSection}}{}{}{}
+    \\begin{rSubsection}{${e(project.title)}${linkSection}}{}{}{}
         ${project.details
           .map((detail) => {
             return `
-      \\item ${detail.point}
+      \\item ${e(detail.point)}
           `;
           })
           .join("")}
@@ -130,8 +134,8 @@ ${activities
   ${education
     .map((item) => {
       return `
-  \\textbf{${item.school}} \\hfill \\textit{${item.gpa}} \\\\
-  ${item.degree} \\hfill \\textit{${item.location}}`;
+  \\textbf{${e(item.school)}} \\hfill \\textit{${e(item.gpa)}} \\\\
+  ${e(item.degree)} \\hfill \\textit{${e(item.location)}}`;
     })
     .join("")}
 	
@@ -161,7 +165,7 @@ ${activities
           .map((award) => {
             if (!award.hideOnResume) {
               return `
-      \\item ${award.title} \\hfill ${award.receivedYear}
+      \\item ${e(award.title)} \\hfill ${award.receivedYear}
               `;
             }
           })
@@ -180,39 +184,11 @@ async function saveTexResume() {
   // Read JSON Data
   const texFilePath = "public/resume.tex";
   const userData = await getJSONDataForResume();
-  const texString = renderToStaticMarkup(parseDataToTexTemplate(userData));
-
-  // Process string
-  let processedTexString = texString;
-
-  const replacements = [
-    { key: "99.77%", value: "99.77\\%" },
-    { key: "&amp;", value: "&" },
-    { key: "&quot;", value: '"' },
-    { key: "&#x27;", value: "'" },
-    { key: "&lt;4.6%", value: "<4.6\\%" },
-    { key: "0.1%", value: "0.1\\%" },
-    { key: "&gt;", value: ">" },
-    { key: "#71 to #12", value: "\\#71 to \\#12" },
-    { key: "Mathematics & Science", value: "Mathematics \\& Science" },
-    { key: "supervised & unsupervised", value: "supervised \\& unsupervised" },
-    { key: "85%", value: "85\\%" },
-    { key: "DrumGAN & WaveGAN", value: "DrumGAN \\& WaveGAN" },
-    { key: "2%", value: "2\\%" },
-    { key: "1%", value: "1\\%" },
-    { key: "10%", value: "10\\%" },
-    { key: "\\$6,000", value: "\\$6,000" },
-    { key: "&lt;", value: "<" },
-    { key: "4–20%", value: "4–20\\%" },
-  ];
-  for (const { key, value } of replacements) {
-    const regex = new RegExp(key, "g");
-    processedTexString = processedTexString.replace(regex, value);
-  }
+  const texString = parseDataToTexTemplate(userData);
 
   // Write tex file
   try {
-    await fs.writeFile(texFilePath, processedTexString);
+    await fs.writeFile(texFilePath, texString);
     console.log(`Resume saved to ${texFilePath}`);
   } catch (error) {
     console.error("Error saving the resume:", error);
