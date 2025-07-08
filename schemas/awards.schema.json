@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["title", "receivedYear", "hideOnSite", "hideOnResume"],
+    "properties": {
+      "title": { "type": "string" },
+      "receivedYear": { "type": "string" },
+      "hideOnSite": { "type": "boolean" },
+      "hideOnResume": { "type": "boolean" }
+    },
+    "additionalProperties": false
+  }
+}

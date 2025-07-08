@@ -91,7 +91,7 @@
       "link": "https://www.pavyl.com/"
     },
     "hideOnSite": true,
-    "hideOnResume": true
+    "hideOnResume": false
   },
   {
     "org": "Bay Area STEM Academy",

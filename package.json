@@ -10,6 +10,7 @@
     "preview": "vite preview",
     "lint": "prettier ./ --write",
     "format-check": "prettier ./ --check",
+    "validate-json": "npx tsx src/compilers/validateJSONSchemas.ts",
     "update-gh-data": "npx tsx src/compilers/updateGHData.ts",
     "compile-tex-resume": "npx tsx src/compilers/compileTexResume.ts"
   },
@@ -29,7 +30,11 @@
     "react-countup": "^6.5.3",
     "react-dom": "^18.3.1",
     "react-spring-lightbox": "^1.8.0",
-    "tsx": "^4.19.3"
+    "tsx": "^4.19.3",
+    "ajv": "^8.12.0"
+  },
+  "overrides": {
+    "react-use-gesture": "npm:@use-gesture/react@^10.3.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

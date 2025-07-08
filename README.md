@@ -2,8 +2,9 @@
 
 [![Build Resume](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/resume.yml/badge.svg)](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/resume.yml)
 [![Deploy GitHub Page](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/deploy.yml/badge.svg)](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/deploy.yml)
-[![On Push](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/push.yml/badge.svg)](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/push.yml/badge.svg)
 [![Update GitHub Data](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/ghdata.yml/badge.svg)](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/ghdata.yml/badge.svg)
+[![Push Checks](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/push.yml/badge.svg)](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/push.yml/badge.svg)
+[![JSON Schema Validation](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/json-schema.yml/badge.svg)](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/json-schema.yml/badge.svg)
 
 ## App Info
 

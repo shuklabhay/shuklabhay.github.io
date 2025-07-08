@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["school", "degree", "gpa", "location"],
+    "properties": {
+      "school": { "type": "string" },
+      "degree": { "type": "string" },
+      "gpa": { "type": "string" },
+      "location": { "type": "string" }
+    },
+    "additionalProperties": false
+  }
+}

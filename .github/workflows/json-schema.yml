@@ -1,17 +1,14 @@
-name: Push Checks
+name: JSON Schema Validation
 
 on:
   push:
-    branches:
-      - "main"
+    branches: ["main"]
   pull_request:
-    branches:
-      - "main"
+    branches: ["main"]
 
 jobs:
-  push-checks:
+  schema-validation:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -25,8 +22,5 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Check formatting
-        run: npm run format-check
-
-      - name: Build production bundle
-        run: npm run build
+      - name: Validate JSON files against schemas
+        run: npm run validate-json

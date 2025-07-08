@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "title",
+      "broadDescription",
+      "details",
+      "images",
+      "link",
+      "hideOnSite",
+      "hideOnResume"
+    ],
+    "properties": {
+      "title": { "type": "string" },
+      "broadDescription": { "type": "string" },
+      "details": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["point"],
+          "properties": {
+            "point": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "experience": { "type": "string" },
+      "images": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["src", "alt"],
+          "properties": {
+            "src": { "type": "string" },
+            "alt": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "link": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["url", "description"],
+          "properties": {
+            "url": { "type": "string" },
+            "description": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "hideOnSite": { "type": "boolean" },
+      "hideOnResume": { "type": "boolean" }
+    },
+    "additionalProperties": false
+  }
+}
