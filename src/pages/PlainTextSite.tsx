@@ -50,7 +50,7 @@ const ProjectDescription = ({ projectInfo }: { projectInfo: ProjectItem }) => {
     return (
       <Text fz={16} lh={1.4} mb={-4}>
         <HoverHighlightText
-          link={link[0].url}
+          link={link.length > 0 ? link[0].url : undefined}
           text={title}
           size={"inherit"}
           shade="light"
