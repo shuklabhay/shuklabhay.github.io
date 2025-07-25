@@ -12,7 +12,8 @@
     "format-check": "prettier ./ --check",
     "validate-json": "npx tsx src/compilers/validateJSONSchemas.ts",
     "update-gh-data": "npx tsx src/compilers/updateGHData.ts",
-    "compile-tex-resume": "npx tsx src/compilers/compileTexResume.ts"
+    "compile-tex-resume": "npx tsx src/compilers/compileTexResume.ts",
+    "download-resume": "curl -o ~/Downloads/resume.pdf https://shuklabhay.github.io/resume.pdf"
   },
   "dependencies": {
     "@mantine/carousel": "^7.12.2",
