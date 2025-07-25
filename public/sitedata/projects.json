@@ -44,7 +44,12 @@
       }
     ],
     "images": [],
-    "link": [],
+    "link": [
+      {
+        "url": "https://shuklabhay.github.io/tessera/",
+        "description": "Product Display"
+      }
+    ],
     "hideOnSite": false,
     "hideOnResume": false
   },
