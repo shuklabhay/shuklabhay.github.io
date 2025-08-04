@@ -3,8 +3,8 @@
     "org": "Stanford Center for Biomedical Informatics Research",
     "position": "Gevaert Lab Student Researcher",
     "startYear": "November 2024",
-    "endYear": "Present",
-    "ongoing": true,
+    "endYear": "July 2025",
+    "ongoing": false,
     "details": [
       {
         "point": "Developed physics-based neural networks for anatomically constrained image augmentations (e.g., tissue compression, respiratory/cardiac phase variations), improving cancer detection accuracy by 4–20%."
