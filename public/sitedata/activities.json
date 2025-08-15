@@ -7,13 +7,10 @@
     "ongoing": false,
     "details": [
       {
-        "point": "Developed physics-based neural networks for anatomically constrained image augmentations (e.g., tissue compression, respiratory/cardiac phase variations), improving cancer detection accuracy by 4–20%."
+        "point": "Worked with researchers from Stanford, UPenn, and UC Davis to developed PINNs for physically constrained medical image augmentation, improving cancer detection accuracy by 4–20%."
       },
       {
-        "point": "Implemented computer vision models (CNNs, Vision Transformers) for precise breast region segmentation."
-      },
-      {
-        "point": "Designed Python data processing pipelines for efficient handling of large-scale biomedical datasets on multi-node systems."
+        "point": "Implemented computer vision models (CNNs, Vision Transformers) for precise breast region segmentation, Designed Python data processing pipelines for efficient handling of large-scale biomedical datasets on multi-node systems."
       }
     ],
     "icon": {
@@ -32,16 +29,16 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Implemented real-time computer vision systems for autonomous robot navigation and object detection."
+        "point": "Implemented real-time localization and piece detection computer vision systems for three large-scale, 125lb competition robots."
       },
       {
-        "point": "Designed strategic robotic mechanisms and integrated multi-modal sensors for maximum performance and reliability."
+        "point": "Designed and led the fabrication of numerous robot components, applying advanced techniques in both additive manufacturing (TPU, PETG, PLA 3D printing) and sheet metal construction."
       },
       {
-        "point": "Developed competition data collection infrastructure and visualization tools analyzing 1000+ competition matches with 200+ users."
+        "point": "Brought the team to top 0.1% international ranking (12/10,000+ teams) in 2024."
       },
       {
-        "point": "Achieved top 0.1% international ranking (12/10,000+ teams) through integrated hardware-software optimization."
+        "point": "Developed data collection infrastructure powering 200+ users to analyze 1000+ competition matches."
       }
     ],
     "icon": {
@@ -59,10 +56,10 @@
     "ongoing": false,
     "details": [
       {
-        "point": "Developed neural networks to model rat hippocampus activity, perform image geolocation, and recognized handwritten characters."
+        "point": "Created a digital twin to model rodent pathfinding capabilities, accurately replicating true navigational behaviors and cell activations."
       },
       {
-        "point": "Applied neurobiological priors to computational modeling techniques using Torch and TensorFlow."
+        "point": "Developed a UCLA campus image geolocation model by organizing campus-wide video data collection, creating custom artifact-free frame extraction, and using the resulting 1,500+ curated images to fine tune AlexNet."
       }
     ],
     "icon": {
@@ -73,27 +70,6 @@
     "hideOnResume": false
   },
   {
-    "org": "Pavyl",
-    "position": "Software Design Advisor",
-    "startYear": "January 2025",
-    "endYear": "May 2025",
-    "ongoing": false,
-    "details": [
-      {
-        "point": "Evaluated memory and computational efficiency of infinite context large language models."
-      },
-      {
-        "point": "Recommended app optimizations for model accuracy, external tool integration, and response time."
-      }
-    ],
-    "icon": {
-      "src": "/static/icons/pavyl.jpeg",
-      "link": "https://www.pavyl.com/"
-    },
-    "hideOnSite": true,
-    "hideOnResume": false
-  },
-  {
     "org": "Bay Area STEM Academy",
     "position": "Organization Co-President",
     "startYear": "January 2023",
@@ -101,10 +77,10 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Created and led a nonprofit organization that taught 525+ students robotics, astrophysics, 3D design, and machine learning."
+        "point": "Founded nonprofit STEM academy, delivering robotics, astrophysics, 3D design, and machine learning programs to 525+ students across multiple communities."
       },
       {
-        "point": "Secured $6,000+ in funding and city grants to support local STEM initiatives, and recruited and managed 25+ academy mentors."
+        "point": "Secured $6,000+ in funding and city grants, and recruited and coordinated 25+ mentors to sustain and expand local STEM initiatives."
       }
     ],
     "icon": {
@@ -122,13 +98,13 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Self-taught audio production, composition, and music theory with no prior musical background."
+        "point": "Composed and produced full-length original works, generating 200,000+ streams across major platforms within two years."
       },
       {
-        "point": "Created full-length original compositions amassing 200,000+ streams across platforms within two years."
+        "point": "Engineered and mastered audio using industry-standard digital audio workstations, integrating advanced sound design techniques."
       },
       {
-        "point": "Developed proficiency in digital audio workstations, sound design, and audio engineering techniques."
+        "point": "Arranged and orchestrated compositions informed by applied music theory and modern production practices."
       }
     ],
     "icon": null,
@@ -143,10 +119,10 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Coordinate network of 8+ California high school NEXUS chapters to enhance research accessibility."
+        "point": "Coordinated network of 8+ California high school chapters, standardizing operations and enhancing research accessibility for members."
       },
       {
-        "point": "Develop strategies to increase club membership and engagement, and connect students with research opportunities and mentorship resources."
+        "point": "Implemented membership growth and engagement strategies, connecting students to research opportunities, mentors, and publication pipelines."
       }
     ],
     "icon": {
@@ -164,10 +140,10 @@
     "ongoing": true,
     "details": [
       {
-        "point": "Competed in 25+ National Speech and Debate Association tournaments across multiple speech and debate events."
+        "point": "Competed in 25+ National Speech and Debate Association tournaments, earning recognition across multiple competitive events."
       },
       {
-        "point": "Developed advanced public speaking, critical thinking, and persuasive communication skills."
+        "point": "Advanced team success by mentoring novice speakers and refining argumentation, persuasive communication, and analytical reasoning skills.Advanced team success by mentoring novice speakers and refining argumentation, persuasive communication, and analytical reasoning skills."
       }
     ],
     "icon": {

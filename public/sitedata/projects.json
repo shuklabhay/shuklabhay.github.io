@@ -4,13 +4,13 @@
     "broadDescription": "A full-stack AI platform for audio translation and dubbing",
     "details": [
       {
-        "point": "Developed a full-stack AI translator/dubber preserving rhythm, emotion, and artistic intent across languages."
+        "point": "Full stack LLM-enhanced research project for accessible audio translation with a focus on preserving rhythm, emotion, and artistic intent."
       },
       {
-        "point": "Created efficient GPU-accelerated DSP pipeline optimised for 4 GB VRAM consumer GPUs."
+        "point": "Content translated by Voquel has a total audience of 550k+ people over 70 different videos."
       },
       {
-        "point": "Received Honorable Mention at the 2025 Synopsys Science Fair (top 10% out of ~1000 competitors); translated content has been watched by 250k+ viewers on YouTube."
+        "point": "Received Honorable Mention at the 2025 Synopsys Science Fair (top 10% out of ~1000 competitors); recognized by the City of San Jose for language preservation efforts."
       }
     ],
     "images": [
@@ -33,38 +33,14 @@
     "hideOnResume": false
   },
   {
-    "title": "Tessera",
-    "broadDescription": "A Lightweight LLM-driven auditory rehabilitation agent",
-    "details": [
-      {
-        "point": "Developed an end-to-end conversational voice agent for auditory rehabilitation through adaptive listening exercises."
-      },
-      {
-        "point": "Engineered context-aware LLM-managed session state, enabling personalised progression in a lightweight (30 MB) app ready for clinical use."
-      }
-    ],
-    "images": [],
-    "link": [
-      {
-        "url": "https://shuklabhay.github.io/tessera/",
-        "description": "Landing Page"
-      }
-    ],
-    "hideOnSite": false,
-    "hideOnResume": false
-  },
-  {
     "title": "PercGAN",
     "broadDescription": "A lightweight machine learning approach for high-fidelity stereo audio sample generation",
     "details": [
       {
-        "point": "Developed a generative adversarial network addressing critical research gaps in lightweight high-quality stereo audio synthesis."
+        "point": "Developed a lightweight generative network for high-fidelity stereo percussion generation presenting unique audio representation and enhanced StyleGAN architecture."
       },
       {
-        "point": "Implemented image-like audio representations and efficient model training techniques."
-      },
-      {
-        "point": "Achieved an 85% quality improvement and a 25× training-time reduction compared with industry benchmarks."
+        "point": "Achieved an 85% quality improvement and 25× training-time reduction compared to WaveGAN, MelGAN, etc.."
       }
     ],
     "images": [
@@ -86,15 +62,37 @@
     "hideOnSite": false,
     "hideOnResume": false
   },
+
+  {
+    "title": "Tessera",
+    "broadDescription": "A Lightweight LLM-driven auditory rehabilitation agent",
+    "details": [
+      {
+        "point": "Developed an end-to-end conversational voice agent delivering adaptive listening exercises for auditory rehabilitation."
+      },
+      {
+        "point": "Engineered context-aware LLM-managed session state, enabling personalized progression in a 30 MB application optimized for clinical deployment."
+      }
+    ],
+    "images": [],
+    "link": [
+      {
+        "url": "https://shuklabhay.github.io/tessera/",
+        "description": "Landing Page"
+      }
+    ],
+    "hideOnSite": false,
+    "hideOnResume": false
+  },
   {
     "title": "SporeStrike",
     "broadDescription": "An effective fungicide disposal system",
     "details": [
       {
-        "point": "Designed aerial fungal infection treatment system, created prototype 3D printed components."
+        "point": "Created aerial fungal infection treatment system with 3D-printed prototype components for targeted agricultural application."
       },
       {
-        "point": "Presented the project to a civil and aerospace engineering panel; won first place out of 260 competitors at the 2024 FlexFactor Entrepreneurship Championships."
+        "point": "Won first place out of 260 teams at the 2024 FlexFactor Entrepreneurship Championships, presenting to civil and aerospace engineering panels."
       }
     ],
     "images": [
@@ -121,16 +119,10 @@
     "broadDescription": "FRC604's novel scouting application",
     "details": [
       {
-        "point": "Designed and implemented a scalable data collection and visualization platform for FRC competition analysis."
+        "point": "Built data collection and visualization platform enabling real-time match analytics for 200+ users during FRC competitions."
       },
       {
-        "point": "Developed intuitive interfaces driven by user feedback, enabling team members to easily capture comprehensive match data in real-time."
-      },
-      {
-        "point": "Trained and mentored 10+ team members in application development and user interface design."
-      },
-      {
-        "point": "Implemented advanced analytics features enabling data-driven strategic decisions and alliance selections."
+        "point": "Implemented advanced analytics tools for alliance selection strategy, and trained 10+ developers in application and interface design."
       }
     ],
     "images": [
@@ -205,13 +197,10 @@
     "broadDescription": "A flexible essay writing scheduler webapp",
     "details": [
       {
-        "point": "Created algorithm-driven web application to optimize college application essay writing schedules based on deadlines and user capabilities."
+        "point": "Created algorithm-driven scheduling app to optimize college essay writing timelines based on user capability and deadlines."
       },
       {
-        "point": "Implemented stress-reduction features to balance workload and improve student productivity."
-      },
-      {
-        "point": "Application won third place in OneHacks III International Hackathon out of 120 competing teams and currently serves 200+ users."
+        "point": "Won 3rd place at OneHacks III International Hackathon out of 120 teams, serving 200+ users with workload-balancing features."
       }
     ],
     "images": [
