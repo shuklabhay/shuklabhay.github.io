@@ -45,7 +45,7 @@ const ActivityDescription = ({
 };
 
 const ProjectDescription = ({ projectInfo }: { projectInfo: ProjectItem }) => {
-  const { title, broadDescription, details, images, link } = projectInfo;
+  const { title, broadDescription, details, link } = projectInfo;
   const Header = () => {
     return (
       <Text fz={16} lh={1.4} mb={-4}>
