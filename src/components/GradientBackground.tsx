@@ -36,7 +36,7 @@ export function GradientBackground() {
           position: "absolute",
           inset: 0,
           background:
-            "linear-gradient(-54deg, #06300d -10%, #9A37FD 55%, #D60DC4 65%, #E7F26D 100%)",
+            "linear-gradient(-54deg, #06300d -50%, #9A37FD 55%, #D60DC4 75%, #E7F26D 100%)",
           filter: "blur(120px)",
           transform: "translateZ(0)",
           zIndex: -3,
