@@ -116,7 +116,7 @@ export type AppContextType = {
   setScrollInformation: React.Dispatch<React.SetStateAction<ScrollInfo>>;
   scrollProgress: number;
   setScrollProgress: React.Dispatch<React.SetStateAction<number>>;
-  siteData: SiteData | null;
+  siteData: SiteData;
 };
 
 export type NavItem = {
