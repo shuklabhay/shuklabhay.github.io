@@ -1,5 +1,12 @@
-import React, { createContext, useContext, useMemo, useState } from "react";
-import { AppContextType, ScrollInfo } from "./types";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import { AppContextType, ScrollInfo, SiteData } from "./types";
+import { getJSONDataForSite } from "./data";
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
@@ -27,6 +34,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     isAboutMeFocused: false,
   });
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [siteData, setSiteData] = useState<SiteData | null>(null);
+
+  useEffect(() => {
+    const loadData = async () => {
+      const data = await getJSONDataForSite();
+      setSiteData(data);
+    };
+    loadData();
+  }, []);
 
   const contextValue = useMemo(
     () => ({
@@ -34,8 +50,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
       setScrollInformation: setScrollInfo,
       scrollProgress: scrollProgress,
       setScrollProgress: setScrollProgress,
+      siteData: siteData,
     }),
-    [scrollInfo, scrollProgress],
+    [scrollInfo, scrollProgress, siteData],
   );
 
   return (

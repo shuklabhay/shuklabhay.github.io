@@ -1,21 +1,12 @@
 import { Stack, Text } from "@mantine/core";
-import { memo, useEffect, useState } from "react";
-import { getJSONDataForSite } from "../utils/data";
+import { memo } from "react";
 import ActivityCard from "../components/ActivityCard";
 import AwardCard from "../components/AwardCard";
 import ProjectCard from "../components/ProjectCard";
-import { SiteData } from "../utils/types";
+import { useAppContext } from "../utils/appContext";
 
 function Experience() {
-  const [siteData, setSiteData] = useState<SiteData>();
-
-  useEffect(() => {
-    async function fetchData() {
-      const newSiteData = await getJSONDataForSite();
-      setSiteData(newSiteData);
-    }
-    fetchData();
-  }, []);
+  const { siteData } = useAppContext();
 
   if (siteData) {
     const awards = siteData.awards;

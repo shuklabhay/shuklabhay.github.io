@@ -1,20 +1,11 @@
 import { Card, Grid, Stack, Text } from "@mantine/core";
-import { memo, useEffect, useState } from "react";
-import { SiteData } from "../utils/types";
+import { memo } from "react";
 import BulletPointList from "../components/CardComponents/BulletPointList";
 import ContactCard from "../components/ContactCard";
-import { getJSONDataForSite } from "../utils/data";
+import { useAppContext } from "../utils/appContext";
 
 function AboutMe() {
-  const [siteData, setSiteData] = useState<SiteData>();
-
-  useEffect(() => {
-    async function fetchData() {
-      const newSiteData = await getJSONDataForSite();
-      setSiteData(newSiteData);
-    }
-    fetchData();
-  }, []);
+  const { siteData } = useAppContext();
 
   if (siteData) {
     const contact = siteData.contact;

@@ -1,20 +1,11 @@
 import { Grid, Stack, Text } from "@mantine/core";
-import { memo, useEffect, useState } from "react";
+import { memo } from "react";
 import GHCard from "../components/CardComponents/GHCard";
 import SkillCard from "../components/SkillCard";
-import { getJSONDataForSite } from "../utils/data";
-import { SiteData } from "../utils/types";
+import { useAppContext } from "../utils/appContext";
 
 function Skills() {
-  const [siteData, setSiteData] = useState<SiteData>();
-
-  useEffect(() => {
-    async function fetchData() {
-      const newSiteData = await getJSONDataForSite();
-      setSiteData(newSiteData);
-    }
-    fetchData();
-  }, []);
+  const { siteData } = useAppContext();
 
   if (siteData) {
     const ghData = siteData.ghData;

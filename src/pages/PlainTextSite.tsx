@@ -1,8 +1,5 @@
 import { Container, Stack, Text } from "@mantine/core";
-import { getJSONDataForSite } from "../utils/data";
-import { useEffect, useState } from "react";
 import {
-  SiteData,
   SkillData,
   ActivityItem,
   ProjectItem,
@@ -15,6 +12,7 @@ import BulletPointList from "../components/CardComponents/BulletPointList";
 import { useNavigate } from "react-router-dom";
 import { isSmallScreen } from "../utils/scroll";
 import SwitchViewButton from "../components/IconButtons/SwitchViewButton";
+import { useAppContext } from "../utils/appContext";
 
 const ActivityDescription = ({
   activityInfo,
@@ -107,20 +105,12 @@ const AwardDescription = ({ awardInfo }: { awardInfo: AwardItem }) => {
 };
 
 export default function PlainTextSite() {
-  const [siteData, setSiteData] = useState<SiteData>();
+  const { siteData } = useAppContext();
   const navigate = useNavigate();
 
   const openResumeInNewTab = () => {
     window.open("/resume.pdf", "_blank", "noopener,noreferrer");
   };
-
-  useEffect(() => {
-    async function fetchData() {
-      const newSiteData = await getJSONDataForSite();
-      setSiteData(newSiteData);
-    }
-    fetchData();
-  }, []);
 
   if (siteData) {
     const activities = siteData.activities;
