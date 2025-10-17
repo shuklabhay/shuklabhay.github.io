@@ -1,11 +1,11 @@
 import { Grid, Stack, Text } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import GHCard from "../components/CardComponents/GHCard";
 import SkillCard from "../components/SkillCard";
 import { getJSONDataForSite } from "../utils/data";
 import { SiteData } from "../utils/types";
 
-export default function Skills() {
+function Skills() {
   const [siteData, setSiteData] = useState<SiteData>();
 
   useEffect(() => {
@@ -55,3 +55,5 @@ export default function Skills() {
     );
   }
 }
+
+export default memo(Skills);

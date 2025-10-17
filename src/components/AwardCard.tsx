@@ -1,10 +1,10 @@
 import { Card, Text } from "@mantine/core";
-import React from "react";
+import React, { memo } from "react";
 import { AwardItem } from "../utils/types";
 import CardTitle from "./CardComponents/CardTitle";
 import { isSmallScreen } from "../utils/scroll";
 
-export default function AwardCard({ awardInfo }: { awardInfo: AwardItem }) {
+function AwardCard({ awardInfo }: { awardInfo: AwardItem }) {
   const { title, receivedYear } = awardInfo;
 
   return (
@@ -18,3 +18,5 @@ export default function AwardCard({ awardInfo }: { awardInfo: AwardItem }) {
     </Card>
   );
 }
+
+export default memo(AwardCard);

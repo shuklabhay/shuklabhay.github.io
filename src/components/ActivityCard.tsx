@@ -1,16 +1,12 @@
 import { Card, Grid, Image, Text } from "@mantine/core";
-import React from "react";
+import React, { memo } from "react";
 import { getTimeframeLabel } from "../utils/dates";
 import { isSmallScreen } from "../utils/scroll";
 import { ActivityItem } from "../utils/types";
 import BulletPointList from "./CardComponents/BulletPointList";
 import CardTitle from "./CardComponents/CardTitle";
 
-export default function ActivityCard({
-  activityInfo,
-}: {
-  activityInfo: ActivityItem;
-}) {
+function ActivityCard({ activityInfo }: { activityInfo: ActivityItem }) {
   const { org, position, startYear, endYear, ongoing, details, icon } =
     activityInfo;
 
@@ -107,3 +103,5 @@ export default function ActivityCard({
     </Card>
   );
 }
+
+export default memo(ActivityCard);

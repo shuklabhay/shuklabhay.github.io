@@ -1,6 +1,6 @@
 import { Carousel } from "@mantine/carousel";
 import { Button, Card, Grid, Image, Text } from "@mantine/core";
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { ProjectItem } from "../utils/types";
 import BulletPointList from "./CardComponents/BulletPointList";
 import ImageLightboxGallery from "./CardComponents/ImageLightboxGallery";
@@ -15,11 +15,7 @@ const formatBroadDescription = (description: string) => {
   return description;
 };
 
-export default function ProjectCard({
-  projectInfo,
-}: {
-  projectInfo: ProjectItem;
-}) {
+function ProjectCard({ projectInfo }: { projectInfo: ProjectItem }) {
   const { title, broadDescription, details, images, link } = projectInfo;
   const [opened, setOpened] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -122,3 +118,5 @@ export default function ProjectCard({
     </Card>
   );
 }
+
+export default memo(ProjectCard);

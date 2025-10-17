@@ -1,12 +1,12 @@
 import { Stack, Text } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { getJSONDataForSite } from "../utils/data";
 import ActivityCard from "../components/ActivityCard";
 import AwardCard from "../components/AwardCard";
 import ProjectCard from "../components/ProjectCard";
 import { SiteData } from "../utils/types";
 
-export default function Experience() {
+function Experience() {
   const [siteData, setSiteData] = useState<SiteData>();
 
   useEffect(() => {
@@ -84,3 +84,5 @@ export default function Experience() {
     );
   }
 }
+
+export default memo(Experience);

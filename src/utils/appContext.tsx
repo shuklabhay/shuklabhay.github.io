@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useMemo, useState } from "react";
 import { AppContextType, ScrollInfo } from "./types";
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -28,16 +28,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   });
   const [scrollProgress, setScrollProgress] = useState(0);
 
+  const contextValue = useMemo(
+    () => ({
+      scrollInformation: scrollInfo,
+      setScrollInformation: setScrollInfo,
+      scrollProgress: scrollProgress,
+      setScrollProgress: setScrollProgress,
+    }),
+    [scrollInfo, scrollProgress],
+  );
+
   return (
-    <AppContext.Provider
-      value={{
-        scrollInformation: scrollInfo,
-        setScrollInformation: setScrollInfo,
-        scrollProgress: scrollProgress,
-        setScrollProgress: setScrollProgress,
-      }}
-    >
-      {children}
-    </AppContext.Provider>
+    <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>
   );
 };

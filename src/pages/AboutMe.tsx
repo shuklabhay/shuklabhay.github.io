@@ -1,11 +1,11 @@
 import { Card, Grid, Stack, Text } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { SiteData } from "../utils/types";
 import BulletPointList from "../components/CardComponents/BulletPointList";
 import ContactCard from "../components/ContactCard";
 import { getJSONDataForSite } from "../utils/data";
 
-export default function AboutMe() {
+function AboutMe() {
   const [siteData, setSiteData] = useState<SiteData>();
 
   useEffect(() => {
@@ -90,3 +90,5 @@ export default function AboutMe() {
     );
   }
 }
+
+export default memo(AboutMe);
