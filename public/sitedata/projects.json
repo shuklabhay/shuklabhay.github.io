@@ -219,7 +219,7 @@
         "description": "Live Website"
       }
     ],
-    "hideOnSite": false,
+    "hideOnSite": true,
     "hideOnResume": true
   }
 ]
