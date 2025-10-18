@@ -4,7 +4,6 @@ import path from "path";
 
 const ajv = new Ajv({ allErrors: true });
 
-// Map of schema file to data file
 const pairs: [string, string][] = [
   ["activities", "activities"],
   ["awards", "awards"],
