@@ -87,7 +87,7 @@
       "src": "/static/icons/basa.jpeg",
       "link": "https://bayareastemacademy.net/"
     },
-    "hideOnSite": false,
+    "hideOnSite": true,
     "hideOnResume": true
   },
   {
@@ -108,7 +108,7 @@
       }
     ],
     "icon": null,
-    "hideOnSite": false,
+    "hideOnSite": true,
     "hideOnResume": true
   },
   {
@@ -129,7 +129,7 @@
       "src": "/static/icons/nexus.jpeg",
       "link": "https://nexusresearch.framer.website/"
     },
-    "hideOnSite": false,
+    "hideOnSite": true,
     "hideOnResume": true
   },
   {
@@ -150,7 +150,7 @@
       "src": "/static/icons/lsd.jpeg",
       "link": "https://www.lelandsd.org/"
     },
-    "hideOnSite": false,
+    "hideOnSite": true,
     "hideOnResume": true
   }
 ]
