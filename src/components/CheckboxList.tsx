@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 interface CheckboxItem {
   label: string;
@@ -10,17 +10,38 @@ interface CheckboxListProps {
   items: CheckboxItem[];
   mode?: "toggle" | "link";
   hoverFill?: boolean;
+  storageKey?: string;
 }
 
 export default function CheckboxList({
   items,
   mode = "toggle",
   hoverFill = true,
+  storageKey,
 }: CheckboxListProps) {
-  const [checked, setChecked] = useState<boolean[]>(() =>
-    items.map((i) => !!i.defaultChecked),
-  );
+  const initialChecked = useMemo(() => {
+    if (mode === "toggle" && storageKey && typeof window !== "undefined") {
+      const raw = window.localStorage.getItem(storageKey);
+      if (raw) {
+        const arr = JSON.parse(raw) as boolean[];
+        if (Array.isArray(arr)) return items.map((_, i) => !!arr[i]);
+      }
+    }
+    return items.map((i) => !!i.defaultChecked);
+  }, [items, mode, storageKey]);
+
+  const [checked, setChecked] = useState<boolean[]>(initialChecked);
   const [hovered, setHovered] = useState<number | null>(null);
+
+  useEffect(() => {
+    setChecked(initialChecked);
+  }, [initialChecked]);
+
+  useEffect(() => {
+    if (mode === "toggle" && storageKey && typeof window !== "undefined") {
+      window.localStorage.setItem(storageKey, JSON.stringify(checked));
+    }
+  }, [checked, mode, storageKey]);
 
   const onClick = (index: number) => {
     if (mode === "link") {

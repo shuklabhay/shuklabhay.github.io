@@ -8,6 +8,7 @@ export default function About() {
         title="I do cool things"
         subtitle={
           <CheckboxList
+            storageKey="about-tags"
             items={[
               { label: "ML", defaultChecked: true },
               { label: "Software" },

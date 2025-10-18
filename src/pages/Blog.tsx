@@ -8,6 +8,7 @@ export default function Blog() {
         title="I also write"
         subtitle={
           <CheckboxList
+            storageKey="blog-tags"
             items={[
               { label: "ML", defaultChecked: true },
               { label: "Life", defaultChecked: true },
