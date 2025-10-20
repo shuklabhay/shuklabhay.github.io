@@ -138,4 +138,7 @@ export type BlogTag = (typeof BLOG_TAGS)[number];
 export const BLOG_TAG_ITEMS: ReadonlyArray<{
   label: BlogTag;
   defaultChecked: boolean;
-}> = BLOG_TAGS.map((t) => ({ label: t, defaultChecked: true }));
+}> = BLOG_TAGS.map((t) => ({
+  label: t,
+  defaultChecked: t === "ML" || t === "Life",
+}));
