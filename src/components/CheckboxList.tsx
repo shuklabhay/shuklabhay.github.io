@@ -1,11 +1,5 @@
-import { useEffect, useState } from "react";
-import type { Dispatch, SetStateAction } from "react";
-
-interface CheckboxItem<T extends string = string> {
-  label: T;
-  defaultChecked?: boolean;
-  href?: string;
-}
+import { useEffect, useLayoutEffect, useState } from "react";
+import type { CheckboxItem } from "../utils/types";
 
 export default function CheckboxList<T extends string = string>({
   selectedTags,
@@ -15,8 +9,8 @@ export default function CheckboxList<T extends string = string>({
   mode = "toggle",
   hoverFill = true,
 }: {
-  selectedTags?: T[];
-  setSelectedTags?: Dispatch<SetStateAction<T[]>>;
+  selectedTags: T[];
+  setSelectedTags: (value: T[] | ((prev: T[]) => T[])) => void;
   items: ReadonlyArray<CheckboxItem<T>>;
   storageKey?: string;
   mode?: "toggle" | "link";
@@ -25,27 +19,23 @@ export default function CheckboxList<T extends string = string>({
   const [hovered, setHovered] = useState<number | null>(null);
 
   useEffect(() => {
-    if (mode !== "toggle") return;
-    if (!storageKey || typeof window === "undefined") return;
-    if (!selectedTags) return;
+    if (mode !== "toggle" || !storageKey) return;
     window.localStorage.setItem(storageKey, JSON.stringify(selectedTags));
   }, [selectedTags, mode, storageKey]);
 
-  useEffect(() => {
-    if (mode !== "toggle") return;
-    if (!storageKey || typeof window === "undefined") return;
-    if (!setSelectedTags) return;
+  useLayoutEffect(() => {
+    if (mode !== "toggle" || !storageKey) return;
     const raw = window.localStorage.getItem(storageKey);
+
     if (raw) {
       const arr = JSON.parse(raw);
       if (Array.isArray(arr)) {
-        const valid = arr.filter((v) => typeof v === "string") as T[];
-        if (valid.length > 0) {
+        if (arr.length > 0) {
           const isDifferent =
             !Array.isArray(selectedTags) ||
-            valid.length !== selectedTags.length ||
-            valid.some((v, i) => v !== selectedTags[i]);
-          if (isDifferent) setSelectedTags(valid);
+            arr.length !== selectedTags.length ||
+            arr.some((v, i) => v !== selectedTags[i]);
+          if (isDifferent) setSelectedTags(arr);
           return;
         }
       }
@@ -65,7 +55,7 @@ export default function CheckboxList<T extends string = string>({
       setSelectedTags((prev) =>
         prev.includes(label)
           ? (prev.filter((t) => t !== label) as T[])
-          : ([...prev, label] as T[]),
+          : ([...prev, label] as T[])
       );
     }
   };

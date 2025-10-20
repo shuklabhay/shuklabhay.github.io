@@ -126,19 +126,28 @@ export type NavItem = {
 };
 
 // Tags
+export type CheckboxItem<T extends string = string> = {
+  label: T;
+  defaultChecked?: boolean;
+  href?: string;
+};
+
+// About tags
 export const ABOUT_TAGS = ["ML", "Software", "MechE", "Growth"] as const;
 export type AboutTag = (typeof ABOUT_TAGS)[number];
-export const ABOUT_TAG_ITEMS: ReadonlyArray<{
-  label: AboutTag;
-  defaultChecked: boolean;
-}> = ABOUT_TAGS.map((t) => ({ label: t, defaultChecked: t === "ML" }));
+export type AboutTagItem = CheckboxItem<AboutTag>;
+export type AboutTagItems = ReadonlyArray<AboutTagItem>;
+export const ABOUT_TAG_ITEMS: AboutTagItems = ABOUT_TAGS.map((t) => ({
+  label: t,
+  defaultChecked: t === "ML",
+}));
 
+// Blog tags
 export const BLOG_TAGS = ["ML", "Life"] as const;
 export type BlogTag = (typeof BLOG_TAGS)[number];
-export const BLOG_TAG_ITEMS: ReadonlyArray<{
-  label: BlogTag;
-  defaultChecked: boolean;
-}> = BLOG_TAGS.map((t) => ({
+export type BlogTagItem = CheckboxItem<BlogTag>;
+export type BlogTagItems = ReadonlyArray<BlogTagItem>;
+export const BLOG_TAG_ITEMS: BlogTagItems = BLOG_TAGS.map((t) => ({
   label: t,
   defaultChecked: t === "ML" || t === "Life",
 }));
