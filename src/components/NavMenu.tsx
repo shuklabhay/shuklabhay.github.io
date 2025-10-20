@@ -1,5 +1,5 @@
 import { useLocation, Link } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 export default function NavMenu() {
   const location = useLocation();
@@ -17,21 +17,26 @@ export default function NavMenu() {
   };
   const activeItem = getActivePage();
 
-  useEffect(() => {
-    if (navRef.current) {
+  useLayoutEffect(() => {
+    if (!navRef.current) return;
+    const measure = () => {
       const activeIndex = menuItems.indexOf(activeItem);
-      const links = navRef.current.querySelectorAll("a");
-      if (links[activeIndex]) {
-        const activeLink = links[activeIndex] as HTMLElement;
-        setUnderlineStyle({
-          left: activeLink.offsetLeft,
-          width: activeLink.offsetWidth,
-        });
-        if (!hasAnimated) {
-          setTimeout(() => setHasAnimated(true), 50);
-        }
-      }
+      const links = navRef.current!.querySelectorAll("a");
+      const el = links[activeIndex] as HTMLElement | undefined;
+      if (!el) return;
+      setUnderlineStyle({ left: el.offsetLeft, width: el.offsetWidth });
+    };
+    measure();
+    if (!hasAnimated) setTimeout(() => setHasAnimated(true), 50);
+
+    const onResize = () => measure();
+    window.addEventListener("resize", onResize);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(measure).catch(() => {});
     }
+    return () => {
+      window.removeEventListener("resize", onResize);
+    };
   }, [activeItem]);
 
   return (
