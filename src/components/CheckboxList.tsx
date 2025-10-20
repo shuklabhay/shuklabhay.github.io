@@ -1,61 +1,82 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
-interface CheckboxItem {
-  label: string;
+interface CheckboxItem<T extends string = string> {
+  label: T;
   defaultChecked?: boolean;
   href?: string;
 }
 
-interface CheckboxListProps {
-  items: CheckboxItem[];
-  mode?: "toggle" | "link";
-  hoverFill?: boolean;
-  storageKey?: string;
-}
-
-export default function CheckboxList({
+export default function CheckboxList<T extends string = string>({
+  selectedTags,
+  setSelectedTags,
   items,
+  storageKey,
   mode = "toggle",
   hoverFill = true,
-  storageKey,
-}: CheckboxListProps) {
-  const initialChecked = useMemo(() => {
-    if (mode === "toggle" && storageKey && typeof window !== "undefined") {
-      const raw = window.localStorage.getItem(storageKey);
-      if (raw) {
-        const arr = JSON.parse(raw) as boolean[];
-        if (Array.isArray(arr)) return items.map((_, i) => !!arr[i]);
-      }
-    }
-    return items.map((i) => !!i.defaultChecked);
-  }, [items, mode, storageKey]);
-
-  const [checked, setChecked] = useState<boolean[]>(initialChecked);
+}: {
+  selectedTags?: T[];
+  setSelectedTags?: Dispatch<SetStateAction<T[]>>;
+  items: ReadonlyArray<CheckboxItem<T>>;
+  storageKey?: string;
+  mode?: "toggle" | "link";
+  hoverFill?: boolean;
+}) {
   const [hovered, setHovered] = useState<number | null>(null);
 
   useEffect(() => {
-    setChecked(initialChecked);
-  }, [initialChecked]);
+    if (mode !== "toggle") return;
+    if (!storageKey || typeof window === "undefined") return;
+    if (!selectedTags) return;
+    window.localStorage.setItem(storageKey, JSON.stringify(selectedTags));
+  }, [selectedTags, mode, storageKey]);
 
   useEffect(() => {
-    if (mode === "toggle" && storageKey && typeof window !== "undefined") {
-      window.localStorage.setItem(storageKey, JSON.stringify(checked));
+    if (mode !== "toggle") return;
+    if (!storageKey || typeof window === "undefined") return;
+    if (!setSelectedTags) return;
+    const raw = window.localStorage.getItem(storageKey);
+    if (raw) {
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr)) {
+        const valid = arr.filter((v) => typeof v === "string") as T[];
+        if (valid.length > 0) {
+          const isDifferent =
+            !Array.isArray(selectedTags) ||
+            valid.length !== selectedTags.length ||
+            valid.some((v, i) => v !== selectedTags[i]);
+          if (isDifferent) setSelectedTags(valid);
+          return;
+        }
+      }
     }
-  }, [checked, mode, storageKey]);
+    if (Array.isArray(selectedTags) && selectedTags.length > 0) return;
+    const defaults = items.filter((i) => i.defaultChecked).map((i) => i.label);
+    if (defaults.length > 0) setSelectedTags(defaults);
+  }, [items, mode, selectedTags, setSelectedTags, storageKey]);
 
   const onClick = (index: number) => {
     if (mode === "link") {
       const href = items[index]?.href;
       if (href) window.open(href, "_blank", "noopener,noreferrer");
-    } else {
-      setChecked((prev) => prev.map((v, i) => (i === index ? !v : v)));
+    } else if (setSelectedTags) {
+      const label = items[index]?.label;
+      if (!label) return;
+      setSelectedTags((prev) =>
+        prev.includes(label)
+          ? (prev.filter((t) => t !== label) as T[])
+          : ([...prev, label] as T[]),
+      );
     }
   };
 
   return (
     <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.5rem" }}>
       {items.map((item, idx) => {
-        const isOn = mode === "toggle" ? checked[idx] : false;
+        const isOn =
+          mode === "toggle" && selectedTags
+            ? selectedTags.includes(item.label)
+            : false;
         const isHover = hoverFill && hovered === idx;
         const bg = isOn || isHover ? "white" : "transparent";
         const fg = isOn || isHover ? "#9ba7d4" : "white";

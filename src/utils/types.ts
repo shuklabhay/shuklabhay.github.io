@@ -124,3 +124,18 @@ export type NavItem = {
   position: Extract<keyof ScrollInfo, string>;
   focused: Extract<keyof ScrollInfo, string>;
 };
+
+// Tags
+export const ABOUT_TAGS = ["ML", "Software", "MechE", "Growth"] as const;
+export type AboutTag = (typeof ABOUT_TAGS)[number];
+export const ABOUT_TAG_ITEMS: ReadonlyArray<{
+  label: AboutTag;
+  defaultChecked: boolean;
+}> = ABOUT_TAGS.map((t) => ({ label: t, defaultChecked: t === "ML" }));
+
+export const BLOG_TAGS = ["ML", "Life"] as const;
+export type BlogTag = (typeof BLOG_TAGS)[number];
+export const BLOG_TAG_ITEMS: ReadonlyArray<{
+  label: BlogTag;
+  defaultChecked: boolean;
+}> = BLOG_TAGS.map((t) => ({ label: t, defaultChecked: true }));
