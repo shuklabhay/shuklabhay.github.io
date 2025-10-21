@@ -31,3 +31,18 @@ export const BLOG_TAG_ITEMS: BlogTagItems = BLOG_TAGS.map((t) => ({
   label: t,
   defaultChecked: t === "ML" || t === "Life",
 }));
+
+// Experience types
+export type ExperienceBullet = { point: string; tag?: string[] };
+export type ExperienceIcon = { src: string; link: string } | null;
+export type ExperienceRecord = {
+  org: string;
+  position: string;
+  startYear: string;
+  endYear: string | "Present";
+  ongoing: boolean;
+  details: ExperienceBullet[];
+  icon: ExperienceIcon;
+  hideOnSite: boolean;
+  hideOnResume: boolean;
+};

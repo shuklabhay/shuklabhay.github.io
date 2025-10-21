@@ -11,7 +11,7 @@ export default function About() {
   );
 
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div>
       <PageTitle
         title="I do cool things"
         subtitle={

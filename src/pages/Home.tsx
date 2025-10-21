@@ -18,16 +18,12 @@ export default function Home() {
   }, []);
 
   const rawEmail = contactData.find((c) => c.title === "Email")?.link;
-  const email = rawEmail
-    ? rawEmail.startsWith("mailto:")
-      ? rawEmail
-      : `mailto:${rawEmail}`
-    : undefined;
+  const email = `mailto:${rawEmail}`;
   const github = contactData.find((c) => c.title === "GitHub")?.link;
   const linkedin = contactData.find((c) => c.title === "Linkedin")?.link;
 
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div>
       <PageTitle
         title="Hi, I'm Abhay"
         subtitle={

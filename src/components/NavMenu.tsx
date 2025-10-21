@@ -43,11 +43,12 @@ export default function NavMenu() {
     <nav
       ref={navRef}
       style={{
-        position: "absolute",
-        top: "1rem",
-        right: "1.5rem",
+        position: "relative",
         display: "flex",
         gap: "1.5rem",
+        justifyContent: "flex-end",
+        paddingTop: "1rem",
+        paddingBottom: "4px",
       }}
     >
       {menuItems.map((item) => (
@@ -67,7 +68,7 @@ export default function NavMenu() {
       <div
         style={{
           position: "absolute",
-          bottom: "-4px",
+          bottom: "0",
           left: `${underlineStyle.left}px`,
           width: `${underlineStyle.width}px`,
           height: "2px",

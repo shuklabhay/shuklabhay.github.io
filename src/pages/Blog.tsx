@@ -10,7 +10,7 @@ export default function Blog() {
   );
 
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div>
       <PageTitle
         title="I also write"
         subtitle={

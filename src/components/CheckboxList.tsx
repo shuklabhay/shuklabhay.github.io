@@ -2,19 +2,19 @@ import { useEffect, useState } from "react";
 import type { CheckboxItem } from "../utils/types";
 
 export default function CheckboxList<T extends string = string>({
-  selectedTags,
-  setSelectedTags,
   items,
   storageKey,
   mode = "toggle",
   hoverFill = true,
+  selectedTags,
+  setSelectedTags,
 }: {
-  selectedTags: T[];
-  setSelectedTags: (value: T[] | ((prev: T[]) => T[])) => void;
   items: ReadonlyArray<CheckboxItem<T>>;
   storageKey?: string;
   mode?: "toggle" | "link";
   hoverFill?: boolean;
+  selectedTags?: T[];
+  setSelectedTags?: (value: T[] | ((prev: T[]) => T[])) => void;
 }) {
   const [hovered, setHovered] = useState<number | null>(null);
 
@@ -33,7 +33,7 @@ export default function CheckboxList<T extends string = string>({
       setSelectedTags((prev) =>
         prev.includes(label)
           ? (prev.filter((t) => t !== label) as T[])
-          : ([...prev, label] as T[]),
+          : ([...prev, label] as T[])
       );
     }
   };

@@ -45,12 +45,14 @@ export default function App() {
       }}
     >
       <RouteBackground />
-      <NavMenu />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/blog" element={<Blog />} />
-      </Routes>
+      <div className="container">
+        <NavMenu />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/blog" element={<Blog />} />
+        </Routes>
+      </div>
     </BrowserRouter>
   );
 }

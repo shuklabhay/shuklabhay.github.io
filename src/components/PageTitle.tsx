@@ -5,14 +5,7 @@ interface PageTitleProps {
 
 export default function PageTitle({ title, subtitle }: PageTitleProps) {
   return (
-    <div
-      style={{
-        position: "absolute",
-        left: 0,
-        top: "4rem",
-        padding: "1.5rem",
-      }}
-    >
+    <div style={{ marginTop: "4rem", paddingBottom: "2rem" }}>
       <h1
         style={{
           fontSize: "3rem",
@@ -23,7 +16,6 @@ export default function PageTitle({ title, subtitle }: PageTitleProps) {
       >
         {title}
       </h1>
-
       {subtitle}
     </div>
   );
