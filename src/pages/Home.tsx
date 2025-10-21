@@ -17,7 +17,12 @@ export default function Home() {
       .catch((err) => console.error("Failed to load contact data:", err));
   }, []);
 
-  const email = contactData.find((c) => c.title === "Email")?.link;
+  const rawEmail = contactData.find((c) => c.title === "Email")?.link;
+  const email = rawEmail
+    ? rawEmail.startsWith("mailto:")
+      ? rawEmail
+      : `mailto:${rawEmail}`
+    : undefined;
   const github = contactData.find((c) => c.title === "GitHub")?.link;
   const linkedin = contactData.find((c) => c.title === "Linkedin")?.link;
 

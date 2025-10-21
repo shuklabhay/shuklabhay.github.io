@@ -3,6 +3,7 @@ import CheckboxList from "../components/CheckboxList";
 import { useState } from "react";
 import { loadTagsFromStorage } from "../utils/tags";
 import { ABOUT_TAG_ITEMS, AboutTag } from "../utils/types";
+import ExperienceList from "../components/ExperienceList";
 
 export default function About() {
   const [selectedTags, setSelectedTags] = useState<AboutTag[]>(() =>
@@ -14,12 +15,17 @@ export default function About() {
       <PageTitle
         title="I do cool things"
         subtitle={
-          <CheckboxList<AboutTag>
-            selectedTags={selectedTags}
-            setSelectedTags={setSelectedTags}
-            items={ABOUT_TAG_ITEMS}
-            storageKey="about-tags"
-          />
+          <div>
+            <CheckboxList<AboutTag>
+              selectedTags={selectedTags}
+              setSelectedTags={setSelectedTags}
+              items={ABOUT_TAG_ITEMS}
+              storageKey="about-tags"
+            />
+            <div style={{ marginTop: "1.25rem" }}>
+              <ExperienceList selectedTags={selectedTags} />
+            </div>
+          </div>
         }
       />
     </div>
