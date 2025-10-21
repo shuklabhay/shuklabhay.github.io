@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import type { CheckboxItem } from "../utils/types";
 
 export default function CheckboxList<T extends string = string>({
@@ -23,28 +23,6 @@ export default function CheckboxList<T extends string = string>({
     window.localStorage.setItem(storageKey, JSON.stringify(selectedTags));
   }, [selectedTags, mode, storageKey]);
 
-  useLayoutEffect(() => {
-    if (mode !== "toggle" || !storageKey) return;
-    const raw = window.localStorage.getItem(storageKey);
-
-    if (raw) {
-      const arr = JSON.parse(raw);
-      if (Array.isArray(arr)) {
-        if (arr.length > 0) {
-          const isDifferent =
-            !Array.isArray(selectedTags) ||
-            arr.length !== selectedTags.length ||
-            arr.some((v, i) => v !== selectedTags[i]);
-          if (isDifferent) setSelectedTags(arr);
-          return;
-        }
-      }
-    }
-    if (Array.isArray(selectedTags) && selectedTags.length > 0) return;
-    const defaults = items.filter((i) => i.defaultChecked).map((i) => i.label);
-    if (defaults.length > 0) setSelectedTags(defaults);
-  }, [items, mode, selectedTags, setSelectedTags, storageKey]);
-
   const onClick = (index: number) => {
     if (mode === "link") {
       const href = items[index]?.href;
@@ -55,7 +33,7 @@ export default function CheckboxList<T extends string = string>({
       setSelectedTags((prev) =>
         prev.includes(label)
           ? (prev.filter((t) => t !== label) as T[])
-          : ([...prev, label] as T[])
+          : ([...prev, label] as T[]),
       );
     }
   };
