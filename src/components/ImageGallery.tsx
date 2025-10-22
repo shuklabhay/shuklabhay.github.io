@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import Lightbox from "react-spring-lightbox";
 import type { RichImage } from "../utils/types";
 
@@ -40,6 +41,25 @@ function RightArrowIcon({ large = true }: { large: boolean }) {
       <path d="M5 12l14 0" />
       <path d="M13 18l6 -6" />
       <path d="M13 6l6 6" />
+    </svg>
+  );
+}
+
+function CloseIcon({ size = 18 }: { size?: number }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M18 6L6 18" />
+      <path d="M6 6l12 12" />
     </svg>
   );
 }
@@ -130,67 +150,59 @@ export default function ImageGallery({
       renderNextButton={() => (
         <LRArrowButton direction="right" onClick={() => navigateSlides(1)} />
       )}
-      renderImageOverlay={() => (
-        <>
-          <div
-            style={{
-              position: "fixed",
-              bottom: "5vh",
-              left: "50%",
-              transform: "translateX(-50%)",
-              background: "rgba(0, 0, 0, 0.6)",
-              color: "white",
-              padding: "8px 10px",
-              borderRadius: 8,
-              width: "min(720px, 80vw)",
-              textAlign: "center",
-              pointerEvents: "none",
-              fontSize: "1rem",
-              lineHeight: 1.25,
-              zIndex: 1000,
-            }}
-          >
-            {images[currentSlide] ? images[currentSlide].alt : ""}
-          </div>
+      renderImageOverlay={() =>
+        typeof document !== "undefined"
+          ? createPortal(
+              <>
+                <div
+                  style={{
+                    position: "fixed",
+                    bottom: "5vh",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    background: "rgba(0, 0, 0, 0.6)",
+                    color: "white",
+                    padding: "8px 10px",
+                    borderRadius: 8,
+                    width: "min(720px, 80vw)",
+                    textAlign: "center",
+                    pointerEvents: "none",
+                    fontSize: "1rem",
+                    lineHeight: 1.25,
+                    zIndex: 1000,
+                  }}
+                >
+                  {images[currentSlide] ? images[currentSlide].alt : ""}
+                </div>
 
-          <button
-            type="button"
-            aria-label="Close"
-            onClick={handleClose}
-            style={{
-              position: "fixed",
-              top: 16,
-              right: 16,
-              width: 28,
-              height: 28,
-              borderRadius: 6,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "rgba(255,255,255,0.12)",
-              color: "white",
-              border: 0,
-              cursor: "pointer",
-              zIndex: 1100,
-            }}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M18 6L6 18" />
-              <path d="M6 6l12 12" />
-            </svg>
-          </button>
-        </>
-      )}
+                <button
+                  type="button"
+                  aria-label="Close"
+                  onClick={handleClose}
+                  style={{
+                    position: "fixed",
+                    top: 16,
+                    right: 16,
+                    width: 28,
+                    height: 28,
+                    borderRadius: 6,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: "rgba(255,255,255,0.12)",
+                    color: "white",
+                    border: 0,
+                    cursor: "pointer",
+                    zIndex: 1100,
+                  }}
+                >
+                  <CloseIcon size={18} />
+                </button>
+              </>,
+              document.body,
+            )
+          : null
+      }
       images={images}
       currentIndex={currentSlide}
       onClose={handleClose}
