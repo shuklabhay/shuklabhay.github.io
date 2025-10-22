@@ -4,7 +4,7 @@ import ImageGallery, { LRArrowButton } from "./ImageGallery";
 import type { RichImage, ProjectRecord } from "../utils/types";
 import { BulletPoint, ABOUT_ALLOWED_TAGS } from "../utils/types";
 
-export default function ProjectsList({
+export default function ProjectList({
   selectedTags = [],
 }: {
   selectedTags: string[];

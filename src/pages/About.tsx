@@ -4,11 +4,11 @@ import { useState } from "react";
 import { loadTagsFromStorage } from "../utils/tags";
 import { ABOUT_TAG_ITEMS, Tag } from "../utils/types";
 import ExperienceList from "../components/ExperienceList";
-import ProjectsList from "../components/ProjectsList";
+import ProjectList from "../components/ProjectList";
 
 export default function About() {
   const [selectedTags, setSelectedTags] = useState<Tag[]>(() =>
-    loadTagsFromStorage<Tag>("about-tags", ABOUT_TAG_ITEMS),
+    loadTagsFromStorage<Tag>("about-tags", ABOUT_TAG_ITEMS)
   );
 
   return (
@@ -28,7 +28,7 @@ export default function About() {
               <div style={{ marginTop: "1.25rem" }}>
                 <ExperienceList selectedTags={selectedTags} />
                 <div style={{ marginTop: "2rem" }}>
-                  <ProjectsList selectedTags={selectedTags} />
+                  <ProjectList selectedTags={selectedTags} />
                 </div>
               </div>
             ) : null}
