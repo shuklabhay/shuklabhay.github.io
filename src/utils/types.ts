@@ -1,126 +1,73 @@
-import { RefObject } from "react";
-
-// GitHub API
+// GitHub stats
 export type GitHubRestReturn = any;
 export type GitHubRepo = any;
-
-// Compiled data types
-
-export interface SiteData {
-  activities: ActivityItem[];
-  awards: AwardItem[];
-  contact: ContactItem[];
-  education: EducationItem[];
-  ghData: GHData;
-  projects: ProjectItem[];
-  skills: SkillData;
-}
-export interface ResumeData {
-  activities: ActivityItem[];
-  awards: AwardItem[];
-  contact: ContactItem[];
-  education: EducationItem[];
-  projects: ProjectItem[];
-  skills: SkillData;
-}
-
 export interface GHData {
   lastUpdated: string;
   contributions: number;
   linesModified: number;
 }
 
-// Individual data types
-export type RichImage = { src: string; alt: string };
-export type RichIcon = { src: string; link: string };
-export type RichLink = [{ url: string; description: string }];
+// Tags
+export type Tag = string;
+export type CheckboxItem<T extends string = string> = {
+  label: T;
+  defaultChecked?: boolean;
+  href?: string;
+};
 
-export type BulletPoint = { point: string };
-export type Skill = string;
+export const ABOUT_TAGS: readonly Tag[] = ["ML", "MechE", "Growth"];
+export type AboutTagItems = ReadonlyArray<CheckboxItem<Tag>>;
+export const ABOUT_TAG_ITEMS: AboutTagItems = ABOUT_TAGS.map((t) => ({
+  label: t,
+  defaultChecked: t === "ML",
+}));
+export const ABOUT_ALLOWED_TAGS: readonly Tag[] = [
+  "always",
+  ...ABOUT_TAGS.map((t) => t.toLowerCase()),
+];
 
-export interface ActivityItem {
+export type AwardRecord = {
+  title: string;
+  issuer: string;
+  receivedYear: string;
+  hide: boolean;
+  tags: string[];
+};
+
+export const AWARD_ALLOWED_TAGS: readonly Tag[] = ["always", "ml", "meche"];
+export const BLOG_TAGS: readonly Tag[] = ["ML", "Life"];
+export type BlogTagItems = ReadonlyArray<CheckboxItem<Tag>>;
+export const BLOG_TAG_ITEMS: BlogTagItems = BLOG_TAGS.map((t) => ({
+  label: t,
+  defaultChecked: t === "ML" || t === "Life",
+}));
+
+// Experience types
+export type BulletPoint = { point: string; tags: string[] };
+export type ExperienceIcon = { src: string; link: string } | null;
+export type ExperienceRecord = {
   org: string;
   position: string;
   startYear: string;
   endYear: string | "Present";
   ongoing: boolean;
   details: BulletPoint[];
-  icon: RichIcon | null;
-  hideOnSite: boolean;
-  hideOnResume: boolean;
-}
-
-export interface AwardItem {
-  title: string;
-  receivedYear: string;
-  hideOnSite: boolean;
-  hideOnResume: boolean;
-}
-
-export interface ContactItem {
-  title: string;
-  link: string;
-}
-
-export interface EducationItem {
-  school: string;
-  degree: string;
-  gpa: string;
-  location: string;
-}
-
-export interface ProjectItem {
-  title: string;
-  broadDescription: string;
-  details: BulletPoint[];
-  experience: string;
-  images: RichImage[];
-  link: RichLink;
-  hideOnSite: boolean;
-  hideOnResume: boolean;
-}
-
-export interface SkillData {
-  technical: Skill[];
-  other: Skill[];
-}
-
-export const stringToDetails = (info: string) => {
-  return [{ point: info }];
+  icon: ExperienceIcon;
+  hide: boolean;
 };
 
-// Counting Animation
-export type counterAnimationInfo = { label: string; finalValue: number };
-export interface CountHookResult {
-  ref: RefObject<HTMLSpanElement>;
-  startAnimation: () => void;
-}
-export interface CountingAnimationLabelProps {
-  counterAnimationInfo: counterAnimationInfo[];
-}
+// Media
+export type RichImage = { src: string; alt: string };
 
-// Application handliing
-export type ScrollInfo = {
-  landingPosition: number;
-  experiencePosition: number;
-  skillsPosition: number;
-  aboutMePosition: number;
-  isLandingFocused: boolean;
-  isExperienceFocused: boolean;
-  isSkillsFocused: boolean;
-  isAboutMeFocused: boolean;
-};
-
-export type AppContextType = {
-  scrollInformation: ScrollInfo;
-  setScrollInformation: React.Dispatch<React.SetStateAction<ScrollInfo>>;
-  scrollProgress: number;
-  setScrollProgress: React.Dispatch<React.SetStateAction<number>>;
-  siteData: SiteData;
-};
-
-export type NavItem = {
-  label: string;
-  position: Extract<keyof ScrollInfo, string>;
-  focused: Extract<keyof ScrollInfo, string>;
+export type ProjectLink = { url: string; description: string };
+export type ProjectRecord = {
+  title: string;
+  details: { point: string; tags?: string[] }[];
+  images?: RichImage[];
+  link?: ProjectLink[];
+  startYear: string;
+  endYear: string | "Present";
+  hide: boolean;
+  tags: string[];
+  broadDescription?: string;
 };

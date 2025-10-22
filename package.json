@@ -16,6 +16,7 @@
     "download-resume": "curl -o ~/Downloads/resume.pdf https://shuklabhay.github.io/resume.pdf"
   },
   "dependencies": {
+    "@fontsource/inter": "^5.2.8",
     "@mantine/carousel": "^7.12.2",
     "@mantine/core": "^7.12.2",
     "@mantine/hooks": "^7.12.2",

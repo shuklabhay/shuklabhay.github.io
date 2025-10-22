@@ -1,0 +1,34 @@
+[
+  {
+    "org": "FRC Team 604: Quixilver Robotics",
+    "position": "Controls/Software Lead, Software Maintainer",
+    "startYear": "June 2022",
+    "endYear": "Present",
+    "ongoing": true,
+    "details": [
+      {
+        "point": "Implemented real-time localization and piece detection computer vision systems for three large-scale, 125lb competition robots.",
+        "tags": ["ml, meche"]
+      },
+      {
+        "point": "Designed and led the fabrication of numerous robot components, applying advanced techniques in both additive manufacturing (TPU, PETG, PLA 3D printing) and sheet metal construction.",
+        "tags": ["meche"]
+      },
+      {
+        "point": "Brought the team to top 0.1% international ranking (5/3,500+ teams) in 2024.",
+        "tags": ["always"]
+      },
+      {
+        "point": "Developed data collection infrastructure powering 200+ users to analyze 1000+ competition matches.",
+        "tags": ["software"]
+      }
+    ],
+    "icon": {
+      "src": "/static/icons/frc604.jpeg",
+      "link": "https://604robotics.com/"
+    },
+    "hideOnSite": false,
+    "hideOnResume": false,
+    "hide": false
+  }
+]

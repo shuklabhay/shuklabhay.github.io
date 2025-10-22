@@ -1,74 +1,79 @@
 [
   {
-    "title": "City of San Jose Recognition for AI-driven Language Preservation Efforts",
-    "receivedYear": "2025",
-    "hideOnSite": false,
-    "hideOnResume": true
+    "title": "Recognition for AI-driven Language Preservation Efforts",
+    "issuer": "City of San Jose",
+    "receivedYear": "Month 2025",
+    "hide": false,
+    "tags": ["ml"]
   },
   {
-    "title": "2025 Synopsys Science & Engineering Fair Honorable Mention (Top 10%, 1000+ Participants)",
-    "receivedYear": "2025",
-    "hideOnSite": false,
-    "hideOnResume": false
+    "title": "Honorable Mention (Top 10%, 1000+ Participants)",
+    "issuer": "2025 Santa Clara Synopsys Science & Engineering Fair",
+    "receivedYear": "Month 2025",
+    "hide": false,
+    "tags": ["ml"]
   },
   {
-    "title": "University of Kentucky Tournament of Champions Digital Series: Extemporaneous Speaking Semifinalist Award",
-    "receivedYear": "2024",
-    "hideOnSite": true,
-    "hideOnResume": true
+    "title": "City of San Jose Recognition for STEM Outreach and Team Performance",
+    "issuer": "City of San Jose",
+    "receivedYear": "Month 2024",
+    "hide": true,
+    "tags": ["meche"]
   },
   {
-    "title": "FRC604: City of San Jose Recognition for STEM Outreach and Team Performance",
-    "receivedYear": "2024",
-    "hideOnSite": true,
-    "hideOnResume": true
+    "title": "CADathon/Robot Design Challenge Finalist (Top 1%, 1000+ participants)",
+    "issuer": "West Coast Products",
+    "receivedYear": "Month 2024",
+    "hide": false,
+    "tags": ["meche"]
   },
   {
-    "title": "WCP CADathon/Robot Design Challenge Finalist (Top 1%, 1000+ participants)",
-    "receivedYear": "2024",
-    "hideOnSite": false,
-    "hideOnResume": false
+    "title": "FRC World Championship Milstein Division Winner (5/3500 Internationally)",
+    "issuer": "FIRST Championship (with FRC604)",
+    "receivedYear": "Month 2024",
+    "hide": false,
+    "tags": ["meche"]
   },
   {
-    "title": "FRC604: World Championship Milstein Division Winner (5/3500 Internationally)",
-    "receivedYear": "2024",
-    "hideOnSite": false,
-    "hideOnResume": false
+    "title": "FlexFactor Innovation Competiton Championship Winner (1/260 Regionally)",
+    "issuer": "NextFlex",
+    "receivedYear": "Month 2024",
+    "hide": false,
+    "tags": ["meche"]
   },
   {
-    "title": "NextFlex: FlexFactor Innovation Competition Championship Winner (1/260 Regionally)",
-    "receivedYear": "2024",
-    "hideOnSite": true,
-    "hideOnResume": true
+    "title": "Silver Distinction (89th percentile out of 21,500 Nationally)",
+    "issuer": "National Spanish Exam",
+    "receivedYear": "Month 2024",
+    "hide": true,
+    "tags": ["always"]
   },
   {
-    "title": "NSE: Silver Distinction (89th percentile out of 21,500 Nationally)",
-    "receivedYear": "2024",
-    "hideOnSite": true,
-    "hideOnResume": true
-  },
-  {
-    "title": "OneHacks III Hackathon: Third Place (3/120 Internationally)",
-    "receivedYear": "2023",
-    "hideOnSite": true,
-    "hideOnResume": false
+    "title": "Hackathon Third Place (3/120 Internationally)",
+    "issuer": "OneHacks III Hackathon",
+    "receivedYear": "Month 2023",
+    "hide": true,
+    "tags": ["always"]
   },
   {
     "title": "PSVA: Gold Award (550+ Hours Community Service)",
-    "receivedYear": "2023",
-    "hideOnSite": true,
-    "hideOnResume": true
+    "issuer": "Presidential Service Volunteer Award",
+    "receivedYear": "Month 2023",
+    "hide": true,
+    "tags": ["always"]
   },
   {
     "title": "CFL Speech 2: Impromptu Speech Finalist (5/190 Regionally)",
-    "receivedYear": "2022",
-    "hideOnSite": true,
-    "hideOnResume": true
+    "issuer": "California Forensic League",
+    "receivedYear": "Month 2022",
+    "hide": true,
+    "tags": ["always"]
   },
   {
     "title": "Santa Clara University Debate Invitational: Finalist (2/140 Internationally)",
-    "receivedYear": "2022",
-    "hideOnSite": true,
-    "hideOnResume": true
+    "issuer": "Santa Clara University",
+    "receivedYear": "Month 2022",
+    "hide": true,
+    "tags": ["always"]
   }
 ]

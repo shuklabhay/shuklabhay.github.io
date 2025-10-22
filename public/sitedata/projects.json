@@ -1,16 +1,22 @@
 [
   {
     "title": "Voquel",
-    "broadDescription": "A full-stack AI platform for audio translation and dubbing",
+    "startYear": "January 2025",
+    "endYear": "Present",
+    "hide": false,
+    "tags": ["ml"],
     "details": [
       {
-        "point": "Full stack LLM-enhanced research project for accessible audio translation with a focus on preserving rhythm, emotion, and artistic intent."
+        "point": "Full stack LLM-enhanced research project for accessible audio translation with a focus on preserving rhythm, emotion, and artistic intent.",
+        "tags": ["ml"]
       },
       {
-        "point": "Content translated by Voquel has reached almost 1 Million viewers over 70 different videos."
+        "point": "Content translated by Voquel has reached almost 1 Million viewers over 70 different videos.",
+        "tags": ["ml"]
       },
       {
-        "point": "Received Honorable Mention at the 2025 Synopsys Science Fair (top 10% out of ~1000 competitors); recognized by the City of San Jose for language preservation efforts."
+        "point": "Received Honorable Mention at the 2025 Synopsys Science Fair (top 10% out of ~1000 competitors); recognized by the City of San Jose for language preservation efforts.",
+        "tags": ["ml"]
       }
     ],
     "images": [
@@ -21,26 +27,30 @@
     ],
     "link": [
       {
-        "url": "https://www.youtube.com/@translateanyaudio",
+        "url": "https://www.youtube.com/@translateanyaudio/shorts",
         "description": "Algorithm Demos"
       },
       {
         "url": "https://shuklabhay.github.io/static/projects/voquel/vt_poster.png",
-        "description": "Science Fair Research Project"
+        "description": "Research Poster"
       }
-    ],
-    "hideOnSite": false,
-    "hideOnResume": false
+    ]
   },
   {
     "title": "PercGAN",
     "broadDescription": "A lightweight machine learning approach for high-fidelity stereo audio sample generation",
+    "startYear": "September 2024",
+    "endYear": "May 2025",
+    "hide": false,
+    "tags": ["ml"],
     "details": [
       {
-        "point": "Developed a lightweight generative network for high-fidelity stereo percussion generation presenting unique audio representation and enhanced StyleGAN architecture."
+        "point": "Developed a lightweight generative network for high-fidelity stereo percussion generation presenting unique audio representation and enhanced StyleGAN architecture.",
+        "tags": ["ml"]
       },
       {
-        "point": "Achieved an 85% quality improvement and 25× training-time reduction compared to WaveGAN, MelGAN, etc.."
+        "point": "Achieved an 85% quality improvement and 25× training-time reduction compared to WaveGAN, MelGAN, etc.",
+        "tags": ["ml"]
       }
     ],
     "images": [
@@ -56,43 +66,24 @@
     "link": [
       {
         "url": "https://github.com/shuklabhay/percgan",
-        "description": "Independent Research Project"
+        "description": "GitHub Repository"
       }
-    ],
-    "hideOnSite": false,
-    "hideOnResume": false
-  },
-
-  {
-    "title": "Tessera",
-    "broadDescription": "A Lightweight LLM-driven auditory rehabilitation agent",
-    "details": [
-      {
-        "point": "Developed an end-to-end conversational voice agent delivering adaptive listening exercises for auditory rehabilitation."
-      },
-      {
-        "point": "Engineered context-aware LLM-managed session state, enabling personalized progression in a 30 MB application optimized for clinical deployment."
-      }
-    ],
-    "images": [],
-    "link": [
-      {
-        "url": "https://shuklabhay.github.io/tessera/",
-        "description": "Landing Page"
-      }
-    ],
-    "hideOnSite": false,
-    "hideOnResume": false
+    ]
   },
   {
     "title": "SporeStrike",
-    "broadDescription": "An effective fungicide disposal system",
+    "startYear": "January 2024",
+    "endYear": "May 2024",
+    "hide": false,
+    "tags": ["meche"],
     "details": [
       {
-        "point": "Created aerial fungal infection treatment system with 3D-printed prototype components for targeted agricultural application."
+        "point": "Created aerial fungal infection treatment system with 3D-printed prototype components for targeted agricultural application.",
+        "tags": ["meche"]
       },
       {
-        "point": "Won first place out of 260 teams at the 2024 FlexFactor Entrepreneurship Championships, presenting to civil and aerospace engineering panels."
+        "point": "Won first place out of 260 teams at the 2024 FlexFactor Entrepreneurship Championships, presenting to civil and aerospace engineering panels.",
+        "tags": ["meche"]
       }
     ],
     "images": [
@@ -108,21 +99,25 @@
     "link": [
       {
         "url": "https://shuklabhay.github.io/static/projects/sporestrike/FlexFactor_SporeStrike_pitch.pdf",
-        "description": "Entrepreneurship Project"
+        "description": "Pitch Slideshow"
       }
-    ],
-    "hideOnSite": false,
-    "hideOnResume": false
+    ]
   },
   {
     "title": "Quickscout",
     "broadDescription": "FRC604's novel scouting application",
+    "startYear": "January 2023",
+    "endYear": "April 2024",
+    "hide": true,
+    "tags": ["meche"],
     "details": [
       {
-        "point": "Built data collection and visualization platform enabling real-time match analytics for 200+ users during FRC competitions."
+        "point": "Built data collection and visualization platform enabling real-time match analytics for 200+ users during FRC competitions.",
+        "tags": ["meche"]
       },
       {
-        "point": "Implemented advanced analytics tools for alliance selection strategy, and trained 10+ developers in application and interface design."
+        "point": "Implemented advanced analytics tools for alliance selection strategy, and trained 10+ developers in application and interface design.",
+        "tags": ["meche"]
       }
     ],
     "images": [
@@ -148,25 +143,31 @@
         "url": "https://github.com/frc604",
         "description": "Team Project"
       }
-    ],
-    "hideOnSite": false,
-    "hideOnResume": true
+    ]
   },
   {
     "title": "Domotron",
     "broadDescription": "FRC604's Robot for the 2024 FRC Game \"Crescendo\"",
+    "startYear": "January 2024",
+    "endYear": "April 2024",
+    "hide": false,
+    "tags": ["meche"],
     "details": [
       {
-        "point": "Implemented computer vision and physics-based shot calculation systems for precise game piece targeting."
+        "point": "Implemented computer vision and physics-based shot calculation systems for precise game piece targeting.",
+        "tags": ["meche"]
       },
       {
-        "point": "Developed driver control automation and competitive autonomous routines for optimal match performance."
+        "point": "Developed driver control automation and competitive autonomous routines for optimal match performance.",
+        "tags": ["meche"]
       },
       {
-        "point": "Designed and implemented chain climbing mechanism critical to end-game scoring strategy."
+        "point": "Designed and implemented chain climbing mechanism critical to end-game scoring strategy.",
+        "tags": ["meche"]
       },
       {
-        "point": "Directly contributed to robot winning Milstein World Championship division, 3 California regional events, and 5 additional awards."
+        "point": "Directly contributed to robot winning Milstein World Championship division, 3 California regional events, and 5 additional awards.",
+        "tags": ["meche"]
       }
     ],
     "images": [
@@ -186,40 +187,8 @@
     "link": [
       {
         "url": "https://604robotics.com/2023-2024-crescendo/",
-        "description": "FRC Robot"
+        "description": "Robot Details"
       }
-    ],
-    "hideOnSite": false,
-    "hideOnResume": true
-  },
-  {
-    "title": "VelocityDraft",
-    "broadDescription": "A flexible essay writing scheduler webapp",
-    "details": [
-      {
-        "point": "Created algorithm-driven scheduling app to optimize college essay writing timelines based on user capability and deadlines."
-      },
-      {
-        "point": "Won 3rd place at OneHacks III International Hackathon out of 120 teams, serving 200+ users with workload-balancing features."
-      }
-    ],
-    "images": [
-      {
-        "src": "https://raw.githubusercontent.com/shuklabhay/velocity-draft/main/public/app-interfaces.png",
-        "alt": "VelocityDraft Interface"
-      },
-      {
-        "src": "https://raw.githubusercontent.com/shuklabhay/velocity-draft/main/public/logo512.png",
-        "alt": "VelocityDraft Icon"
-      }
-    ],
-    "link": [
-      {
-        "url": "https://shuklabhay.github.io/velocity-draft/",
-        "description": "Live Website"
-      }
-    ],
-    "hideOnSite": true,
-    "hideOnResume": true
+    ]
   }
 ]
