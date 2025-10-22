@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import BulletPointList from "./BulletPointList";
-import { ExperienceRecord } from "../utils/types";
+import { ExperienceRecord, ABOUT_ALLOWED_TAGS } from "../utils/types";
 
 function extractTags(item: ExperienceRecord): Set<string> {
   const tags = new Set<string>();
@@ -25,17 +25,22 @@ export default function ExperienceList({
   useEffect(() => {
     fetch("/sitedata/experience.json")
       .then((r) => r.json())
-      .then((d: ExperienceRecord[]) => setItems(d.filter((i) => !i.hideOnSite)))
-      .catch(() => {});
+      .then((d: ExperienceRecord[]) =>
+        setItems(d.filter((i) => !i.hideOnSite && !i.hide)),
+      );
   }, []);
 
   const filtered = useMemo(() => {
-    const want = new Set(selectedTags.map((t) => t.toLowerCase()));
+    const allowed = new Set(ABOUT_ALLOWED_TAGS);
+    const want = new Set(
+      selectedTags.map((t) => t.toLowerCase()).filter((t) => allowed.has(t)),
+    );
     if (want.size === 0) return [] as ExperienceRecord[];
     return items.filter((it) => {
       const tags = extractTags(it);
-      if (tags.has("always")) return true;
-      for (const w of want) if (tags.has(w)) return true;
+      const validTags = new Set(Array.from(tags).filter((t) => allowed.has(t)));
+      if (validTags.has("always")) return true;
+      for (const w of want) if (validTags.has(w)) return true;
       return false;
     });
   }, [items, selectedTags]);
@@ -83,24 +88,49 @@ export default function ExperienceList({
               }}
             >
               {item.icon?.src ? (
-                <div
-                  style={{
-                    width: 48,
-                    height: 48,
-                    borderRadius: 6,
-                    overflow: "hidden",
-                  }}
-                >
-                  <img
-                    src={item.icon.src}
-                    alt={item.org}
+                item.icon.link ? (
+                  <a
+                    href={item.icon.link}
+                    target="_blank"
+                    rel="noreferrer"
                     style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
+                      width: 48,
+                      height: 48,
+                      borderRadius: 6,
+                      overflow: "hidden",
+                      display: "block",
                     }}
-                  />
-                </div>
+                  >
+                    <img
+                      src={item.icon.src}
+                      alt={item.org}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
+                    />
+                  </a>
+                ) : (
+                  <div
+                    style={{
+                      width: 48,
+                      height: 48,
+                      borderRadius: 6,
+                      overflow: "hidden",
+                    }}
+                  >
+                    <img
+                      src={item.icon.src}
+                      alt={item.org}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
+                    />
+                  </div>
+                )
               ) : null}
 
               <div
@@ -116,7 +146,7 @@ export default function ExperienceList({
                     gridColumn: 1,
                     margin: 0,
                     color: "white",
-                    fontSize: "2rem",
+                    fontSize: "1.5rem",
                     fontWeight: 700,
                     lineHeight: 1.1,
                   }}

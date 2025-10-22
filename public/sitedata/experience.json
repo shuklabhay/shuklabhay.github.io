@@ -8,7 +8,7 @@
     "details": [
       {
         "point": "Implemented real-time localization and piece detection computer vision systems for three large-scale, 125lb competition robots.",
-        "tags": ["software, meche"]
+        "tags": ["ml, meche"]
       },
       {
         "point": "Designed and led the fabrication of numerous robot components, applying advanced techniques in both additive manufacturing (TPU, PETG, PLA 3D printing) and sheet metal construction.",
@@ -28,6 +28,7 @@
       "link": "https://604robotics.com/"
     },
     "hideOnSite": false,
-    "hideOnResume": false
+    "hideOnResume": false,
+    "hide": false
   }
 ]

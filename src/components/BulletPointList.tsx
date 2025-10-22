@@ -1,10 +1,6 @@
-import { ExperienceBullet } from "../utils/types";
+import { BulletPoint } from "../utils/types";
 
-export default function BulletPointList({
-  points,
-}: {
-  points: ExperienceBullet[];
-}) {
+export default function BulletPointList({ points }: { points: BulletPoint[] }) {
   return (
     <ul
       style={{

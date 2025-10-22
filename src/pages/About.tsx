@@ -2,12 +2,13 @@ import PageTitle from "../components/PageTitle";
 import CheckboxList from "../components/CheckboxList";
 import { useState } from "react";
 import { loadTagsFromStorage } from "../utils/tags";
-import { ABOUT_TAG_ITEMS, AboutTag } from "../utils/types";
+import { ABOUT_TAG_ITEMS, Tag } from "../utils/types";
 import ExperienceList from "../components/ExperienceList";
+import ProjectsList from "../components/ProjectsList";
 
 export default function About() {
-  const [selectedTags, setSelectedTags] = useState<AboutTag[]>(() =>
-    loadTagsFromStorage<AboutTag>("about-tags", ABOUT_TAG_ITEMS),
+  const [selectedTags, setSelectedTags] = useState<Tag[]>(() =>
+    loadTagsFromStorage<Tag>("about-tags", ABOUT_TAG_ITEMS),
   );
 
   return (
@@ -16,7 +17,7 @@ export default function About() {
         title="I do cool things"
         subtitle={
           <div>
-            <CheckboxList<AboutTag>
+            <CheckboxList<Tag>
               selectedTags={selectedTags}
               setSelectedTags={setSelectedTags}
               items={ABOUT_TAG_ITEMS}
@@ -26,6 +27,9 @@ export default function About() {
             {selectedTags?.length ? (
               <div style={{ marginTop: "1.25rem" }}>
                 <ExperienceList selectedTags={selectedTags} />
+                <div style={{ marginTop: "2rem" }}>
+                  <ProjectsList selectedTags={selectedTags} />
+                </div>
               </div>
             ) : null}
           </div>
