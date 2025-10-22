@@ -5,6 +5,7 @@ import { loadTagsFromStorage } from "../utils/tags";
 import { ABOUT_TAG_ITEMS, Tag } from "../utils/types";
 import ExperienceList from "../components/ExperienceList";
 import ProjectList from "../components/ProjectList";
+import AwardList from "../components/AwardList";
 
 export default function About() {
   const [selectedTags, setSelectedTags] = useState<Tag[]>(() =>
@@ -29,6 +30,9 @@ export default function About() {
                 <ExperienceList selectedTags={selectedTags} />
                 <div style={{ marginTop: "2rem" }}>
                   <ProjectList selectedTags={selectedTags} />
+                </div>
+                <div style={{ marginTop: "2rem" }}>
+                  <AwardList selectedTags={selectedTags} />
                 </div>
               </div>
             ) : null}

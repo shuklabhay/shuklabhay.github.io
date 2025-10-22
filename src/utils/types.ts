@@ -26,6 +26,15 @@ export const ABOUT_ALLOWED_TAGS: readonly Tag[] = [
   ...ABOUT_TAGS.map((t) => t.toLowerCase()),
 ];
 
+export type AwardRecord = {
+  title: string;
+  issuer: string;
+  receivedYear: string;
+  hide: boolean;
+  tags: string[];
+};
+
+export const AWARD_ALLOWED_TAGS: readonly Tag[] = ["always", "ml", "meche"];
 export const BLOG_TAGS: readonly Tag[] = ["ML", "Life"];
 export type BlogTagItems = ReadonlyArray<CheckboxItem<Tag>>;
 export const BLOG_TAG_ITEMS: BlogTagItems = BLOG_TAGS.map((t) => ({
@@ -44,8 +53,6 @@ export type ExperienceRecord = {
   ongoing: boolean;
   details: BulletPoint[];
   icon: ExperienceIcon;
-  hideOnSite: boolean;
-  hideOnResume: boolean;
   hide: boolean;
 };
 
@@ -61,6 +68,6 @@ export type ProjectRecord = {
   startYear: string;
   endYear: string | "Present";
   hide: boolean;
-  tags?: string[];
+  tags: string[];
   broadDescription?: string;
 };

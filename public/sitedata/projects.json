@@ -4,6 +4,7 @@
     "startYear": "January 2025",
     "endYear": "Present",
     "hide": false,
+    "tags": ["ml"],
     "details": [
       {
         "point": "Full stack LLM-enhanced research project for accessible audio translation with a focus on preserving rhythm, emotion, and artistic intent.",
@@ -41,6 +42,7 @@
     "startYear": "September 2024",
     "endYear": "May 2025",
     "hide": false,
+    "tags": ["ml"],
     "details": [
       {
         "point": "Developed a lightweight generative network for high-fidelity stereo percussion generation presenting unique audio representation and enhanced StyleGAN architecture.",
@@ -73,6 +75,7 @@
     "startYear": "January 2024",
     "endYear": "May 2024",
     "hide": false,
+    "tags": ["meche"],
     "details": [
       {
         "point": "Created aerial fungal infection treatment system with 3D-printed prototype components for targeted agricultural application.",
@@ -106,14 +109,15 @@
     "startYear": "January 2023",
     "endYear": "April 2024",
     "hide": true,
+    "tags": ["meche"],
     "details": [
       {
         "point": "Built data collection and visualization platform enabling real-time match analytics for 200+ users during FRC competitions.",
-        "tags": ["software"]
+        "tags": ["meche"]
       },
       {
         "point": "Implemented advanced analytics tools for alliance selection strategy, and trained 10+ developers in application and interface design.",
-        "tags": ["software"]
+        "tags": ["meche"]
       }
     ],
     "images": [
@@ -147,6 +151,7 @@
     "startYear": "January 2024",
     "endYear": "April 2024",
     "hide": false,
+    "tags": ["meche"],
     "details": [
       {
         "point": "Implemented computer vision and physics-based shot calculation systems for precise game piece targeting.",

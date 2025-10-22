@@ -3,12 +3,21 @@
   "type": "array",
   "items": {
     "type": "object",
-    "required": ["title", "receivedYear", "hideOnSite", "hideOnResume"],
+    "required": ["title", "issuer", "receivedYear", "hide", "tags"],
     "properties": {
       "title": { "type": "string" },
+      "issuer": { "type": "string" },
       "receivedYear": { "type": "string" },
-      "hideOnSite": { "type": "boolean" },
-      "hideOnResume": { "type": "boolean" }
+      "hide": { "type": "boolean" },
+      "tags": {
+        "type": "array",
+        "items": { "type": "string", "enum": ["ml", "meche"] }
+      }
+    },
+    "additionalProperties": false
+  }
+}
+
     },
     "additionalProperties": false
   }

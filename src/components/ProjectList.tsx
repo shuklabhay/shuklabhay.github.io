@@ -180,14 +180,14 @@ export default function ProjectList({
                             target="_blank"
                             rel="noreferrer"
                             style={{
-                              color: "#dbeafe",
+                              color: "white",
                               textDecoration: "none",
-                              background: "rgba(255,255,255,0.06)",
-                              border: "1px solid rgba(255,255,255,0.12)",
-                              padding: "2px 6px",
+                              background: "rgba(255,255,255,0.2)",
+                              border: "1px solid rgba(255,255,255,0.25)",
+                              padding: "0.25rem 0.5rem",
                               borderRadius: 6,
-                              fontSize: "0.875rem",
-                              lineHeight: 1.2,
+                              fontSize: "0.9rem",
+                              lineHeight: 1.1,
                               display: "block",
                               width: "100%",
                               boxSizing: "border-box",
