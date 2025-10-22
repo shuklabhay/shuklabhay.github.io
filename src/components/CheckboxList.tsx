@@ -27,7 +27,7 @@ export default function CheckboxList<T extends string = string>({
     if (mode === "link") {
       const href = items[index]?.href;
       if (href) window.open(href, "_blank", "noopener,noreferrer");
-    } else if (setSelectedTags) {
+    } else if (mode === "toggle" && setSelectedTags) {
       const label = items[index]?.label;
       if (!label) return;
       setSelectedTags((prev) =>

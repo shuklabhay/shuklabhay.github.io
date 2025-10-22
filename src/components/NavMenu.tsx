@@ -11,11 +11,8 @@ export default function NavMenu() {
     width: 0,
   });
 
-  const getActivePage = () => {
-    if (location.pathname === "/") return "home";
-    return location.pathname.slice(1);
-  };
-  const activeItem = getActivePage();
+  const activeItem =
+    location.pathname === "/" ? "home" : location.pathname.slice(1);
 
   useLayoutEffect(() => {
     if (!navRef.current) return;

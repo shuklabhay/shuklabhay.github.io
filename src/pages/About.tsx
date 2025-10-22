@@ -22,9 +22,12 @@ export default function About() {
               items={ABOUT_TAG_ITEMS}
               storageKey="about-tags"
             />
-            <div style={{ marginTop: "1.25rem" }}>
-              <ExperienceList selectedTags={selectedTags} />
-            </div>
+
+            {selectedTags?.length ? (
+              <div style={{ marginTop: "1.25rem" }}>
+                <ExperienceList selectedTags={selectedTags} />
+              </div>
+            ) : null}
           </div>
         }
       />

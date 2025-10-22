@@ -33,7 +33,7 @@ export const BLOG_TAG_ITEMS: BlogTagItems = BLOG_TAGS.map((t) => ({
 }));
 
 // Experience types
-export type ExperienceBullet = { point: string; tag?: string[] };
+export type ExperienceBullet = { point: string; tags: string[] };
 export type ExperienceIcon = { src: string; link: string } | null;
 export type ExperienceRecord = {
   org: string;

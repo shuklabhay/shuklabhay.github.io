@@ -1,9 +1,10 @@
-interface PageTitleProps {
+export default function PageTitle({
+  title,
+  subtitle,
+}: {
   title: string;
   subtitle?: React.ReactNode;
-}
-
-export default function PageTitle({ title, subtitle }: PageTitleProps) {
+}) {
   return (
     <div style={{ marginTop: "4rem", paddingBottom: "2rem" }}>
       <h1
@@ -16,12 +17,12 @@ export default function PageTitle({ title, subtitle }: PageTitleProps) {
       >
         {title}
       </h1>
-      {subtitle}
+      {subtitle ? subtitle : null}
     </div>
   );
 }
 
-export function SubtitleText({ text }: { text: string }) {
+export function TextSubtitle({ text }: { text: string }) {
   return (
     <p
       style={{

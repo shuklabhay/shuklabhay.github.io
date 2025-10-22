@@ -10,7 +10,7 @@ function parseDataToTexTemplate(userData: ResumeData) {
   const e = escapeLatex;
 
   const technicalSkillsList = e(
-    skills.technical.map((skill) => skill).join(", ")
+    skills.technical.map((skill) => skill).join(", "),
   );
   const getContactLink = (title: string) => {
     const titleLower = title.toLowerCase();
