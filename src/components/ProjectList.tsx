@@ -47,15 +47,16 @@ export default function ProjectList({
               tags: (d.tags || []).map((t) => t.toLowerCase()),
             }));
 
-            const hasImages = !!(item.images && item.images.length > 0);
-            const images = hasImages ? (item.images as RichImage[]) : [];
+            const images =
+              item.images && item.images.length > 0 ? item.images : [];
             const totalImages = images.length;
             const currentThumb = thumbIndex[idx] ?? 0;
-            const currentImage = hasImages
-              ? images[
-                  ((currentThumb % totalImages) + totalImages) % totalImages
-                ]
-              : null;
+            const currentImage =
+              item.images && item.images.length > 0
+                ? images[
+                    ((currentThumb % totalImages) + totalImages) % totalImages
+                  ]
+                : null;
             const dateText =
               item.startYear && item.endYear
                 ? `${item.startYear} – ${item.endYear}`
@@ -71,11 +72,15 @@ export default function ProjectList({
                 transition={{ duration: 0.35, ease: [0.2, 0, 0.2, 1] }}
                 style={{
                   display: "grid",
-                  gridTemplateColumns: hasImages ? `${THUMB_W}px 1fr` : "1fr",
-                  columnGap: hasImages ? "0.75rem" : 0,
+                  gridTemplateColumns:
+                    item.images && item.images.length > 0
+                      ? `${THUMB_W}px 1fr`
+                      : "1fr",
+                  columnGap:
+                    item.images && item.images.length > 0 ? "0.75rem" : 0,
                 }}
               >
-                {hasImages ? (
+                {(item.images?.length ?? 0) > 0 ? (
                   <div style={{ width: THUMB_W }}>
                     <div style={{ position: "relative", width: THUMB_W }}>
                       <button
