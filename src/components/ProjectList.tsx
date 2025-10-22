@@ -3,6 +3,7 @@ import BulletPointList from "./BulletPointList";
 import ImageGallery, { LRArrowButton } from "./ImageGallery";
 import type { RichImage, ProjectRecord } from "../utils/types";
 import { BulletPoint, ABOUT_ALLOWED_TAGS } from "../utils/types";
+import { selectDesired, filterItemsByDetailTags } from "../utils/tags";
 
 export default function ProjectList({
   selectedTags = [],
@@ -26,27 +27,9 @@ export default function ProjectList({
   }, []);
 
   const filtered = useMemo(() => {
-    const allowed = new Set(ABOUT_ALLOWED_TAGS);
-    const want = new Set(
-      selectedTags.map((t) => t.toLowerCase()).filter((t) => allowed.has(t))
-    );
-    if (want.size === 0) return [] as ProjectRecord[];
-    return items
-      .map((it) => {
-        const filteredDetails = it.details.filter((d) => {
-          const detailTags = new Set(
-            (d.tags || [])
-              .map((t) => t.toLowerCase())
-              .filter((t) => allowed.has(t))
-          );
-          if (detailTags.has("always")) return true;
-          for (const w of want) if (detailTags.has(w)) return true;
-          return false;
-        });
-        if (filteredDetails.length === 0) return null;
-        return { ...it, details: filteredDetails } as ProjectRecord;
-      })
-      .filter((x): x is ProjectRecord => x !== null);
+    const desired = selectDesired(selectedTags, ABOUT_ALLOWED_TAGS);
+    if (desired.size === 0) return [] as ProjectRecord[];
+    return filterItemsByDetailTags(items, desired, ABOUT_ALLOWED_TAGS);
   }, [items, selectedTags]);
 
   return (

@@ -1,19 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import BulletPointList from "./BulletPointList";
 import { ExperienceRecord, ABOUT_ALLOWED_TAGS } from "../utils/types";
-
-function extractTags(item: ExperienceRecord): Set<string> {
-  const tags = new Set<string>();
-  for (const d of item.details) {
-    for (const raw of d.tags) {
-      for (const p of raw.split(/[\s,]+/)) {
-        const t = p.trim().toLowerCase();
-        if (t) tags.add(t);
-      }
-    }
-  }
-  return tags;
-}
+import { selectDesired, filterItemsByDetailTags } from "../utils/tags";
 
 export default function ExperienceList({
   selectedTags = [],
@@ -31,18 +19,9 @@ export default function ExperienceList({
   }, []);
 
   const filtered = useMemo(() => {
-    const allowed = new Set(ABOUT_ALLOWED_TAGS);
-    const want = new Set(
-      selectedTags.map((t) => t.toLowerCase()).filter((t) => allowed.has(t)),
-    );
-    if (want.size === 0) return [] as ExperienceRecord[];
-    return items.filter((it) => {
-      const tags = extractTags(it);
-      const validTags = new Set(Array.from(tags).filter((t) => allowed.has(t)));
-      if (validTags.has("always")) return true;
-      for (const w of want) if (validTags.has(w)) return true;
-      return false;
-    });
+    const desired = selectDesired(selectedTags, ABOUT_ALLOWED_TAGS);
+    if (desired.size === 0) return [] as ExperienceRecord[];
+    return filterItemsByDetailTags(items, desired, ABOUT_ALLOWED_TAGS);
   }, [items, selectedTags]);
 
   return (
@@ -63,20 +42,6 @@ export default function ExperienceList({
       ) : (
         filtered.map((item, idx) => {
           const dateText = `${item.startYear} – ${item.endYear}`;
-          const want = new Set(selectedTags.map((t) => t.toLowerCase()));
-
-          const points = item.details.filter((d) => {
-            const tags = new Set<string>();
-            for (const raw of d.tags) {
-              for (const p of raw.split(/[\s,]+/)) {
-                const t = p.trim().toLowerCase();
-                if (t) tags.add(t);
-              }
-            }
-            if (tags.has("always")) return true;
-            for (const w of want) if (tags.has(w)) return true;
-            return false;
-          });
 
           return (
             <div
@@ -180,7 +145,7 @@ export default function ExperienceList({
                   {item.org}
                 </div>
 
-                <BulletPointList points={points} />
+                <BulletPointList points={item.details} />
               </div>
             </div>
           );
