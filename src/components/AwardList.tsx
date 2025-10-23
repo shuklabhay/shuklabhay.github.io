@@ -32,7 +32,12 @@ export default function AwardList({
     <motion.div
       layout="position"
       transition={{ layout: { duration: 0.3, ease: [0.2, 0, 0.2, 1] } }}
-      style={{ display: "grid", rowGap: "0.5rem", paddingRight: "0.25rem" }}
+      style={{
+        display: "grid",
+        rowGap: "0.5rem",
+        paddingRight: "0.25rem",
+        paddingBottom: "1rem",
+      }}
     >
       <AnimatePresence initial={false} mode="popLayout">
         {filtered.map((item) => (

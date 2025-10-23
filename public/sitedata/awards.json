@@ -7,7 +7,7 @@
     "tags": ["ml"]
   },
   {
-    "title": "City of San Jose Recognition for STEM Outreach and Team Performance",
+    "title": "FRC604 Team Recognition for STEM Outreach and Team Performance",
     "issuer": "City of San Jose",
     "receivedYear": "Month 2024",
     "hide": true,
@@ -21,52 +21,17 @@
     "tags": ["meche"]
   },
   {
-    "title": "FRC World Championship Milstein Division Winner (5/3500 Internationally)",
-    "issuer": "FIRST Championship (with FRC604)",
+    "title": "Milstein Division Winner (5/3500 Internationally)",
+    "issuer": "FIRST World Championship (with FRC604)",
     "receivedYear": "Month 2024",
     "hide": false,
-    "tags": ["meche"]
+    "tags": ["always"]
   },
   {
     "title": "FlexFactor Innovation Competiton Championship Winner (1/260 Regionally)",
     "issuer": "NextFlex",
     "receivedYear": "Month 2024",
-    "hide": false,
+    "hide": true,
     "tags": ["meche"]
-  },
-  {
-    "title": "Silver Distinction (89th percentile out of 21,500 Nationally)",
-    "issuer": "National Spanish Exam",
-    "receivedYear": "Month 2024",
-    "hide": true,
-    "tags": ["always"]
-  },
-  {
-    "title": "Hackathon Third Place (3/120 Internationally)",
-    "issuer": "OneHacks III Hackathon",
-    "receivedYear": "Month 2023",
-    "hide": true,
-    "tags": ["always"]
-  },
-  {
-    "title": "PSVA: Gold Award (550+ Hours Community Service)",
-    "issuer": "Presidential Service Volunteer Award",
-    "receivedYear": "Month 2023",
-    "hide": true,
-    "tags": ["always"]
-  },
-  {
-    "title": "CFL Speech 2: Impromptu Speech Finalist (5/190 Regionally)",
-    "issuer": "California Forensic League",
-    "receivedYear": "Month 2022",
-    "hide": true,
-    "tags": ["always"]
-  },
-  {
-    "title": "Santa Clara University Debate Invitational: Finalist (2/140 Internationally)",
-    "issuer": "Santa Clara University",
-    "receivedYear": "Month 2022",
-    "hide": true,
-    "tags": ["always"]
   }
 ]

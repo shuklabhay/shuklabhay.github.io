@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import type { CheckboxItem } from "../utils/types";
+
 export default function PageTitle({
   title,
   subtitle,
@@ -6,7 +9,7 @@ export default function PageTitle({
   subtitle?: React.ReactNode;
 }) {
   return (
-    <div style={{ marginTop: "4rem", paddingBottom: "2rem" }}>
+    <div style={{ marginTop: "1.5rem" }}>
       <h1
         style={{
           fontSize: "3rem",
@@ -22,17 +25,83 @@ export default function PageTitle({
   );
 }
 
-export function TextSubtitle({ text }: { text: string }) {
+export function CheckboxSubtitle<T extends string = string>({
+  items,
+  storageKey,
+  mode = "toggle",
+  hoverFill = true,
+  selectedTags,
+  setSelectedTags,
+}: {
+  items: ReadonlyArray<CheckboxItem<T>>;
+  storageKey?: string;
+  mode?: "toggle" | "link";
+  hoverFill?: boolean;
+  selectedTags?: T[];
+  setSelectedTags?: (value: T[] | ((prev: T[]) => T[])) => void;
+}) {
+  const [hovered, setHovered] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (mode !== "toggle" || !storageKey) return;
+    window.localStorage.setItem(storageKey, JSON.stringify(selectedTags));
+  }, [selectedTags, mode, storageKey]);
+
+  const onClick = (index: number) => {
+    if (mode === "link") {
+      const href = items[index]?.href;
+      if (href) window.open(href, "_blank", "noopener,noreferrer");
+    } else if (mode === "toggle" && setSelectedTags) {
+      const label = items[index]?.label;
+      if (!label) return;
+      setSelectedTags((prev) =>
+        prev.includes(label)
+          ? (prev.filter((t) => t !== label) as T[])
+          : ([...prev, label] as T[])
+      );
+    }
+  };
+
   return (
-    <p
+    <div
       style={{
-        color: "white",
-        textDecoration: "none",
-        fontSize: "1.25rem",
+        display: "flex",
+        gap: "0.5rem",
         marginTop: "0.5rem",
+        marginBottom: "2rem",
       }}
     >
-      {text}
-    </p>
+      {items.map((item, idx) => {
+        const isOn =
+          mode === "toggle" && selectedTags
+            ? selectedTags.includes(item.label)
+            : false;
+        const isHover = hoverFill && hovered === idx;
+        const bg = isOn || isHover ? "white" : "transparent";
+        const fg = isOn || isHover ? "#6c79a8" : "white";
+        return (
+          <button
+            key={item.label}
+            onClick={() => onClick(idx)}
+            onMouseEnter={() => setHovered(idx)}
+            onMouseLeave={() => setHovered((h) => (h === idx ? null : h))}
+            aria-pressed={isOn}
+            style={{
+              padding: "0.25rem 0.5rem",
+              borderRadius: "6px",
+              border: "2px solid white",
+              backgroundColor: bg,
+              color: fg,
+              fontSize: "1rem",
+              fontWeight: 600,
+              cursor: "pointer",
+              transition: "background-color 150ms ease, color 150ms ease",
+            }}
+          >
+            {item.label}
+          </button>
+        );
+      })}
+    </div>
   );
 }

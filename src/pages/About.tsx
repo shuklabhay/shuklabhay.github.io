@@ -1,5 +1,4 @@
-import PageTitle from "../components/PageTitle";
-import CheckboxList from "../components/CheckboxList";
+import PageTitle, { CheckboxSubtitle } from "../components/PageTitle";
 import { useState } from "react";
 import { loadTagsFromStorage } from "../utils/tags";
 import { ABOUT_TAG_ITEMS, Tag } from "../utils/types";
@@ -18,7 +17,7 @@ export default function About() {
         title="I do cool things"
         subtitle={
           <div>
-            <CheckboxList<Tag>
+            <CheckboxSubtitle<Tag>
               selectedTags={selectedTags}
               setSelectedTags={setSelectedTags}
               items={ABOUT_TAG_ITEMS}

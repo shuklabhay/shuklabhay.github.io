@@ -191,6 +191,7 @@ export default function ProjectList({
                               display: "block",
                               width: "100%",
                               boxSizing: "border-box",
+                              textAlign: "center",
                             }}
                           >
                             {l.description}

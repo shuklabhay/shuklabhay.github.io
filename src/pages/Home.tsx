@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import PageTitle from "../components/PageTitle";
-import CheckboxList from "../components/CheckboxList";
+import PageTitle, { CheckboxSubtitle } from "../components/PageTitle";
 
 interface ContactInfo {
   title: string;
@@ -27,7 +26,7 @@ export default function Home() {
       <PageTitle
         title="Hi, I'm Abhay"
         subtitle={
-          <CheckboxList
+          <CheckboxSubtitle
             mode="link"
             hoverFill
             items={[
