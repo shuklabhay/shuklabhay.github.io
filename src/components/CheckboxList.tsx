@@ -47,7 +47,7 @@ export default function CheckboxList<T extends string = string>({
             : false;
         const isHover = hoverFill && hovered === idx;
         const bg = isOn || isHover ? "white" : "transparent";
-        const fg = isOn || isHover ? "#9ba7d4" : "white";
+        const fg = isOn || isHover ? "#5f6da1" : "white";
         return (
           <button
             key={item.label}
