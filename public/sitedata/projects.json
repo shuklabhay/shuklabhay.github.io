@@ -58,5 +58,39 @@
         "description": "GitHub Repo"
       }
     ]
+  },
+  {
+    "title": "Domotron",
+    "details": [
+      {
+        "point": "Developed computer vision & physics-based shot calculation system for precise game piece targeting and intuitive, automated driver assistance.",
+        "tags": ["meche"]
+      },
+      {
+        "point": "Designed and implemented a chain-climbing mechanism supporting the entire robot's weight in midair.",
+        "tags": ["meche"]
+      }
+    ],
+    "images": [
+      {
+        "src": "/static/projects/domotron/sac_peek_shot.jpeg",
+        "alt": "Domotron Firing a Note in Sacramento Regional QM?"
+      },
+      {
+        "src": "/static/projects/domotron/champs_zoom.jpg",
+        "alt": "Domotron Cycling at the World Championships"
+      },
+      {
+        "src": "/static/projects/domotron/sac_climb.jpeg",
+        "alt": "Domotron Trap Scoring in Sacramento Regional QM75"
+      }
+    ],
+    "link": [
+      {
+        "url": "https://604robotics.com/2023-2024-crescendo/",
+        "description": "FRC Robot"
+      }
+    ],
+    "hide": false
   }
 ]
