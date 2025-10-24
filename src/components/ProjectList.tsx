@@ -189,7 +189,7 @@ export default function ProjectList({
                 </div>
               ) : null}
 
-              <div style={{ position: "relative" }}>
+              <div>
                 <h2
                   style={{
                     margin: 0,
@@ -205,21 +205,17 @@ export default function ProjectList({
                 {dateText ? (
                   <div
                     style={{
-                      position: "absolute",
-                      top: 0,
-                      right: 0,
                       color: "white",
                       opacity: 0.9,
-                      fontSize: "1rem",
-                      fontStyle: "italic",
-                      whiteSpace: "nowrap",
+                      fontSize: "1.05rem",
+                      marginTop: "0.25rem",
                     }}
                   >
                     {dateText}
                   </div>
                 ) : null}
 
-                <div style={{ marginTop: 4 }}>
+                <div style={{ marginTop: "0.25rem" }}>
                   <BulletPointList points={points} />
                 </div>
               </div>
