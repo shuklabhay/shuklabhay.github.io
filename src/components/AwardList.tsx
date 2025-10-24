@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AwardRecord, AWARD_ALLOWED_TAGS } from "../utils/types";
 import { selectDesired } from "../utils/tags";
+import { listItemVariants, listItemTransition } from "../utils/animation";
 
 export default function AwardList({
   selectedTags = [],
@@ -40,10 +41,8 @@ export default function AwardList({
         {filtered.map((item) => (
           <motion.div
             key={`${item.title}-${item.receivedYear}`}
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2, ease: "easeInOut" }}
+            {...listItemVariants}
+            transition={listItemTransition}
             style={{
               display: "grid",
               gridTemplateColumns: "minmax(0,1fr) auto",

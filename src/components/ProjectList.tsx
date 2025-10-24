@@ -5,6 +5,7 @@ import type { RichImage, ProjectRecord } from "../utils/types";
 import { BulletPoint, ABOUT_ALLOWED_TAGS } from "../utils/types";
 import { selectDesired, filterItemsByDetailTags } from "../utils/tags";
 import { motion, AnimatePresence } from "framer-motion";
+import { listItemVariants, listItemTransition } from "../utils/animation";
 
 export default function ProjectList({
   selectedTags = [],
@@ -63,10 +64,8 @@ export default function ProjectList({
             return (
               <motion.div
                 key={item.title}
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.2, ease: "easeInOut" }}
+                {...listItemVariants}
+                transition={listItemTransition}
                 style={{
                   display: "grid",
                   gridTemplateColumns:

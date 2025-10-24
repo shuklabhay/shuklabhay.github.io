@@ -3,6 +3,7 @@ import BulletPointList from "./BulletPointList";
 import { ExperienceRecord, ABOUT_ALLOWED_TAGS } from "../utils/types";
 import { selectDesired, filterItemsByDetailTags } from "../utils/tags";
 import { motion, AnimatePresence } from "framer-motion";
+import { listItemVariants, listItemTransition } from "../utils/animation";
 
 export default function ExperienceList({
   selectedTags = [],
@@ -46,10 +47,8 @@ export default function ExperienceList({
             return (
               <motion.div
                 key={item.org}
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.2, ease: "easeInOut" }}
+                {...listItemVariants}
+                transition={listItemTransition}
                 style={{
                   display: "grid",
                   gridTemplateColumns: item.icon ? "48px 1fr" : "1fr",
