@@ -14,9 +14,7 @@ export default function ExperienceList({
   useEffect(() => {
     fetch("/sitedata/experience.json")
       .then((r) => r.json())
-      .then((d: ExperienceRecord[]) =>
-        setItems(d.filter((i) => !i.hideOnSite && !i.hide)),
-      );
+      .then((d: ExperienceRecord[]) => setItems(d.filter((i) => !i.hide)));
   }, []);
 
   const filtered = useMemo(() => {
@@ -110,9 +108,10 @@ export default function ExperienceList({
                 <div
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "minmax(0,1fr) auto",
+                    gridTemplateColumns: "1fr auto",
                     rowGap: "0.25rem",
                     alignItems: "start",
+                    columnGap: "1rem",
                   }}
                 >
                   <h2
@@ -138,6 +137,7 @@ export default function ExperienceList({
                       alignSelf: "center",
                       justifySelf: "end",
                       whiteSpace: "nowrap",
+                      minWidth: "max-content",
                     }}
                   >
                     {dateText}

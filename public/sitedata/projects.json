@@ -2,20 +2,15 @@
   {
     "title": "Voquel",
     "startYear": "January 2025",
-    "endYear": "Present",
+    "endYear": "August 2025",
     "hide": false,
-    "tags": ["ml"],
     "details": [
       {
-        "point": "Full stack LLM-enhanced research project for accessible audio translation with a focus on preserving rhythm, emotion, and artistic intent.",
+        "point": "Researched a novel audio translation pipeline using multimodal LLMs & prosodic feature mapping to preserve vocal character and artistic intent.",
         "tags": ["ml"]
       },
       {
-        "point": "Content translated by Voquel has reached almost 1 Million viewers over 70 different videos.",
-        "tags": ["ml"]
-      },
-      {
-        "point": "Received Honorable Mention at the 2025 Synopsys Science Fair (top 10% out of ~1000 competitors); recognized by the City of San Jose for language preservation efforts.",
+        "point": "Attracted 1M+ organic views by using AI-powered workflows to find trending topics, produce translated topics, and upload with proper author attribution.",
         "tags": ["ml"]
       }
     ],
@@ -27,8 +22,8 @@
     ],
     "link": [
       {
-        "url": "https://www.youtube.com/@translateanyaudio/shorts",
-        "description": "Algorithm Demos"
+        "url": "https://voquel.vercel.app/",
+        "description": "Demo Application"
       },
       {
         "url": "https://shuklabhay.github.io/static/projects/voquel/vt_poster.png",
@@ -38,18 +33,12 @@
   },
   {
     "title": "PercGAN",
-    "broadDescription": "A lightweight machine learning approach for high-fidelity stereo audio sample generation",
     "startYear": "September 2024",
     "endYear": "May 2025",
     "hide": false,
-    "tags": ["ml"],
     "details": [
       {
-        "point": "Developed a lightweight generative network for high-fidelity stereo percussion generation presenting unique audio representation and enhanced StyleGAN architecture.",
-        "tags": ["ml"]
-      },
-      {
-        "point": "Achieved an 85% quality improvement and 25× training-time reduction compared to WaveGAN, MelGAN, etc.",
+        "point": "Developed a GAN for high-fidelity stereo percussion generation, improving audio quality 85% and reducing training time 25× compared to baseline models.",
         "tags": ["ml"]
       }
     ],
@@ -67,127 +56,6 @@
       {
         "url": "https://github.com/shuklabhay/percgan",
         "description": "GitHub Repository"
-      }
-    ]
-  },
-  {
-    "title": "SporeStrike",
-    "startYear": "January 2024",
-    "endYear": "May 2024",
-    "hide": false,
-    "tags": ["meche"],
-    "details": [
-      {
-        "point": "Created aerial fungal infection treatment system with 3D-printed prototype components for targeted agricultural application.",
-        "tags": ["meche"]
-      },
-      {
-        "point": "Won first place out of 260 teams at the 2024 FlexFactor Entrepreneurship Championships, presenting to civil and aerospace engineering panels.",
-        "tags": ["meche"]
-      }
-    ],
-    "images": [
-      {
-        "src": "static/projects/sporestrike/sporestrike_icon.jpg",
-        "alt": "SporeStrike Iconography"
-      },
-      {
-        "src": "static/projects/sporestrike/3dp_components.jpg",
-        "alt": "3D Printed Drone Components (Prototypes)"
-      }
-    ],
-    "link": [
-      {
-        "url": "https://shuklabhay.github.io/static/projects/sporestrike/FlexFactor_SporeStrike_pitch.pdf",
-        "description": "Pitch Slideshow"
-      }
-    ]
-  },
-  {
-    "title": "Quickscout",
-    "broadDescription": "FRC604's novel scouting application",
-    "startYear": "January 2023",
-    "endYear": "April 2024",
-    "hide": true,
-    "tags": ["meche"],
-    "details": [
-      {
-        "point": "Built data collection and visualization platform enabling real-time match analytics for 200+ users during FRC competitions.",
-        "tags": ["meche"]
-      },
-      {
-        "point": "Implemented advanced analytics tools for alliance selection strategy, and trained 10+ developers in application and interface design.",
-        "tags": ["meche"]
-      }
-    ],
-    "images": [
-      {
-        "src": "/static/projects/quickscout/stats_page.png",
-        "alt": "Stats Page"
-      },
-      {
-        "src": "/static/projects/quickscout/team_breakdown_page.png",
-        "alt": "Team Breakdown Page"
-      },
-      {
-        "src": "/static/projects/quickscout/match_preview_page.png",
-        "alt": "Match Preview Page"
-      },
-      {
-        "src": "/static/projects/quickscout/rankings_page.png",
-        "alt": "Rankings Page"
-      }
-    ],
-    "link": [
-      {
-        "url": "https://github.com/frc604",
-        "description": "Team Project"
-      }
-    ]
-  },
-  {
-    "title": "Domotron",
-    "broadDescription": "FRC604's Robot for the 2024 FRC Game \"Crescendo\"",
-    "startYear": "January 2024",
-    "endYear": "April 2024",
-    "hide": false,
-    "tags": ["meche"],
-    "details": [
-      {
-        "point": "Implemented computer vision and physics-based shot calculation systems for precise game piece targeting.",
-        "tags": ["meche"]
-      },
-      {
-        "point": "Developed driver control automation and competitive autonomous routines for optimal match performance.",
-        "tags": ["meche"]
-      },
-      {
-        "point": "Designed and implemented chain climbing mechanism critical to end-game scoring strategy.",
-        "tags": ["meche"]
-      },
-      {
-        "point": "Directly contributed to robot winning Milstein World Championship division, 3 California regional events, and 5 additional awards.",
-        "tags": ["meche"]
-      }
-    ],
-    "images": [
-      {
-        "src": "/static/projects/domotron/sac_peek_shot.jpeg",
-        "alt": "Domotron Firing a Note in Sacramento Regional QM?"
-      },
-      {
-        "src": "/static/projects/domotron/champs_zoom.jpg",
-        "alt": "Domotron Cycling at the World Championships"
-      },
-      {
-        "src": "/static/projects/domotron/sac_climb.jpeg",
-        "alt": "Domotron Trap Scoring in Sacramento Regional QM75"
-      }
-    ],
-    "link": [
-      {
-        "url": "https://604robotics.com/2023-2024-crescendo/",
-        "description": "Robot Details"
       }
     ]
   }

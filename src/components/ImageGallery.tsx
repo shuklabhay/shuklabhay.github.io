@@ -144,12 +144,16 @@ export default function ImageGallery({
       onNext={() => {
         navigateSlides(1);
       }}
-      renderPrevButton={() => (
-        <LRArrowButton direction="left" onClick={() => navigateSlides(-1)} />
-      )}
-      renderNextButton={() => (
-        <LRArrowButton direction="right" onClick={() => navigateSlides(1)} />
-      )}
+      renderPrevButton={() =>
+        images.length > 1 ? (
+          <LRArrowButton direction="left" onClick={() => navigateSlides(-1)} />
+        ) : null
+      }
+      renderNextButton={() =>
+        images.length > 1 ? (
+          <LRArrowButton direction="right" onClick={() => navigateSlides(1)} />
+        ) : null
+      }
       renderImageOverlay={() =>
         typeof document !== "undefined"
           ? createPortal(

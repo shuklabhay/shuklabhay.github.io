@@ -36,7 +36,6 @@ export default function AwardList({
         display: "grid",
         rowGap: "0.5rem",
         paddingRight: "0.25rem",
-        paddingBottom: "1rem",
       }}
     >
       <AnimatePresence initial={false} mode="popLayout">
