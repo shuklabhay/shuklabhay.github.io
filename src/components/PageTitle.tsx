@@ -45,6 +45,25 @@ export function CheckboxSubtitle<T extends string = string>({
   useEffect(() => {
     if (mode !== "toggle" || !storageKey) return;
     window.localStorage.setItem(storageKey, JSON.stringify(selectedTags));
+
+    const hashParams = new URLSearchParams(window.location.hash.slice(1));
+    const currentTags = hashParams.get("tags");
+    const newTags =
+      selectedTags && selectedTags.length > 0 ? selectedTags.join(",") : "";
+
+    if (currentTags !== newTags) {
+      if (newTags) {
+        hashParams.set("tags", newTags);
+      } else {
+        hashParams.delete("tags");
+      }
+      const newHash = hashParams.toString();
+      history.replaceState(
+        null,
+        "",
+        newHash ? `#${newHash}` : window.location.pathname
+      );
+    }
   }, [selectedTags, mode, storageKey]);
 
   const onClick = (index: number) => {
@@ -78,7 +97,7 @@ export function CheckboxSubtitle<T extends string = string>({
             : false;
         const isHover = hoverFill && hovered === idx;
         const bg = isOn || isHover ? "white" : "transparent";
-        const fg = isOn || isHover ? "#6c79a8" : "white";
+        const fg = isOn || isHover ? "#4d608f" : "white";
         return (
           <button
             key={item.label}

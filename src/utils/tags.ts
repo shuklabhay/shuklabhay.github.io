@@ -2,13 +2,28 @@ export function loadTagsFromStorage<T extends string>(
   storageKey: string,
   items: ReadonlyArray<{ label: T; defaultChecked?: boolean }>,
 ): T[] {
-  const raw =
-    typeof window !== "undefined"
-      ? window.localStorage.getItem(storageKey)
-      : null;
+  if (typeof window === "undefined") {
+    return items.filter((i) => i.defaultChecked).map((i) => i.label);
+  }
+
+  const hashParams = new URLSearchParams(window.location.hash.slice(1));
+  const tagsParam = hashParams.get("tags");
+
+  if (tagsParam) {
+    const urlTags = tagsParam.split(",").map((t) => t.trim());
+    const validLabels = new Set(items.map((i) => i.label));
+    const validTags = urlTags.filter((t) => validLabels.has(t as T));
+    if (validTags.length > 0) return validTags as T[];
+  }
+
+  const raw = window.localStorage.getItem(storageKey);
   if (raw) {
     const arr = JSON.parse(raw);
-    if (Array.isArray(arr)) return arr as T[];
+    if (Array.isArray(arr)) {
+      const validLabels = new Set(items.map((i) => i.label));
+      const validTags = arr.filter((t) => validLabels.has(t as T));
+      if (validTags.length > 0) return validTags as T[];
+    }
   }
   return items.filter((i) => i.defaultChecked).map((i) => i.label);
 }
