@@ -3,30 +3,26 @@
   "type": "array",
   "items": {
     "type": "object",
-    "required": [
-      "title",
-      "broadDescription",
-      "details",
-      "images",
-      "link",
-      "hideOnSite",
-      "hideOnResume"
-    ],
+    "required": ["title", "details", "images", "link", "hide"],
     "properties": {
       "title": { "type": "string" },
-      "broadDescription": { "type": "string" },
+      "startYear": { "type": "string" },
+      "endYear": { "type": "string" },
       "details": {
         "type": "array",
         "items": {
           "type": "object",
-          "required": ["point"],
+          "required": ["point", "tags"],
           "properties": {
-            "point": { "type": "string" }
+            "point": { "type": "string" },
+            "tags": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
           },
           "additionalProperties": false
         }
       },
-      "experience": { "type": "string" },
       "images": {
         "type": "array",
         "items": {
@@ -51,8 +47,7 @@
           "additionalProperties": false
         }
       },
-      "hideOnSite": { "type": "boolean" },
-      "hideOnResume": { "type": "boolean" }
+      "hide": { "type": "boolean" }
     },
     "additionalProperties": false
   }

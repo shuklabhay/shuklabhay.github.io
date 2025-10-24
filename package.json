@@ -8,6 +8,7 @@
     "dev": "vite --host",
     "build": "vite build",
     "preview": "vite preview",
+    "test": "npm run validate-json",
     "lint": "prettier ./ --write",
     "format-check": "prettier ./ --check",
     "validate-json": "npx tsx src/compilers/validateJSONSchemas.ts",

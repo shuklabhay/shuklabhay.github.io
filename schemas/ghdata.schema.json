@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["lastUpdated", "contributions", "linesModified"],
+  "properties": {
+    "lastUpdated": { "type": "string" },
+    "contributions": { "type": "number" },
+    "linesModified": { "type": "number" }
+  },
+  "additionalProperties": false
+}

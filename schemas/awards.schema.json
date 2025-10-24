@@ -11,13 +11,8 @@
       "hide": { "type": "boolean" },
       "tags": {
         "type": "array",
-        "items": { "type": "string", "enum": ["ml", "meche"] }
+        "items": { "type": "string", "enum": ["ml", "meche", "always"] }
       }
-    },
-    "additionalProperties": false
-  }
-}
-
     },
     "additionalProperties": false
   }

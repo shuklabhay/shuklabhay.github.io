@@ -11,8 +11,7 @@
       "ongoing",
       "details",
       "icon",
-      "hideOnSite",
-      "hideOnResume"
+      "hide"
     ],
     "properties": {
       "org": { "type": "string" },
@@ -24,9 +23,13 @@
         "type": "array",
         "items": {
           "type": "object",
-          "required": ["point"],
+          "required": ["point", "tags"],
           "properties": {
-            "point": { "type": "string" }
+            "point": { "type": "string" },
+            "tags": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
           },
           "additionalProperties": false
         }
@@ -45,8 +48,7 @@
           { "type": "null" }
         ]
       },
-      "hideOnSite": { "type": "boolean" },
-      "hideOnResume": { "type": "boolean" }
+      "hide": { "type": "boolean" }
     },
     "additionalProperties": false
   }
