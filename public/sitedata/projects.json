@@ -16,7 +16,7 @@
     ],
     "images": [
       {
-        "src": "https://shuklabhay.github.io/static/projects/voquel/dashboard.png",
+        "src": "/static/projects/voquel/dashboard.png",
         "alt": "Voquel Website Dashboard"
       }
     ],
@@ -26,7 +26,7 @@
         "description": "Demo Page"
       },
       {
-        "url": "https://shuklabhay.github.io/static/projects/voquel/vt_poster.png",
+        "url": "/static/projects/voquel/vt_poster.png",
         "description": "Research Poster"
       }
     ]
@@ -44,11 +44,11 @@
     ],
     "images": [
       {
-        "src": "https://raw.githubusercontent.com/shuklabhay/percgan/refs/heads/main/outputs/kickdrum_comparison.png",
+        "src": "/static/projects/percgan/kickdrum_comparison.png",
         "alt": "Generated stereo kickdrum spectrograms"
       },
       {
-        "src": "https://raw.githubusercontent.com/shuklabhay/percgan/refs/heads/main/outputs/snaredrum_comparison.png",
+        "src": "/static/projects/percgan/snaredrum_comparison.png",
         "alt": "Generated stereo snaredrum spectrograms"
       }
     ],

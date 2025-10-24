@@ -1,12 +1,5 @@
 import PageTitle, { CheckboxSubtitle } from "../components/PageTitle";
-import {
-  useState,
-  useEffect,
-  useMemo,
-  createContext,
-  useContext,
-  ReactNode,
-} from "react";
+import { useState, useMemo, createContext, useContext, ReactNode } from "react";
 import { loadTagsFromStorage } from "../utils/tags";
 import { ABOUT_TAG_ITEMS, Tag, ABOUT_ALLOWED_TAGS } from "../utils/types";
 import ExperienceList from "../components/ExperienceList";
@@ -14,6 +7,12 @@ import ProjectList from "../components/ProjectList";
 import EducationList from "../components/EducationList";
 import AwardList from "../components/AwardList";
 import { selectDesired } from "../utils/tags";
+import ghDataImport from "../../public/sitedata/ghdata.json";
+import contactInfoImport from "../../public/sitedata/contact.json";
+import experienceImport from "../../public/sitedata/experience.json";
+import projectsImport from "../../public/sitedata/projects.json";
+import educationImport from "../../public/sitedata/education.json";
+import awardsImport from "../../public/sitedata/awards.json";
 
 const DataContext = createContext<{
   experience: any[];
@@ -23,68 +22,29 @@ const DataContext = createContext<{
   ghData: { contributions: number; linesModified: number } | null;
   contactInfo: { title: string; link: string }[];
 }>({
-  experience: [],
-  projects: [],
-  education: [],
-  awards: [],
-  ghData: null,
-  contactInfo: [],
+  experience: experienceImport,
+  projects: projectsImport,
+  education: educationImport,
+  awards: awardsImport,
+  ghData: ghDataImport,
+  contactInfo: contactInfoImport,
 });
 
 export function useData() {
   return useContext(DataContext);
 }
 
-let cachedData: any = null;
-const dataPromise = Promise.all([
-  fetch("/sitedata/ghdata.json").then((r) => r.json()),
-  fetch("/sitedata/contact.json").then((r) => r.json()),
-  fetch("/sitedata/experience.json").then((r) => r.json()),
-  fetch("/sitedata/projects.json").then((r) => r.json()),
-  fetch("/sitedata/education.json").then((r) => r.json()),
-  fetch("/sitedata/awards.json").then((r) => r.json()),
-]).then((data) => {
-  cachedData = data;
-  return data;
-});
-
 export function DataProvider({ children }: { children: ReactNode }) {
-  const [ghData, setGhData] = useState<{
-    contributions: number;
-    linesModified: number;
-  } | null>(null);
-  const [contactInfo, setContactInfo] = useState<
-    { title: string; link: string }[]
-  >([]);
-  const [experience, setExperience] = useState([]);
-  const [projects, setProjects] = useState([]);
-  const [education, setEducation] = useState([]);
-  const [awards, setAwards] = useState([]);
-
-  useEffect(() => {
-    if (cachedData) {
-      const [gh, contact, exp, proj, edu, awd] = cachedData;
-      setGhData(gh);
-      setContactInfo(contact);
-      setExperience(exp);
-      setProjects(proj);
-      setEducation(edu);
-      setAwards(awd);
-    } else {
-      dataPromise.then(([gh, contact, exp, proj, edu, awd]) => {
-        setGhData(gh);
-        setContactInfo(contact);
-        setExperience(exp);
-        setProjects(proj);
-        setEducation(edu);
-        setAwards(awd);
-      });
-    }
-  }, []);
-
   return (
     <DataContext.Provider
-      value={{ experience, projects, education, awards, ghData, contactInfo }}
+      value={{
+        experience: experienceImport,
+        projects: projectsImport,
+        education: educationImport,
+        awards: awardsImport,
+        ghData: ghDataImport,
+        contactInfo: contactInfoImport,
+      }}
     >
       {children}
     </DataContext.Provider>
