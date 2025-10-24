@@ -1,10 +1,11 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import BulletPointList from "./BulletPointList";
 import ImageGallery, { LRArrowButton } from "./ImageGallery";
 import type { RichImage, ProjectRecord } from "../utils/types";
 import { BulletPoint, ABOUT_ALLOWED_TAGS } from "../utils/types";
 import { selectDesired, filterItemsByDetailTags } from "../utils/tags";
 import { useData } from "../pages/About";
+import { formatDateRange } from "../utils/dates";
 
 export default function ProjectList({
   selectedTags = [],
@@ -16,6 +17,15 @@ export default function ProjectList({
   const [lightboxImages, setGalleryImages] = useState<RichImage[]>([]);
   const [slideIndex, setSlideIndex] = useState(0);
   const [thumbIndex, setThumbIndex] = useState<Record<number, number>>({});
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 1024,
+  );
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const THUMB_W = 192;
   const THUMB_H = 108;
@@ -26,6 +36,8 @@ export default function ProjectList({
     const filtered = items.filter((i: ProjectRecord) => !i.hide);
     return filterItemsByDetailTags(filtered, desired, ABOUT_ALLOWED_TAGS);
   }, [items, selectedTags]);
+
+  const isSmallScreen = windowWidth < 768;
 
   return (
     <div
@@ -49,8 +61,8 @@ export default function ProjectList({
                 ]
               : null;
           const dateText =
-            item.startYear && item.endYear
-              ? `${item.startYear} – ${item.endYear}`
+            item.startYear && item.endYear !== undefined
+              ? formatDateRange(item.startYear, item.endYear, isSmallScreen)
               : null;
 
           return (

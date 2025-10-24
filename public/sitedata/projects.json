@@ -1,8 +1,8 @@
 [
   {
     "title": "Voquel",
-    "startYear": "January 2025",
-    "endYear": "August 2025",
+    "startYear": "01-2025",
+    "endYear": "08-2025",
     "hide": false,
     "details": [
       {
@@ -33,12 +33,12 @@
   },
   {
     "title": "PercGAN",
-    "startYear": "September 2024",
-    "endYear": "May 2025",
+    "startYear": "09-2024",
+    "endYear": "05-2025",
     "hide": false,
     "details": [
       {
-        "point": "Developed a GAN for high-fidelity stereo percussion generation, improving audio quality 85% and reducing training time 25× compared to baseline models.",
+        "point": "Developed a GAN for high-fidelity stereo percussion generation, improving audio quality 85% and reducing training time 25× compared to baseline models.",
         "tags": ["ml"]
       }
     ],

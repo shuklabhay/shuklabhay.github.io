@@ -2,9 +2,8 @@
   {
     "org": "Stanford Biomedical Informatics Research Center",
     "position": "Gevaert Lab Student Researcher",
-    "startYear": "November 2024",
-    "endYear": "Present",
-    "ongoing": false,
+    "startYear": "11-2024",
+    "endYear": null,
     "details": [
       {
         "point": "Developed computer vision models (CNNs, ViTs) to generate anatomically-plausible synthetic medical images indistinguishable to clinicians (0.5 AUC).",
@@ -24,9 +23,8 @@
   {
     "org": "UCLA COSMOS (Neurobiology + AI Cohort)",
     "position": "Student Researcher",
-    "startYear": "July 2024",
-    "endYear": "August 2024",
-    "ongoing": false,
+    "startYear": "07-2024",
+    "endYear": "08-2024",
     "details": [
       {
         "point": "Investigated neurobiological parallels to machine learning, implementing MLPs to simulate rodent navigational behaviors only using low-level libraries (NumPy).",
@@ -46,9 +44,8 @@
   {
     "org": "FRC Team 604: Quixilver Robotics",
     "position": "Controls Lead, Software Maintainer",
-    "startYear": "June 2022",
-    "endYear": "Present",
-    "ongoing": true,
+    "startYear": "06-2022",
+    "endYear": null,
     "details": [
       {
         "point": "Implemented real-time localization and piece detection computer vision systems for three large-scale, 125lb competition robots, securing 24 awards+event wins.",
@@ -72,12 +69,11 @@
   {
     "org": "Bay Area STEM Academy",
     "position": "Organization Co-President",
-    "startYear": "January 2023",
-    "endYear": "Present",
-    "ongoing": true,
+    "startYear": "01-2023",
+    "endYear": null,
     "details": [
       {
-        "point": "Created STEM curriculum, organized STEM activities, and broadcast TV lectures serving 171K homes in 15 cities. Raised $6K+ for local robotics teams.",
+        "point": "Created STEM curriculum, organized STEM activities, and broadcast TV lectures serving 171K homes in 15 cities. Raised $6K+ for local robotics teams.",
         "tags": ["growth"]
       },
       {
@@ -94,12 +90,11 @@
   {
     "org": "Independent Musical Aliases",
     "position": "Digital Audio Producer",
-    "startYear": "June 2020",
-    "endYear": "Present",
-    "ongoing": true,
+    "startYear": "06-2020",
+    "endYear": null,
     "details": [
       {
-        "point": "Produced 65 full-length original musical works over six years, using automated social media workflows to generate 200,000+ streams across all major platforms.",
+        "point": "Produced 65 full-length original musical works over six years, using automated social media workflows to generate 200,000+ streams across all major platforms.",
         "tags": ["growth"]
       }
     ],
@@ -109,12 +104,11 @@
   {
     "org": "NEXUS Research Club",
     "position": "Co-founder & Chapter Manager",
-    "startYear": "August 2024",
-    "endYear": "Present",
-    "ongoing": true,
+    "startYear": "08-2024",
+    "endYear": null,
     "details": [
       {
-        "point": "Organizes research webinars, symposiums, and conferences; connected 30 students from 8 California high schools with research mentors from MIT, Stanford, Brown & UCLA.",
+        "point": "Organizes research webinars, symposiums, and conferences; connected 30 students from 8 California high schools with research mentors from MIT, Stanford, Brown & UCLA.",
         "tags": ["growth"]
       }
     ],

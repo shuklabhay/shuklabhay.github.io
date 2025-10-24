@@ -1,7 +1,8 @@
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { AwardRecord, AWARD_ALLOWED_TAGS } from "../utils/types";
 import { selectDesired } from "../utils/tags";
 import { useData } from "../pages/About";
+import { formatDate } from "../utils/dates";
 
 export default function AwardList({
   selectedTags = [],
@@ -9,6 +10,15 @@ export default function AwardList({
   selectedTags: string[];
 }) {
   const { awards: items } = useData();
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 1024,
+  );
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const filtered = useMemo(() => {
     const desired = selectDesired(selectedTags, AWARD_ALLOWED_TAGS);
@@ -22,6 +32,8 @@ export default function AwardList({
       return false;
     });
   }, [items, selectedTags]);
+
+  const isSmallScreen = windowWidth < 768;
 
   return (
     <div
@@ -71,7 +83,7 @@ export default function AwardList({
               alignSelf: "start",
             }}
           >
-            {item.receivedYear}
+            {formatDate(item.receivedYear, isSmallScreen)}
           </div>
         </div>
       ))}

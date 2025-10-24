@@ -1,8 +1,9 @@
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import BulletPointList from "./BulletPointList";
 import { ExperienceRecord, ABOUT_ALLOWED_TAGS } from "../utils/types";
 import { selectDesired, filterItemsByDetailTags } from "../utils/tags";
 import { useData } from "../pages/About";
+import { formatDateRange } from "../utils/dates";
 
 export default function ExperienceList({
   selectedTags = [],
@@ -10,6 +11,15 @@ export default function ExperienceList({
   selectedTags: string[];
 }) {
   const { experience: items } = useData();
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 1024,
+  );
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const filtered = useMemo(() => {
     const desired = selectDesired(selectedTags, ABOUT_ALLOWED_TAGS);
@@ -17,6 +27,8 @@ export default function ExperienceList({
     const filtered = items.filter((i: ExperienceRecord) => !i.hide);
     return filterItemsByDetailTags(filtered, desired, ABOUT_ALLOWED_TAGS);
   }, [items, selectedTags]);
+
+  const isSmallScreen = windowWidth < 768;
 
   return (
     <div
@@ -36,7 +48,11 @@ export default function ExperienceList({
       ) : (
         <>
           {filtered.map((item) => {
-            const dateText = `${item.startYear} – ${item.endYear}`;
+            const dateText = formatDateRange(
+              item.startYear,
+              item.endYear ?? "Present",
+              isSmallScreen,
+            );
 
             return (
               <div

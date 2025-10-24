@@ -49,7 +49,7 @@ export type ExperienceRecord = {
   org: string;
   position: string;
   startYear: string;
-  endYear: string | "Present";
+  endYear: string | null;
   ongoing: boolean;
   details: BulletPoint[];
   icon: ExperienceIcon;
@@ -65,8 +65,8 @@ export type ProjectRecord = {
   details: { point: string; tags?: string[] }[];
   images?: RichImage[];
   link?: ProjectLink[];
-  startYear: string;
-  endYear: string | "Present";
+  startYear?: string;
+  endYear?: string | null;
   hide: boolean;
   tags: string[];
   broadDescription?: string;
