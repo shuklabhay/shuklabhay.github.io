@@ -1,14 +1,15 @@
 import PageTitle, { CheckboxSubtitle } from "../components/PageTitle";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { loadTagsFromStorage } from "../utils/tags";
-import { ABOUT_TAG_ITEMS, Tag } from "../utils/types";
+import { ABOUT_TAG_ITEMS, Tag, ABOUT_ALLOWED_TAGS } from "../utils/types";
 import ExperienceList from "../components/ExperienceList";
 import ProjectList from "../components/ProjectList";
 import AwardList from "../components/AwardList";
+import { selectDesired } from "../utils/tags";
 
 export default function About() {
   const [selectedTags, setSelectedTags] = useState<Tag[]>(() =>
-    loadTagsFromStorage<Tag>("about-tags", ABOUT_TAG_ITEMS)
+    loadTagsFromStorage<Tag>("about-tags", ABOUT_TAG_ITEMS),
   );
   const [ghData, setGhData] = useState<{
     contributions: number;
@@ -20,6 +21,11 @@ export default function About() {
       .then((r) => r.json())
       .then((d) => setGhData(d));
   }, []);
+
+  const hasContent = useMemo(() => {
+    const desired = selectDesired(selectedTags, ABOUT_ALLOWED_TAGS);
+    return desired.size > 0;
+  }, [selectedTags]);
 
   return (
     <div>
@@ -43,22 +49,22 @@ export default function About() {
                 <div style={{ marginTop: "2rem" }}>
                   <AwardList selectedTags={selectedTags} />
                 </div>
-                {ghData && (
-                  <div
-                    style={{
-                      marginTop: "0.5rem",
-                      textAlign: "right",
-                      color: "white",
-                      opacity: 0.9,
-                      fontSize: "1rem",
-                      fontStyle: "italic",
-                      paddingBottom: "0.5rem",
-                    }}
-                  >
-                    {ghData.contributions.toLocaleString()} contributions •{" "}
-                    {ghData.linesModified.toLocaleString()} lines modified
-                  </div>
-                )}
+              </div>
+            ) : null}
+            {ghData && hasContent ? (
+              <div
+                style={{
+                  marginTop: "0.5rem",
+                  textAlign: "right",
+                  color: "white",
+                  opacity: 0.9,
+                  fontSize: "1rem",
+                  fontStyle: "italic",
+                  paddingBottom: "0.5rem",
+                }}
+              >
+                {ghData.contributions.toLocaleString()} contributions •{" "}
+                {ghData.linesModified.toLocaleString()} lines modified
               </div>
             ) : null}
           </div>

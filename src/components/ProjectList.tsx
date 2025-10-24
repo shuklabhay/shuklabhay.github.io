@@ -34,12 +34,10 @@ export default function ProjectList({
   }, [items, selectedTags]);
 
   return (
-    <motion.div
-      layout="position"
-      transition={{ layout: { duration: 0.3, ease: [0.2, 0, 0.2, 1] } }}
+    <div
       style={{ display: "grid", rowGap: "1.25rem", paddingRight: "0.25rem" }}
     >
-      <AnimatePresence initial={false} mode="popLayout">
+      <AnimatePresence initial={false}>
         {filtered.length !== 0 &&
           filtered.map((item, idx) => {
             const points: BulletPoint[] = item.details.map((d) => ({
@@ -65,11 +63,10 @@ export default function ProjectList({
             return (
               <motion.div
                 key={item.title}
-                layout="position"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.35, ease: [0.2, 0, 0.2, 1] }}
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.2, ease: "easeInOut" }}
                 style={{
                   display: "grid",
                   gridTemplateColumns:
@@ -78,6 +75,7 @@ export default function ProjectList({
                       : "1fr",
                   columnGap:
                     item.images && item.images.length > 0 ? "0.75rem" : 0,
+                  overflow: "hidden",
                 }}
               >
                 {(item.images?.length ?? 0) > 0 ? (
@@ -248,6 +246,6 @@ export default function ProjectList({
         initialSlideIndex={slideIndex}
         setSlideIndex={setSlideIndex}
       />
-    </motion.div>
+    </div>
   );
 }

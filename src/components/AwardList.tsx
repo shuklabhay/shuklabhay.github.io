@@ -29,24 +29,21 @@ export default function AwardList({
   }, [items, selectedTags]);
 
   return (
-    <motion.div
-      layout="position"
-      transition={{ layout: { duration: 0.3, ease: [0.2, 0, 0.2, 1] } }}
+    <div
       style={{
         display: "grid",
         rowGap: "0.5rem",
         paddingRight: "0.25rem",
       }}
     >
-      <AnimatePresence initial={false} mode="popLayout">
+      <AnimatePresence initial={false}>
         {filtered.map((item) => (
           <motion.div
             key={`${item.title}-${item.receivedYear}`}
-            layout="position"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.35, ease: [0.2, 0, 0.2, 1] }}
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
             style={{
               display: "grid",
               gridTemplateColumns: "minmax(0,1fr) auto",
@@ -55,6 +52,7 @@ export default function AwardList({
               border: "1px solid rgba(255,255,255,0.25)",
               borderRadius: 6,
               padding: "0.5rem 0.75rem",
+              overflow: "hidden",
             }}
           >
             <div style={{ display: "grid", rowGap: 2 }}>
@@ -88,6 +86,6 @@ export default function AwardList({
           </motion.div>
         ))}
       </AnimatePresence>
-    </motion.div>
+    </div>
   );
 }

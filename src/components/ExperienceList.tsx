@@ -24,9 +24,7 @@ export default function ExperienceList({
   }, [items, selectedTags]);
 
   return (
-    <motion.div
-      layout="position"
-      transition={{ layout: { duration: 0.3, ease: [0.2, 0, 0.2, 1] } }}
+    <div
       style={{ display: "grid", rowGap: "1.25rem", paddingRight: "0.25rem" }}
     >
       {filtered.length === 0 ? (
@@ -41,22 +39,22 @@ export default function ExperienceList({
           Select one or more tags.
         </div>
       ) : (
-        <AnimatePresence initial={false} mode="popLayout">
+        <AnimatePresence initial={false}>
           {filtered.map((item) => {
             const dateText = `${item.startYear} – ${item.endYear}`;
 
             return (
               <motion.div
                 key={item.org}
-                layout="position"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.35, ease: [0.2, 0, 0.2, 1] }}
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.2, ease: "easeInOut" }}
                 style={{
                   display: "grid",
                   gridTemplateColumns: item.icon ? "48px 1fr" : "1fr",
                   columnGap: item.icon ? "0.75rem" : 0,
+                  overflow: "hidden",
                 }}
               >
                 {item.icon?.src ? (
@@ -161,6 +159,6 @@ export default function ExperienceList({
           })}
         </AnimatePresence>
       )}
-    </motion.div>
+    </div>
   );
 }
