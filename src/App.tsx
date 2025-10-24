@@ -13,7 +13,7 @@ function RouteBackground() {
         style={{
           position: "fixed",
           inset: 0,
-          backgroundColor: "#4d608f",
+          backgroundColor: "#5a6c99",
           zIndex: -2,
           pointerEvents: "none",
         }}

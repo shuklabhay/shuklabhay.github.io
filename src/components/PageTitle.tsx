@@ -97,7 +97,7 @@ export function CheckboxSubtitle<T extends string = string>({
             : false;
         const isHover = hoverFill && hovered === idx;
         const bg = isOn || isHover ? "white" : "transparent";
-        const fg = isOn || isHover ? "#4d608f" : "white";
+        const fg = isOn || isHover ? "#5a6c99" : "white";
         return (
           <button
             key={item.label}
