@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import PageTitle, { CheckboxSubtitle } from "../components/PageTitle";
 
 interface ContactInfo {
@@ -6,15 +6,18 @@ interface ContactInfo {
   link: string;
 }
 
+const contactPromise = fetch("/sitedata/contact.json").then((res) =>
+  res.json(),
+);
+
 export default function Home() {
   const [contactData, setContactData] = useState<ContactInfo[]>([]);
 
-  useEffect(() => {
-    fetch("/sitedata/contact.json")
-      .then((res) => res.json())
+  useState(() => {
+    contactPromise
       .then((data) => setContactData(data))
       .catch((err) => console.error("Failed to load contact data:", err));
-  }, []);
+  });
 
   const rawEmail = contactData.find((c) => c.title === "Email")?.link;
   const email = `mailto:${rawEmail}`;

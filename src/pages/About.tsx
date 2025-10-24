@@ -1,5 +1,12 @@
 import PageTitle, { CheckboxSubtitle } from "../components/PageTitle";
-import { useState, useEffect, useMemo } from "react";
+import {
+  useState,
+  useEffect,
+  useMemo,
+  createContext,
+  useContext,
+  ReactNode,
+} from "react";
 import { loadTagsFromStorage } from "../utils/tags";
 import { ABOUT_TAG_ITEMS, Tag, ABOUT_ALLOWED_TAGS } from "../utils/types";
 import ExperienceList from "../components/ExperienceList";
@@ -8,10 +15,40 @@ import EducationList from "../components/EducationList";
 import AwardList from "../components/AwardList";
 import { selectDesired } from "../utils/tags";
 
-export default function About() {
-  const [selectedTags, setSelectedTags] = useState<Tag[]>(() =>
-    loadTagsFromStorage<Tag>("about-tags", ABOUT_TAG_ITEMS)
-  );
+const DataContext = createContext<{
+  experience: any[];
+  projects: any[];
+  education: any[];
+  awards: any[];
+  ghData: { contributions: number; linesModified: number } | null;
+  contactInfo: { title: string; link: string }[];
+}>({
+  experience: [],
+  projects: [],
+  education: [],
+  awards: [],
+  ghData: null,
+  contactInfo: [],
+});
+
+export function useData() {
+  return useContext(DataContext);
+}
+
+let cachedData: any = null;
+const dataPromise = Promise.all([
+  fetch("/sitedata/ghdata.json").then((r) => r.json()),
+  fetch("/sitedata/contact.json").then((r) => r.json()),
+  fetch("/sitedata/experience.json").then((r) => r.json()),
+  fetch("/sitedata/projects.json").then((r) => r.json()),
+  fetch("/sitedata/education.json").then((r) => r.json()),
+  fetch("/sitedata/awards.json").then((r) => r.json()),
+]).then((data) => {
+  cachedData = data;
+  return data;
+});
+
+export function DataProvider({ children }: { children: ReactNode }) {
   const [ghData, setGhData] = useState<{
     contributions: number;
     linesModified: number;
@@ -19,15 +56,46 @@ export default function About() {
   const [contactInfo, setContactInfo] = useState<
     { title: string; link: string }[]
   >([]);
+  const [experience, setExperience] = useState([]);
+  const [projects, setProjects] = useState([]);
+  const [education, setEducation] = useState([]);
+  const [awards, setAwards] = useState([]);
 
   useEffect(() => {
-    fetch("/sitedata/ghdata.json")
-      .then((r) => r.json())
-      .then((d) => setGhData(d));
-    fetch("/sitedata/contact.json")
-      .then((r) => r.json())
-      .then((d) => setContactInfo(d));
+    if (cachedData) {
+      const [gh, contact, exp, proj, edu, awd] = cachedData;
+      setGhData(gh);
+      setContactInfo(contact);
+      setExperience(exp);
+      setProjects(proj);
+      setEducation(edu);
+      setAwards(awd);
+    } else {
+      dataPromise.then(([gh, contact, exp, proj, edu, awd]) => {
+        setGhData(gh);
+        setContactInfo(contact);
+        setExperience(exp);
+        setProjects(proj);
+        setEducation(edu);
+        setAwards(awd);
+      });
+    }
   }, []);
+
+  return (
+    <DataContext.Provider
+      value={{ experience, projects, education, awards, ghData, contactInfo }}
+    >
+      {children}
+    </DataContext.Provider>
+  );
+}
+
+export default function About() {
+  const [selectedTags, setSelectedTags] = useState<Tag[]>(() =>
+    loadTagsFromStorage<Tag>("about-tags", ABOUT_TAG_ITEMS),
+  );
+  const { ghData, contactInfo } = useData();
 
   const hasContent = useMemo(() => {
     const desired = selectDesired(selectedTags, ABOUT_ALLOWED_TAGS);

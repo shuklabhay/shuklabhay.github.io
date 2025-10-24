@@ -1,27 +1,21 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import BulletPointList from "./BulletPointList";
 import { ExperienceRecord, ABOUT_ALLOWED_TAGS } from "../utils/types";
 import { selectDesired, filterItemsByDetailTags } from "../utils/tags";
-import { motion, AnimatePresence } from "framer-motion";
-import { listItemVariants, listItemTransition } from "../utils/animation";
+import { useData } from "../pages/About";
 
 export default function ExperienceList({
   selectedTags = [],
 }: {
   selectedTags: string[];
 }) {
-  const [items, setItems] = useState<ExperienceRecord[]>([]);
-
-  useEffect(() => {
-    fetch("/sitedata/experience.json")
-      .then((r) => r.json())
-      .then((d: ExperienceRecord[]) => setItems(d.filter((i) => !i.hide)));
-  }, []);
+  const { experience: items } = useData();
 
   const filtered = useMemo(() => {
     const desired = selectDesired(selectedTags, ABOUT_ALLOWED_TAGS);
     if (desired.size === 0) return [] as ExperienceRecord[];
-    return filterItemsByDetailTags(items, desired, ABOUT_ALLOWED_TAGS);
+    const filtered = items.filter((i: ExperienceRecord) => !i.hide);
+    return filterItemsByDetailTags(filtered, desired, ABOUT_ALLOWED_TAGS);
   }, [items, selectedTags]);
 
   return (
@@ -40,15 +34,13 @@ export default function ExperienceList({
           Select one or more tags.
         </div>
       ) : (
-        <AnimatePresence initial={false}>
+        <>
           {filtered.map((item) => {
             const dateText = `${item.startYear} – ${item.endYear}`;
 
             return (
-              <motion.div
+              <div
                 key={item.org}
-                {...listItemVariants}
-                transition={listItemTransition}
                 style={{
                   display: "grid",
                   gridTemplateColumns: item.icon ? "48px 1fr" : "1fr",
@@ -151,12 +143,14 @@ export default function ExperienceList({
                     {item.org}
                   </div>
 
-                  <BulletPointList points={item.details} />
+                  <div style={{ gridColumn: "1 / 3" }}>
+                    <BulletPointList points={item.details} />
+                  </div>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
-        </AnimatePresence>
+        </>
       )}
     </div>
   );

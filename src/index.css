@@ -1,4 +1,9 @@
-@import "@fontsource/inter";
+@import "@fontsource/inter/latin.css";
+
+@font-face {
+  font-family: "Inter";
+  font-display: swap;
+}
 
 :root {
   --content-width: 100%;
