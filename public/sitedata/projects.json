@@ -91,6 +91,6 @@
         "description": "FRC Robot"
       }
     ],
-    "hide": false
+    "hide": true
   }
 ]
