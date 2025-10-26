@@ -9,7 +9,7 @@ export default function PageTitle({
   subtitle?: React.ReactNode;
 }) {
   return (
-    <div style={{ marginTop: "1.5rem" }}>
+    <div style={{ marginTop: "0.5rem" }}>
       <h1
         style={{
           fontSize: "3rem",
@@ -61,7 +61,7 @@ export function CheckboxSubtitle<T extends string = string>({
       history.replaceState(
         null,
         "",
-        newHash ? `#${newHash}` : window.location.pathname
+        newHash ? `#${newHash}` : window.location.pathname,
       );
     }
   }, [selectedTags, mode, storageKey]);
@@ -76,7 +76,7 @@ export function CheckboxSubtitle<T extends string = string>({
       setSelectedTags((prev) =>
         prev.includes(label)
           ? (prev.filter((t) => t !== label) as T[])
-          : ([...prev, label] as T[])
+          : ([...prev, label] as T[]),
       );
     }
   };
@@ -87,7 +87,7 @@ export function CheckboxSubtitle<T extends string = string>({
         display: "flex",
         gap: "0.5rem",
         marginTop: "0.5rem",
-        marginBottom: "2rem",
+        marginBottom: "4rem",
       }}
     >
       {items.map((item, idx) => {
