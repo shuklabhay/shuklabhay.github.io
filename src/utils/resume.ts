@@ -21,9 +21,7 @@ async function loadJSON<T>(fileName: string): Promise<T> {
   return JSON.parse(raw) as T;
 }
 
-function filterExperience(
-  experience: ExperienceRecord[],
-): ExperienceRecord[] {
+function filterExperience(experience: ExperienceRecord[]): ExperienceRecord[] {
   return filterItemsByDetailTags(
     experience.filter((item) => !item.hide),
     DESIRED_TAGS,
@@ -63,21 +61,15 @@ function filterAwards(awards: AwardRecord[]): AwardRecord[] {
 }
 
 export async function getJSONDataForResume(): Promise<ResumeData> {
-  const [
-    experience,
-    projects,
-    education,
-    awards,
-    contact,
-    skills,
-  ] = await Promise.all([
-    loadJSON<ExperienceRecord[]>("experience.json"),
-    loadJSON<ProjectRecord[]>("projects.json"),
-    loadJSON<EducationRecord[]>("education.json"),
-    loadJSON<AwardRecord[]>("awards.json"),
-    loadJSON<ContactRecord[]>("contact.json"),
-    loadJSON<SkillsRecord>("skills.json"),
-  ]);
+  const [experience, projects, education, awards, contact, skills] =
+    await Promise.all([
+      loadJSON<ExperienceRecord[]>("experience.json"),
+      loadJSON<ProjectRecord[]>("projects.json"),
+      loadJSON<EducationRecord[]>("education.json"),
+      loadJSON<AwardRecord[]>("awards.json"),
+      loadJSON<ContactRecord[]>("contact.json"),
+      loadJSON<SkillsRecord>("skills.json"),
+    ]);
 
   return {
     experience: filterExperience(experience),

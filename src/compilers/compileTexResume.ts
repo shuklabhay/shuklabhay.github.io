@@ -16,17 +16,14 @@ function parseDataToTexTemplate(userData: ResumeData) {
   const e = escapeLatex;
 
   const technicalSkillsList =
-    skills.technical.length > 0
-      ? e(skills.technical.join(", "))
-      : "";
+    skills.technical.length > 0 ? e(skills.technical.join(", ")) : "";
   const otherSkillsList =
     skills.other.length > 0 ? e(skills.other.join(", ")) : "";
 
   const getContactLink = (title: string) => {
     const titleLower = title.toLowerCase();
-    return contact.find(
-      (item) => item.title.toLowerCase() === titleLower,
-    )?.link;
+    return contact.find((item) => item.title.toLowerCase() === titleLower)
+      ?.link;
   };
 
   const email = getContactLink("Email");
@@ -35,16 +32,10 @@ function parseDataToTexTemplate(userData: ResumeData) {
   const website = getContactLink("Website");
 
   const contactSegments = [
-    email
-      ? `\\underline{\\href{mailto:${email}}{${e(email)}}}`
-      : null,
-    linkedIn
-      ? `\\underline{\\href{${linkedIn}}{${e(linkedIn)}}}`
-      : null,
+    email ? `\\underline{\\href{mailto:${email}}{${e(email)}}}` : null,
+    linkedIn ? `\\underline{\\href{${linkedIn}}{${e(linkedIn)}}}` : null,
     github ? `\\underline{\\href{${github}}{${e(github)}}}` : null,
-    website
-      ? `\\underline{\\href{${website}}{${e(website)}}}`
-      : null,
+    website ? `\\underline{\\href{${website}}{${e(website)}}}` : null,
   ].filter(Boolean);
 
   const experienceSection = experience
@@ -58,9 +49,7 @@ function parseDataToTexTemplate(userData: ResumeData) {
 
       return `
   \\begin{rSubsection}{${e(item.org)}}{${timeframe}}{${e(item.position)}}{${location}}
-${item.details
-  .map((detail) => `    \\item ${e(detail.point)}`)
-  .join("\n")}
+${item.details.map((detail) => `    \\item ${e(detail.point)}`).join("\n")}
   \\end{rSubsection>`;
     })
     .filter(Boolean)
@@ -69,9 +58,8 @@ ${item.details
   const projectSection = projects
     .map((project) => {
       if (!project.details || project.details.length === 0) return "";
-      const primaryLink = project.link && project.link.length > 0
-        ? project.link[0]
-        : null;
+      const primaryLink =
+        project.link && project.link.length > 0 ? project.link[0] : null;
       const linkSection = primaryLink
         ? ` - \\textit{\\underline{\\href{${primaryLink.url}}{${e(primaryLink.description)}}}}`
         : "";
@@ -84,9 +72,7 @@ ${item.details
 
       return `
   \\begin{rSubsection}{${e(project.title)}${linkSection}}{${timeframe}}{}{}
-${project.details
-  .map((detail) => `    \\item ${e(detail.point)}`)
-  .join("\n")}
+${project.details.map((detail) => `    \\item ${e(detail.point)}`).join("\n")}
   \\end{rSubsection>`;
     })
     .filter(Boolean)
