@@ -49,12 +49,15 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  background-image: url("/static/landing-1280.webp");
+  background-image: url("/static/landing-1280.avif");
   background-image: image-set(
-    url("/static/landing-640.webp") 1x,
-    url("/static/landing-1280.webp") 1.5x,
-    url("/static/landing-1920.webp") 2x,
-    url("/static/landing.webp") 3x
+    url("/static/landing-640.avif") type("image/avif") 1x,
+    url("/static/landing-1280.avif") type("image/avif") 1.5x,
+    url("/static/landing-1920.avif") type("image/avif") 2x,
+    url("/static/landing-640.webp") type("image/webp") 1x,
+    url("/static/landing-1280.webp") type("image/webp") 1.5x,
+    url("/static/landing-1920.webp") type("image/webp") 2x,
+    url("/static/landing.webp") type("image/webp") 3x
   );
   z-index: -1;
   pointer-events: none;
@@ -64,7 +67,7 @@ body {
 
 @media (min-width: 1600px) {
   .route-background-image {
-    background-image: url("/static/landing-1920.webp");
+    background-image: url("/static/landing-1920.avif");
   }
 }
 
@@ -76,7 +79,7 @@ body {
 
 @media (prefers-reduced-data: reduce) {
   .route-background-image {
-    background-image: url("/static/landing-640.webp");
+    background-image: url("/static/landing-640.avif");
   }
 }
 
