@@ -81,6 +81,7 @@ export default function ExperienceList({
                       <img
                         src={item.icon.src}
                         alt={item.org}
+                        loading="lazy"
                         style={{
                           width: "100%",
                           height: "100%",
@@ -100,6 +101,7 @@ export default function ExperienceList({
                       <img
                         src={item.icon.src}
                         alt={item.org}
+                        loading="lazy"
                         style={{
                           width: "100%",
                           height: "100%",

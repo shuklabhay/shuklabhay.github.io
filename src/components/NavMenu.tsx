@@ -1,66 +1,77 @@
 import { useLocation, Link } from "react-router-dom";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+
+const MENU_ITEMS = [
+  { label: "home", path: "/" },
+  { label: "about", path: "/about" },
+  { label: "blog", path: "/blog" },
+];
 
 export default function NavMenu() {
   const location = useLocation();
-  const menuItems = ["home", "about", "blog"];
+  const activeKey =
+    location.pathname.split("/").filter(Boolean)[0]?.toLowerCase() ?? "home";
   const navRef = useRef<HTMLElement>(null);
-  const [hasAnimated, setHasAnimated] = useState(false);
   const [underlineStyle, setUnderlineStyle] = useState({
     left: 0,
     width: 0,
     opacity: 0,
   });
-
-  const pathSegments = location.pathname.split("/").filter(Boolean);
-  const activeItem = pathSegments[0]?.toLowerCase() ?? "home";
+  const [transitionsEnabled, setTransitionsEnabled] = useState(false);
+  const initialKeyRef = useRef(activeKey);
 
   useLayoutEffect(() => {
-    if (!navRef.current) return;
-    let frame = 0;
-    let timer: number | undefined;
-    const measure = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        if (!navRef.current) return;
-        const activeIndex = menuItems.indexOf(activeItem);
-        const links = navRef.current.querySelectorAll("a");
-        if (!links.length) return;
-        if (activeIndex === -1) {
-          setUnderlineStyle((prev) => ({
-            ...prev,
-            opacity: 0,
-          }));
-          return;
-        }
+    const navEl = navRef.current;
+    if (!navEl) return;
 
-        const el = links[activeIndex] as HTMLElement | undefined;
-        if (!el) return;
+    const links = Array.from(navEl.querySelectorAll("a")) as HTMLElement[];
+    if (!links.length) return;
 
-        setUnderlineStyle({
-          left: el.offsetLeft,
-          width: el.offsetWidth,
-          opacity: 1,
-        });
-      });
+    const updateUnderline = () => {
+      const activeIndex = MENU_ITEMS.findIndex((item) => item.label === activeKey);
+      const activeLink = links[activeIndex];
+
+      if (!activeLink) {
+        setUnderlineStyle((prev) =>
+          prev.opacity === 0 ? prev : { left: 0, width: 0, opacity: 0 }
+        );
+        return;
+      }
+
+      const next = {
+        left: activeLink.offsetLeft,
+        width: activeLink.offsetWidth,
+        opacity: 1,
+      };
+
+      setUnderlineStyle((prev) =>
+        prev.left === next.left && prev.width === next.width && prev.opacity === next.opacity
+          ? prev
+          : next
+      );
     };
 
-    measure();
-    if (!hasAnimated) {
-      timer = window.setTimeout(() => setHasAnimated(true), 50);
-    }
+    updateUnderline();
 
-    const onResize = () => measure();
-    window.addEventListener("resize", onResize);
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(measure).catch(() => {});
-    }
+    const handleResize = () => updateUnderline();
+    window.addEventListener("resize", handleResize);
+
+    const resizeObserver =
+      typeof ResizeObserver === "function" ? new ResizeObserver(updateUnderline) : null;
+    resizeObserver?.observe(navEl);
+    links.forEach((link) => resizeObserver?.observe(link));
+
     return () => {
-      cancelAnimationFrame(frame);
-      if (timer) window.clearTimeout(timer);
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener("resize", handleResize);
+      resizeObserver?.disconnect();
     };
-  }, [activeItem, hasAnimated]);
+  }, [activeKey]);
+
+  useEffect(() => {
+    if (activeKey !== initialKeyRef.current) {
+      setTransitionsEnabled(true);
+    }
+  }, [activeKey]);
 
   return (
     <nav
@@ -74,10 +85,10 @@ export default function NavMenu() {
         paddingBottom: "4px",
       }}
     >
-      {menuItems.map((item) => (
+      {MENU_ITEMS.map(({ label, path }) => (
         <Link
-          key={item}
-          to={item === "home" ? "/" : `/${item.toLowerCase()}`}
+          key={label}
+          to={path}
           style={{
             color: "white",
             textDecoration: "none",
@@ -85,22 +96,22 @@ export default function NavMenu() {
             position: "relative",
           }}
         >
-          {item}
+          {label}
         </Link>
       ))}
       <div
         style={{
           position: "absolute",
-          bottom: "0",
+          bottom: 0,
           left: 0,
           width: `${underlineStyle.width}px`,
           height: "2px",
           backgroundColor: "white",
           transform: `translateX(${underlineStyle.left}px)`,
           opacity: underlineStyle.opacity,
-          transition: hasAnimated
+          transition: transitionsEnabled
             ? "transform 0.3s ease, width 0.3s ease, opacity 0.2s ease"
-            : "none",
+            : "opacity 0.2s ease",
           willChange: "transform, width, opacity",
           pointerEvents: "none",
         }}
