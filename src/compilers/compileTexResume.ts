@@ -50,7 +50,7 @@ function parseDataToTexTemplate(userData: ResumeData) {
       return `
   \\begin{rSubsection}{${e(item.org)}}{${timeframe}}{${e(item.position)}}{${location}}
 ${item.details.map((detail) => `    \\item ${e(detail.point)}`).join("\n")}
-  \\end{rSubsection>`;
+  \\end{rSubsection}`;
     })
     .filter(Boolean)
     .join("\n\n");
@@ -73,7 +73,7 @@ ${item.details.map((detail) => `    \\item ${e(detail.point)}`).join("\n")}
       return `
   \\begin{rSubsection}{${e(project.title)}${linkSection}}{${timeframe}}{}{}
 ${project.details.map((detail) => `    \\item ${e(detail.point)}`).join("\n")}
-  \\end{rSubsection>`;
+  \\end{rSubsection}`;
     })
     .filter(Boolean)
     .join("\n\n");
