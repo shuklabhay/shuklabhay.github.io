@@ -3,11 +3,15 @@
   "type": "array",
   "items": {
     "type": "object",
-    "required": ["title", "details", "images", "link", "hide"],
+    "required": ["title", "details", "images", "link", "hide", "tags"],
     "properties": {
       "title": { "type": "string" },
       "startYear": { "type": "string" },
       "endYear": { "type": "string" },
+      "tags": {
+        "type": "array",
+        "items": { "type": "string" }
+      },
       "details": {
         "type": "array",
         "items": {

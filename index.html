@@ -13,6 +13,10 @@
               return s.replace(/~and~/g, "&");
             })
             .join("?");
+          if (/\.pdf($|\?)/i.test(decoded)) {
+            l.replace(decoded);
+            return;
+          }
           window.history.replaceState(
             null,
             null,

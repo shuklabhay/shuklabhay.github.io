@@ -8,17 +8,17 @@
       "position",
       "startYear",
       "endYear",
-      "ongoing",
       "details",
       "icon",
-      "hide"
+      "hide",
+      "location"
     ],
     "properties": {
       "org": { "type": "string" },
       "position": { "type": "string" },
       "startYear": { "type": "string" },
-      "endYear": { "type": "string" },
-      "ongoing": { "type": "boolean" },
+      "endYear": { "type": ["string", "null"] },
+      "location": { "type": "string" },
       "details": {
         "type": "array",
         "items": {

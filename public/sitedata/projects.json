@@ -4,6 +4,7 @@
     "startYear": "01-2025",
     "endYear": "08-2025",
     "hide": false,
+    "tags": ["ml"],
     "details": [
       {
         "point": "Researched a novel audio translation pipeline using multimodal LLMs & prosodic feature mapping to preserve vocal character and artistic intent.",
@@ -36,6 +37,7 @@
     "startYear": "09-2024",
     "endYear": "03-2025",
     "hide": false,
+    "tags": ["ml"],
     "details": [
       {
         "point": "Developed a GAN for high-fidelity stereo percussion generation, improving audio quality 85% and reducing training time 25× compared to baseline models.",
@@ -61,6 +63,7 @@
   },
   {
     "title": "Domotron",
+    "tags": ["meche"],
     "details": [
       {
         "point": "Developed computer vision & physics-based shot calculation system for precise game piece targeting and intuitive, automated driver assistance.",

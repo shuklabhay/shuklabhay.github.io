@@ -12,7 +12,7 @@ export default function ExperienceList({
 }) {
   const { experience: items } = useData();
   const [windowWidth, setWindowWidth] = useState(
-    typeof window !== "undefined" ? window.innerWidth : 1024,
+    typeof window !== "undefined" ? window.innerWidth : 1024
   );
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export default function ExperienceList({
             const dateText = formatDateRange(
               item.startYear,
               item.endYear ?? "Present",
-              isSmallScreen,
+              isSmallScreen
             );
 
             return (
@@ -61,7 +61,7 @@ export default function ExperienceList({
                   display: "grid",
                   gridTemplateColumns: item.icon ? "48px 1fr" : "1fr",
                   columnGap: item.icon ? "0.75rem" : 0,
-                  overflow: "hidden",
+                  overflow: "visible",
                 }}
               >
                 {item.icon?.src ? (
@@ -135,17 +135,32 @@ export default function ExperienceList({
                   <div
                     style={{
                       gridColumn: 2,
+                      display: "grid",
+                      rowGap: "0.15rem",
                       color: "white",
                       opacity: 0.9,
-                      fontSize: "1rem",
-                      fontStyle: "italic",
-                      alignSelf: "center",
-                      justifySelf: "end",
-                      whiteSpace: "nowrap",
+                      justifyItems: "end",
                       minWidth: "max-content",
                     }}
                   >
-                    {dateText}
+                    <div
+                      style={{
+                        fontSize: "1rem",
+                        fontStyle: "italic",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {dateText}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "0.95rem",
+                        opacity: 0.9,
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {item.location}
+                    </div>
                   </div>
 
                   <div

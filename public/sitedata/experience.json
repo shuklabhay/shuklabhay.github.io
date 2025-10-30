@@ -4,6 +4,7 @@
     "position": "Gevaert Lab Student Researcher",
     "startYear": "11-2024",
     "endYear": null,
+    "location": "San Jose, CA",
     "details": [
       {
         "point": "Developed computer vision models (CNNs, ViTs) to generate anatomically-plausible synthetic medical images indistinguishable to clinicians (0.5 AUC).",
@@ -25,6 +26,7 @@
     "position": "Student Researcher",
     "startYear": "07-2024",
     "endYear": "08-2024",
+    "location": "San Jose, CA",
     "details": [
       {
         "point": "Investigated neurobiological parallels to machine learning, implementing MLPs to simulate rodent navigational behaviors only using low-level libraries (NumPy).",
@@ -46,6 +48,7 @@
     "position": "Controls Lead, Software Maintainer",
     "startYear": "06-2022",
     "endYear": null,
+    "location": "San Jose, CA",
     "details": [
       {
         "point": "Implemented real-time localization and piece detection computer vision systems for three large-scale, 125lb competition robots, securing 24 awards+event wins.",
@@ -71,6 +74,7 @@
     "position": "Organization Co-President",
     "startYear": "01-2023",
     "endYear": null,
+    "location": "San Jose, CA",
     "details": [
       {
         "point": "Created STEM curriculum, organized STEM activities, and broadcast TV lectures serving 171K homes in 15 cities. Raised $6K+ for local robotics teams.",
@@ -92,6 +96,7 @@
     "position": "Digital Audio Producer",
     "startYear": "06-2020",
     "endYear": null,
+    "location": "San Jose, CA",
     "details": [
       {
         "point": "Produced 65 full-length original musical works over six years, using automated social media workflows to generate 200,000+ streams across all major platforms.",
@@ -106,6 +111,7 @@
     "position": "Co-founder & Chapter Manager",
     "startYear": "08-2024",
     "endYear": null,
+    "location": "San Jose, CA",
     "details": [
       {
         "point": "Organizes research webinars, symposiums, and conferences; connected 30 students from 8 California high schools with research mentors from MIT, Stanford, Brown & UCLA.",

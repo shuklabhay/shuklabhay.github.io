@@ -43,17 +43,17 @@ export const BLOG_TAG_ITEMS: BlogTagItems = BLOG_TAGS.map((t) => ({
 }));
 
 // Experience types
-export type BulletPoint = { point: string; tags: string[] };
+export type BulletPoint = { point: string; tags?: string[] };
 export type ExperienceIcon = { src: string; link: string } | null;
 export type ExperienceRecord = {
   org: string;
   position: string;
   startYear: string;
   endYear: string | null;
-  ongoing: boolean;
   details: BulletPoint[];
   icon: ExperienceIcon;
   hide: boolean;
+  location: string;
 };
 
 // Media
@@ -69,5 +69,27 @@ export type ProjectRecord = {
   endYear?: string | null;
   hide: boolean;
   tags: string[];
-  broadDescription?: string;
+};
+
+export type ContactRecord = { title: string; link: string };
+
+export type EducationRecord = {
+  school: string;
+  degree: string;
+  gpa?: string;
+  location: string;
+};
+
+export type SkillsRecord = {
+  technical: string[];
+  other: string[];
+};
+
+export type ResumeData = {
+  experience: ExperienceRecord[];
+  projects: ProjectRecord[];
+  education: EducationRecord[];
+  awards: AwardRecord[];
+  contact: ContactRecord[];
+  skills: SkillsRecord;
 };
