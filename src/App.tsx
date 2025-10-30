@@ -26,27 +26,11 @@ function RouteBackground() {
 
   return (
     <>
+      <div className="route-background-base" />
       <div
+        className="route-background-image"
         style={{
-          position: "fixed",
-          inset: 0,
-          backgroundColor: "#5a6c99",
-          zIndex: -2,
-          pointerEvents: "none",
-        }}
-      />
-      <div
-        style={{
-          position: "fixed",
-          inset: 0,
-          backgroundImage: "url(/static/landing.webp)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
           opacity: isHome ? 1 : 0,
-          transition: "opacity 400ms ease",
-          zIndex: -1,
-          pointerEvents: "none",
-          imageRendering: "auto",
         }}
       />
     </>

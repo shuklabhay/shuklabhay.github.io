@@ -35,6 +35,51 @@ body {
   padding: 0 var(--page-x-padding);
 }
 
+.route-background-base {
+  position: fixed;
+  inset: 0;
+  background-color: #5a6c99;
+  z-index: -2;
+  pointer-events: none;
+}
+
+.route-background-image {
+  position: fixed;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-image: url("/static/landing-1280.webp");
+  background-image: image-set(
+    url("/static/landing-640.webp") 1x,
+    url("/static/landing-1280.webp") 1.5x,
+    url("/static/landing-1920.webp") 2x,
+    url("/static/landing.webp") 3x
+  );
+  z-index: -1;
+  pointer-events: none;
+  will-change: opacity;
+  transition: opacity 400ms ease;
+}
+
+@media (min-width: 1600px) {
+  .route-background-image {
+    background-image: url("/static/landing-1920.webp");
+  }
+}
+
+@media (min-width: 2200px) {
+  .route-background-image {
+    background-image: url("/static/landing.webp");
+  }
+}
+
+@media (prefers-reduced-data: reduce) {
+  .route-background-image {
+    background-image: url("/static/landing-640.webp");
+  }
+}
+
 code {
   font-family:
     source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;

@@ -12,7 +12,7 @@ export default function ExperienceList({
 }) {
   const { experience: items } = useData();
   const [windowWidth, setWindowWidth] = useState(
-    typeof window !== "undefined" ? window.innerWidth : 1024,
+    typeof window !== "undefined" ? window.innerWidth : 1024
   );
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export default function ExperienceList({
             const dateText = formatDateRange(
               item.startYear,
               item.endYear ?? "Present",
-              isSmallScreen,
+              isSmallScreen
             );
 
             return (
