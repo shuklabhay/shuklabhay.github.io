@@ -9,22 +9,46 @@ export default function NavMenu() {
   const [underlineStyle, setUnderlineStyle] = useState({
     left: 0,
     width: 0,
+    opacity: 0,
   });
 
-  const activeItem =
-    location.pathname === "/" ? "home" : location.pathname.slice(1);
+  const pathSegments = location.pathname.split("/").filter(Boolean);
+  const activeItem = pathSegments[0]?.toLowerCase() ?? "home";
 
   useLayoutEffect(() => {
     if (!navRef.current) return;
+    let frame = 0;
+    let timer: number | undefined;
     const measure = () => {
-      const activeIndex = menuItems.indexOf(activeItem);
-      const links = navRef.current!.querySelectorAll("a");
-      const el = links[activeIndex] as HTMLElement | undefined;
-      if (!el) return;
-      setUnderlineStyle({ left: el.offsetLeft, width: el.offsetWidth });
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        if (!navRef.current) return;
+        const activeIndex = menuItems.indexOf(activeItem);
+        const links = navRef.current.querySelectorAll("a");
+        if (!links.length) return;
+        if (activeIndex === -1) {
+          setUnderlineStyle((prev) => ({
+            ...prev,
+            opacity: 0,
+          }));
+          return;
+        }
+
+        const el = links[activeIndex] as HTMLElement | undefined;
+        if (!el) return;
+
+        setUnderlineStyle({
+          left: el.offsetLeft,
+          width: el.offsetWidth,
+          opacity: 1,
+        });
+      });
     };
+
     measure();
-    if (!hasAnimated) setTimeout(() => setHasAnimated(true), 50);
+    if (!hasAnimated) {
+      timer = window.setTimeout(() => setHasAnimated(true), 50);
+    }
 
     const onResize = () => measure();
     window.addEventListener("resize", onResize);
@@ -32,9 +56,11 @@ export default function NavMenu() {
       document.fonts.ready.then(measure).catch(() => {});
     }
     return () => {
+      cancelAnimationFrame(frame);
+      if (timer) window.clearTimeout(timer);
       window.removeEventListener("resize", onResize);
     };
-  }, [activeItem]);
+  }, [activeItem, hasAnimated]);
 
   return (
     <nav
@@ -66,11 +92,17 @@ export default function NavMenu() {
         style={{
           position: "absolute",
           bottom: "0",
-          left: `${underlineStyle.left}px`,
+          left: 0,
           width: `${underlineStyle.width}px`,
           height: "2px",
           backgroundColor: "white",
-          transition: hasAnimated ? "left 0.3s ease, width 0.3s ease" : "none",
+          transform: `translateX(${underlineStyle.left}px)`,
+          opacity: underlineStyle.opacity,
+          transition: hasAnimated
+            ? "transform 0.3s ease, width 0.3s ease, opacity 0.2s ease"
+            : "none",
+          willChange: "transform, width, opacity",
+          pointerEvents: "none",
         }}
       />
     </nav>
