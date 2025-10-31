@@ -116,27 +116,42 @@ export default function ExperienceList({
                   style={{
                     display: "grid",
                     gridTemplateColumns: "1fr auto",
-                    rowGap: "0.25rem",
                     alignItems: "start",
                     columnGap: "1rem",
+                    rowGap: "0.25rem",
                   }}
                 >
-                  <h2
+                  <div
                     style={{
-                      gridColumn: 1,
-                      margin: 0,
-                      color: "white",
-                      fontSize: "1.5rem",
-                      fontWeight: 700,
-                      lineHeight: 1.1,
+                      display: "grid",
+                      rowGap: "0.15rem",
                     }}
                   >
-                    {item.position}
-                  </h2>
+                    <h2
+                      style={{
+                        margin: 0,
+                        color: "white",
+                        fontSize: "1.5rem",
+                        fontWeight: 700,
+                        lineHeight: 1.1,
+                      }}
+                    >
+                      {item.position}
+                    </h2>
+                    <div
+                      style={{
+                        color: "white",
+                        opacity: 0.9,
+                        fontSize: "1.05rem",
+                        lineHeight: 1.2,
+                      }}
+                    >
+                      {item.org}
+                    </div>
+                  </div>
 
                   <div
                     style={{
-                      gridColumn: 2,
                       display: "grid",
                       rowGap: "0.15rem",
                       color: "white",
@@ -168,15 +183,10 @@ export default function ExperienceList({
                   <div
                     style={{
                       gridColumn: "1 / 3",
-                      color: "white",
-                      opacity: 0.9,
-                      fontSize: "1.05rem",
+                      marginTop: "0.35rem",
+                      marginLeft: item.icon ? 0 : "0.0625rem",
                     }}
                   >
-                    {item.org}
-                  </div>
-
-                  <div style={{ gridColumn: "1 / 3" }}>
                     <BulletPointList points={item.details} />
                   </div>
                 </div>
