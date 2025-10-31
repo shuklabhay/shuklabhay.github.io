@@ -51,12 +51,10 @@ body {
   background-position: center;
   background-image: url("/static/landing-1280.avif");
   background-image: image-set(
-    url("/static/landing-640.avif") type("image/avif") 1x,
-    url("/static/landing-1280.avif") type("image/avif") 1.5x,
-    url("/static/landing-1920.avif") type("image/avif") 2x,
-    url("/static/landing-640.webp") type("image/webp") 1x,
-    url("/static/landing-1280.webp") type("image/webp") 1.5x,
-    url("/static/landing-1920.webp") type("image/webp") 2x,
+    url("/static/landing-1280.avif") type("image/avif") 1x,
+    url("/static/landing-1920.avif") type("image/avif") 1.5x,
+    url("/static/landing-1280.webp") type("image/webp") 1x,
+    url("/static/landing-1920.webp") type("image/webp") 1.5x,
     url("/static/landing.webp") type("image/webp") 3x
   );
   z-index: -1;
@@ -79,7 +77,7 @@ body {
 
 @media (prefers-reduced-data: reduce) {
   .route-background-image {
-    background-image: url("/static/landing-640.avif");
+    background-image: url("/static/landing-1280.avif");
   }
 }
 
