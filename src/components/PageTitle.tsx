@@ -73,11 +73,15 @@ export function CheckboxSubtitle<T extends string = string>({
     } else if (mode === "toggle" && setSelectedTags) {
       const label = items[index]?.label;
       if (!label) return;
+      const wasSelected = selectedTags ? selectedTags.includes(label) : false;
       setSelectedTags((prev) =>
         prev.includes(label)
           ? (prev.filter((t) => t !== label) as T[])
           : ([...prev, label] as T[]),
       );
+      if (wasSelected && hoverFill && hovered === index) {
+        setHovered(null);
+      }
     }
   };
 
