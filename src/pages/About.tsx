@@ -1,5 +1,12 @@
 import PageTitle, { CheckboxSubtitle } from "../components/PageTitle";
-import { useState, useMemo, createContext, useContext, ReactNode } from "react";
+import {
+  useState,
+  useMemo,
+  useEffect,
+  createContext,
+  useContext,
+  ReactNode,
+} from "react";
 import { loadTagsFromStorage } from "../utils/tags";
 import { ABOUT_TAG_ITEMS, Tag, ABOUT_ALLOWED_TAGS } from "../utils/types";
 import ExperienceList from "../components/ExperienceList";
@@ -56,6 +63,17 @@ export default function About() {
     loadTagsFromStorage<Tag>("about-tags", ABOUT_TAG_ITEMS),
   );
   const { ghData, contactInfo } = useData();
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 1024,
+  );
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const isSmallScreen = windowWidth < 768;
 
   const hasContent = useMemo(() => {
     const desired = selectDesired(selectedTags, ABOUT_ALLOWED_TAGS);
@@ -93,8 +111,10 @@ export default function About() {
               style={{
                 marginTop: "1rem",
                 display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
+                flexDirection: isSmallScreen ? "column" : "row",
+                justifyContent: isSmallScreen ? "flex-start" : "space-between",
+                alignItems: isSmallScreen ? "flex-start" : "center",
+                gap: isSmallScreen ? "0.5rem" : "1rem",
                 paddingBottom: "0.5rem",
               }}
             >
