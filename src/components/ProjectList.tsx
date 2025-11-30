@@ -71,11 +71,17 @@ export default function ProjectList({
               style={{
                 display: "grid",
                 gridTemplateColumns:
-                  item.images && item.images.length > 0
+                  item.images && item.images.length > 0 && !isSmallScreen
                     ? `${THUMB_W}px 1fr`
                     : "1fr",
                 columnGap:
-                  item.images && item.images.length > 0 ? "0.75rem" : 0,
+                  item.images && item.images.length > 0 && !isSmallScreen
+                    ? "0.75rem"
+                    : 0,
+                rowGap:
+                  item.images && item.images.length > 0 && isSmallScreen
+                    ? "0.5rem"
+                    : 0,
                 overflow: "hidden",
               }}
             >
