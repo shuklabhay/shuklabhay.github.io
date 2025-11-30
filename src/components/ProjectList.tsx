@@ -86,8 +86,13 @@ export default function ProjectList({
               }}
             >
               {(item.images?.length ?? 0) > 0 ? (
-                <div style={{ width: THUMB_W }}>
-                  <div style={{ position: "relative", width: THUMB_W }}>
+                <div style={{ width: isSmallScreen ? "100%" : THUMB_W }}>
+                  <div
+                    style={{
+                      position: "relative",
+                      width: isSmallScreen ? "100%" : THUMB_W,
+                    }}
+                  >
                     <button
                       type="button"
                       onClick={() => {
@@ -96,8 +101,11 @@ export default function ProjectList({
                         setGalleryOpen(true);
                       }}
                       style={{
-                        width: THUMB_W,
-                        height: THUMB_H,
+                        width: isSmallScreen ? "100%" : THUMB_W,
+                        height: isSmallScreen ? "auto" : THUMB_H,
+                        aspectRatio: isSmallScreen
+                          ? `${THUMB_W} / ${THUMB_H}`
+                          : undefined,
                         borderRadius: 6,
                         overflow: "hidden",
                         padding: 0,
