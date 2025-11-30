@@ -65,6 +65,137 @@ export default function ProjectList({
               ? formatDateRange(item.startYear, item.endYear, isSmallScreen)
               : null;
 
+          // Carousel component to reuse in different positions
+          const carouselComponent = (item.images?.length ?? 0) > 0 ? (
+            <div style={{ width: isSmallScreen ? "100%" : THUMB_W }}>
+              <div
+                style={{
+                  position: "relative",
+                  width: isSmallScreen ? "100%" : THUMB_W,
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={() => {
+                    setGalleryImages(images);
+                    setSlideIndex(currentThumb);
+                    setGalleryOpen(true);
+                  }}
+                  style={{
+                    width: isSmallScreen ? "100%" : THUMB_W,
+                    height: isSmallScreen ? "auto" : THUMB_H,
+                    aspectRatio: isSmallScreen
+                      ? `${THUMB_W} / ${THUMB_H}`
+                      : undefined,
+                    borderRadius: 6,
+                    overflow: "hidden",
+                    padding: 0,
+                    border: 0,
+                    cursor: "pointer",
+                    background: "none",
+                    display: "block",
+                  }}
+                >
+                  {currentImage ? (
+                    <img
+                      src={currentImage.src}
+                      alt={currentImage.alt}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        display: "block",
+                      }}
+                    />
+                  ) : null}
+                </button>
+
+                {totalImages > 1 ? (
+                  <>
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "50%",
+                        left: 4,
+                        transform: "translateY(-50%)",
+                        zIndex: 2,
+                      }}
+                    >
+                      <LRArrowButton
+                        direction="left"
+                        onClick={() => {
+                          setThumbIndex((prev) => {
+                            const cur = prev[idx] ?? 0;
+                            const next =
+                              (cur - 1 + totalImages) % totalImages;
+                            return { ...prev, [idx]: next };
+                          });
+                        }}
+                        large={false}
+                      />
+                    </div>
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "50%",
+                        right: 4,
+                        transform: "translateY(-50%)",
+                        zIndex: 2,
+                      }}
+                    >
+                      <LRArrowButton
+                        direction="right"
+                        onClick={() => {
+                          setThumbIndex((prev) => {
+                            const cur = prev[idx] ?? 0;
+                            const next = (cur + 1) % totalImages;
+                            return { ...prev, [idx]: next };
+                          });
+                        }}
+                        large={false}
+                      />
+                    </div>
+                  </>
+                ) : null}
+              </div>
+
+              {item.link && item.link.length > 0 ? (
+                <div
+                  style={{
+                    marginTop: 8,
+                    display: "grid",
+                    rowGap: 8,
+                  }}
+                >
+                  {item.link.map((l: any, i: any) => (
+                    <a
+                      key={i}
+                      href={l.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{
+                        color: "white",
+                        textDecoration: "none",
+                        background: "rgba(255,255,255,0.2)",
+                        border: "1px solid rgba(255,255,255,0.25)",
+                        padding: "0.25rem 0.5rem",
+                        borderRadius: 6,
+                        fontSize: "0.9rem",
+                        lineHeight: 1.1,
+                        display: "block",
+                        width: "100%",
+                        boxSizing: "border-box",
+                        textAlign: "center",
+                      }}
+                    >
+                      {l.description}
+                    </a>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          ) : null;
+
           return (
             <div
               key={item.title}
@@ -78,142 +209,11 @@ export default function ProjectList({
                   item.images && item.images.length > 0 && !isSmallScreen
                     ? "0.75rem"
                     : 0,
-                rowGap:
-                  item.images && item.images.length > 0 && isSmallScreen
-                    ? "0.5rem"
-                    : 0,
                 overflow: "hidden",
               }}
             >
-              {(item.images?.length ?? 0) > 0 ? (
-                <div style={{ width: isSmallScreen ? "100%" : THUMB_W }}>
-                  <div
-                    style={{
-                      position: "relative",
-                      width: isSmallScreen ? "100%" : THUMB_W,
-                    }}
-                  >
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setGalleryImages(images);
-                        setSlideIndex(currentThumb);
-                        setGalleryOpen(true);
-                      }}
-                      style={{
-                        width: isSmallScreen ? "100%" : THUMB_W,
-                        height: isSmallScreen ? "auto" : THUMB_H,
-                        aspectRatio: isSmallScreen
-                          ? `${THUMB_W} / ${THUMB_H}`
-                          : undefined,
-                        borderRadius: 6,
-                        overflow: "hidden",
-                        padding: 0,
-                        border: 0,
-                        cursor: "pointer",
-                        background: "none",
-                        display: "block",
-                      }}
-                    >
-                      {currentImage ? (
-                        <img
-                          src={currentImage.src}
-                          alt={currentImage.alt}
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover",
-                            display: "block",
-                          }}
-                        />
-                      ) : null}
-                    </button>
-
-                    {totalImages > 1 ? (
-                      <>
-                        <div
-                          style={{
-                            position: "absolute",
-                            top: "50%",
-                            left: 4,
-                            transform: "translateY(-50%)",
-                            zIndex: 2,
-                          }}
-                        >
-                          <LRArrowButton
-                            direction="left"
-                            onClick={() => {
-                              setThumbIndex((prev) => {
-                                const cur = prev[idx] ?? 0;
-                                const next =
-                                  (cur - 1 + totalImages) % totalImages;
-                                return { ...prev, [idx]: next };
-                              });
-                            }}
-                            large={false}
-                          />
-                        </div>
-                        <div
-                          style={{
-                            position: "absolute",
-                            top: "50%",
-                            right: 4,
-                            transform: "translateY(-50%)",
-                            zIndex: 2,
-                          }}
-                        >
-                          <LRArrowButton
-                            direction="right"
-                            onClick={() => {
-                              setThumbIndex((prev) => {
-                                const cur = prev[idx] ?? 0;
-                                const next = (cur + 1) % totalImages;
-                                return { ...prev, [idx]: next };
-                              });
-                            }}
-                            large={false}
-                          />
-                        </div>
-                      </>
-                    ) : null}
-                  </div>
-
-                  {item.link && item.link.length > 0 ? (
-                    <div
-                      style={{
-                        marginTop: 8,
-                        display: "grid",
-                        rowGap: 8,
-                      }}
-                    >
-                      {item.link.map((l: any, i: any) => (
-                        <a
-                          key={i}
-                          href={l.url}
-                          target="_blank"
-                          rel="noreferrer"
-                          style={{
-                            color: "white",
-                            textDecoration: "none",
-                            background: "rgba(255,255,255,0.2)",
-                            border: "1px solid rgba(255,255,255,0.25)",
-                            padding: "0.25rem 0.5rem",
-                            borderRadius: 6,
-                            fontSize: "0.9rem",
-                            lineHeight: 1.1,
-                            display: "block",
-                            width: "100%",
-                            boxSizing: "border-box",
-                            textAlign: "center",
-                          }}
-                        >
-                          {l.description}
-                        </a>
-                      ))}
-                    </div>
-                  ) : null}
-                </div>
-              ) : null}
+              {/* Desktop: carousel on left */}
+              {!isSmallScreen && carouselComponent}
 
               <div>
                 <h2
@@ -238,6 +238,13 @@ export default function ProjectList({
                     }}
                   >
                     {dateText}
+                  </div>
+                ) : null}
+
+                {/* Mobile: carousel after title/date, before bullets */}
+                {isSmallScreen && carouselComponent ? (
+                  <div style={{ marginTop: "0.5rem", marginBottom: "0.25rem" }}>
+                    {carouselComponent}
                   </div>
                 ) : null}
 
