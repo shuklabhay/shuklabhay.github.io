@@ -1,6 +1,7 @@
 import { useMemo, useState, useEffect } from "react";
 import BulletPointList from "./BulletPointList";
-import ImageGallery, { LRArrowButton } from "./ImageGallery";
+import ImageGallery from "./ImageGallery";
+import ProjectCarousel from "./ProjectCarousel";
 import type { RichImage, ProjectRecord } from "../utils/types";
 import { BulletPoint, ABOUT_ALLOWED_TAGS } from "../utils/types";
 import { selectDesired, filterItemsByDetailTags } from "../utils/tags";
@@ -54,16 +55,43 @@ export default function ProjectList({
             item.images && item.images.length > 0 ? item.images : [];
           const totalImages = images.length;
           const currentThumb = thumbIndex[idx] ?? 0;
-          const currentImage =
-            item.images && item.images.length > 0
-              ? images[
-                  ((currentThumb % totalImages) + totalImages) % totalImages
-                ]
-              : null;
           const dateText =
             item.startYear && item.endYear !== undefined
               ? formatDateRange(item.startYear, item.endYear, isSmallScreen)
               : null;
+
+          const hasImages = (item.images?.length ?? 0) > 0;
+
+          const carouselComponent = hasImages ? (
+            <ProjectCarousel
+              images={images}
+              currentThumb={currentThumb}
+              totalImages={totalImages}
+              isSmallScreen={isSmallScreen}
+              thumbW={THUMB_W}
+              thumbH={THUMB_H}
+              links={item.link}
+              onImageClick={() => {
+                setGalleryImages(images);
+                setSlideIndex(currentThumb);
+                setGalleryOpen(true);
+              }}
+              onPrevClick={() => {
+                setThumbIndex((prev) => {
+                  const cur = prev[idx] ?? 0;
+                  const next = (cur - 1 + totalImages) % totalImages;
+                  return { ...prev, [idx]: next };
+                });
+              }}
+              onNextClick={() => {
+                setThumbIndex((prev) => {
+                  const cur = prev[idx] ?? 0;
+                  const next = (cur + 1) % totalImages;
+                  return { ...prev, [idx]: next };
+                });
+              }}
+            />
+          ) : null;
 
           return (
             <div
@@ -71,135 +99,17 @@ export default function ProjectList({
               style={{
                 display: "grid",
                 gridTemplateColumns:
-                  item.images && item.images.length > 0
+                  item.images && item.images.length > 0 && !isSmallScreen
                     ? `${THUMB_W}px 1fr`
                     : "1fr",
                 columnGap:
-                  item.images && item.images.length > 0 ? "0.75rem" : 0,
+                  item.images && item.images.length > 0 && !isSmallScreen
+                    ? "0.75rem"
+                    : 0,
                 overflow: "hidden",
               }}
             >
-              {(item.images?.length ?? 0) > 0 ? (
-                <div style={{ width: THUMB_W }}>
-                  <div style={{ position: "relative", width: THUMB_W }}>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setGalleryImages(images);
-                        setSlideIndex(currentThumb);
-                        setGalleryOpen(true);
-                      }}
-                      style={{
-                        width: THUMB_W,
-                        height: THUMB_H,
-                        borderRadius: 6,
-                        overflow: "hidden",
-                        padding: 0,
-                        border: 0,
-                        cursor: "pointer",
-                        background: "none",
-                        display: "block",
-                      }}
-                    >
-                      {currentImage ? (
-                        <img
-                          src={currentImage.src}
-                          alt={currentImage.alt}
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover",
-                            display: "block",
-                          }}
-                        />
-                      ) : null}
-                    </button>
-
-                    {totalImages > 1 ? (
-                      <>
-                        <div
-                          style={{
-                            position: "absolute",
-                            top: "50%",
-                            left: 4,
-                            transform: "translateY(-50%)",
-                            zIndex: 2,
-                          }}
-                        >
-                          <LRArrowButton
-                            direction="left"
-                            onClick={() => {
-                              setThumbIndex((prev) => {
-                                const cur = prev[idx] ?? 0;
-                                const next =
-                                  (cur - 1 + totalImages) % totalImages;
-                                return { ...prev, [idx]: next };
-                              });
-                            }}
-                            large={false}
-                          />
-                        </div>
-                        <div
-                          style={{
-                            position: "absolute",
-                            top: "50%",
-                            right: 4,
-                            transform: "translateY(-50%)",
-                            zIndex: 2,
-                          }}
-                        >
-                          <LRArrowButton
-                            direction="right"
-                            onClick={() => {
-                              setThumbIndex((prev) => {
-                                const cur = prev[idx] ?? 0;
-                                const next = (cur + 1) % totalImages;
-                                return { ...prev, [idx]: next };
-                              });
-                            }}
-                            large={false}
-                          />
-                        </div>
-                      </>
-                    ) : null}
-                  </div>
-
-                  {item.link && item.link.length > 0 ? (
-                    <div
-                      style={{
-                        marginTop: 8,
-                        display: "grid",
-                        rowGap: 8,
-                      }}
-                    >
-                      {item.link.map((l: any, i: any) => (
-                        <a
-                          key={i}
-                          href={l.url}
-                          target="_blank"
-                          rel="noreferrer"
-                          style={{
-                            color: "white",
-                            textDecoration: "none",
-                            background: "rgba(255,255,255,0.2)",
-                            border: "1px solid rgba(255,255,255,0.25)",
-                            padding: "0.25rem 0.5rem",
-                            borderRadius: 6,
-                            fontSize: "0.9rem",
-                            lineHeight: 1.1,
-                            display: "block",
-                            width: "100%",
-                            boxSizing: "border-box",
-                            textAlign: "center",
-                          }}
-                        >
-                          {l.description}
-                        </a>
-                      ))}
-                    </div>
-                  ) : null}
-                </div>
-              ) : null}
+              {!isSmallScreen && carouselComponent}
 
               <div>
                 <h2
@@ -227,7 +137,26 @@ export default function ProjectList({
                   </div>
                 ) : null}
 
-                <div style={{ marginTop: "0.25rem" }}>
+                {isSmallScreen && carouselComponent ? (
+                  <div style={{ marginTop: "0.5rem", marginBottom: "0.25rem" }}>
+                    {carouselComponent}
+                    <hr
+                      style={{
+                        border: "none",
+                        borderTop: "1px solid rgba(255, 255, 255, 0.2)",
+                        margin: "0.5rem 0",
+                      }}
+                    />
+                  </div>
+                ) : null}
+
+                <div
+                  style={{
+                    marginTop: "0.25rem",
+                    marginLeft: "0.5rem",
+                    marginRight: "0.5rem",
+                  }}
+                >
                   <BulletPointList points={points} />
                 </div>
               </div>
