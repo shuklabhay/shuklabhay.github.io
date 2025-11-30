@@ -123,7 +123,7 @@ export default function About() {
                   color: "white",
                   opacity: 0.9,
                   fontSize: "1rem",
-                  textAlign: isSmallScreen ? "center" : "left",
+                  textAlign: "center",
                 }}
               >
                 {contactInfo
@@ -147,7 +147,7 @@ export default function About() {
                           {c.title}
                         </a>
                       )}
-                      {i < arr.length - 1 ? " • " : ""}
+                      {i < arr.length - 1 ? isSmallScreen ? <br /> : " • " : ""}
                     </span>
                   ))}
               </div>
@@ -158,6 +158,7 @@ export default function About() {
                     opacity: 0.9,
                     fontSize: "1rem",
                     fontStyle: "italic",
+                    textAlign: "center",
                   }}
                 >
                   {ghData.contributions.toLocaleString()} contributions •{" "}
