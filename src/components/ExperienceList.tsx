@@ -115,7 +115,7 @@ export default function ExperienceList({
                 <div
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "1fr auto",
+                    gridTemplateColumns: isSmallScreen ? "1fr" : "1fr auto",
                     alignItems: "start",
                     columnGap: "1rem",
                     rowGap: "0.25rem",
@@ -156,15 +156,15 @@ export default function ExperienceList({
                       rowGap: "0.15rem",
                       color: "white",
                       opacity: 0.9,
-                      justifyItems: "end",
-                      minWidth: "max-content",
+                      justifyItems: isSmallScreen ? "start" : "end",
+                      minWidth: isSmallScreen ? undefined : "max-content",
                     }}
                   >
                     <div
                       style={{
                         fontSize: "1rem",
                         fontStyle: "italic",
-                        whiteSpace: "nowrap",
+                        whiteSpace: isSmallScreen ? "normal" : "nowrap",
                       }}
                     >
                       {dateText}
@@ -173,7 +173,7 @@ export default function ExperienceList({
                       style={{
                         fontSize: "0.95rem",
                         opacity: 0.9,
-                        whiteSpace: "nowrap",
+                        whiteSpace: isSmallScreen ? "normal" : "nowrap",
                       }}
                     >
                       {item.location}
@@ -182,7 +182,7 @@ export default function ExperienceList({
 
                   <div
                     style={{
-                      gridColumn: "1 / 3",
+                      gridColumn: isSmallScreen ? "1" : "1 / 3",
                       marginTop: "0.35rem",
                       marginLeft: item.icon ? 0 : "0.0625rem",
                     }}
