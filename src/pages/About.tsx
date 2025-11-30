@@ -112,13 +112,20 @@ export default function About() {
                 marginTop: "1rem",
                 display: "flex",
                 flexDirection: isSmallScreen ? "column" : "row",
-                justifyContent: isSmallScreen ? "flex-start" : "space-between",
-                alignItems: isSmallScreen ? "flex-start" : "center",
+                justifyContent: isSmallScreen ? "center" : "space-between",
+                alignItems: "center",
                 gap: isSmallScreen ? "0.5rem" : "1rem",
                 paddingBottom: "0.5rem",
               }}
             >
-              <div style={{ color: "white", opacity: 0.9, fontSize: "1rem" }}>
+              <div
+                style={{
+                  color: "white",
+                  opacity: 0.9,
+                  fontSize: "1rem",
+                  textAlign: isSmallScreen ? "center" : "left",
+                }}
+              >
                 {contactInfo
                   .filter((c) => c.title !== "Website")
                   .map((c, i, arr) => (
