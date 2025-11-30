@@ -28,12 +28,14 @@ export default function NavMenu() {
     if (!links.length) return;
 
     const updateUnderline = () => {
-      const activeIndex = MENU_ITEMS.findIndex((item) => item.label === activeKey);
+      const activeIndex = MENU_ITEMS.findIndex(
+        (item) => item.label === activeKey,
+      );
       const activeLink = links[activeIndex];
 
       if (!activeLink) {
         setUnderlineStyle((prev) =>
-          prev.opacity === 0 ? prev : { left: 0, width: 0, opacity: 0 }
+          prev.opacity === 0 ? prev : { left: 0, width: 0, opacity: 0 },
         );
         return;
       }
@@ -45,9 +47,11 @@ export default function NavMenu() {
       };
 
       setUnderlineStyle((prev) =>
-        prev.left === next.left && prev.width === next.width && prev.opacity === next.opacity
+        prev.left === next.left &&
+        prev.width === next.width &&
+        prev.opacity === next.opacity
           ? prev
-          : next
+          : next,
       );
     };
 
@@ -57,7 +61,9 @@ export default function NavMenu() {
     window.addEventListener("resize", handleResize);
 
     const resizeObserver =
-      typeof ResizeObserver === "function" ? new ResizeObserver(updateUnderline) : null;
+      typeof ResizeObserver === "function"
+        ? new ResizeObserver(updateUnderline)
+        : null;
     resizeObserver?.observe(navEl);
     links.forEach((link) => resizeObserver?.observe(link));
 
