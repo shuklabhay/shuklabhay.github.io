@@ -11,7 +11,7 @@
     "issuer": "West Coast Products",
     "receivedYear": "11-2024",
     "hide": false,
-    "tags": ["meche"]
+    "tags": ["software"]
   },
   {
     "title": "Milstein Division Winner (5/3500 Internationally)",
@@ -25,6 +25,6 @@
     "issuer": "NextFlex",
     "receivedYear": "04-2024",
     "hide": true,
-    "tags": ["meche"]
+    "tags": ["software"]
   }
 ]

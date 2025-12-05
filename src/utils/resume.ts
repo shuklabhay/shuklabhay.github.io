@@ -13,7 +13,7 @@ import {
 import { filterItemsByDetailTags, parseTags } from "./tags";
 
 const DATA_DIR = path.resolve(process.cwd(), "public", "sitedata");
-const DESIRED_TAGS = new Set(["ml", "meche"]);
+const DESIRED_TAGS = new Set(["ml", "software", "growth"]);
 
 async function loadJSON<T>(fileName: string): Promise<T> {
   const filePath = path.join(DATA_DIR, fileName);

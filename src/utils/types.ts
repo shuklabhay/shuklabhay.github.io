@@ -15,7 +15,7 @@ export type CheckboxItem<T extends string = string> = {
   href?: string;
 };
 
-export const ABOUT_TAGS: readonly Tag[] = ["ML", "MechE", "Growth"];
+export const ABOUT_TAGS: readonly Tag[] = ["ML", "Software", "Growth"];
 export type AboutTagItems = ReadonlyArray<CheckboxItem<Tag>>;
 export const ABOUT_TAG_ITEMS: AboutTagItems = ABOUT_TAGS.map((t) => ({
   label: t,
@@ -34,7 +34,7 @@ export type AwardRecord = {
   tags: string[];
 };
 
-export const AWARD_ALLOWED_TAGS: readonly Tag[] = ["always", "ml", "meche"];
+export const AWARD_ALLOWED_TAGS: readonly Tag[] = ["always", "ml", "software"];
 export const BLOG_TAGS: readonly Tag[] = ["ML", "Life"];
 export type BlogTagItems = ReadonlyArray<CheckboxItem<Tag>>;
 export const BLOG_TAG_ITEMS: BlogTagItems = BLOG_TAGS.map((t) => ({

@@ -7,11 +7,11 @@
     "location": "San Jose, CA",
     "details": [
       {
-        "point": "Developed computer vision models (CNNs, ViTs) to generate anatomically-plausible synthetic medical images indistinguishable to clinicians (0.5 AUC).",
+        "point": "Developed computer vision models (CNNs, ViTs) to generate synthetic medical images indistinguishable to clinicians (0.5 AUC).",
         "tags": ["ml"]
       },
       {
-        "point": "Designed scalable high-throughput Python data pipeline, reducing communication overhead for distributed training on 1.5TB of biomedical images.",
+        "point": "Designed scalable high-throughput Python data pipeline, allowing for distributed training on 1.5TB of biomedical imagery.",
         "tags": ["ml"]
       }
     ],
@@ -29,11 +29,11 @@
     "location": "San Jose, CA",
     "details": [
       {
-        "point": "Investigated neurobiological parallels to machine learning, implementing MLPs to simulate rodent navigational behaviors only using low-level libraries (NumPy).",
+        "point": "Investigated neurobiology & ML parallels; simulated rodent navigational behaviors using MLPs written in low-level libraries (NumPy).",
         "tags": ["ml"]
       },
       {
-        "point": "Developed UCLA campus image geolocation models, organizing campus-wide video data collection efforts and using 1,500+ curated images to fine tune AlexNet.",
+        "point": "Developed UCLA campus image geolocation models, organizing campus-wide video data collection efforts fine tuning AlexNet.",
         "tags": ["ml"]
       }
     ],
@@ -52,14 +52,10 @@
     "details": [
       {
         "point": "Implemented real-time localization and piece detection computer vision systems for three large-scale, 125lb competition robots, securing 24 awards+event wins.",
-        "tags": ["meche"]
+        "tags": ["software"]
       },
       {
-        "point": "Designed several robot components, applying advanced techniques in strategic design and additive manufacturing (TPU, PETG, PLA 3D printing).",
-        "tags": ["meche"]
-      },
-      {
-        "point": "Developed competition data collection infrastructure, powering 200+ users to analyze 1000+ competition matches.",
+        "point": "Developed competition data collection web appliaction allowing 250+ users to collect competition data from 2000+ competition matches.",
         "tags": ["software"]
       }
     ],

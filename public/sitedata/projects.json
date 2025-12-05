@@ -7,11 +7,11 @@
     "tags": ["ml"],
     "details": [
       {
-        "point": "Researched a novel audio translation pipeline using multimodal LLMs & prosodic feature mapping to preserve vocal character and artistic intent.",
+        "point": "Developed AI pipeline for translating music while preserving singing style & emotional nuance.",
         "tags": ["ml"]
       },
       {
-        "point": "Attracted 1M+ organic views by using AI-powered workflows to find trending topics, produce translated topics, and upload with proper author attribution.",
+        "point": "Attracted 1M+ organic views on translated videos using LLM-powered workflows.",
         "tags": ["ml"]
       }
     ],
@@ -40,7 +40,7 @@
     "tags": ["ml"],
     "details": [
       {
-        "point": "Developed a GAN for high-fidelity stereo percussion generation, improving audio quality 85% and reducing training time 25× compared to baseline models.",
+        "point": "Developed GANs for high-fidelity stereo drum sound sample generation, improving audio quality 85% and reducing training time 25× vs WaveGAN/MelGAN.",
         "tags": ["ml"]
       }
     ],
@@ -63,15 +63,15 @@
   },
   {
     "title": "Domotron",
-    "tags": ["meche"],
+    "tags": ["software"],
     "details": [
       {
         "point": "Developed computer vision & physics-based shot calculation system for precise game piece targeting and intuitive, automated driver assistance.",
-        "tags": ["meche"]
+        "tags": ["software"]
       },
       {
         "point": "Designed and implemented a chain-climbing mechanism supporting the entire robot's weight in midair.",
-        "tags": ["meche"]
+        "tags": ["software"]
       }
     ],
     "images": [
