@@ -19,7 +19,7 @@ export const ABOUT_TAGS: readonly Tag[] = ["ML", "Software", "Growth"];
 export type AboutTagItems = ReadonlyArray<CheckboxItem<Tag>>;
 export const ABOUT_TAG_ITEMS: AboutTagItems = ABOUT_TAGS.map((t) => ({
   label: t,
-  defaultChecked: t === "ML",
+  defaultChecked: t === "ML" || t === "Software",
 }));
 export const ABOUT_ALLOWED_TAGS: readonly Tag[] = [
   "always",
