@@ -1,13 +1,11 @@
 import axios, { AxiosResponse } from "axios";
 import { config } from "dotenv";
 import fs from "fs";
-import { GitHubRepo, GitHubRestReturn } from "../utils/types";
+import { GitHubRepo } from "../utils/types";
 
-// Load API key
 config();
 const apiKey = process.env.ACCESS_TOKEN;
 
-// Query wrappers
 async function graphqlQuery(query: string, variables = {}) {
   const response = await fetch("https://api.github.com/graphql", {
     method: "POST",
@@ -24,25 +22,29 @@ async function graphqlQuery(query: string, variables = {}) {
   return data;
 }
 
-async function restQuery(
+async function restQuery<T>(
   extensionPath: string,
-  returnCallback: (
-    response: AxiosResponse<GitHubRestReturn>,
-  ) => GitHubRestReturn,
-) {
+  returnCallback: (response: AxiosResponse<T>) => T,
+): Promise<T | null> {
   return axios
-    .get(`https://api.github.com/${extensionPath}`, {
+    .get<T>(`https://api.github.com/${extensionPath}`, {
       headers: { Authorization: `token ${apiKey}` },
     })
     .then(returnCallback)
-    .catch((error) => {
-      console.error(
-        `Request failed with status code ${error.response ? error.response.status : "unknown"}`,
-      );
+    .catch((error: unknown) => {
+      const status =
+        typeof error === "object" &&
+        error !== null &&
+        "response" in error &&
+        typeof (error as { response?: { status?: number } }).response
+          ?.status === "number"
+          ? (error as { response?: { status?: number } }).response?.status
+          : "unknown";
+      console.error(`Request failed with status code ${status}`);
+      return null;
     });
 }
 
-// Read Github data & write to JSON
 export default async function compileAndWriteGHData() {
   const jsonDataPath = "public/static/sitedata/ghdata.json";
   const jsonData = JSON.parse(fs.readFileSync(jsonDataPath, "utf8"));
@@ -137,36 +139,45 @@ async function getLinesModifiedInRepo(
   repo: { full_name: string },
   username: string,
 ) {
-  const stats = await restQuery(
+  type ContributorWeek = {
+    a: number;
+    d: number;
+  };
+  type ContributorStats = {
+    author: {
+      login: string;
+    } | null;
+    weeks: ContributorWeek[];
+  };
+  const stats = await restQuery<ContributorStats[]>(
     `repos/${repo.full_name}/stats/contributors`,
     (response) => response.data,
   );
   let repoLinesModified = 0;
-  if (Array.isArray(stats)) {
-    for (const contributor of stats) {
-      if (contributor.author && contributor.author.login === username) {
-        for (const week of contributor.weeks) {
-          repoLinesModified += week.a + week.d;
-        }
-        break;
+  if (!stats) return repoLinesModified;
+  for (const contributor of stats) {
+    if (contributor.author && contributor.author.login === username) {
+      for (const week of contributor.weeks) {
+        repoLinesModified += week.a + week.d;
       }
+      break;
     }
   }
   return repoLinesModified;
 }
 
-async function getAllRepos() {
+async function getAllRepos(): Promise<GitHubRepo[]> {
   let allRepos: GitHubRepo[] = [];
   let page = 1;
   const perPage = 100;
 
   while (true) {
-    const repos = await restQuery(
+    const repos: GitHubRepo[] | null = await restQuery<GitHubRepo[]>(
       `user/repos?page=${page}&per_page=${perPage}`,
       (response) => response.data,
     );
 
-    if (repos.length === 0) {
+    if (!repos || repos.length === 0) {
       break;
     }
 
@@ -178,15 +189,15 @@ async function getAllRepos() {
 }
 
 async function getUserInfo() {
-  const returnCallback = (response: { data: { login: string } }) => {
-    return {
-      username: response.data.login,
-    };
-  };
+  const user = await restQuery<{ login: string }>(
+    "user",
+    (response) => response.data,
+  );
+  if (!user) {
+    throw new Error("Unable to fetch authenticated GitHub user.");
+  }
 
-  const { username } = await restQuery("user", returnCallback);
-
-  return { username };
+  return { username: user.login };
 }
 
 await compileAndWriteGHData();

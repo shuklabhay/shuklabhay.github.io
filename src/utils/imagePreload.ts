@@ -35,28 +35,20 @@ export function preloadImage(src: string): Promise<ImagePreloadStatus> {
     };
 
     image.onload = () => {
-      if (typeof image.decode !== "function") {
-        finish("loaded");
-        return;
+      if (typeof image.decode === "function") {
+        image.decode().catch(() => undefined);
       }
-      image.decode().then(
-        () => finish("loaded"),
-        () => finish("loaded"),
-      );
+      finish("loaded");
     };
     image.onerror = () => finish("error");
     image.src = src;
 
     if (image.complete) {
       if (image.naturalWidth > 0) {
-        if (typeof image.decode !== "function") {
-          finish("loaded");
-        } else {
-          image.decode().then(
-            () => finish("loaded"),
-            () => finish("loaded"),
-          );
+        if (typeof image.decode === "function") {
+          image.decode().catch(() => undefined);
         }
+        finish("loaded");
       } else {
         finish("error");
       }

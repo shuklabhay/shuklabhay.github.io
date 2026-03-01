@@ -1,11 +1,10 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
 import { useParams } from "react-router-dom";
 import ImageLightbox from "../components/ImageLightbox";
 import PostBackLink from "../components/PostBackLink";
 import { getPostBySlug } from "../posts";
 import { getImagePreloadStatus, preloadImage } from "../utils/imagePreload";
-import { useRouteRevealBlocker } from "../utils/routeReveal";
 import type { RichImage } from "../utils/types";
 
 const POST_RETURN_FLAG_KEY = "route-from-post-return";
@@ -30,7 +29,6 @@ export default function Post() {
   const [lightboxOpened, setLightboxOpened] = useState(false);
   const [lightboxImage, setLightboxImage] = useState<RichImage | null>(null);
   const [postImages, setPostImages] = useState<RichImage[]>([]);
-  const [isPostContentReady, setIsPostContentReady] = useState(false);
   const [heroLoadState, setHeroLoadState] = useState<{
     src: string;
     status: HeroLoadStatus;
@@ -77,31 +75,6 @@ export default function Post() {
     setPostImages(images);
     setLightboxImage(null);
     setLightboxOpened(false);
-  }, [slug, post]);
-
-  useLayoutEffect(() => {
-    if (!post) {
-      setIsPostContentReady(true);
-      return;
-    }
-
-    setIsPostContentReady(false);
-    let cancelled = false;
-    let frameA = 0;
-    let frameB = 0;
-
-    frameA = window.requestAnimationFrame(() => {
-      frameB = window.requestAnimationFrame(() => {
-        if (cancelled) return;
-        setIsPostContentReady(true);
-      });
-    });
-
-    return () => {
-      cancelled = true;
-      window.cancelAnimationFrame(frameA);
-      window.cancelAnimationFrame(frameB);
-    };
   }, [slug, post]);
 
   useEffect(() => {
@@ -155,9 +128,6 @@ export default function Post() {
   const currentHeroLoadStatus =
     heroLoadState.src === heroImage ? heroLoadState.status : "loading";
   const isHeroLoaded = currentHeroLoadStatus === "loaded";
-  const isPostEntryReady =
-    currentHeroLoadStatus !== "loading" && isPostContentReady;
-  useRouteRevealBlocker("post-entry-ready", !isPostEntryReady);
 
   const onPostContentClick = (event: ReactMouseEvent<HTMLElement>) => {
     const target = event.target;
@@ -185,9 +155,7 @@ export default function Post() {
       <main className="post-page" key={slug}>
         <div
           className={`post-hero${isHeroLoaded ? " post-hero-loaded" : ""}`}
-          style={
-            isHeroLoaded ? { backgroundImage: `url(${heroImage})` } : undefined
-          }
+          style={isHeroLoaded ? { backgroundImage: `url(${heroImage})` } : {}}
           aria-hidden
         />
         <div className="post-title-block">

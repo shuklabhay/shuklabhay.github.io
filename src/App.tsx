@@ -119,7 +119,6 @@ function preloadDecodedImage(src: string) {
 
 async function preloadFirstAvailableImage(candidates: string[]) {
   for (const candidate of candidates) {
-    // Try formats in priority order; stop at the first decoded success.
     if (await preloadDecodedImage(candidate)) return candidate;
   }
   return null;

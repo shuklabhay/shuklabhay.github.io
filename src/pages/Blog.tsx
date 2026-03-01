@@ -130,7 +130,6 @@ export default function Blog() {
   }, [sortField, dateDirection, alphaDirection]);
 
   useEffect(() => {
-    // Warm visible post hero assets so navigation rarely waits on click.
     sortedPosts.slice(0, 6).forEach((post) => {
       void preloadImage(post.cover ?? DEFAULT_POST_HERO_IMAGE);
     });
