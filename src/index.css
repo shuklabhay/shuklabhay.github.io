@@ -291,27 +291,6 @@ code {
   position: relative;
 }
 
-.post-back-link-row {
-  display: flex;
-  align-items: flex-start;
-  padding-top: 1rem;
-  padding-bottom: 4px;
-  margin-top: calc(-3.55rem - env(safe-area-inset-top));
-  margin-bottom: 0.45rem;
-  position: relative;
-  z-index: 12;
-}
-
-.post-back-link {
-  color: white;
-  text-decoration: none;
-  font-size: 1.25rem;
-  line-height: 1.1;
-  display: inline-block;
-  padding-bottom: 0.45rem;
-  margin-bottom: -0.45rem;
-}
-
 .post-date {
   margin: 0.2rem 0 0;
   opacity: 0.9;
@@ -525,11 +504,6 @@ code {
 
   main {
     padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
-  }
-
-  .post-back-link-row {
-    margin-top: calc(-3.55rem - env(safe-area-inset-top));
-    margin-bottom: 0.45rem;
   }
 
   .post-hero {

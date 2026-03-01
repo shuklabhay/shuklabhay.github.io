@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Link, Route, Routes, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import Home from "./pages/Home.tsx";
 import NavMenu from "./components/NavMenu.tsx";
@@ -45,6 +45,48 @@ function RouteBackground() {
   );
 }
 
+function PostBackLink() {
+  const location = useLocation();
+  const isPostRoute =
+    location.pathname.startsWith("/blog/") && location.pathname !== "/blog";
+
+  if (!isPostRoute) return null;
+
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        zIndex: 11,
+        display: "flex",
+        alignItems: "flex-start",
+        paddingTop: "1rem",
+        paddingBottom: "4px",
+        pointerEvents: "none",
+      }}
+    >
+      <Link
+        to="/blog"
+        state={{ fromPost: true }}
+        style={{
+          color: "white",
+          textDecoration: "none",
+          fontSize: "1.25rem",
+          position: "relative",
+          display: "inline-block",
+          lineHeight: 1.1,
+          paddingBottom: "0.45rem",
+          marginBottom: "-0.45rem",
+          pointerEvents: "auto",
+        }}
+      >
+        ← back
+      </Link>
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <BrowserRouter
@@ -54,8 +96,9 @@ export default function App() {
       }}
     >
       <RouteBackground />
-      <div className="container">
+      <div className="container" style={{ position: "relative" }}>
         <NavMenu />
+        <PostBackLink />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />

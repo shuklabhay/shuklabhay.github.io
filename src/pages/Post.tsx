@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ImageGallery from "../components/ImageGallery";
 import { getPostBySlug } from "../posts";
 import type { RichImage } from "../utils/types";
@@ -86,11 +86,6 @@ export default function Post() {
 
   return (
     <main className="post-page post-page-enter" key={slug}>
-      <div className="post-back-link-row">
-        <Link to="/blog" state={{ fromPost: true }} className="post-back-link">
-          ← back
-        </Link>
-      </div>
       <div
         className="post-hero"
         style={{
