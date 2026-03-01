@@ -178,13 +178,13 @@ code {
 .blog-page-return .post-card {
   opacity: 0;
   transform: none;
-  animation: blog-fade 360ms ease forwards;
+  animation: blog-fade 460ms ease forwards;
 }
 
 .surface-page-return {
   opacity: 0;
   transform: none;
-  animation: blog-fade 360ms ease forwards;
+  animation: blog-fade 460ms ease forwards;
 }
 
 .post-card {
@@ -477,15 +477,15 @@ code {
 }
 
 .post-page-enter .post-date {
-  animation-delay: 60ms;
+  animation-delay: 80ms;
 }
 
 .post-page-enter .post-title-block {
-  animation-delay: 140ms;
+  animation-delay: 170ms;
 }
 
 .post-page-enter .post-content {
-  animation-delay: 220ms;
+  animation-delay: 260ms;
 }
 
 @media (prefers-reduced-motion: reduce) {
