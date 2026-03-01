@@ -64,9 +64,13 @@ export default function NavMenu() {
         activeKey !== null &&
         prevActiveKeyRef.current !== activeKey;
 
+      const navRect = navEl.getBoundingClientRect();
+      const linkRect = activeLink.getBoundingClientRect();
+      const snapToPixel = (value: number) => Math.round(value);
+
       const next: UnderlineStyle = {
-        left: activeLink.offsetLeft,
-        width: activeLink.offsetWidth,
+        left: snapToPixel(linkRect.left - navRect.left),
+        width: snapToPixel(linkRect.width),
         opacity: 1,
         mode: isFirstVisibleUnderline ? "none" : shouldMove ? "move" : "fade",
       };
@@ -120,6 +124,7 @@ export default function NavMenu() {
         <Link
           key={label}
           to={path}
+          viewTransition
           state={isPostRoute ? { fromPost: true } : undefined}
           style={{
             color: "white",
@@ -146,7 +151,7 @@ export default function NavMenu() {
           width: `${underlineStyle.width}px`,
           height: "2px",
           backgroundColor: "white",
-          transform: `translateX(${underlineStyle.left}px)`,
+          transform: `translate3d(${underlineStyle.left}px, 0, 0)`,
           opacity: underlineStyle.opacity,
           transition:
             underlineStyle.mode === "move"

@@ -185,10 +185,54 @@ code {
 }
 
 .blog-page-return .post-card {
+  --post-card-fade-base-delay: 120ms;
   opacity: 0;
-  animation: blog-fade 300ms ease forwards;
-  animation-delay: 120ms;
+  animation: blog-fade 420ms ease forwards;
+  animation-delay: calc(
+    var(--post-card-fade-base-delay) + (var(--post-card-fade-index, 0) * 45ms)
+  );
   transform: none;
+}
+
+.blog-page-enter .post-card {
+  --post-card-fade-base-delay: 0ms;
+  opacity: 0;
+  animation: blog-fade 440ms ease forwards;
+  animation-delay: calc(
+    var(--post-card-fade-base-delay) + (var(--post-card-fade-index, 0) * 55ms)
+  );
+  transform: none;
+}
+
+@supports (view-transition-name: blog-posts-list) {
+  .blog-page-enter .posts-list {
+    view-transition-name: blog-posts-list;
+  }
+
+  /* Use view-transition fade for enter so it runs during navigation, not after paint */
+  .blog-page-enter .post-card {
+    opacity: 1;
+    animation: none;
+  }
+
+  ::view-transition-old(blog-posts-list) {
+    animation: none;
+    opacity: 0;
+  }
+
+  ::view-transition-new(blog-posts-list) {
+    animation: blog-posts-list-fade-in 430ms ease both;
+  }
+}
+
+@keyframes blog-posts-list-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .surface-page-return {

@@ -59,6 +59,25 @@ function RouteBackground() {
   );
 }
 
+function AppShell() {
+  const location = useLocation();
+
+  return (
+    <>
+      <RouteBackground />
+      <div className="container" style={{ position: "relative", zIndex: 1 }}>
+        <NavMenu />
+        <Routes location={location}>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<Post />} />
+        </Routes>
+      </div>
+    </>
+  );
+}
+
 export default function App() {
   return (
     <BrowserRouter
@@ -67,16 +86,7 @@ export default function App() {
         v7_relativeSplatPath: true,
       }}
     >
-      <RouteBackground />
-      <div className="container" style={{ position: "relative", zIndex: 1 }}>
-        <NavMenu />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:slug" element={<Post />} />
-        </Routes>
-      </div>
+      <AppShell />
     </BrowserRouter>
   );
 }
