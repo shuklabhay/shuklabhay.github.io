@@ -1,11 +1,7 @@
 import { useState } from "react";
 import PageTitle, { CheckboxSubtitle } from "../components/PageTitle";
 import { useLocation } from "react-router-dom";
-
-interface ContactInfo {
-  title: string;
-  link: string;
-}
+import type { ContactInfo, RouteTransitionState } from "../utils/types";
 
 const contactPromise = fetch("/static/sitedata/contact.json").then((res) =>
   res.json(),
@@ -13,7 +9,7 @@ const contactPromise = fetch("/static/sitedata/contact.json").then((res) =>
 
 export default function Home() {
   const location = useLocation();
-  const transitionState = location.state as { fromPost?: boolean } | null;
+  const transitionState = location.state as RouteTransitionState | null;
   const shouldAnimateSurfaceEntry = transitionState?.fromPost === true;
   const [contactData, setContactData] = useState<ContactInfo[]>([]);
 

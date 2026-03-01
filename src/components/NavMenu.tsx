@@ -2,20 +2,13 @@ import { useLocation, Link, useNavigate } from "react-router-dom";
 import { useLayoutEffect, useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
 import { runWithRootViewTransition } from "../animations";
+import type { UnderlineStyle } from "../utils/types";
 
 const MENU_ITEMS = [
   { label: "home", path: "/" },
   { label: "about", path: "/about" },
   { label: "blog", path: "/blog" },
 ];
-
-type UnderlineMode = "none" | "fade" | "move";
-type UnderlineStyle = {
-  left: number;
-  width: number;
-  opacity: number;
-  mode: UnderlineMode;
-};
 
 export default function NavMenu() {
   const location = useLocation();

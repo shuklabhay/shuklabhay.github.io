@@ -1,9 +1,4 @@
-export type TriangleDirection = "up" | "down" | "left";
-
-type TriangleIconProps = {
-  direction: TriangleDirection;
-  size?: number | string;
-};
+import type { TriangleIconProps } from "./types";
 
 export default function TriangleIcon({
   direction,

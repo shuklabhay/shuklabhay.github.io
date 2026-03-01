@@ -1,10 +1,5 @@
 import { Link } from "react-router-dom";
-import type { PostEntry } from "../posts";
-
-type BlogPostCardProps = {
-  post: PostEntry;
-  formatPostDate: (raw: string) => string;
-};
+import type { BlogPostCardProps } from "../utils/types";
 
 export default function BlogPostCard({
   post,

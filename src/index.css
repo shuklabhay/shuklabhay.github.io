@@ -1,6 +1,7 @@
 :root {
   --content-width: 100%;
   --page-x-padding: 1.125rem;
+  --home-mobile-focal-x: 64%;
   --post-hero-height-desktop: 470px;
   --post-hero-height-mobile: 300px;
   --post-hero-overlap-desktop: 132px;
@@ -507,7 +508,7 @@ code {
   html[data-route="home"],
   body[data-route="home"],
   .route-background-image {
-    background-position: 68% center;
+    background-position: var(--home-mobile-focal-x) center;
   }
 
   main {

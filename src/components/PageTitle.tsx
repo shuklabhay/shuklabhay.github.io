@@ -1,14 +1,8 @@
 import { useEffect, useState } from "react";
-import type { CheckboxItem } from "../utils/types";
+import type { CheckboxSubtitleProps, PageTitleProps } from "../utils/types";
 import TriangleIcon from "../utils/TriangleIcon";
 
-export default function PageTitle({
-  title,
-  subtitle,
-}: {
-  title: string;
-  subtitle?: React.ReactNode;
-}) {
+export default function PageTitle({ title, subtitle }: PageTitleProps) {
   return (
     <div style={{ marginTop: "0.5rem" }}>
       <h1
@@ -36,17 +30,7 @@ export function CheckboxSubtitle<T extends string = string>({
   activeIndexes,
   marginTop = "0.5rem",
   marginBottom = "4rem",
-}: {
-  items: ReadonlyArray<CheckboxItem<T>>;
-  storageKey?: string;
-  mode?: "toggle" | "link";
-  hoverFill?: boolean;
-  selectedTags?: T[];
-  setSelectedTags?: (value: T[] | ((prev: T[]) => T[])) => void;
-  activeIndexes?: number[];
-  marginTop?: string;
-  marginBottom?: string;
-}) {
+}: CheckboxSubtitleProps<T>) {
   const [hovered, setHovered] = useState<number | null>(null);
 
   useEffect(() => {

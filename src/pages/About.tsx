@@ -1,9 +1,10 @@
 import PageTitle from "../components/PageTitle";
 import { useLocation } from "react-router-dom";
+import type { RouteTransitionState } from "../utils/types";
 
 export default function About() {
   const location = useLocation();
-  const transitionState = location.state as { fromPost?: boolean } | null;
+  const transitionState = location.state as RouteTransitionState | null;
   const shouldAnimateSurfaceEntry = transitionState?.fromPost === true;
 
   return (

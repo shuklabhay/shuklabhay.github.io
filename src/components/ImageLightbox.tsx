@@ -1,5 +1,5 @@
 import Lightbox from "react-spring-lightbox";
-import type { RichImage } from "../utils/types";
+import type { ImageLightboxProps } from "../utils/types";
 import type { CSSProperties } from "react";
 
 function CloseIcon({ size = 18 }: { size?: number }) {
@@ -25,11 +25,7 @@ export default function ImageLightbox({
   opened,
   setOpened,
   image,
-}: {
-  opened: boolean;
-  setOpened: (value: React.SetStateAction<boolean>) => void;
-  image: RichImage | null;
-}) {
+}: ImageLightboxProps) {
   const handleClose = () => {
     setOpened(false);
   };

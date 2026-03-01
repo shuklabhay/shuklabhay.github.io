@@ -1,3 +1,5 @@
+import type { ViewTransitionDocument } from "./utils/types";
+
 export function buildRootViewTransitionStyles(
   durationMs: number,
   easing: string,
@@ -37,10 +39,6 @@ export function buildRootViewTransitionStyles(
 }
 `;
 }
-
-type ViewTransitionDocument = Document & {
-  startViewTransition?: (update: () => void | Promise<void>) => unknown;
-};
 
 export function runWithRootViewTransition(update: () => void) {
   const doc = document as ViewTransitionDocument;

@@ -3,15 +3,12 @@ import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import BlogPostCard from "../components/BlogPostCard";
 import { allPosts } from "../posts";
-
-type SortField = "date" | "alpha";
-type SortDirection = "desc" | "asc";
-
-type BlogSortState = {
-  sortField: SortField;
-  dateDirection: SortDirection;
-  alphaDirection: SortDirection;
-};
+import type {
+  BlogSortDirection,
+  BlogSortField,
+  BlogSortState,
+  RouteTransitionState,
+} from "../utils/types";
 
 const BLOG_SORT_STORAGE_KEY = "blog-sort-state-v1";
 const DEFAULT_BLOG_SORT_STATE: BlogSortState = {
@@ -20,11 +17,11 @@ const DEFAULT_BLOG_SORT_STATE: BlogSortState = {
   alphaDirection: "asc",
 };
 
-function isSortField(value: unknown): value is SortField {
+function isSortField(value: unknown): value is BlogSortField {
   return value === "date" || value === "alpha";
 }
 
-function isSortDirection(value: unknown): value is SortDirection {
+function isSortDirection(value: unknown): value is BlogSortDirection {
   return value === "desc" || value === "asc";
 }
 
@@ -65,7 +62,7 @@ function formatPostDate(raw: string) {
 
 export default function Blog() {
   const location = useLocation();
-  const blogTransitionState = location.state as { fromPost?: boolean } | null;
+  const blogTransitionState = location.state as RouteTransitionState | null;
   const shouldAnimateBlogEntry = blogTransitionState?.fromPost === true;
   const [sortState, setSortState] = useState<BlogSortState>(
     readBlogSortStateFromStorage,

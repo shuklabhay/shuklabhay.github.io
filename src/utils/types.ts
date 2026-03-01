@@ -1,98 +1,102 @@
-// GitHub stats
-export type GitHubRestReturn = any;
-export type GitHubRepo = any;
-export interface GHData {
-  lastUpdated: string;
-  contributions: number;
-  linesModified: number;
-}
+import type { ComponentType, ReactNode, SetStateAction } from "react";
 
-// Tags
-export type Tag = string;
-export type CheckboxItem<T extends string = string> = {
+export type GitHubRestReturn = unknown;
+export type GitHubRepo = { full_name: string };
+
+export type RouteTransitionState = {
+  fromPost?: boolean;
+};
+
+export type ContactInfo = {
+  title: string;
+  link: string;
+};
+
+export type RichImage = {
+  src: string;
+  alt: string;
+};
+
+type PostMeta = {
+  slug: string;
+  title: string;
+  date: string;
+  excerpt: string;
+  cover?: string;
+};
+
+export type PostEntry = PostMeta & {
+  Component: ComponentType;
+};
+
+export type PostModule = {
+  default: ComponentType;
+};
+
+export type BlogPostCardProps = {
+  post: PostEntry;
+  formatPostDate: (raw: string) => string;
+};
+
+type CheckboxArrowDirection = "up" | "down";
+
+type CheckboxItem<T extends string = string> = {
   label: T;
   defaultChecked?: boolean;
   href?: string;
   onClick?: () => void;
-  arrowDirection?: "up" | "down";
+  arrowDirection?: CheckboxArrowDirection;
   arrowVisible?: boolean;
 };
 
-export const ABOUT_TAGS: readonly Tag[] = ["ML", "Software", "Growth"];
-export type AboutTagItems = ReadonlyArray<CheckboxItem<Tag>>;
-export const ABOUT_TAG_ITEMS: AboutTagItems = ABOUT_TAGS.map((t) => ({
-  label: t,
-  defaultChecked: t === "ML" || t === "Software",
-}));
-export const ABOUT_ALLOWED_TAGS: readonly Tag[] = [
-  "always",
-  ...ABOUT_TAGS.map((t) => t.toLowerCase()),
-];
-
-export type AwardRecord = {
+export type PageTitleProps = {
   title: string;
-  issuer: string;
-  receivedYear: string;
-  hide: boolean;
-  tags: string[];
+  subtitle?: ReactNode;
 };
 
-export const AWARD_ALLOWED_TAGS: readonly Tag[] = ["always", "ml", "software"];
-export const BLOG_TAGS: readonly Tag[] = ["ML", "Life"];
-export type BlogTagItems = ReadonlyArray<CheckboxItem<Tag>>;
-export const BLOG_TAG_ITEMS: BlogTagItems = BLOG_TAGS.map((t) => ({
-  label: t,
-  defaultChecked: t === "ML" || t === "Life",
-}));
-
-// Experience types
-export type BulletPoint = { point: string; tags?: string[] };
-export type ExperienceIcon = { src: string; link: string } | null;
-export type ExperienceRecord = {
-  org: string;
-  position: string;
-  startYear: string;
-  endYear: string | null;
-  details: BulletPoint[];
-  icon: ExperienceIcon;
-  hide: boolean;
-  location: string;
+export type CheckboxSubtitleProps<T extends string = string> = {
+  items: ReadonlyArray<CheckboxItem<T>>;
+  storageKey?: string;
+  mode?: "toggle" | "link";
+  hoverFill?: boolean;
+  selectedTags?: T[];
+  setSelectedTags?: (value: T[] | ((prev: T[]) => T[])) => void;
+  activeIndexes?: number[];
+  marginTop?: string;
+  marginBottom?: string;
 };
 
-// Media
-export type RichImage = { src: string; alt: string };
+type TriangleDirection = "up" | "down" | "left";
 
-export type ProjectLink = { url: string; description: string };
-export type ProjectRecord = {
-  title: string;
-  details: { point: string; tags?: string[] }[];
-  images?: RichImage[];
-  link?: ProjectLink[];
-  startYear?: string;
-  endYear?: string | null;
-  hide: boolean;
-  tags: string[];
+export type TriangleIconProps = {
+  direction: TriangleDirection;
+  size?: number | string;
 };
 
-export type ContactRecord = { title: string; link: string };
-
-export type EducationRecord = {
-  school: string;
-  degree: string;
-  gpa?: string;
-  location: string;
+export type ImageLightboxProps = {
+  opened: boolean;
+  setOpened: (value: SetStateAction<boolean>) => void;
+  image: RichImage | null;
 };
 
-export type SkillsRecord = {
-  technical: string[];
-  other: string[];
+type UnderlineMode = "none" | "fade" | "move";
+
+export type UnderlineStyle = {
+  left: number;
+  width: number;
+  opacity: number;
+  mode: UnderlineMode;
 };
 
-export type ResumeData = {
-  experience: ExperienceRecord[];
-  projects: ProjectRecord[];
-  education: EducationRecord[];
-  awards: AwardRecord[];
-  contact: ContactRecord[];
-  skills: SkillsRecord;
+export type BlogSortField = "date" | "alpha";
+export type BlogSortDirection = "desc" | "asc";
+
+export type BlogSortState = {
+  sortField: BlogSortField;
+  dateDirection: BlogSortDirection;
+  alphaDirection: BlogSortDirection;
+};
+
+export type ViewTransitionDocument = Document & {
+  startViewTransition?: (update: () => void | Promise<void>) => unknown;
 };

@@ -1,21 +1,5 @@
-import type { ComponentType } from "react";
 import { postsManifest } from "virtual:posts-manifest";
-
-export type PostMeta = {
-  slug: string;
-  title: string;
-  date: string;
-  excerpt: string;
-  cover?: string;
-};
-
-export type PostEntry = PostMeta & {
-  Component: ComponentType;
-};
-
-type PostModule = {
-  default: ComponentType;
-};
+import type { PostEntry, PostModule } from "../utils/types";
 
 const modules = import.meta.glob<PostModule>("./*/index.mdx", { eager: true });
 
