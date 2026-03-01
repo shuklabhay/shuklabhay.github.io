@@ -3,6 +3,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useLayoutEffect,
   useState,
   type ReactNode,
 } from "react";
@@ -20,7 +21,10 @@ export function RouteRevealBoundary({ children }: RouteRevealBoundaryProps) {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    if (blockedIds.size > 0) return;
+    if (blockedIds.size > 0) {
+      setIsReady(false);
+      return;
+    }
     if (typeof window === "undefined") {
       setIsReady(true);
       return;
@@ -67,7 +71,7 @@ export function RouteRevealBoundary({ children }: RouteRevealBoundaryProps) {
 export function useRouteRevealBlocker(id: string, blocked: boolean) {
   const setBlocker = useContext(RouteRevealContext);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!setBlocker) return;
     setBlocker(id, blocked);
     return () => {
