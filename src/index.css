@@ -62,10 +62,7 @@ main {
 
 .route-background-base {
   position: fixed;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100svh;
+  inset: 0;
   background-color: #5a6c99;
   z-index: 0;
   pointer-events: none;
@@ -73,10 +70,7 @@ main {
 
 .route-background-image {
   position: fixed;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100svh;
+  inset: 0;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -101,13 +95,6 @@ main {
 .route-background-image-post-return {
   transition: none;
   animation: blog-fade 512ms ease -40ms forwards;
-}
-
-@supports (height: 100dvh) {
-  .route-background-base,
-  .route-background-image {
-    height: 100dvh;
-  }
 }
 
 @media (min-width: 1600px) {
@@ -150,17 +137,6 @@ code {
   position: relative;
 }
 
-.route-reveal {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.route-reveal-ready {
-  opacity: 1;
-  pointer-events: auto;
-  transition: opacity 375ms ease;
-}
-
 @keyframes blog-fade {
   from {
     opacity: 0;
@@ -169,6 +145,18 @@ code {
   to {
     opacity: 1;
   }
+}
+
+.blog-page-return {
+  opacity: 0;
+  transform: none;
+  animation: blog-fade 525ms ease forwards;
+}
+
+.surface-page-return {
+  opacity: 0;
+  transform: none;
+  animation: blog-fade 525ms ease forwards;
 }
 
 .post-card {
@@ -455,9 +443,37 @@ code {
   max-width: 100%;
 }
 
+.post-page-enter {
+  opacity: 1;
+  transform: none;
+  transition: opacity 375ms ease;
+}
+
+.post-page-await-hero {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.post-page-enter .post-date,
+.post-page-enter .post-title-block,
+.post-page-enter .post-content {
+  opacity: 1;
+  transform: none;
+  animation: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .route-reveal-ready {
+  .post-page-enter {
     transition: none;
+  }
+
+  .post-page-enter .post-date,
+  .post-page-enter .post-title-block,
+  .post-page-enter .post-content {
+    opacity: 1;
+    animation: none;
+    transform: none;
+    filter: none;
   }
 }
 

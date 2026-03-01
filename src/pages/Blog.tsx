@@ -1,16 +1,17 @@
 import PageTitle, { CheckboxSubtitle } from "../components/PageTitle";
 import { useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
 import BlogPostCard from "../components/BlogPostCard";
 import { allPosts } from "../posts";
-import { preloadImage } from "../utils/imagePreload";
 import type {
   BlogSortDirection,
   BlogSortField,
   BlogSortState,
+  RouteTransitionState,
 } from "../utils/types";
 
 const BLOG_SORT_STORAGE_KEY = "blog-sort-state-v1";
-const DEFAULT_POST_HERO_IMAGE = "/static/landing-1280.avif";
+const POST_RETURN_FLAG_KEY = "route-from-post-return";
 const DEFAULT_BLOG_SORT_STATE: BlogSortState = {
   sortField: "date",
   dateDirection: "desc",
@@ -61,6 +62,13 @@ function formatPostDate(raw: string) {
 }
 
 export default function Blog() {
+  const location = useLocation();
+  const blogTransitionState = location.state as RouteTransitionState | null;
+  const fromPostReturnFlag =
+    typeof window !== "undefined" &&
+    window.sessionStorage.getItem(POST_RETURN_FLAG_KEY) === "1";
+  const shouldAnimateBlogEntry =
+    blogTransitionState?.fromPost === true || fromPostReturnFlag;
   const [sortState, setSortState] = useState<BlogSortState>(
     readBlogSortStateFromStorage,
   );
@@ -77,6 +85,14 @@ export default function Blog() {
       } satisfies BlogSortState),
     );
   }, [sortField, dateDirection, alphaDirection]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const clearId = window.setTimeout(() => {
+      window.sessionStorage.removeItem(POST_RETURN_FLAG_KEY);
+    }, 0);
+    return () => window.clearTimeout(clearId);
+  }, []);
 
   const onDateSortClick = () => {
     setSortState((prev) =>
@@ -129,14 +145,10 @@ export default function Blog() {
     return sorted;
   }, [sortField, dateDirection, alphaDirection]);
 
-  useEffect(() => {
-    sortedPosts.slice(0, 6).forEach((post) => {
-      void preloadImage(post.cover ?? DEFAULT_POST_HERO_IMAGE);
-    });
-  }, [sortedPosts]);
-
   return (
-    <main className="blog-page">
+    <main
+      className={`blog-page${shouldAnimateBlogEntry ? " blog-page-return" : ""}`}
+    >
       <div className="blog-page-title">
         <PageTitle title="I write" />
       </div>

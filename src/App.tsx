@@ -6,7 +6,6 @@ import About from "./pages/About.tsx";
 import Blog from "./pages/Blog.tsx";
 import Post from "./pages/Post.tsx";
 import { buildRootViewTransitionStyles } from "./animations";
-import { RouteRevealBoundary } from "./utils/routeReveal";
 import type { RouteTransitionState } from "./utils/types";
 
 const TOP_LEVEL_VIEW_TRANSITION_MS = 128;
@@ -182,7 +181,6 @@ function RouteBackground() {
 
 function AppShell() {
   const location = useLocation();
-  const routeRevealKey = `${location.pathname}${location.search}${location.hash}`;
 
   useEffect(() => {
     const styleId = "app-top-level-view-transition-style";
@@ -218,14 +216,12 @@ function AppShell() {
       <RouteBackground />
       <div className="container" style={{ position: "relative", zIndex: 1 }}>
         <NavMenu />
-        <RouteRevealBoundary key={routeRevealKey}>
-          <Routes location={location}>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blog/:slug" element={<Post />} />
-          </Routes>
-        </RouteRevealBoundary>
+        <Routes location={location}>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<Post />} />
+        </Routes>
       </div>
     </>
   );

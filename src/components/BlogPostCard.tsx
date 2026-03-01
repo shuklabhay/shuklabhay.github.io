@@ -1,18 +1,13 @@
-import { useRef } from "react";
-import type { MouseEvent as ReactMouseEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import type { BlogPostCardProps } from "../utils/types";
-import { getImagePreloadStatus, preloadImage } from "../utils/imagePreload";
+import { preloadImage } from "../utils/imagePreload";
 
 const DEFAULT_POST_HERO_IMAGE = "/static/landing-1280.avif";
-const MAX_CLICK_PRELOAD_WAIT_MS = 140;
 
 export default function BlogPostCard({
   post,
   formatPostDate,
 }: BlogPostCardProps) {
-  const navigate = useNavigate();
-  const isNavigatingRef = useRef(false);
   const postPath = `/blog/${post.slug}`;
   const heroSrc = post.cover ?? DEFAULT_POST_HERO_IMAGE;
 
@@ -20,43 +15,15 @@ export default function BlogPostCard({
     void preloadImage(heroSrc);
   };
 
-  const wait = (ms: number) =>
-    new Promise<void>((resolve) => {
-      window.setTimeout(resolve, ms);
-    });
-
-  const onPostCardClick = async (event: ReactMouseEvent<HTMLAnchorElement>) => {
-    if (event.defaultPrevented) return;
-    if (event.button !== 0) return;
-    if (event.metaKey || event.altKey || event.ctrlKey || event.shiftKey)
-      return;
-    if (isNavigatingRef.current) {
-      event.preventDefault();
-      return;
-    }
-
-    event.preventDefault();
-    isNavigatingRef.current = true;
-    const cachedStatus = getImagePreloadStatus(heroSrc);
-    if (cachedStatus !== "loaded" && cachedStatus !== "error") {
-      await Promise.race([
-        preloadImage(heroSrc).then(() => undefined),
-        wait(MAX_CLICK_PRELOAD_WAIT_MS),
-      ]);
-    }
-    navigate(postPath);
-    isNavigatingRef.current = false;
-  };
-
   return (
     <Link
       to={postPath}
+      viewTransition
       className={`post-card${post.cover ? "" : " post-card-no-cover"}`}
       onMouseEnter={warmHeroImage}
       onFocus={warmHeroImage}
       onTouchStart={warmHeroImage}
       onPointerDown={warmHeroImage}
-      onClick={onPostCardClick}
     >
       {post.cover ? (
         <img src={post.cover} alt={post.title} className="post-card-cover" />
