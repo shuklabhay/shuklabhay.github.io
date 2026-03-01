@@ -183,6 +183,12 @@ function AppShell() {
   const location = useLocation();
 
   useEffect(() => {
+    const isHome = location.pathname === "/";
+    document.documentElement.classList.toggle("route-home", isHome);
+    document.body.classList.toggle("route-home", isHome);
+  }, [location.pathname]);
+
+  useEffect(() => {
     const styleId = "app-top-level-view-transition-style";
     const styleEl =
       document.getElementById(styleId) ??

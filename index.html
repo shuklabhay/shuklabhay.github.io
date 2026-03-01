@@ -24,6 +24,12 @@
           );
         }
       })(window.location);
+
+      (function (l) {
+        if (l.pathname === "/") {
+          document.documentElement.classList.add("route-home");
+        }
+      })(window.location);
     </script>
     <link rel="icon" href="public/favicon.ico" />
     <link rel="apple-touch-icon" href="public/logo192.png" />

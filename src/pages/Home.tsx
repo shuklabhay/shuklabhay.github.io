@@ -21,7 +21,7 @@ export default function Home() {
   const linkedin = contactData.find((c) => c.title === "Linkedin")?.link;
 
   return (
-    <main>
+    <main className="home-main">
       <PageTitle
         title="Hi, I'm Abhay"
         subtitle={

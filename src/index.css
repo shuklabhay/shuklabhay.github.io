@@ -2,6 +2,7 @@
   --content-width: 100%;
   --page-x-padding: 1.125rem;
   --home-mobile-focal-x: 70%;
+  --home-canvas-height-offset: -36px;
   --post-hero-height-desktop: 470px;
   --post-hero-height-mobile: 300px;
   --post-hero-overlap-desktop: 132px;
@@ -41,6 +42,43 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
+html,
+body {
+  background-color: #5a6c99;
+}
+
+html.route-home,
+body.route-home {
+  min-height: calc(100vh + var(--home-canvas-height-offset));
+  min-height: calc(100lvh + var(--home-canvas-height-offset));
+  height: calc(100vh + var(--home-canvas-height-offset));
+  height: calc(100lvh + var(--home-canvas-height-offset));
+}
+
+html.route-home {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-image: image-set(
+    url("/static/landing-1280.avif") type("image/avif") 1x,
+    url("/static/landing-1920.avif") type("image/avif") 1.5x,
+    url("/static/landing-1280.webp") type("image/webp") 1x,
+    url("/static/landing-1920.webp") type("image/webp") 1.5x,
+    url("/static/landing.webp") type("image/webp") 3x
+  );
+}
+
+body.route-home {
+  background-color: transparent;
+  background-image: none;
+  overscroll-behavior-y: auto;
+}
+
+html.route-home .route-background-base,
+html.route-home .route-background-image {
+  display: none;
+}
+
 #root {
   min-height: 100vh;
   min-height: 100lvh;
@@ -62,7 +100,11 @@ main {
 
 .route-background-base {
   position: fixed;
-  inset: 0;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100lvh;
   background-color: #5a6c99;
   z-index: 0;
   pointer-events: none;
@@ -70,7 +112,11 @@ main {
 
 .route-background-image {
   position: fixed;
-  inset: 0;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100lvh;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -611,8 +657,14 @@ code {
     --page-x-padding: 0.625rem;
   }
 
-  .route-background-image {
+  .route-background-image,
+  html.route-home,
+  body.route-home {
     background-position: var(--home-mobile-focal-x) center;
+  }
+
+  .home-main {
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
   }
 
   main {
