@@ -95,7 +95,7 @@ main {
 }
 
 .route-background-image-post-return {
-  animation: blog-fade 512ms ease forwards;
+  animation: blog-fade 512ms ease -40ms forwards;
 }
 
 @supports (height: 100dvh) {
@@ -304,6 +304,7 @@ code {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center 44px;
+  background-color: #5a6c99;
   overflow: hidden;
   isolation: isolate;
   pointer-events: none;
@@ -316,6 +317,7 @@ code {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  opacity: 0;
 }
 
 .post-hero::before {
@@ -346,6 +348,11 @@ code {
       rgba(90, 108, 153, 0) 0%,
       rgba(90, 108, 153, 0.28) 100%
     );
+}
+
+.post-hero-loaded::before,
+.post-hero-loaded::after {
+  opacity: 1;
 }
 
 .post-missing-title {
@@ -447,6 +454,11 @@ code {
   opacity: 0;
   transform: none;
   animation: blog-fade 400ms ease forwards;
+}
+
+.post-page-await-hero {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .post-page-enter .post-date,

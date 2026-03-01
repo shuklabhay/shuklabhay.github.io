@@ -7,6 +7,7 @@ import { getPostBySlug } from "../posts";
 import type { RichImage } from "../utils/types";
 
 const POST_RETURN_FLAG_KEY = "route-from-post-return";
+type HeroLoadStatus = "loading" | "loaded" | "error";
 
 function formatPostDate(raw: string) {
   if (!raw) return "";
@@ -22,10 +23,18 @@ function formatPostDate(raw: string) {
 export default function Post() {
   const { slug = "" } = useParams();
   const post = getPostBySlug(slug);
+  const heroImage = post?.cover ?? "/static/landing-1280.avif";
   const postContentRef = useRef<HTMLElement>(null);
   const [lightboxOpened, setLightboxOpened] = useState(false);
   const [lightboxImage, setLightboxImage] = useState<RichImage | null>(null);
   const [postImages, setPostImages] = useState<RichImage[]>([]);
+  const [heroLoadState, setHeroLoadState] = useState<{
+    src: string;
+    status: HeroLoadStatus;
+  }>({
+    src: heroImage,
+    status: "loading",
+  });
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -62,6 +71,56 @@ export default function Post() {
     setLightboxOpened(false);
   }, [slug, post]);
 
+  useEffect(() => {
+    if (!post) {
+      setHeroLoadState({
+        src: heroImage,
+        status: "loaded",
+      });
+      return;
+    }
+
+    setHeroLoadState({
+      src: heroImage,
+      status: "loading",
+    });
+    let cancelled = false;
+    const preloadImage = new Image();
+
+    const markLoaded = () => {
+      if (cancelled) return;
+      setHeroLoadState({
+        src: heroImage,
+        status: "loaded",
+      });
+    };
+    const markError = () => {
+      if (cancelled) return;
+      setHeroLoadState({
+        src: heroImage,
+        status: "error",
+      });
+    };
+
+    preloadImage.onload = markLoaded;
+    preloadImage.onerror = markError;
+    preloadImage.src = heroImage;
+
+    if (preloadImage.complete) {
+      if (preloadImage.naturalWidth > 0) {
+        markLoaded();
+      } else {
+        markError();
+      }
+    }
+
+    return () => {
+      cancelled = true;
+      preloadImage.onload = null;
+      preloadImage.onerror = null;
+    };
+  }, [heroImage, post]);
+
   if (!post) {
     return (
       <>
@@ -74,7 +133,14 @@ export default function Post() {
   }
 
   const Content = post.Component;
-  const heroImage = post.cover ?? "/static/landing-1280.avif";
+  const currentHeroLoadStatus =
+    heroLoadState.src === heroImage ? heroLoadState.status : "loading";
+  const isHeroLoaded = currentHeroLoadStatus === "loaded";
+  const postPageClassName = `post-page ${
+    currentHeroLoadStatus === "loading"
+      ? "post-page-await-hero"
+      : "post-page-enter"
+  }`;
 
   const onPostContentClick = (event: ReactMouseEvent<HTMLElement>) => {
     const target = event.target;
@@ -99,12 +165,12 @@ export default function Post() {
   return (
     <>
       <PostBackLink />
-      <main className="post-page post-page-enter" key={slug}>
+      <main className={postPageClassName} key={slug}>
         <div
-          className="post-hero"
-          style={{
-            backgroundImage: `url(${heroImage})`,
-          }}
+          className={`post-hero${isHeroLoaded ? " post-hero-loaded" : ""}`}
+          style={
+            isHeroLoaded ? { backgroundImage: `url(${heroImage})` } : undefined
+          }
           aria-hidden
         />
         <div className="post-title-block">

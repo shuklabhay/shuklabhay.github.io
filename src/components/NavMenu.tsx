@@ -54,13 +54,17 @@ export default function NavMenu() {
       "[data-underline-target]",
     ) as HTMLElement | null;
     const linkRect = (underlineTarget ?? activeLink).getBoundingClientRect();
+    const pixelRatio =
+      typeof window === "undefined" ? 1 : window.devicePixelRatio || 1;
+    const snapToDevicePixel = (value: number) =>
+      Math.round(value * pixelRatio) / pixelRatio;
     const shouldMove =
       prevActiveKeyRef.current !== null &&
       prevActiveKeyRef.current !== activeKey;
 
     setUnderlineStyle({
-      left: linkRect.left - navRect.left,
-      width: linkRect.width,
+      left: snapToDevicePixel(linkRect.left - navRect.left),
+      width: snapToDevicePixel(linkRect.width),
       opacity: 1,
       mode: shouldMove ? "move" : "none",
     });
@@ -83,6 +87,16 @@ export default function NavMenu() {
     event.preventDefault();
     const navigateState = isPostRoute ? { fromPost: true } : undefined;
     if (isPostRoute) {
+      navigate(path, { state: navigateState });
+      return;
+    }
+
+    const shouldSkipRootViewTransition =
+      typeof window !== "undefined" &&
+      (window.matchMedia("(pointer: coarse)").matches ||
+        window.matchMedia("(hover: none)").matches ||
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    if (shouldSkipRootViewTransition) {
       navigate(path, { state: navigateState });
       return;
     }
@@ -146,11 +160,10 @@ export default function NavMenu() {
           position: "absolute",
           bottom: 0,
           left: 0,
-          width: "1px",
+          width: `${underlineStyle.width}px`,
           height: "2px",
           backgroundColor: "white",
-          transform: `translate3d(${underlineStyle.left}px, 0, 0) scaleX(${underlineStyle.width})`,
-          transformOrigin: "0 50%",
+          transform: `translate3d(${underlineStyle.left}px, 0, 0)`,
           opacity: underlineStyle.opacity,
           transition:
             underlineStyle.mode === "move"
