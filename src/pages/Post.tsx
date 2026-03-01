@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import ImageLightbox from "../components/ImageLightbox";
 import PostBackLink from "../components/PostBackLink";
 import { getPostBySlug } from "../posts";
+import { getImagePreloadStatus, preloadImage } from "../utils/imagePreload";
 import type { RichImage } from "../utils/types";
 
 const POST_RETURN_FLAG_KEY = "route-from-post-return";
@@ -34,7 +35,12 @@ export default function Post() {
     status: HeroLoadStatus;
   }>({
     src: heroImage,
-    status: "loading",
+    status:
+      getImagePreloadStatus(heroImage) === "loaded"
+        ? "loaded"
+        : getImagePreloadStatus(heroImage) === "error"
+          ? "error"
+          : "loading",
   });
 
   useEffect(() => {
@@ -106,44 +112,30 @@ export default function Post() {
       return;
     }
 
+    const cachedStatus = getImagePreloadStatus(heroImage);
+    if (cachedStatus === "loaded" || cachedStatus === "error") {
+      setHeroLoadState({
+        src: heroImage,
+        status: cachedStatus,
+      });
+      return;
+    }
+
     setHeroLoadState({
       src: heroImage,
       status: "loading",
     });
     let cancelled = false;
-    const preloadImage = new Image();
-
-    const markLoaded = () => {
+    preloadImage(heroImage).then((status) => {
       if (cancelled) return;
       setHeroLoadState({
         src: heroImage,
-        status: "loaded",
+        status,
       });
-    };
-    const markError = () => {
-      if (cancelled) return;
-      setHeroLoadState({
-        src: heroImage,
-        status: "error",
-      });
-    };
-
-    preloadImage.onload = markLoaded;
-    preloadImage.onerror = markError;
-    preloadImage.src = heroImage;
-
-    if (preloadImage.complete) {
-      if (preloadImage.naturalWidth > 0) {
-        markLoaded();
-      } else {
-        markError();
-      }
-    }
+    });
 
     return () => {
       cancelled = true;
-      preloadImage.onload = null;
-      preloadImage.onerror = null;
     };
   }, [heroImage, post]);
 
