@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
 import { useParams } from "react-router-dom";
 import ImageLightbox from "../components/ImageLightbox";
@@ -28,6 +28,7 @@ export default function Post() {
   const [lightboxOpened, setLightboxOpened] = useState(false);
   const [lightboxImage, setLightboxImage] = useState<RichImage | null>(null);
   const [postImages, setPostImages] = useState<RichImage[]>([]);
+  const [isPostContentReady, setIsPostContentReady] = useState(false);
   const [heroLoadState, setHeroLoadState] = useState<{
     src: string;
     status: HeroLoadStatus;
@@ -69,6 +70,31 @@ export default function Post() {
     setPostImages(images);
     setLightboxImage(null);
     setLightboxOpened(false);
+  }, [slug, post]);
+
+  useLayoutEffect(() => {
+    if (!post) {
+      setIsPostContentReady(true);
+      return;
+    }
+
+    setIsPostContentReady(false);
+    let cancelled = false;
+    let frameA = 0;
+    let frameB = 0;
+
+    frameA = window.requestAnimationFrame(() => {
+      frameB = window.requestAnimationFrame(() => {
+        if (cancelled) return;
+        setIsPostContentReady(true);
+      });
+    });
+
+    return () => {
+      cancelled = true;
+      window.cancelAnimationFrame(frameA);
+      window.cancelAnimationFrame(frameB);
+    };
   }, [slug, post]);
 
   useEffect(() => {
@@ -136,10 +162,10 @@ export default function Post() {
   const currentHeroLoadStatus =
     heroLoadState.src === heroImage ? heroLoadState.status : "loading";
   const isHeroLoaded = currentHeroLoadStatus === "loaded";
+  const isPostEntryReady =
+    currentHeroLoadStatus !== "loading" && isPostContentReady;
   const postPageClassName = `post-page ${
-    currentHeroLoadStatus === "loading"
-      ? "post-page-await-hero"
-      : "post-page-enter"
+    isPostEntryReady ? "post-page-enter" : "post-page-await-hero"
   }`;
 
   const onPostContentClick = (event: ReactMouseEvent<HTMLElement>) => {

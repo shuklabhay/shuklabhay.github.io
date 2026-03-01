@@ -158,13 +158,13 @@ code {
 .blog-page-return {
   opacity: 0;
   transform: none;
-  animation: blog-fade 600ms ease forwards;
+  animation: blog-fade 550ms ease forwards;
 }
 
 .surface-page-return {
   opacity: 0;
   transform: none;
-  animation: blog-fade 600ms ease forwards;
+  animation: blog-fade 550ms ease forwards;
 }
 
 .post-card {
@@ -453,7 +453,7 @@ code {
 .post-page-enter {
   opacity: 0;
   transform: none;
-  animation: blog-fade 400ms ease forwards;
+  animation: blog-fade 375ms ease forwards;
 }
 
 .post-page-await-hero {
