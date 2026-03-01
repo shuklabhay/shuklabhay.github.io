@@ -181,12 +181,10 @@ code {
   animation: blog-fade 360ms ease forwards;
 }
 
-.blog-page-return .blog-page-controls {
-  animation-delay: 45ms;
-}
-
-.blog-page-return .post-card {
-  animation-delay: 100ms;
+.surface-page-return {
+  opacity: 0;
+  transform: none;
+  animation: blog-fade 360ms ease forwards;
 }
 
 .post-card {
@@ -465,18 +463,6 @@ code {
   max-width: 100%;
 }
 
-@keyframes post-fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 .post-page-enter .post-date,
 .post-page-enter .post-title-block {
   opacity: 0;
@@ -486,7 +472,8 @@ code {
 
 .post-page-enter .post-content {
   opacity: 0;
-  animation: post-fade-up 420ms ease forwards;
+  transform: none;
+  animation: blog-fade 420ms ease forwards;
 }
 
 .post-page-enter .post-date {

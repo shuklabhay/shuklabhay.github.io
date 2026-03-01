@@ -1,8 +1,15 @@
 import PageTitle from "../components/PageTitle";
+import { useLocation } from "react-router-dom";
 
 export default function About() {
+  const location = useLocation();
+  const transitionState = location.state as { fromPost?: boolean } | null;
+  const shouldAnimateSurfaceEntry = transitionState?.fromPost === true;
+
   return (
-    <main>
+    <main
+      className={shouldAnimateSurfaceEntry ? "surface-page-return" : undefined}
+    >
       <PageTitle
         title="Hi, I'm Abhay"
         subtitle={

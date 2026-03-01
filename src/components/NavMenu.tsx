@@ -1,5 +1,7 @@
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import { useLayoutEffect, useRef, useState } from "react";
+import type { MouseEvent as ReactMouseEvent } from "react";
+import { runWithRootViewTransition } from "../animations";
 
 const MENU_ITEMS = [
   { label: "home", path: "/" },
@@ -17,6 +19,7 @@ type UnderlineStyle = {
 
 export default function NavMenu() {
   const location = useLocation();
+  const navigate = useNavigate();
   const isPostRoute =
     location.pathname.startsWith("/blog/") && location.pathname !== "/blog";
   const activeKey = isPostRoute
@@ -104,6 +107,26 @@ export default function NavMenu() {
     };
   }, [activeKey]);
 
+  const handleTopLevelNavClick = (
+    event: ReactMouseEvent<HTMLAnchorElement>,
+    path: string,
+  ) => {
+    if (isPostRoute) return;
+    if (event.defaultPrevented) return;
+    if (event.button !== 0) return;
+    if (event.metaKey || event.altKey || event.ctrlKey || event.shiftKey)
+      return;
+    if (location.pathname === path) {
+      event.preventDefault();
+      return;
+    }
+
+    event.preventDefault();
+    runWithRootViewTransition(() => {
+      navigate(path);
+    });
+  };
+
   return (
     <nav
       ref={navRef}
@@ -126,6 +149,7 @@ export default function NavMenu() {
           to={path}
           viewTransition={false}
           state={isPostRoute ? { fromPost: true } : undefined}
+          onClick={(event) => handleTopLevelNavClick(event, path)}
           style={{
             color: "white",
             textDecoration: "none",

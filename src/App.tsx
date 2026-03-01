@@ -1,4 +1,9 @@
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import { useEffect, useState } from "react";
 import Home from "./pages/Home.tsx";
 import NavMenu from "./components/NavMenu.tsx";
@@ -6,6 +11,7 @@ import About from "./pages/About.tsx";
 import Blog from "./pages/Blog.tsx";
 import Post from "./pages/Post.tsx";
 import { allPosts } from "./posts";
+import { buildRootViewTransitionStyles } from "./animations";
 
 const imagesToPreload = [
   "/static/icons/bmir.jpeg",
@@ -14,12 +20,9 @@ const imagesToPreload = [
   "/static/icons/basa.jpeg",
   "/static/icons/nexus.jpeg",
 ];
-const TOP_LEVEL_ROUTES = new Set(["/", "/about", "/blog"]);
-const TOP_LEVEL_HALF_FADE_MS = 180;
 
-function isTopLevelRoute(pathname: string) {
-  return TOP_LEVEL_ROUTES.has(pathname);
-}
+const TOP_LEVEL_VIEW_TRANSITION_MS = 360;
+const TOP_LEVEL_VIEW_TRANSITION_EASING = "ease";
 
 function RouteBackground() {
   const location = useLocation();
@@ -72,59 +75,34 @@ function RouteBackground() {
 
 function AppShell() {
   const location = useLocation();
-  const [renderLocation, setRenderLocation] = useState(location);
-  const [surfaceOpacity, setSurfaceOpacity] = useState(1);
 
   useEffect(() => {
-    if (location.pathname === renderLocation.pathname) return;
+    const styleId = "app-top-level-view-transition-style";
+    const styleEl =
+      document.getElementById(styleId) ??
+      Object.assign(document.createElement("style"), { id: styleId });
 
-    const fromTopLevel = isTopLevelRoute(renderLocation.pathname);
-    const toTopLevel = isTopLevelRoute(location.pathname);
+    styleEl.textContent = buildRootViewTransitionStyles(
+      TOP_LEVEL_VIEW_TRANSITION_MS,
+      TOP_LEVEL_VIEW_TRANSITION_EASING,
+    );
 
-    if (fromTopLevel && toTopLevel) {
-      let raf = 0;
-      setSurfaceOpacity(0);
-      const timeout = window.setTimeout(() => {
-        setRenderLocation(location);
-        raf = window.requestAnimationFrame(() => {
-          setSurfaceOpacity(1);
-        });
-      }, TOP_LEVEL_HALF_FADE_MS);
-
-      return () => {
-        window.clearTimeout(timeout);
-        window.cancelAnimationFrame(raf);
-      };
+    if (!styleEl.parentNode) {
+      document.head.appendChild(styleEl);
     }
-
-    setRenderLocation(location);
-    setSurfaceOpacity(1);
-  }, [location, renderLocation.pathname]);
+  }, []);
 
   return (
     <>
       <RouteBackground />
       <div className="container" style={{ position: "relative", zIndex: 1 }}>
         <NavMenu />
-        <div
-          style={{
-            opacity:
-              isTopLevelRoute(renderLocation.pathname) && isTopLevelRoute(location.pathname)
-                ? surfaceOpacity
-                : 1,
-            transition:
-              isTopLevelRoute(renderLocation.pathname) && isTopLevelRoute(location.pathname)
-                ? `opacity ${TOP_LEVEL_HALF_FADE_MS}ms ease`
-                : "none",
-          }}
-        >
-          <Routes location={renderLocation}>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blog/:slug" element={<Post />} />
-          </Routes>
-        </div>
+        <Routes location={location}>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<Post />} />
+        </Routes>
       </div>
     </>
   );
