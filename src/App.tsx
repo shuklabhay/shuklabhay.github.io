@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Home from "./pages/Home.tsx";
 import NavMenu from "./components/NavMenu.tsx";
 import About from "./pages/About.tsx";
@@ -17,13 +17,11 @@ const imagesToPreload = [
 ];
 
 const TOP_LEVEL_VIEW_TRANSITION_MS = 360;
-const TOP_LEVEL_VIEW_TRANSITION_EASING = "ease";
+const TOP_LEVEL_VIEW_TRANSITION_EASING = "linear";
 
 function RouteBackground() {
   const location = useLocation();
   const isHome = location.pathname === "/";
-  const [backgroundTransitionEnabled, setBackgroundTransitionEnabled] =
-    useState(false);
 
   useEffect(() => {
     const postCoversToPreload = allPosts
@@ -36,24 +34,6 @@ function RouteBackground() {
     });
   }, []);
 
-  useEffect(() => {
-    document.body.dataset.route = isHome ? "home" : "surface";
-    document.documentElement.dataset.route = isHome ? "home" : "surface";
-    return () => {
-      delete document.body.dataset.route;
-      delete document.documentElement.dataset.route;
-    };
-  }, [isHome]);
-
-  useEffect(() => {
-    const frame = window.requestAnimationFrame(() => {
-      setBackgroundTransitionEnabled(true);
-    });
-    return () => {
-      window.cancelAnimationFrame(frame);
-    };
-  }, []);
-
   return (
     <>
       <div className="route-background-base" />
@@ -61,7 +41,6 @@ function RouteBackground() {
         className="route-background-image"
         style={{
           opacity: isHome ? 1 : 0,
-          transition: backgroundTransitionEnabled ? undefined : "none",
         }}
       />
     </>
