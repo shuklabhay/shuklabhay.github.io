@@ -1,5 +1,6 @@
 import Lightbox from "react-spring-lightbox";
 import type { RichImage } from "../utils/types";
+import type { CSSProperties } from "react";
 
 function CloseIcon({ size = 18 }: { size?: number }) {
   return (
@@ -33,7 +34,24 @@ export default function ImageGallery({
     setOpened(false);
   };
 
-  const images = image ? [image] : [];
+  const imageStyle: CSSProperties = {
+    width: "auto",
+    height: "auto",
+    maxWidth: "calc(100vw - 2.5rem)",
+    maxHeight: "calc(100dvh - 2.5rem)",
+    objectFit: "contain",
+    margin: "0 auto",
+  };
+
+  const images = image
+    ? [
+        {
+          ...image,
+          style: imageStyle,
+          draggable: false,
+        },
+      ]
+    : [];
 
   return (
     <Lightbox
@@ -43,10 +61,11 @@ export default function ImageGallery({
       renderHeader={() => (
         <div
           style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            padding: "1rem",
+            position: "absolute",
+            top: "0.9rem",
+            right: "1rem",
             pointerEvents: "auto",
+            zIndex: 100,
           }}
         >
           <button

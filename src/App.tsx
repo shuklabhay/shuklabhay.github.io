@@ -25,6 +25,13 @@ function RouteBackground() {
     });
   }, []);
 
+  useEffect(() => {
+    document.body.dataset.route = isHome ? "home" : "surface";
+    return () => {
+      delete document.body.dataset.route;
+    };
+  }, [isHome]);
+
   return (
     <>
       <div className="route-background-base" />

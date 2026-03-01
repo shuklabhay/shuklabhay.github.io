@@ -39,6 +39,24 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
+body[data-route="home"] {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-image: url("/static/landing-1280.avif");
+  background-image: image-set(
+    url("/static/landing-1280.avif") type("image/avif") 1x,
+    url("/static/landing-1920.avif") type("image/avif") 1.5x,
+    url("/static/landing-1280.webp") type("image/webp") 1x,
+    url("/static/landing-1920.webp") type("image/webp") 1.5x,
+    url("/static/landing.webp") type("image/webp") 3x
+  );
+}
+
+body[data-route="surface"] {
+  background-image: none;
+}
+
 #root {
   min-height: 100vh;
   min-height: 100svh;
@@ -274,8 +292,12 @@ code {
 }
 
 .post-back-link-row {
-  margin-top: calc(-2.3rem - env(safe-area-inset-top));
-  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: flex-start;
+  padding-top: 1rem;
+  padding-bottom: 4px;
+  margin-top: calc(-3.55rem - env(safe-area-inset-top));
+  margin-bottom: 0.45rem;
   position: relative;
   z-index: 12;
 }
@@ -462,7 +484,12 @@ code {
 }
 
 .post-page-enter .post-date,
-.post-page-enter .post-title-block,
+.post-page-enter .post-title-block {
+  opacity: 0;
+  transform: none;
+  animation: blog-fade 320ms ease forwards;
+}
+
 .post-page-enter .post-content {
   opacity: 0;
   animation: post-fade-up 420ms ease forwards;
@@ -501,12 +528,8 @@ code {
   }
 
   .post-back-link-row {
-    margin-top: calc(-2.05rem - env(safe-area-inset-top));
+    margin-top: calc(-3.55rem - env(safe-area-inset-top));
     margin-bottom: 0.45rem;
-  }
-
-  .post-back-link {
-    font-size: 1rem;
   }
 
   .post-hero {

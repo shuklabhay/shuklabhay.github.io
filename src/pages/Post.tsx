@@ -88,7 +88,7 @@ export default function Post() {
     <main className="post-page post-page-enter" key={slug}>
       <div className="post-back-link-row">
         <Link to="/blog" state={{ fromPost: true }} className="post-back-link">
-          back to blog
+          ← back
         </Link>
       </div>
       <div
