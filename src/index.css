@@ -173,41 +173,6 @@ code {
   }
 }
 
-@supports (view-transition-name: none) {
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    mix-blend-mode: normal;
-  }
-
-  ::view-transition-old(root) {
-    animation: page-root-fade-out 10000ms ease both;
-  }
-
-  ::view-transition-new(root) {
-    animation: page-root-fade-in 10000ms ease both;
-  }
-}
-
-@keyframes page-root-fade-out {
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-  }
-}
-
-@keyframes page-root-fade-in {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
 .blog-page-return .blog-page-title,
 .blog-page-return .blog-page-controls,
 .blog-page-return .post-card {
@@ -537,11 +502,6 @@ code {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation: none;
-  }
-
   .post-page-enter .post-date,
   .post-page-enter .post-title-block,
   .post-page-enter .post-content {

@@ -54,13 +54,9 @@ export default function PostBackLink() {
             width="100%"
             height="100%"
             fill="currentColor"
-            style={{
-              display: "block",
-              transform: "rotate(90deg)",
-              transformOrigin: "50% 50%",
-            }}
+            style={{ display: "block" }}
           >
-            <path d="M5 8L1.4 3h7.2L5 8z" />
+            <path d="M7.8 1.4L2.6 5l5.2 3.6V1.4z" />
           </svg>
         </span>
         <span style={{ display: "inline-block", lineHeight: 1 }}>back</span>

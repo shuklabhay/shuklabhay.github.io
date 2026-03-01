@@ -124,7 +124,7 @@ export default function NavMenu() {
         <Link
           key={label}
           to={path}
-          viewTransition={!isPostRoute}
+          viewTransition={false}
           state={isPostRoute ? { fromPost: true } : undefined}
           style={{
             color: "white",

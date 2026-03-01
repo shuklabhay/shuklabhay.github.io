@@ -14,6 +14,12 @@ const imagesToPreload = [
   "/static/icons/basa.jpeg",
   "/static/icons/nexus.jpeg",
 ];
+const TOP_LEVEL_ROUTES = new Set(["/", "/about", "/blog"]);
+const TOP_LEVEL_HALF_FADE_MS = 180;
+
+function isTopLevelRoute(pathname: string) {
+  return TOP_LEVEL_ROUTES.has(pathname);
+}
 
 function RouteBackground() {
   const location = useLocation();
@@ -66,18 +72,59 @@ function RouteBackground() {
 
 function AppShell() {
   const location = useLocation();
+  const [renderLocation, setRenderLocation] = useState(location);
+  const [surfaceOpacity, setSurfaceOpacity] = useState(1);
+
+  useEffect(() => {
+    if (location.pathname === renderLocation.pathname) return;
+
+    const fromTopLevel = isTopLevelRoute(renderLocation.pathname);
+    const toTopLevel = isTopLevelRoute(location.pathname);
+
+    if (fromTopLevel && toTopLevel) {
+      let raf = 0;
+      setSurfaceOpacity(0);
+      const timeout = window.setTimeout(() => {
+        setRenderLocation(location);
+        raf = window.requestAnimationFrame(() => {
+          setSurfaceOpacity(1);
+        });
+      }, TOP_LEVEL_HALF_FADE_MS);
+
+      return () => {
+        window.clearTimeout(timeout);
+        window.cancelAnimationFrame(raf);
+      };
+    }
+
+    setRenderLocation(location);
+    setSurfaceOpacity(1);
+  }, [location, renderLocation.pathname]);
 
   return (
     <>
       <RouteBackground />
       <div className="container" style={{ position: "relative", zIndex: 1 }}>
         <NavMenu />
-        <Routes location={location}>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:slug" element={<Post />} />
-        </Routes>
+        <div
+          style={{
+            opacity:
+              isTopLevelRoute(renderLocation.pathname) && isTopLevelRoute(location.pathname)
+                ? surfaceOpacity
+                : 1,
+            transition:
+              isTopLevelRoute(renderLocation.pathname) && isTopLevelRoute(location.pathname)
+                ? `opacity ${TOP_LEVEL_HALF_FADE_MS}ms ease`
+                : "none",
+          }}
+        >
+          <Routes location={renderLocation}>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<Post />} />
+          </Routes>
+        </div>
       </div>
     </>
   );
