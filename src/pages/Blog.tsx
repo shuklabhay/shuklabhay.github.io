@@ -1,6 +1,6 @@
 import PageTitle, { CheckboxSubtitle } from "../components/PageTitle";
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { allPosts } from "../posts";
 
 type SortField = "date" | "alpha";
@@ -63,6 +63,9 @@ function formatPostDate(raw: string) {
 }
 
 export default function Blog() {
+  const location = useLocation();
+  const fromPost =
+    (location.state as { fromPost?: boolean } | null)?.fromPost === true;
   const [sortState, setSortState] = useState<BlogSortState>(
     readBlogSortStateFromStorage,
   );
@@ -132,26 +135,30 @@ export default function Blog() {
   }, [sortField, dateDirection, alphaDirection]);
 
   return (
-    <main>
-      <PageTitle title="I also write" />
-      <CheckboxSubtitle
-        mode="link"
-        hoverFill
-        activeIndexes={[sortField === "date" ? 0 : 1]}
-        marginBottom="0.8rem"
-        items={[
-          {
-            label: "date",
-            arrowDirection: dateDirection === "desc" ? "down" : "up",
-            arrowVisible: sortField === "date",
-            onClick: onDateSortClick,
-          },
-          {
-            label: `alphabetical ${alphaDirection === "asc" ? "a-z" : "z-a"}`,
-            onClick: onAlphaSortClick,
-          },
-        ]}
-      />
+    <main className={`blog-page${fromPost ? " blog-page-return" : ""}`}>
+      <div className="blog-page-title">
+        <PageTitle title="I also write" />
+      </div>
+      <div className="blog-page-controls">
+        <CheckboxSubtitle
+          mode="link"
+          hoverFill
+          activeIndexes={[sortField === "date" ? 0 : 1]}
+          marginBottom="0.8rem"
+          items={[
+            {
+              label: "date",
+              arrowDirection: dateDirection === "desc" ? "down" : "up",
+              arrowVisible: sortField === "date",
+              onClick: onDateSortClick,
+            },
+            {
+              label: `alphabetical ${alphaDirection === "asc" ? "a-z" : "z-a"}`,
+              onClick: onAlphaSortClick,
+            },
+          ]}
+        />
+      </div>
       <section className="posts-list">
         {sortedPosts.map((post) => (
           <article

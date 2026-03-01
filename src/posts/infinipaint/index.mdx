@@ -1,6 +1,7 @@
 # Infinipaint: World Modeling a Trivially Simple World
 
 ## Introduction
+
 I can't fully verbalize why, but there's something so fascinating to me about 'world modeling.' Generative AI has long focused on creating images and videos, while world modeling focuses on instilling a neural network with deep, latent comprehension of the physics and structure of a 'world,' and the images it can generate are just a window into that underlying comprehension.
 
 > ![[genie3.gif]]
@@ -10,16 +11,18 @@ I can't fully verbalize why, but there's something so fascinating to me about 'w
 > Waymo's [Waymo World Model](https://waymo.com/blog/2026/02/the-waymo-world-model-a-new-frontier-for-autonomous-driving-simulation) (built on Google DeepMind's Genie 3) generating plausible camera frames and LiDAR responses for real-world driving scenarios.
 
 > ![[csgo.gif]]
-> Alonso et al.'s [DIAMOND](https://arxiv.org/abs/2405.12399) world model generating frames of CS:GO. 
+> Alonso et al.'s [DIAMOND](https://arxiv.org/abs/2405.12399) world model generating frames of CS:GO.
 
-More formally, world models are neural networks trained to approximate an environment’s transition dynamics. Given any current state (or observation) and an action, a world model predicts how the state will evolve. In doing so, it implicitly learns the underlying structure of the environment, such that any generated images, sensor readings, or frames are simply projections of its internal simulation. World models are useful when simulating environments too difficult or impractical to build from scratch: [Atari](https://arxiv.org/abs/2405.12399) [games](https://arxiv.org/abs/2010.02193), [CS:GO](https://x.com/EloiAlonso1/status/1844803606064611771), even the [physical](https://x.com/Tesla/status/1982255564974641628) [world](https://x.com/GoogleDeepMind/status/2019808426675843105) [itself.](https://wayve.ai/thinking/gaia-2/) 
+More formally, world models are neural networks trained to approximate an environment’s transition dynamics. Given any current state (or observation) and an action, a world model predicts how the state will evolve. In doing so, it implicitly learns the underlying structure of the environment, such that any generated images, sensor readings, or frames are simply projections of its internal simulation. World models are useful when simulating environments too difficult or impractical to build from scratch: [Atari](https://arxiv.org/abs/2405.12399) [games](https://arxiv.org/abs/2010.02193), [CS:GO](https://x.com/EloiAlonso1/status/1844803606064611771), even the [physical](https://x.com/Tesla/status/1982255564974641628) [world](https://x.com/GoogleDeepMind/status/2019808426675843105) [itself.](https://wayve.ai/thinking/gaia-2/)
 
 It’s incredible that entire slices of reality can be compressed into the weights of a neural network. But it usually only makes sense for complex, high-entropy domains rich in structure and variation, where the complexity justifies the cost of collecting data, training world models, and running inference at scale. After all, if a world can already be simulated exactly, there is little reason to approximate it with a learned model.
 
 So I wonder, what happens at the other extreme, when you world-model a fully deterministic, fully observable, trivially simple 'world'? In other words: what happens when you world-model something that doesn't really need to be world-modeled?
 
 ## Problem Definition
+
 ### Minipaint
+
 Minipaint is a simple 224×224 pixel Pygame-based drawing application with a pen tool, eraser, drawing canvas, brush size slider, and six distinct colors. Every 'variable' (tool state, selected color, canvas contents) is always visible on screen, making Minipaint a fully observable world where any frame action pair contains all context needed to predict the next frame. The only subtle exception is continuous drawing, where strokes are rendered between the cursor’s previous and current positions, creating a single conditional hidden variable.
 
 > ![[minipaint.gif]]
@@ -29,11 +32,13 @@ Minipaint is a simple 224×224 pixel Pygame-based drawing application with a pen
 > Minipaint's UI layout, with each region's percentage of total screen area labeled.
 
 Our goal is to create **Infinipaint,** a robust world model of Minipaint that:
+
 1. Accurately predicts the correct next frame for any previous frame and input
 2. Learns visual dynamics without any hardcoded priors/assumptions
 3. Remains stable over long interactive rollouts
 
 ### Data Collection
+
 Following [NeuralOS](https://arxiv.org/pdf/2507.08800), data is stored as frame-action pairs. Each action is applied to Minipaint, and the resulting rendered image is recorded as the corresponding frame. When predicting the next frame, the model conditions on the next action, which is known at prediction time. At training time, sparse actions are converted to a `(56, 56, 2)` tensor, where channel 0 is a 2D Gaussian heatmap centered at the cursor and channel 1 is the button state spread across all spatial positions.
 
 > ![[episode_0.gif]]
@@ -42,8 +47,11 @@ Following [NeuralOS](https://arxiv.org/pdf/2507.08800), data is stored as frame-
 All training data is synthetically generated by a swarm of procedural agents simulating diverse usage of Minipaint. Agents combine drawing primitives (polylines, arcs, zigzags, spirals, etc.) with random UI interactions to produce action-dense episodes, captured as pixel-accurate Pygame screenshots. Data is generated with fixed random seeds and episodes split via deterministic hash-based partitioning.
 
 ## Model Architecture
+
 ### Overview
+
 The Infinipaint world model follows the [standard world model framework,](https://arxiv.org/abs/1803.10122) and is built from two components:
+
 1. A variational autoencoder (VAE) that compresses frames into a compact latent space, discarding redundant pixel-level details.
 2. A convolutional neural network (CNN) dynamics model that predicts `z_{t+1}` from `z_t`, `a_t`, and `a_{t+1}`.
 
@@ -53,6 +61,7 @@ Since all UI state is visible in the frame, providing both `a_t` and `a_{t+1}` r
 > Infinipaint architecture.
 
 ### World Encoding (VAE)
+
 Following the [NeuralOS](https://arxiv.org/pdf/2507.08800) and [LDM](https://arxiv.org/abs/2112.10752) training recipes, the VAE is a convolutional encoder-decoder with channel multipliers `[1, 2, 4]` over a base of 128 channels with 2 residual blocks per stage. The VAE applies 4× latent compression to 224×224 RGB frames, producing a 56×56×16 latent vector `z`. Unlike their approaches, however, this work does not use a patch-based adversarial loss or self-attention layers in the decoder.
 
 > ![[4x compression.png]]
@@ -64,7 +73,9 @@ Early on the VAE excelled at reconstructing the application UI (toolbar, buttons
 > VAE reconstructions at 8× compression: expected and actual outputs pictured side by side.
 
 ### Latent Space Analysis
+
 To understand what our LatentCNN will need to learn, we can analyze the differences between consecutive frame pairs encoded through our frozen VAE. Two things stand out:
+
 1. Latent differences are spatially localized and every channel participates, indicating that our VAE is expressive enough to accurately represent Minipaint's visual dynamics without being overparameterized.
 2. Latent differences are extremely sparse: even large changes only affect 5–8% of latent positions while typical drawing changes affect less than 1%, indicating that our LatentCNN must be precise enough to modify a small subset of positions while leaving the rest completely untouched.
 
@@ -72,6 +83,7 @@ To understand what our LatentCNN will need to learn, we can analyze the differen
 > Latent diffs for a canvas stroke (left) versus a UI interaction (right). Top row: frame pairs, pixel diff, latent magnitude, significance mask. Bottom rows: per-channel diffs across all 16 latent channels.
 
 ### Predicting Latent Dynamics (LatentCNN)
+
 The LatentCNN is a flat, single-resolution CNN composed of four residual blocks and trained with a delta prediction objective, predicting `z_delta = z_next − z_prev` rather than `z_next` directly. The inputs `z_prev` (56×56×16) and the stacked action tensor `[action_prev, action_next]` (56×56×4) are each projected to a 56×56×256 hidden representation and summed to produce the initial feature map. Action features modulate every residual block via [Spatial Adaptive Group Normalization.](https://arxiv.org/abs/2105.05233)
 
 Because latent diffs are so sparse, early iterations collapsed to predicting zero change everywhere. The fix was to compute mean L1 error separately for changed and unchanged regions and average them, so both contribute equally to the loss regardless of how sparse the changes are. Gaussian noise augmentation on `z_prev` and scheduled sampling are also applied for rollout stability.
@@ -80,6 +92,7 @@ Because latent diffs are so sparse, early iterations collapsed to predicting zer
 > LatentCNN architecture.
 
 ### Interactive Viewer
+
 The viewer is a Pygame app that runs the full world model pipeline using MLX or Flax NNX. To avoid compounding roundtrip error, all LatentCNN predictions are applied to a rolling latent state and the VAE only decodes to render the current frame. Diagnostic overlays show an action trajectory heatmap, latent delta magnitude map, and per-block activation norms.
 
 Raw mouse events are too dense for real-time inference, so fixed-interval throttling is used to sample actions every 80 ms (150 steps ≈ 12 sec of continuous pen-down drawing, 500 steps ≈ 40 sec). To maximize useful rollout length, events are only queued for processing if the cursor moves more than 4 pixels, idle frames are only passed into the model to mark the completion of a stroke, and any segments longer than 12 pixels are interpolated into shorter sub-steps. The viewer and inference processes also run on separate threads to keep the interface responsive.
@@ -88,7 +101,9 @@ Raw mouse events are too dense for real-time inference, so fixed-interval thrott
 > The Infinipaint world model's interactive viewer running the combined world model pipeline on a 2020 M1 Macbook Air's Integrated GPU.
 
 ## Results / Observations
+
 ### Overview
+
 Both models were trained separately on a single H100 or H200 spot instance from [Prime Intellect](https://www.primeintellect.ai/), depending on availability. The VAE trained on 237,010 frames across 16 shards while the LatentCNN on 371,799 frame transition pairs across 25 shards. Both runs use bfloat16 and converged without issue.
 
 The complete world model pipeline is evaluated on a held-out test set of 20 episodes (15,609 frame pairs) drawn from 10 data shards. The model runs autoregressively with the rolling latent, same 12px interpolation, and 4px deadzone as the interactive viewer. All metrics are computed between raw ground-truth frames and the VAE-decoded predictions at full 224×224 resolution.
@@ -99,6 +114,7 @@ Across evaluation, the world model appears to have robustly learned Minipaint's 
 > An example autoregressive rollout of the combined VAE-LatentCNN pipeline.
 
 ### Model Performance
+
 Two metrics are used to track rollout fidelity: SSIM (structural similarity; 0.95+ is near-perfect, 0.80 and lower contains obvious artifacts) and PSNR (pixel-level error in dB, higher is better).
 
 > ![[degradation curves.png]]
@@ -111,6 +127,7 @@ Step 1 averages a SSIM of 0.995 (±0.006) and a PSNR of 36.0 dB (±6.0), with qu
 3. Steps 500+ (collapse): SSIM falls below 0.75 (PSNR ~13 dB), reaching ~0.62 by step 800. Stroke rendering becomes unreliable, tool switching and brush controls stop responding, and the interface becomes effectively unusable.
 
 ### Qualitative Observations
+
 Beyond what aggregate metrics capture, several behavioral patterns stand out:
 
 Functionality persists beyond visual degradation. Discrete UI behaviors degrade more slowly than continuous canvas content: mid-rollout, tool switching remains ~94% accurate (UI region SSIM 0.92) even as the canvas has already fallen to SSIM 0.85. Though while the toolbar drifts and stroke rendering progressively blurs and distorts, the underlying discrete UI logic remains largely intact until the late stages of rollouts (~step 500).
@@ -130,13 +147,17 @@ _Tool collapse occurs asymmetrically._ Pen-click response accuracy fals from 96.
 > Late phase model degradation displayed in the interactive viewer.
 
 ## Limitations
-Infinipaint has 3 main limitations: 
+
+Infinipaint has 3 main limitations:
+
 1. Because LatentCNN's predictions are slightly imprecise at every step, lines are softened, colors desaturate, and UI elements drift over time. Because predictions are applied autoregressively, the VAE decoder is increasingly asked to reconstruct latents it was never trained on, and in a deterministic system like Minipaint where the ground truth is exact these small errors quickly become obvious.
 2. VAE reconstruction quality varies across frames: a single frame can decode anywhere from SSIM 0.954 / PSNR 22 dB to SSIM 0.999 / PSNR 52+ dB, depending on canvas density and content.
-3.  Minipaint’s native Pygame implementation renders a step in under a millisecond (0.72 ms on Apple Silicon, 0.63 ms on an H100 host machine). In contrast, the 33.6M-parameter world model requires 202 ms on MLX (280× slower) and 9.16 ms  on an Nvidia H100 GPU (14.5× slower) to complete a full forward pass (encode → latent dynamics → decode) at bf16, batch size 1.
+3. Minipaint’s native Pygame implementation renders a step in under a millisecond (0.72 ms on Apple Silicon, 0.63 ms on an H100 host machine). In contrast, the 33.6M-parameter world model requires 202 ms on MLX (280× slower) and 9.16 ms on an Nvidia H100 GPU (14.5× slower) to complete a full forward pass (encode → latent dynamics → decode) at bf16, batch size 1.
 
 ## Closing Notes
+
 ### Agentic Research Process
+
 Large parts of this work were carried out with help from Claude Code and Codex. Especially in the last few months, LLMs and agentic programming harnesses have gotten good enough at running scripts and interpreting their results that 'autonomous research loops' are within reach. I primarily use coding agents to speed up the research pipeline and stress-test ideas.
 
 When working with agents, I heavily encourage them to run ephemeral scripts to create visualizations, test hypotheses, and run small experiments. For example, an early LatentCNN wasn't producing any visible changes on the canvas; I instructed Opus 4.6 to run scripts to suggest fixes, and it autonomously discovered the problem (spatial sparsity causing severe underprediction), proposed a fix (reweighted loss), tested it on a smaller-scale training run, and gave me its final analysis and suggestions. Rather than just reading code and speculating, LLMs with strong CLI capabilities can narrow down problems and test solutions, though they often still need to be instructed to use the CLI and provide evidence-based suggestions.
@@ -144,6 +165,7 @@ When working with agents, I heavily encourage them to run ephemeral scripts to c
 For harder problems or load-bearing code (core data processing/training loop infrastructure, model architectures) I ask agents to propose changes before telling them which options to implement. This extra step helps catch small problematic errors and keeps code quality consistent. For less critical work, I give agents more autonomy and clean up style and formatting afterward.
 
 ### Conclusion
-Returning to the three goals set out in Problem Definition: Infinipaint accurately predicts frames (goal 1), using a VAE-LatentCNN architecture designed around the unique properties of the problem, trained without hardcoded priors of Minipaint's behavior (goal 2). During autoregressive inference it remains stable through ~150 steps and usable through ~500 (goal 3), before collapsing entirely. 
+
+Returning to the three goals set out in Problem Definition: Infinipaint accurately predicts frames (goal 1), using a VAE-LatentCNN architecture designed around the unique properties of the problem, trained without hardcoded priors of Minipaint's behavior (goal 2). During autoregressive inference it remains stable through ~150 steps and usable through ~500 (goal 3), before collapsing entirely.
 
 In a complex environment, it's hard to distinguish failures of understanding from failures of rendering. Minipaint is simple enough to isolate the gap: even with a relatively simple architecture and training objective, the model learns the right dynamics, it just can't sustain them indefinitely. The idea that a neural network can understand the intricacies of an entire 'world' is undoubtedly fascinating, but I've realized an equally important (and far less glamorous) challenge is getting an AI model to render and communicate that understanding back to us—much like we ourselves struggle to render our mental models into words, actions, and art.

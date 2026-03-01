@@ -19,7 +19,7 @@ export default function Post() {
   if (!post) {
     return (
       <main className="post-page post-page-enter" key={slug}>
-        <Link className="post-back-link" to="/blog">
+        <Link className="post-back-link" to="/blog" state={{ fromPost: true }}>
           ← Back to blog
         </Link>
         <h1 className="post-missing-title">Post not found</h1>
@@ -32,7 +32,7 @@ export default function Post() {
 
   return (
     <main className="post-page post-page-enter" key={slug}>
-      <Link className="post-back-link" to="/blog">
+      <Link className="post-back-link" to="/blog" state={{ fromPost: true }}>
         ← Back to blog
       </Link>
       <div

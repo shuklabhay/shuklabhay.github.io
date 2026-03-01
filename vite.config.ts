@@ -8,14 +8,30 @@ const VIRTUAL_POSTS_ID = "virtual:posts-manifest";
 const RESOLVED_VIRTUAL_POSTS_ID = `\0${VIRTUAL_POSTS_ID}`;
 
 function rewriteWikiEmbedsToMarkdown(source: string): string {
-  return source.replace(/!\[\[([^[\]]+)\]\]/g, (_match, rawPath: string) => {
-    const cleaned = rawPath.trim();
-    const encoded = cleaned
-      .split("/")
-      .map((segment) => encodeURIComponent(segment))
-      .join("/");
-    return `![](./assets/${encoded})`;
-  });
+  const importByPath = new Map<string, string>();
+  const importLines: string[] = [];
+  let importIndex = 0;
+
+  const rewrittenBody = source.replace(
+    /!\[\[([^[\]]+)\]\]/g,
+    (_match, rawPath: string) => {
+      const cleaned = rawPath.trim();
+
+      let importName = importByPath.get(cleaned);
+      if (!importName) {
+        importName = `__wikiEmbed${importIndex++}`;
+        importByPath.set(cleaned, importName);
+        importLines.push(
+          `import ${importName} from ${JSON.stringify(`./assets/${cleaned}`)};`,
+        );
+      }
+
+      return `<img src={${importName}} alt="" loading="lazy" />`;
+    },
+  );
+
+  if (importLines.length === 0) return source;
+  return `${importLines.join("\n")}\n\n${rewrittenBody}`;
 }
 
 function formatSlug(slug: string): string {
