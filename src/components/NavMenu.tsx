@@ -9,8 +9,9 @@ const MENU_ITEMS = [
 
 export default function NavMenu() {
   const location = useLocation();
-  const activeKey =
+  const firstPathSegment =
     location.pathname.split("/").filter(Boolean)[0]?.toLowerCase() ?? "home";
+  const activeKey = firstPathSegment === "posts" ? "blog" : firstPathSegment;
   const navRef = useRef<HTMLElement>(null);
   const [underlineStyle, setUnderlineStyle] = useState({
     left: 0,

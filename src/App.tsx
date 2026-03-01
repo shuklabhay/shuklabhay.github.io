@@ -4,6 +4,7 @@ import Home from "./pages/Home.tsx";
 import NavMenu from "./components/NavMenu.tsx";
 import About from "./pages/About.tsx";
 import Blog from "./pages/Blog.tsx";
+import Post from "./pages/Post.tsx";
 
 const imagesToPreload = [
   "/static/icons/bmir.jpeg",
@@ -52,6 +53,8 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/posts" element={<Blog />} />
+          <Route path="/posts/:slug" element={<Post />} />
         </Routes>
       </div>
     </BrowserRouter>
