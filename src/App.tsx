@@ -5,34 +5,14 @@ import NavMenu from "./components/NavMenu.tsx";
 import About from "./pages/About.tsx";
 import Blog from "./pages/Blog.tsx";
 import Post from "./pages/Post.tsx";
-import { allPosts } from "./posts";
 import { buildRootViewTransitionStyles } from "./animations";
 
-const imagesToPreload = [
-  "/static/icons/bmir.jpeg",
-  "/static/icons/cosmos.jpeg",
-  "/static/icons/frc604.jpeg",
-  "/static/icons/basa.jpeg",
-  "/static/icons/nexus.jpeg",
-];
-
-const TOP_LEVEL_VIEW_TRANSITION_MS = 360;
+const TOP_LEVEL_VIEW_TRANSITION_MS = 128;
 const TOP_LEVEL_VIEW_TRANSITION_EASING = "linear";
 
 function RouteBackground() {
   const location = useLocation();
   const isHome = location.pathname === "/";
-
-  useEffect(() => {
-    const postCoversToPreload = allPosts
-      .map((post) => post.cover)
-      .filter((cover): cover is string => Boolean(cover));
-
-    [...imagesToPreload, ...postCoversToPreload].forEach((src) => {
-      const img = new Image();
-      img.src = src;
-    });
-  }, []);
 
   return (
     <>

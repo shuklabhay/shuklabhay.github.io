@@ -156,13 +156,13 @@ code {
 .blog-page-return .post-card {
   opacity: 0;
   transform: none;
-  animation: blog-fade 460ms ease forwards;
+  animation: blog-fade 128ms ease forwards;
 }
 
 .surface-page-return {
   opacity: 0;
   transform: none;
-  animation: blog-fade 460ms ease forwards;
+  animation: blog-fade 128ms ease forwards;
 }
 
 .post-card {
@@ -445,13 +445,13 @@ code {
 .post-page-enter .post-title-block {
   opacity: 0;
   transform: none;
-  animation: blog-fade 320ms ease forwards;
+  animation: blog-fade 128ms ease forwards;
 }
 
 .post-page-enter .post-content {
   opacity: 0;
   transform: none;
-  animation: blog-fade 420ms ease forwards;
+  animation: blog-fade 128ms ease forwards;
 }
 
 .post-page-enter .post-date {
@@ -463,7 +463,7 @@ code {
 }
 
 .post-page-enter .post-content {
-  animation-delay: 120ms;
+  animation-delay: 128ms;
 }
 
 @media (prefers-reduced-motion: reduce) {
