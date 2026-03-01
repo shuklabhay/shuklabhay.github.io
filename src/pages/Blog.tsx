@@ -99,7 +99,6 @@ export default function Blog() {
               {post.date ? (
                 <p className="post-card-date">{formatPostDate(post.date)}</p>
               ) : null}
-              <p className="post-card-summary">{post.excerpt}</p>
             </div>
           </article>
         ))}

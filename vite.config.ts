@@ -7,6 +7,17 @@ import path from "path";
 const VIRTUAL_POSTS_ID = "virtual:posts-manifest";
 const RESOLVED_VIRTUAL_POSTS_ID = `\0${VIRTUAL_POSTS_ID}`;
 
+function rewriteWikiEmbedsToMarkdown(source: string): string {
+  return source.replace(/!\[\[([^[\]]+)\]\]/g, (_match, rawPath: string) => {
+    const cleaned = rawPath.trim();
+    const encoded = cleaned
+      .split("/")
+      .map((segment) => encodeURIComponent(segment))
+      .join("/");
+    return `![](./assets/${encoded})`;
+  });
+}
+
 function formatSlug(slug: string): string {
   return slug
     .split(/[-_]/g)
@@ -40,6 +51,22 @@ function extractPostExcerpt(source: string): string {
 
 export default defineConfig({
   plugins: [
+    {
+      name: "rewrite-obsidian-image-embeds",
+      enforce: "pre",
+      transform(code, id) {
+        if (!id.endsWith(".mdx")) return null;
+        if (!id.includes("/src/posts/")) return null;
+
+        const transformed = rewriteWikiEmbedsToMarkdown(code);
+        if (transformed === code) return null;
+
+        return {
+          code: transformed,
+          map: null,
+        };
+      },
+    },
     mdx(),
     react(),
     {
