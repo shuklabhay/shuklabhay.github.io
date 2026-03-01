@@ -6,7 +6,7 @@ interface ContactInfo {
   link: string;
 }
 
-const contactPromise = fetch("/sitedata/contact.json").then((res) =>
+const contactPromise = fetch("/static/sitedata/contact.json").then((res) =>
   res.json(),
 );
 

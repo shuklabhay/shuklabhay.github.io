@@ -5,7 +5,7 @@ import path from "path";
 const ajv = new Ajv();
 
 const schemasDir = path.join(process.cwd(), "schemas");
-const dataDir = path.join(process.cwd(), "public/sitedata");
+const dataDir = path.join(process.cwd(), "public/static/sitedata");
 
 const schemaFiles = [
   { schema: "activities.schema.json", data: "experience.json" },

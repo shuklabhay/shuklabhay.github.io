@@ -44,7 +44,7 @@ async function restQuery(
 
 // Read Github data & write to JSON
 export default async function compileAndWriteGHData() {
-  const jsonDataPath = "public/sitedata/ghdata.json";
+  const jsonDataPath = "public/static/sitedata/ghdata.json";
   const jsonData = JSON.parse(fs.readFileSync(jsonDataPath, "utf8"));
 
   const { username } = await getUserInfo();
