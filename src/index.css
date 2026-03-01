@@ -99,8 +99,8 @@ code {
 
 .post-card {
   display: grid;
-  grid-template-columns: clamp(84px, 11vw, 96px) minmax(0, 1fr);
-  gap: 0.78rem;
+  grid-template-columns: clamp(105px, 13.75vw, 120px) minmax(0, 1fr);
+  gap: 0.9rem;
   align-items: start;
   color: white;
   border: 2px solid rgba(255, 255, 255, 0.3);
@@ -179,8 +179,8 @@ code {
 
 @media (max-width: 860px) {
   .post-card {
-    grid-template-columns: 84px minmax(0, 1fr);
-    gap: 0.66rem;
+    grid-template-columns: 105px minmax(0, 1fr);
+    gap: 0.75rem;
   }
 
   .post-card-title {
@@ -308,7 +308,7 @@ code {
 
 .post-content p,
 .post-content li {
-  line-height: 1.75;
+  line-height: 1.68;
 }
 
 .post-content a {
@@ -322,7 +322,7 @@ code {
 
 .post-content :not(pre) > code {
   display: inline;
-  padding: 0.1em 0.46em;
+  padding: 0.18em 0.46em;
   border-radius: 6px;
   border: 1px solid rgba(185, 205, 255, 0.42);
   background: rgba(16, 21, 34, 0.68);

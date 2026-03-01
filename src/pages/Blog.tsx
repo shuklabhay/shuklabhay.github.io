@@ -1,7 +1,55 @@
 import PageTitle, { CheckboxSubtitle } from "../components/PageTitle";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { allPosts } from "../posts";
+
+type SortField = "date" | "alpha";
+type SortDirection = "desc" | "asc";
+
+type BlogSortState = {
+  sortField: SortField;
+  dateDirection: SortDirection;
+  alphaDirection: SortDirection;
+};
+
+const BLOG_SORT_STORAGE_KEY = "blog-sort-state-v1";
+const DEFAULT_BLOG_SORT_STATE: BlogSortState = {
+  sortField: "date",
+  dateDirection: "desc",
+  alphaDirection: "asc",
+};
+
+function isSortField(value: unknown): value is SortField {
+  return value === "date" || value === "alpha";
+}
+
+function isSortDirection(value: unknown): value is SortDirection {
+  return value === "desc" || value === "asc";
+}
+
+function readBlogSortStateFromStorage(): BlogSortState {
+  if (typeof window === "undefined") return DEFAULT_BLOG_SORT_STATE;
+
+  try {
+    const raw = window.localStorage.getItem(BLOG_SORT_STORAGE_KEY);
+    if (!raw) return DEFAULT_BLOG_SORT_STATE;
+
+    const parsed = JSON.parse(raw) as Partial<BlogSortState>;
+    return {
+      sortField: isSortField(parsed.sortField)
+        ? parsed.sortField
+        : DEFAULT_BLOG_SORT_STATE.sortField,
+      dateDirection: isSortDirection(parsed.dateDirection)
+        ? parsed.dateDirection
+        : DEFAULT_BLOG_SORT_STATE.dateDirection,
+      alphaDirection: isSortDirection(parsed.alphaDirection)
+        ? parsed.alphaDirection
+        : DEFAULT_BLOG_SORT_STATE.alphaDirection,
+    };
+  } catch {
+    return DEFAULT_BLOG_SORT_STATE;
+  }
+}
 
 function formatPostDate(raw: string) {
   if (!raw) return "";
@@ -15,24 +63,49 @@ function formatPostDate(raw: string) {
 }
 
 export default function Blog() {
-  const [sortField, setSortField] = useState<"date" | "alpha">("date");
-  const [dateDirection, setDateDirection] = useState<"desc" | "asc">("desc");
-  const [alphaDirection, setAlphaDirection] = useState<"desc" | "asc">("asc");
+  const [sortState, setSortState] = useState<BlogSortState>(
+    readBlogSortStateFromStorage,
+  );
+  const { sortField, dateDirection, alphaDirection } = sortState;
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem(
+      BLOG_SORT_STORAGE_KEY,
+      JSON.stringify({
+        sortField,
+        dateDirection,
+        alphaDirection,
+      } satisfies BlogSortState),
+    );
+  }, [sortField, dateDirection, alphaDirection]);
 
   const onDateSortClick = () => {
-    if (sortField === "date") {
-      setDateDirection((prev) => (prev === "desc" ? "asc" : "desc"));
-      return;
-    }
-    setSortField("date");
+    setSortState((prev) =>
+      prev.sortField === "date"
+        ? {
+            ...prev,
+            dateDirection: prev.dateDirection === "desc" ? "asc" : "desc",
+          }
+        : {
+            ...prev,
+            sortField: "date",
+          },
+    );
   };
 
   const onAlphaSortClick = () => {
-    if (sortField === "alpha") {
-      setAlphaDirection((prev) => (prev === "desc" ? "asc" : "desc"));
-      return;
-    }
-    setSortField("alpha");
+    setSortState((prev) =>
+      prev.sortField === "alpha"
+        ? {
+            ...prev,
+            alphaDirection: prev.alphaDirection === "desc" ? "asc" : "desc",
+          }
+        : {
+            ...prev,
+            sortField: "alpha",
+          },
+    );
   };
 
   const sortedPosts = useMemo(() => {
