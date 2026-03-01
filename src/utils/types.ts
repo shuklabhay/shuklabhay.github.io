@@ -14,6 +14,8 @@ export type CheckboxItem<T extends string = string> = {
   defaultChecked?: boolean;
   href?: string;
   onClick?: () => void;
+  arrowDirection?: "up" | "down";
+  arrowVisible?: boolean;
 };
 
 export const ABOUT_TAGS: readonly Tag[] = ["ML", "Software", "Growth"];

@@ -1,6 +1,25 @@
 import { useEffect, useState } from "react";
 import type { CheckboxItem } from "../utils/types";
 
+function SortArrowIcon({ direction }: { direction: "up" | "down" }) {
+  return (
+    <svg
+      width="9"
+      height="9"
+      viewBox="0 0 10 10"
+      aria-hidden
+      focusable="false"
+      style={{
+        display: "block",
+        transform: direction === "up" ? "rotate(180deg)" : "none",
+        transformOrigin: "50% 50%",
+      }}
+    >
+      <path d="M5 8L1.4 3h7.2L5 8z" fill="currentColor" />
+    </svg>
+  );
+}
+
 export default function PageTitle({
   title,
   subtitle,
@@ -32,6 +51,9 @@ export function CheckboxSubtitle<T extends string = string>({
   hoverFill = true,
   selectedTags,
   setSelectedTags,
+  activeIndexes,
+  marginTop = "0.5rem",
+  marginBottom = "4rem",
 }: {
   items: ReadonlyArray<CheckboxItem<T>>;
   storageKey?: string;
@@ -39,6 +61,9 @@ export function CheckboxSubtitle<T extends string = string>({
   hoverFill?: boolean;
   selectedTags?: T[];
   setSelectedTags?: (value: T[] | ((prev: T[]) => T[])) => void;
+  activeIndexes?: number[];
+  marginTop?: string;
+  marginBottom?: string;
 }) {
   const [hovered, setHovered] = useState<number | null>(null);
 
@@ -67,11 +92,19 @@ export function CheckboxSubtitle<T extends string = string>({
   }, [selectedTags, mode, storageKey]);
 
   const onClick = (index: number) => {
+    const item = items[index];
+    if (!item) return;
+
+    if (item.onClick) {
+      item.onClick();
+      return;
+    }
+
     if (mode === "link") {
-      const href = items[index]?.href;
+      const href = item.href;
       if (href) window.open(href, "_blank", "noopener,noreferrer");
     } else if (mode === "toggle" && setSelectedTags) {
-      const label = items[index]?.label;
+      const label = item.label;
       if (!label) return;
       const wasSelected = selectedTags ? selectedTags.includes(label) : false;
       setSelectedTags((prev) =>
@@ -90,15 +123,20 @@ export function CheckboxSubtitle<T extends string = string>({
       style={{
         display: "flex",
         gap: "0.5rem",
-        marginTop: "0.5rem",
-        marginBottom: "4rem",
+        marginTop,
+        marginBottom,
+        userSelect: "none",
+        WebkitUserSelect: "none",
+        WebkitTouchCallout: "none",
       }}
     >
       {items.map((item, idx) => {
         const isOn =
-          mode === "toggle" && selectedTags
-            ? selectedTags.includes(item.label)
-            : false;
+          activeIndexes !== undefined
+            ? activeIndexes.includes(idx)
+            : mode === "toggle" && selectedTags
+              ? selectedTags.includes(item.label)
+              : false;
         const isHover = hoverFill && hovered === idx;
         const bg = isOn || isHover ? "white" : "transparent";
         const fg = isOn || isHover ? "#5a6c99" : "white";
@@ -118,10 +156,33 @@ export function CheckboxSubtitle<T extends string = string>({
               fontSize: "1rem",
               fontWeight: 600,
               cursor: "pointer",
+              userSelect: "none",
+              WebkitUserSelect: "none",
+              WebkitTouchCallout: "none",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: item.arrowDirection ? "0.33rem" : 0,
               transition: "background-color 150ms ease, color 150ms ease",
             }}
           >
             {item.label}
+            {item.arrowDirection ? (
+              <span
+                aria-hidden
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "0.6rem",
+                  visibility:
+                    item.arrowVisible === undefined || item.arrowVisible
+                      ? "visible"
+                      : "hidden",
+                }}
+              >
+                <SortArrowIcon direction={item.arrowDirection} />
+              </span>
+            ) : null}
           </button>
         );
       })}

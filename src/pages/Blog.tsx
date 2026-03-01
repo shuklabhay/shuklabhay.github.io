@@ -1,4 +1,4 @@
-import PageTitle from "../components/PageTitle";
+import PageTitle, { CheckboxSubtitle } from "../components/PageTitle";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { allPosts } from "../posts";
@@ -15,29 +15,70 @@ function formatPostDate(raw: string) {
 }
 
 export default function Blog() {
-  const [sortDirection, setSortDirection] = useState<"desc" | "asc">("desc");
+  const [sortField, setSortField] = useState<"date" | "alpha">("date");
+  const [dateDirection, setDateDirection] = useState<"desc" | "asc">("desc");
+  const [alphaDirection, setAlphaDirection] = useState<"desc" | "asc">("asc");
+
+  const onDateSortClick = () => {
+    if (sortField === "date") {
+      setDateDirection((prev) => (prev === "desc" ? "asc" : "desc"));
+      return;
+    }
+    setSortField("date");
+  };
+
+  const onAlphaSortClick = () => {
+    if (sortField === "alpha") {
+      setAlphaDirection((prev) => (prev === "desc" ? "asc" : "desc"));
+      return;
+    }
+    setSortField("alpha");
+  };
 
   const sortedPosts = useMemo(() => {
     const sorted = [...allPosts];
-    sorted.sort((a, b) =>
-      sortDirection === "desc"
-        ? b.date.localeCompare(a.date)
-        : a.date.localeCompare(b.date),
-    );
+    sorted.sort((a, b) => {
+      if (sortField === "date") {
+        const dateCompare =
+          dateDirection === "desc"
+            ? b.date.localeCompare(a.date)
+            : a.date.localeCompare(b.date);
+        if (dateCompare !== 0) return dateCompare;
+        return a.title.localeCompare(b.title);
+      }
+
+      const alphaCompare =
+        alphaDirection === "asc"
+          ? a.title.localeCompare(b.title)
+          : b.title.localeCompare(a.title);
+      if (alphaCompare !== 0) return alphaCompare;
+      return b.date.localeCompare(a.date);
+    });
+
     return sorted;
-  }, [sortDirection]);
+  }, [sortField, dateDirection, alphaDirection]);
 
   return (
     <main>
       <PageTitle title="I also write" />
-      <button
-        className="posts-sort-toggle"
-        onClick={() =>
-          setSortDirection((prev) => (prev === "desc" ? "asc" : "desc"))
-        }
-      >
-        date {sortDirection === "desc" ? "↓ newest first" : "↑ oldest first"}
-      </button>
+      <CheckboxSubtitle
+        mode="link"
+        hoverFill
+        activeIndexes={[sortField === "date" ? 0 : 1]}
+        marginBottom="0.8rem"
+        items={[
+          {
+            label: "date",
+            arrowDirection: dateDirection === "desc" ? "down" : "up",
+            arrowVisible: sortField === "date",
+            onClick: onDateSortClick,
+          },
+          {
+            label: `alphabetical ${alphaDirection === "asc" ? "a-z" : "z-a"}`,
+            onClick: onAlphaSortClick,
+          },
+        ]}
+      />
       <section className="posts-list">
         {sortedPosts.map((post) => (
           <article

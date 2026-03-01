@@ -84,6 +84,7 @@ export default function NavMenu() {
       ref={navRef}
       style={{
         position: "relative",
+        zIndex: 10,
         display: "flex",
         gap: "1.5rem",
         justifyContent: "flex-end",
