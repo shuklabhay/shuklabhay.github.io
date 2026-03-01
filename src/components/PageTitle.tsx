@@ -1,26 +1,6 @@
 import { useEffect, useState } from "react";
 import type { CheckboxItem } from "../utils/types";
-import { getTriangleIconGeometry } from "../utils/icons";
-
-function SortArrowIcon({ direction }: { direction: "up" | "down" }) {
-  const icon = getTriangleIconGeometry(direction);
-  return (
-    <svg
-      width="9"
-      height="9"
-      viewBox={icon.viewBox}
-      aria-hidden
-      focusable="false"
-      style={{ display: "block" }}
-    >
-      <path
-        d={icon.path}
-        fill="currentColor"
-        transform={icon.transform}
-      />
-    </svg>
-  );
-}
+import TriangleIcon from "../utils/TriangleIcon";
 
 export default function PageTitle({
   title,
@@ -182,7 +162,7 @@ export function CheckboxSubtitle<T extends string = string>({
                       : "hidden",
                 }}
               >
-                <SortArrowIcon direction={item.arrowDirection} />
+                <TriangleIcon direction={item.arrowDirection} />
               </span>
             ) : null}
           </button>

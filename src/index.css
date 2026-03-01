@@ -504,6 +504,12 @@ code {
     --page-x-padding: 0.625rem;
   }
 
+  html[data-route="home"],
+  body[data-route="home"],
+  .route-background-image {
+    background-position: 68% center;
+  }
+
   main {
     padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
   }

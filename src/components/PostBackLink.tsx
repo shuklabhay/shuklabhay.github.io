@@ -1,9 +1,7 @@
 import { Link } from "react-router-dom";
-import { getTriangleIconGeometry } from "../utils/icons";
+import TriangleIcon from "../utils/TriangleIcon";
 
 export default function PostBackLink() {
-  const backIcon = getTriangleIconGeometry("left");
-
   return (
     <div
       style={{
@@ -52,15 +50,7 @@ export default function PostBackLink() {
             flex: "0 0 auto",
           }}
         >
-          <svg
-            viewBox={backIcon.viewBox}
-            width="100%"
-            height="100%"
-            fill="currentColor"
-            style={{ display: "block" }}
-          >
-            <path d={backIcon.path} transform={backIcon.transform} />
-          </svg>
+          <TriangleIcon direction="left" size="100%" />
         </span>
         <span style={{ display: "inline-block", lineHeight: 1 }}>back</span>
       </Link>
