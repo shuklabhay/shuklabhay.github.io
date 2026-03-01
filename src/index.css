@@ -1,7 +1,7 @@
 :root {
   --content-width: 100%;
   --page-x-padding: 1.125rem;
-  --home-mobile-focal-x: 64%;
+  --home-mobile-focal-x: 70%;
   --post-hero-height-desktop: 470px;
   --post-hero-height-mobile: 300px;
   --post-hero-overlap-desktop: 132px;
@@ -62,7 +62,10 @@ main {
 
 .route-background-base {
   position: fixed;
-  inset: 0;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100svh;
   background-color: #5a6c99;
   z-index: 0;
   pointer-events: none;
@@ -70,7 +73,10 @@ main {
 
 .route-background-image {
   position: fixed;
-  inset: 0;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100svh;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -86,6 +92,13 @@ main {
   pointer-events: none;
   will-change: opacity;
   transition: none;
+}
+
+@supports (height: 100dvh) {
+  .route-background-base,
+  .route-background-image {
+    height: 100dvh;
+  }
 }
 
 @media (min-width: 1600px) {
@@ -494,9 +507,4 @@ code {
     font-size: clamp(1.6rem, 8vw, 2.3rem);
   }
 
-  .route-background-base,
-  .route-background-image {
-    top: -96px;
-    bottom: -96px;
-  }
 }
