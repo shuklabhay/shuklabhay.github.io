@@ -16,6 +16,7 @@ function rewriteWikiEmbedsToMarkdown(source: string): string {
     /!\[\[([^[\]]+)\]\]/g,
     (_match, rawPath: string) => {
       const cleaned = rawPath.trim();
+      const embedName = cleaned.toLowerCase();
 
       let importName = importByPath.get(cleaned);
       if (!importName) {
@@ -26,7 +27,7 @@ function rewriteWikiEmbedsToMarkdown(source: string): string {
         );
       }
 
-      return `<img src={${importName}} alt="" loading="lazy" />`;
+      return `<img className="post-embed-image" data-embed={${JSON.stringify(embedName)}} src={${importName}} alt="" loading="lazy" />`;
     },
   );
 
@@ -133,7 +134,9 @@ export default defineConfig({
           if (coverFile) {
             const importName = `cover${coverImportIndex++}`;
             const coverPath = `/src/posts/${slug}/${coverFile}`;
-            importLines.push(`import ${importName} from ${JSON.stringify(coverPath)};`);
+            importLines.push(
+              `import ${importName} from ${JSON.stringify(coverPath)};`,
+            );
             coverExpr = importName;
             this.addWatchFile(path.join(postsDir, slug, coverFile));
           }

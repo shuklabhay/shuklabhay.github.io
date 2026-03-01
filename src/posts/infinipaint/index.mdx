@@ -1,17 +1,40 @@
+import genie3Gif from "./assets/genie3.gif";
+import waymoWmGif from "./assets/waymo wm.gif";
+import csgoGif from "./assets/csgo.gif";
+import minipaintGif from "./assets/minipaint.gif";
+import minipaintRegionsPng from "./assets/minipaint regions.png";
+import episode0Gif from "./assets/episode_0.gif";
+import mainArchitecturePng from "./assets/main architecture.png";
+import compression4xPng from "./assets/4x compression.png";
+import compression8xPng from "./assets/8x compression.png";
+import latentDiffPng from "./assets/latent diff.png";
+import latentcnnArchitecturePng from "./assets/latentcnn architecture.png";
+import viewerGif from "./assets/viewer.gif";
+import rolloutPng from "./assets/rollout.png";
+import degradationCurvesPng from "./assets/degradation curves.png";
+import toolbarCanvasProgressionGif from "./assets/toolbar canvas progression.gif";
+import finalMomentsGif from "./assets/final moments.gif";
+
 # Infinipaint: World Modeling a Trivially Simple World
 
 ## Introduction
 
 I can't fully verbalize why, but there's something so fascinating to me about 'world modeling.' Generative AI has long focused on creating images and videos, while world modeling focuses on instilling a neural network with deep, latent comprehension of the physics and structure of a 'world,' and the images it can generate are just a window into that underlying comprehension.
 
-> ![[genie3.gif]]
-> Google Deepmind's [Genie 3 World Model](https://deepmind.google/blog/genie-3-a-new-frontier-for-world-models/) generating novel worldly scenarios.
+> <img src={genie3Gif} alt="" style={{ width: "min(100%, 760px)" }} />
+> Google Deepmind's [Genie 3 World
+> Model](https://deepmind.google/blog/genie-3-a-new-frontier-for-world-models/)
+> generating novel worldly scenarios.
 
-> ![[waymo wm.gif]]
-> Waymo's [Waymo World Model](https://waymo.com/blog/2026/02/the-waymo-world-model-a-new-frontier-for-autonomous-driving-simulation) (built on Google DeepMind's Genie 3) generating plausible camera frames and LiDAR responses for real-world driving scenarios.
+> <img src={waymoWmGif} alt="" style={{ width: "min(100%, 760px)" }} />
+> Waymo's [Waymo World
+> Model](https://waymo.com/blog/2026/02/the-waymo-world-model-a-new-frontier-for-autonomous-driving-simulation)
+> (built on Google DeepMind's Genie 3) generating plausible camera frames and
+> LiDAR responses for real-world driving scenarios.
 
-> ![[csgo.gif]]
-> Alonso et al.'s [DIAMOND](https://arxiv.org/abs/2405.12399) world model generating frames of CS:GO.
+> <img src={csgoGif} alt="" style={{ width: "min(100%, 760px)" }} />
+> Alonso et al.'s [DIAMOND](https://arxiv.org/abs/2405.12399) world model
+> generating frames of CS:GO.
 
 More formally, world models are neural networks trained to approximate an environment’s transition dynamics. Given any current state (or observation) and an action, a world model predicts how the state will evolve. In doing so, it implicitly learns the underlying structure of the environment, such that any generated images, sensor readings, or frames are simply projections of its internal simulation. World models are useful when simulating environments too difficult or impractical to build from scratch: [Atari](https://arxiv.org/abs/2405.12399) [games](https://arxiv.org/abs/2010.02193), [CS:GO](https://x.com/EloiAlonso1/status/1844803606064611771), even the [physical](https://x.com/Tesla/status/1982255564974641628) [world](https://x.com/GoogleDeepMind/status/2019808426675843105) [itself.](https://wayve.ai/thinking/gaia-2/)
 
@@ -25,11 +48,13 @@ So I wonder, what happens at the other extreme, when you world-model a fully det
 
 Minipaint is a simple 224×224 pixel Pygame-based drawing application with a pen tool, eraser, drawing canvas, brush size slider, and six distinct colors. Every 'variable' (tool state, selected color, canvas contents) is always visible on screen, making Minipaint a fully observable world where any frame action pair contains all context needed to predict the next frame. The only subtle exception is continuous drawing, where strokes are rendered between the cursor’s previous and current positions, creating a single conditional hidden variable.
 
-> ![[minipaint.gif]]
-> Minipaint in action: all state variables are visible in the interface, all state changes render deterministically and instantly.
+> <img src={minipaintGif} alt="" style={{ width: "min(100%, 360px)" }} />
+> Minipaint in action: all state variables are visible in the interface, all
+> state changes render deterministically and instantly.
 
-> ![[minipaint regions.png]]
-> Minipaint's UI layout, with each region's percentage of total screen area labeled.
+> <img src={minipaintRegionsPng} alt="" style={{ width: "min(100%, 360px)" }} />
+> Minipaint's UI layout, with each region's percentage of total screen area
+> labeled.
 
 Our goal is to create **Infinipaint,** a robust world model of Minipaint that:
 
@@ -41,8 +66,10 @@ Our goal is to create **Infinipaint,** a robust world model of Minipaint that:
 
 Following [NeuralOS](https://arxiv.org/pdf/2507.08800), data is stored as frame-action pairs. Each action is applied to Minipaint, and the resulting rendered image is recorded as the corresponding frame. When predicting the next frame, the model conditions on the next action, which is known at prediction time. At training time, sparse actions are converted to a `(56, 56, 2)` tensor, where channel 0 is a 2D Gaussian heatmap centered at the cursor and channel 1 is the button state spread across all spatial positions.
 
-> ![[episode_0.gif]]
-> A generated episode excerpt: gaussian action heatmap and button state (green = DOWN, red = UP) overlaid on raw canvas frames. Episodes range from 500 to 1000 frames, spanning varying degrees of canvas density.
+> <img src={episode0Gif} alt="" style={{ width: "min(100%, 360px)" }} />A
+> generated episode excerpt: gaussian action heatmap and button state (green =
+> DOWN, red = UP) overlaid on raw canvas frames. Episodes range from 500 to 1000
+> frames, spanning varying degrees of canvas density.
 
 All training data is synthetically generated by a swarm of procedural agents simulating diverse usage of Minipaint. Agents combine drawing primitives (polylines, arcs, zigzags, spirals, etc.) with random UI interactions to produce action-dense episodes, captured as pixel-accurate Pygame screenshots. Data is generated with fixed random seeds and episodes split via deterministic hash-based partitioning.
 
@@ -57,20 +84,24 @@ The Infinipaint world model follows the [standard world model framework,](https:
 
 Since all UI state is visible in the frame, providing both `a_t` and `a_{t+1}` reveals the one hidden variable (previous cursor position) identified above, making the next frame entirely determined by the current frame and action pair. Furthermore, since Minipaint is fully deterministic—meaning there's no distribution over possible next frames to sample from—a complex diffusion-based renderer adds little value, and a simple CNN without any recurrent architecture or hidden state should be sufficient for next frame prediction.
 
-> ![[main architecture.png]]
-> Infinipaint architecture.
+> <img src={mainArchitecturePng} alt="" style={{ width: "min(100%, 900px)" }} />
+> Infinipaint architecture: a VAE compresses frames into latent space, and a
+> non-recurrent CNN predicts the next latent from the current latent and
+> consecutive actions, before decoding back to pixels.
 
 ### World Encoding (VAE)
 
 Following the [NeuralOS](https://arxiv.org/pdf/2507.08800) and [LDM](https://arxiv.org/abs/2112.10752) training recipes, the VAE is a convolutional encoder-decoder with channel multipliers `[1, 2, 4]` over a base of 128 channels with 2 residual blocks per stage. The VAE applies 4× latent compression to 224×224 RGB frames, producing a 56×56×16 latent vector `z`. Unlike their approaches, however, this work does not use a patch-based adversarial loss or self-attention layers in the decoder.
 
-> ![[4x compression.png]]
-> VAE reconstructions at 4× compression: expected and actual outputs pictured side by side.
+> <img src={compression4xPng} alt="" style={{ width: "min(100%, 900px)" }} />
+> VAE reconstructions at 4× compression: expected and actual outputs pictured
+> side by side.
 
 Early on the VAE excelled at reconstructing the application UI (toolbar, buttons, slider) but struggled with thin brush strokes and color accuracy, especially as the canvas became more crowded. Scaling training data 5×, dropping compression from 8× to 4×, and lowering the LPIPS weight fixed most of this.
 
-> ![[8x compression.png]]
-> VAE reconstructions at 8× compression: expected and actual outputs pictured side by side.
+> <img src={compression8xPng} alt="" style={{ width: "min(100%, 900px)" }} />
+> VAE reconstructions at 8× compression: expected and actual outputs pictured
+> side by side.
 
 ### Latent Space Analysis
 
@@ -79,8 +110,10 @@ To understand what our LatentCNN will need to learn, we can analyze the differen
 1. Latent differences are spatially localized and every channel participates, indicating that our VAE is expressive enough to accurately represent Minipaint's visual dynamics without being overparameterized.
 2. Latent differences are extremely sparse: even large changes only affect 5–8% of latent positions while typical drawing changes affect less than 1%, indicating that our LatentCNN must be precise enough to modify a small subset of positions while leaving the rest completely untouched.
 
-> ![[latent diff.png]]
-> Latent diffs for a canvas stroke (left) versus a UI interaction (right). Top row: frame pairs, pixel diff, latent magnitude, significance mask. Bottom rows: per-channel diffs across all 16 latent channels.
+> <img src={latentDiffPng} alt="" style={{ width: "min(100%, 980px)" }} />
+> Latent diffs for a canvas stroke (left) versus a UI interaction (right). Top
+> row: frame pairs, pixel diff, latent magnitude, significance mask. Bottom
+> rows: per-channel diffs across all 16 latent channels.
 
 ### Predicting Latent Dynamics (LatentCNN)
 
@@ -88,8 +121,14 @@ The LatentCNN is a flat, single-resolution CNN composed of four residual blocks 
 
 Because latent diffs are so sparse, early iterations collapsed to predicting zero change everywhere. The fix was to compute mean L1 error separately for changed and unchanged regions and average them, so both contribute equally to the loss regardless of how sparse the changes are. Gaussian noise augmentation on `z_prev` and scheduled sampling are also applied for rollout stability.
 
-> ![[latentcnn architecture.png]]
-> LatentCNN architecture.
+> <img
+>   src={latentcnnArchitecturePng}
+>   alt=""
+>   style={{ width: "min(100%, 900px)" }}
+> />
+> LatentCNN architecture: a flat 56×56 single-resolution CNN predicting sparse
+> latent deltas, with action features injected via Spatial AdaGN at every
+> residual block.
 
 ### Interactive Viewer
 
@@ -97,8 +136,9 @@ The viewer is a Pygame app that runs the full world model pipeline using MLX or 
 
 Raw mouse events are too dense for real-time inference, so fixed-interval throttling is used to sample actions every 80 ms (150 steps ≈ 12 sec of continuous pen-down drawing, 500 steps ≈ 40 sec). To maximize useful rollout length, events are only queued for processing if the cursor moves more than 4 pixels, idle frames are only passed into the model to mark the completion of a stroke, and any segments longer than 12 pixels are interpolated into shorter sub-steps. The viewer and inference processes also run on separate threads to keep the interface responsive.
 
-> ![[viewer.gif]]
-> The Infinipaint world model's interactive viewer running the combined world model pipeline on a 2020 M1 Macbook Air's Integrated GPU.
+> <img src={viewerGif} alt="" style={{ width: "min(100%, 820px)" }} />
+> The Infinipaint world model's interactive viewer running the combined world
+> model pipeline on a 2020 M1 Macbook Air's Integrated GPU.
 
 ## Results / Observations
 
@@ -110,15 +150,25 @@ The complete world model pipeline is evaluated on a held-out test set of 20 epis
 
 Across evaluation, the world model appears to have robustly learned Minipaint's dynamics: tool switching, color selection, drawing, erasing, and brush size adjustment all work as intended on a fresh canvas. As small per-step prediction errors compound, frames gradually blur and lose precision until all functionality breaks down.
 
-> ![[rollout.png]]
+> <img src={rolloutPng} alt="" style={{ width: "min(100%, 980px)" }} />
 > An example autoregressive rollout of the combined VAE-LatentCNN pipeline.
 
 ### Model Performance
 
 Two metrics are used to track rollout fidelity: SSIM (structural similarity; 0.95+ is near-perfect, 0.80 and lower contains obvious artifacts) and PSNR (pixel-level error in dB, higher is better).
 
-> ![[degradation curves.png]]
-> Autoregressive rollout degradation across 20 held-out episodes. Solid lines show mean SSIM and PSNR between ground-truth frames and VAE-decoded predictions at 224×224 resolution, shaded regions indicate episode variance. The dashed reference line marks the VAE reconstruction ceiling, defined as the mean SSIM/PSNR achieved when ground-truth frames are passed through the VAE alone, representing the maximum rollout quality attainable under perfect latent prediction.
+> <img
+>   src={degradationCurvesPng}
+>   alt=""
+>   style={{ width: "min(100%, 980px)" }}
+> />
+> Autoregressive rollout degradation across 20 held-out episodes. Solid lines
+> show mean SSIM and PSNR between ground-truth frames and VAE-decoded
+> predictions at 224×224 resolution, shaded regions indicate episode variance.
+> The dashed reference line marks the VAE reconstruction ceiling, defined as the
+> mean SSIM/PSNR achieved when ground-truth frames are passed through the VAE
+> alone, representing the maximum rollout quality attainable under perfect
+> latent prediction.
 
 Step 1 averages a SSIM of 0.995 (±0.006) and a PSNR of 36.0 dB (±6.0), with quality degrading in roughly three phases:
 
@@ -132,8 +182,13 @@ Beyond what aggregate metrics capture, several behavioral patterns stand out:
 
 Functionality persists beyond visual degradation. Discrete UI behaviors degrade more slowly than continuous canvas content: mid-rollout, tool switching remains ~94% accurate (UI region SSIM 0.92) even as the canvas has already fallen to SSIM 0.85. Though while the toolbar drifts and stroke rendering progressively blurs and distorts, the underlying discrete UI logic remains largely intact until the late stages of rollouts (~step 500).
 
-> ![[toolbar canvas progression.gif]]
-> Autoregressive rollouts across 8 held-out episodes: at first UI elements degrade less extremely than the canvas.
+> <img
+>   src={toolbarCanvasProgressionGif}
+>   alt=""
+>   style={{ width: "min(100%, 820px)" }}
+> />
+> Autoregressive rollouts across 8 held-out episodes: at first UI elements
+> degrade less extremely than the canvas.
 
 _Drawing fidelity degrades continuously._ Newly drawn stroke quality degrades gradually and continuously, with no clean transition point. Early on, straight lines begin to curve slightly, appear thinner, and stroke edges exhibit subtle color fringing. By step 500+ strokes still appear in the correct locations, though curvature, thinning and fringing increase in intensity and frequency.
 
@@ -143,7 +198,7 @@ _Toolbar degradation is abrupt._ Discrete elements like button borders and selec
 
 _Tool collapse occurs asymmetrically._ Pen-click response accuracy fals from 96.2% (early) to 18.9% (late), while eraser-click response accuracy falls from 100% to 94.7% across the same phases. The model effectively gets stuck in eraser mode: drags tend to fade or erase existing content rather than draw, and 37.6% of late-phase pen strokes produce no visible pixels at all. This failure mode emerges intermittently after 800-1000 frames, usually preceeding total state collapse.
 
-> ![[final moments.gif]]
+> <img src={finalMomentsGif} alt="" style={{ width: "min(100%, 360px)" }} />
 > Late phase model degradation displayed in the interactive viewer.
 
 ## Limitations

@@ -3,14 +3,16 @@
 declare module "*.mdx" {
   import type { ComponentType } from "react";
 
-  export const meta: {
-    slug?: string;
-    title: string;
-    date: string;
-    summary: string;
-    cover?: string;
-    tags?: string[];
-  } | undefined;
+  export const meta:
+    | {
+        slug?: string;
+        title: string;
+        date: string;
+        summary: string;
+        cover?: string;
+        tags?: string[];
+      }
+    | undefined;
 
   const MDXComponent: ComponentType;
   export default MDXComponent;

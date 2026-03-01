@@ -1,5 +1,5 @@
 import { useLocation, Link } from "react-router-dom";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 const MENU_ITEMS = [
   { label: "home", path: "/" },
@@ -9,16 +9,21 @@ const MENU_ITEMS = [
 
 export default function NavMenu() {
   const location = useLocation();
-  const activeKey =
-    location.pathname.split("/").filter(Boolean)[0]?.toLowerCase() ?? "home";
+  const isPostRoute =
+    location.pathname.startsWith("/blog/") && location.pathname !== "/blog";
+  const activeKey = isPostRoute
+    ? null
+    : (location.pathname.split("/").filter(Boolean)[0]?.toLowerCase() ??
+      "home");
   const navRef = useRef<HTMLElement>(null);
   const [underlineStyle, setUnderlineStyle] = useState({
     left: 0,
     width: 0,
     opacity: 0,
   });
-  const [transitionsEnabled, setTransitionsEnabled] = useState(false);
-  const initialKeyRef = useRef(activeKey);
+  const [underlineTransitionMode, setUnderlineTransitionMode] = useState<
+    "fade" | "move"
+  >("fade");
 
   useLayoutEffect(() => {
     const navEl = navRef.current;
@@ -34,8 +39,9 @@ export default function NavMenu() {
       const activeLink = links[activeIndex];
 
       if (!activeLink) {
+        setUnderlineTransitionMode("fade");
         setUnderlineStyle((prev) =>
-          prev.opacity === 0 ? prev : { left: 0, width: 0, opacity: 0 },
+          prev.opacity === 0 ? prev : { ...prev, opacity: 0 },
         );
         return;
       }
@@ -46,13 +52,14 @@ export default function NavMenu() {
         opacity: 1,
       };
 
-      setUnderlineStyle((prev) =>
-        prev.left === next.left &&
-        prev.width === next.width &&
-        prev.opacity === next.opacity
+      setUnderlineStyle((prev) => {
+        setUnderlineTransitionMode(prev.opacity === 0 ? "fade" : "move");
+        return prev.left === next.left &&
+          prev.width === next.width &&
+          prev.opacity === next.opacity
           ? prev
-          : next,
-      );
+          : next;
+      });
     };
 
     updateUnderline();
@@ -73,12 +80,6 @@ export default function NavMenu() {
     };
   }, [activeKey]);
 
-  useEffect(() => {
-    if (activeKey !== initialKeyRef.current) {
-      setTransitionsEnabled(true);
-    }
-  }, [activeKey]);
-
   return (
     <nav
       ref={navRef}
@@ -96,6 +97,7 @@ export default function NavMenu() {
         <Link
           key={label}
           to={path}
+          state={isPostRoute ? { fromPost: true } : undefined}
           style={{
             color: "white",
             textDecoration: "none",
@@ -120,9 +122,10 @@ export default function NavMenu() {
           backgroundColor: "white",
           transform: `translateX(${underlineStyle.left}px)`,
           opacity: underlineStyle.opacity,
-          transition: transitionsEnabled
-            ? "transform 0.3s ease, width 0.3s ease, opacity 0.2s ease"
-            : "opacity 0.2s ease",
+          transition:
+            underlineTransitionMode === "move"
+              ? "transform 0.28s ease, width 0.28s ease, opacity 0.2s ease"
+              : "opacity 0.2s ease",
           willChange: "transform, width, opacity",
           pointerEvents: "none",
         }}

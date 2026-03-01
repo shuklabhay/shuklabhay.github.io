@@ -149,7 +149,6 @@ export default function Blog() {
             {
               label: "date",
               arrowDirection: dateDirection === "desc" ? "down" : "up",
-              arrowVisible: sortField === "date",
               onClick: onDateSortClick,
             },
             {
@@ -167,12 +166,19 @@ export default function Blog() {
           >
             {post.cover ? (
               <Link to={`/blog/${post.slug}`} className="post-card-cover-link">
-                <img src={post.cover} alt={post.title} className="post-card-cover" />
+                <img
+                  src={post.cover}
+                  alt={post.title}
+                  className="post-card-cover"
+                />
               </Link>
             ) : null}
             <div className="post-card-content">
               <h2 className="post-card-title">
-                <Link to={`/blog/${post.slug}`} className="post-card-title-link">
+                <Link
+                  to={`/blog/${post.slug}`}
+                  className="post-card-title-link"
+                >
                   {post.title}
                 </Link>
               </h2>

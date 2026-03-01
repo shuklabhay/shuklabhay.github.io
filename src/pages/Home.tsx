@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PageTitle, { CheckboxSubtitle } from "../components/PageTitle";
+import { useLocation } from "react-router-dom";
 
 interface ContactInfo {
   title: string;
@@ -11,6 +12,9 @@ const contactPromise = fetch("/static/sitedata/contact.json").then((res) =>
 );
 
 export default function Home() {
+  const location = useLocation();
+  const fromPost =
+    (location.state as { fromPost?: boolean } | null)?.fromPost === true;
   const [contactData, setContactData] = useState<ContactInfo[]>([]);
 
   useState(() => {
@@ -25,7 +29,7 @@ export default function Home() {
   const linkedin = contactData.find((c) => c.title === "Linkedin")?.link;
 
   return (
-    <div>
+    <main className={fromPost ? "surface-page-return" : undefined}>
       <PageTitle
         title="Hi, I'm Abhay"
         subtitle={
@@ -40,6 +44,6 @@ export default function Home() {
           />
         }
       />
-    </div>
+    </main>
   );
 }
