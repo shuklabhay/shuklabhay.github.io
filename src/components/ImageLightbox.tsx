@@ -21,7 +21,7 @@ function CloseIcon({ size = 18 }: { size?: number }) {
   );
 }
 
-export default function ImageGallery({
+export default function ImageLightbox({
   opened,
   setOpened,
   image,

@@ -477,15 +477,15 @@ code {
 }
 
 .post-page-enter .post-date {
-  animation-delay: 80ms;
+  animation-delay: 0ms;
 }
 
 .post-page-enter .post-title-block {
-  animation-delay: 170ms;
+  animation-delay: 0ms;
 }
 
 .post-page-enter .post-content {
-  animation-delay: 260ms;
+  animation-delay: 120ms;
 }
 
 @media (prefers-reduced-motion: reduce) {

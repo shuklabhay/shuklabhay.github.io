@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
 import { useParams } from "react-router-dom";
-import ImageGallery from "../components/ImageGallery";
+import ImageLightbox from "../components/ImageLightbox";
 import PostBackLink from "../components/PostBackLink";
 import { getPostBySlug } from "../posts";
 import type { RichImage } from "../utils/types";
@@ -115,7 +115,7 @@ export default function Post() {
           <Content />
         </article>
         {postImages.length > 0 ? (
-          <ImageGallery
+          <ImageLightbox
             opened={lightboxOpened}
             setOpened={setLightboxOpened}
             image={lightboxImage}
