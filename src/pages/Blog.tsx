@@ -166,7 +166,11 @@ export default function Blog() {
             className={`post-card${post.cover ? "" : " post-card-no-cover"}`}
           >
             {post.cover ? (
-              <img src={post.cover} alt={post.title} className="post-card-cover" />
+              <img
+                src={post.cover}
+                alt={post.title}
+                className="post-card-cover"
+              />
             ) : null}
             <div className="post-card-content">
               <h2 className="post-card-title">

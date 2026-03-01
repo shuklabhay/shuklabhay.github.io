@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
 import { useParams } from "react-router-dom";
 import ImageGallery from "../components/ImageGallery";
+import PostBackLink from "../components/PostBackLink";
 import { getPostBySlug } from "../posts";
 import type { RichImage } from "../utils/types";
 
@@ -55,9 +56,12 @@ export default function Post() {
 
   if (!post) {
     return (
-      <main className="post-page post-page-enter" key={slug}>
-        <h1 className="post-missing-title">Post not found</h1>
-      </main>
+      <>
+        <PostBackLink />
+        <main className="post-page post-page-enter" key={slug}>
+          <h1 className="post-missing-title">Post not found</h1>
+        </main>
+      </>
     );
   }
 
@@ -85,34 +89,39 @@ export default function Post() {
   };
 
   return (
-    <main className="post-page post-page-enter" key={slug}>
-      <div
-        className="post-hero"
-        style={{
-          backgroundImage: `url(${heroImage})`,
-        }}
-        aria-hidden
-      />
-      <div className="post-title-block">
-        <h1 className="post-title">{post.title}</h1>
-        {post.date ? (
-          <p className="post-date">Abhay Shukla · {formatPostDate(post.date)}</p>
-        ) : null}
-      </div>
-      <article
-        ref={postContentRef}
-        className="post-content"
-        onClick={onPostContentClick}
-      >
-        <Content />
-      </article>
-      {postImages.length > 0 ? (
-        <ImageGallery
-          opened={lightboxOpened}
-          setOpened={setLightboxOpened}
-          image={lightboxImage}
+    <>
+      <PostBackLink />
+      <main className="post-page post-page-enter" key={slug}>
+        <div
+          className="post-hero"
+          style={{
+            backgroundImage: `url(${heroImage})`,
+          }}
+          aria-hidden
         />
-      ) : null}
-    </main>
+        <div className="post-title-block">
+          <h1 className="post-title">{post.title}</h1>
+          {post.date ? (
+            <p className="post-date">
+              Abhay Shukla · {formatPostDate(post.date)}
+            </p>
+          ) : null}
+        </div>
+        <article
+          ref={postContentRef}
+          className="post-content"
+          onClick={onPostContentClick}
+        >
+          <Content />
+        </article>
+        {postImages.length > 0 ? (
+          <ImageGallery
+            opened={lightboxOpened}
+            setOpened={setLightboxOpened}
+            image={lightboxImage}
+          />
+        ) : null}
+      </main>
+    </>
   );
 }

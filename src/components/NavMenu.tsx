@@ -7,6 +7,14 @@ const MENU_ITEMS = [
   { label: "blog", path: "/blog" },
 ];
 
+type UnderlineMode = "none" | "fade" | "move";
+type UnderlineStyle = {
+  left: number;
+  width: number;
+  opacity: number;
+  mode: UnderlineMode;
+};
+
 export default function NavMenu() {
   const location = useLocation();
   const isPostRoute =
@@ -18,11 +26,11 @@ export default function NavMenu() {
   const navRef = useRef<HTMLElement>(null);
   const prevActiveKeyRef = useRef<string | null>(null);
   const hasInitializedRef = useRef(false);
-  const [underlineStyle, setUnderlineStyle] = useState({
+  const [underlineStyle, setUnderlineStyle] = useState<UnderlineStyle>({
     left: 0,
     width: 0,
     opacity: 0,
-    mode: "none" as "none" | "fade" | "move",
+    mode: "none",
   });
 
   useLayoutEffect(() => {
@@ -56,7 +64,7 @@ export default function NavMenu() {
         activeKey !== null &&
         prevActiveKeyRef.current !== activeKey;
 
-      const next = {
+      const next: UnderlineStyle = {
         left: activeLink.offsetLeft,
         width: activeLink.offsetWidth,
         opacity: 1,
@@ -64,12 +72,10 @@ export default function NavMenu() {
       };
 
       setUnderlineStyle((prev) => {
-        return prev.left === next.left &&
-          prev.width === next.width &&
-          prev.opacity === next.opacity &&
-          prev.mode === next.mode
-          ? prev
-          : next;
+        const samePosition =
+          prev.left === next.left && prev.width === next.width;
+        const sameOpacity = prev.opacity === next.opacity;
+        return samePosition && sameOpacity ? prev : next;
       });
 
       prevActiveKeyRef.current = activeKey;
