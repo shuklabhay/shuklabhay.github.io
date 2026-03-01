@@ -28,10 +28,9 @@ export default function Post() {
   const [postImages, setPostImages] = useState<RichImage[]>([]);
 
   useEffect(() => {
-    return () => {
-      if (typeof window === "undefined") return;
+    if (typeof window !== "undefined") {
       window.sessionStorage.setItem(POST_RETURN_FLAG_KEY, "1");
-    };
+    }
   }, []);
 
   useEffect(() => {

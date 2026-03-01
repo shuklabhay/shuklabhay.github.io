@@ -61,19 +61,12 @@ function formatPostDate(raw: string) {
   });
 }
 
-function consumePostReturnFlag() {
-  if (typeof window === "undefined") return false;
-  const hasFlag = window.sessionStorage.getItem(POST_RETURN_FLAG_KEY) === "1";
-  if (hasFlag) {
-    window.sessionStorage.removeItem(POST_RETURN_FLAG_KEY);
-  }
-  return hasFlag;
-}
-
 export default function Blog() {
   const location = useLocation();
   const blogTransitionState = location.state as RouteTransitionState | null;
-  const [fromPostReturnFlag] = useState<boolean>(consumePostReturnFlag);
+  const fromPostReturnFlag =
+    typeof window !== "undefined" &&
+    window.sessionStorage.getItem(POST_RETURN_FLAG_KEY) === "1";
   const shouldAnimateBlogEntry =
     blogTransitionState?.fromPost === true || fromPostReturnFlag;
   const [sortState, setSortState] = useState<BlogSortState>(
@@ -92,6 +85,14 @@ export default function Blog() {
       } satisfies BlogSortState),
     );
   }, [sortField, dateDirection, alphaDirection]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const clearId = window.setTimeout(() => {
+      window.sessionStorage.removeItem(POST_RETURN_FLAG_KEY);
+    }, 0);
+    return () => window.clearTimeout(clearId);
+  }, []);
 
   const onDateSortClick = () => {
     setSortState((prev) =>

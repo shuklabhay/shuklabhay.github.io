@@ -154,13 +154,13 @@ code {
 .blog-page-return {
   opacity: 0;
   transform: none;
-  animation: blog-fade 360ms ease forwards;
+  animation: blog-fade 2000ms ease forwards;
 }
 
 .surface-page-return {
   opacity: 0;
   transform: none;
-  animation: blog-fade 128ms ease forwards;
+  animation: blog-fade 360ms ease forwards;
 }
 
 .post-card {

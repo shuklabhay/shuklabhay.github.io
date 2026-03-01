@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PageTitle, { CheckboxSubtitle } from "../components/PageTitle";
 import { useLocation } from "react-router-dom";
 import type { ContactInfo, RouteTransitionState } from "../utils/types";
@@ -9,28 +9,29 @@ const contactPromise = fetch("/static/sitedata/contact.json").then((res) =>
   res.json(),
 );
 
-function consumePostReturnFlag() {
-  if (typeof window === "undefined") return false;
-  const hasFlag = window.sessionStorage.getItem(POST_RETURN_FLAG_KEY) === "1";
-  if (hasFlag) {
-    window.sessionStorage.removeItem(POST_RETURN_FLAG_KEY);
-  }
-  return hasFlag;
-}
-
 export default function Home() {
   const location = useLocation();
   const transitionState = location.state as RouteTransitionState | null;
-  const [fromPostReturnFlag] = useState<boolean>(consumePostReturnFlag);
+  const fromPostReturnFlag =
+    typeof window !== "undefined" &&
+    window.sessionStorage.getItem(POST_RETURN_FLAG_KEY) === "1";
   const shouldAnimateSurfaceEntry =
     transitionState?.fromPost === true || fromPostReturnFlag;
   const [contactData, setContactData] = useState<ContactInfo[]>([]);
 
-  useState(() => {
+  useEffect(() => {
     contactPromise
       .then((data) => setContactData(data))
       .catch((err) => console.error("Failed to load contact data:", err));
-  });
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const clearId = window.setTimeout(() => {
+      window.sessionStorage.removeItem(POST_RETURN_FLAG_KEY);
+    }, 0);
+    return () => window.clearTimeout(clearId);
+  }, []);
 
   const rawEmail = contactData.find((c) => c.title === "Email")?.link;
   const email = `mailto:${rawEmail}`;

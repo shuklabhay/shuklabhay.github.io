@@ -34,7 +34,9 @@ export default function NavMenu() {
 
     const links = Array.from(navEl.querySelectorAll("a")) as HTMLElement[];
     if (!links.length) return;
-    const activeIndex = MENU_ITEMS.findIndex((item) => item.label === activeKey);
+    const activeIndex = MENU_ITEMS.findIndex(
+      (item) => item.label === activeKey,
+    );
     const activeLink = links[activeIndex];
 
     if (!activeLink) {
@@ -54,7 +56,8 @@ export default function NavMenu() {
     const linkRect = (underlineTarget ?? activeLink).getBoundingClientRect();
     const snapToPixel = (value: number) => Math.round(value);
     const shouldMove =
-      prevActiveKeyRef.current !== null && prevActiveKeyRef.current !== activeKey;
+      prevActiveKeyRef.current !== null &&
+      prevActiveKeyRef.current !== activeKey;
 
     setUnderlineStyle({
       left: snapToPixel(linkRect.left - navRect.left),

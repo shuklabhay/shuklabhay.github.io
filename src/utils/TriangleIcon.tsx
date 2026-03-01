@@ -10,7 +10,13 @@ export default function TriangleIcon({
   const transform = direction === "up" ? "rotate(180 5 5)" : undefined;
 
   return (
-    <svg width={size} height={size} viewBox={viewBox} aria-hidden focusable="false">
+    <svg
+      width={size}
+      height={size}
+      viewBox={viewBox}
+      aria-hidden
+      focusable="false"
+    >
       <path d={path} fill="currentColor" transform={transform} />
     </svg>
   );
