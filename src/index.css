@@ -151,12 +151,10 @@ code {
   }
 }
 
-.blog-page-return .blog-page-title,
-.blog-page-return .blog-page-controls,
-.blog-page-return .post-card {
+.blog-page-return {
   opacity: 0;
   transform: none;
-  animation: blog-fade 128ms ease forwards;
+  animation: blog-fade 360ms ease forwards;
 }
 
 .surface-page-return {
@@ -441,17 +439,23 @@ code {
   max-width: 100%;
 }
 
+.post-page-enter {
+  opacity: 0;
+  transform: none;
+  animation: blog-fade 260ms ease forwards;
+}
+
 .post-page-enter .post-date,
 .post-page-enter .post-title-block {
   opacity: 0;
   transform: none;
-  animation: blog-fade 128ms ease forwards;
+  animation: blog-fade 220ms ease forwards;
 }
 
 .post-page-enter .post-content {
   opacity: 0;
   transform: none;
-  animation: blog-fade 128ms ease forwards;
+  animation: blog-fade 240ms ease forwards;
 }
 
 .post-page-enter .post-date {
@@ -463,7 +467,7 @@ code {
 }
 
 .post-page-enter .post-content {
-  animation-delay: 128ms;
+  animation-delay: 160ms;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -506,5 +510,4 @@ code {
   .post-title {
     font-size: clamp(1.6rem, 8vw, 2.3rem);
   }
-
 }

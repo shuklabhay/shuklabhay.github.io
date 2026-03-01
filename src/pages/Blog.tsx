@@ -11,6 +11,7 @@ import type {
 } from "../utils/types";
 
 const BLOG_SORT_STORAGE_KEY = "blog-sort-state-v1";
+const POST_RETURN_FLAG_KEY = "route-from-post-return";
 const DEFAULT_BLOG_SORT_STATE: BlogSortState = {
   sortField: "date",
   dateDirection: "desc",
@@ -60,10 +61,21 @@ function formatPostDate(raw: string) {
   });
 }
 
+function consumePostReturnFlag() {
+  if (typeof window === "undefined") return false;
+  const hasFlag = window.sessionStorage.getItem(POST_RETURN_FLAG_KEY) === "1";
+  if (hasFlag) {
+    window.sessionStorage.removeItem(POST_RETURN_FLAG_KEY);
+  }
+  return hasFlag;
+}
+
 export default function Blog() {
   const location = useLocation();
   const blogTransitionState = location.state as RouteTransitionState | null;
-  const shouldAnimateBlogEntry = blogTransitionState?.fromPost === true;
+  const [fromPostReturnFlag] = useState<boolean>(consumePostReturnFlag);
+  const shouldAnimateBlogEntry =
+    blogTransitionState?.fromPost === true || fromPostReturnFlag;
   const [sortState, setSortState] = useState<BlogSortState>(
     readBlogSortStateFromStorage,
   );

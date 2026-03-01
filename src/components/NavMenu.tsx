@@ -21,7 +21,6 @@ export default function NavMenu() {
       "home");
   const navRef = useRef<HTMLElement>(null);
   const prevActiveKeyRef = useRef<string | null>(null);
-  const hasInitializedRef = useRef(false);
   const [underlineStyle, setUnderlineStyle] = useState<UnderlineStyle>({
     left: 0,
     width: 0,
@@ -35,69 +34,35 @@ export default function NavMenu() {
 
     const links = Array.from(navEl.querySelectorAll("a")) as HTMLElement[];
     if (!links.length) return;
+    const activeIndex = MENU_ITEMS.findIndex((item) => item.label === activeKey);
+    const activeLink = links[activeIndex];
 
-    const updateUnderline = () => {
-      const activeIndex = MENU_ITEMS.findIndex(
-        (item) => item.label === activeKey,
+    if (!activeLink) {
+      setUnderlineStyle((prev) =>
+        prev.opacity === 0 && prev.mode === "fade"
+          ? prev
+          : { ...prev, opacity: 0, mode: "fade" },
       );
-      const activeLink = links[activeIndex];
+      prevActiveKeyRef.current = null;
+      return;
+    }
 
-      if (!activeLink) {
-        setUnderlineStyle((prev) =>
-          prev.opacity === 0 && prev.mode === "fade"
-            ? prev
-            : { ...prev, opacity: 0, mode: "fade" },
-        );
-        prevActiveKeyRef.current = null;
-        hasInitializedRef.current = true;
-        return;
-      }
+    const navRect = navEl.getBoundingClientRect();
+    const underlineTarget = activeLink.querySelector(
+      "[data-underline-target]",
+    ) as HTMLElement | null;
+    const linkRect = (underlineTarget ?? activeLink).getBoundingClientRect();
+    const snapToPixel = (value: number) => Math.round(value);
+    const shouldMove =
+      prevActiveKeyRef.current !== null && prevActiveKeyRef.current !== activeKey;
 
-      const isFirstVisibleUnderline = !hasInitializedRef.current;
-      const shouldMove =
-        hasInitializedRef.current &&
-        prevActiveKeyRef.current !== null &&
-        activeKey !== null &&
-        prevActiveKeyRef.current !== activeKey;
-
-      const navRect = navEl.getBoundingClientRect();
-      const linkRect = activeLink.getBoundingClientRect();
-      const snapToPixel = (value: number) => Math.round(value);
-
-      const next: UnderlineStyle = {
-        left: snapToPixel(linkRect.left - navRect.left),
-        width: snapToPixel(linkRect.width),
-        opacity: 1,
-        mode: isFirstVisibleUnderline ? "none" : shouldMove ? "move" : "fade",
-      };
-
-      setUnderlineStyle((prev) => {
-        const samePosition =
-          prev.left === next.left && prev.width === next.width;
-        const sameOpacity = prev.opacity === next.opacity;
-        return samePosition && sameOpacity ? prev : next;
-      });
-
-      prevActiveKeyRef.current = activeKey;
-      hasInitializedRef.current = true;
-    };
-
-    updateUnderline();
-
-    const handleResize = () => updateUnderline();
-    window.addEventListener("resize", handleResize);
-
-    const resizeObserver =
-      typeof ResizeObserver === "function"
-        ? new ResizeObserver(updateUnderline)
-        : null;
-    resizeObserver?.observe(navEl);
-    links.forEach((link) => resizeObserver?.observe(link));
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      resizeObserver?.disconnect();
-    };
+    setUnderlineStyle({
+      left: snapToPixel(linkRect.left - navRect.left),
+      width: snapToPixel(linkRect.width),
+      opacity: 1,
+      mode: shouldMove ? "move" : "none",
+    });
+    prevActiveKeyRef.current = activeKey;
   }, [activeKey]);
 
   const handleTopLevelNavClick = (
@@ -119,6 +84,9 @@ export default function NavMenu() {
       navigate(path);
     });
   };
+
+  const underlineMoveTransition =
+    "transform 0.32s ease, width 0.32s ease, opacity 0.2s ease";
 
   return (
     <nav
@@ -148,16 +116,23 @@ export default function NavMenu() {
             textDecoration: "none",
             fontSize: "1.25rem",
             position: "relative",
-            display: "inline-block",
+            display: "inline-flex",
+            alignItems: "center",
             lineHeight: 1.1,
+            paddingTop: "0.24rem",
+            paddingInline: "0.3rem",
             paddingBottom: "0.45rem",
+            marginTop: "-0.24rem",
+            marginInline: "-0.3rem",
             marginBottom: "-0.45rem",
             userSelect: "none",
             WebkitUserSelect: "none",
             WebkitTouchCallout: "none",
           }}
         >
-          {label}
+          <span data-underline-target style={{ display: "inline-block" }}>
+            {label}
+          </span>
         </Link>
       ))}
       <div
@@ -172,7 +147,7 @@ export default function NavMenu() {
           opacity: underlineStyle.opacity,
           transition:
             underlineStyle.mode === "move"
-              ? "transform 0.28s ease, width 0.28s ease, opacity 0.2s ease"
+              ? underlineMoveTransition
               : underlineStyle.mode === "fade"
                 ? "opacity 0.2s ease"
                 : "none",

@@ -6,6 +6,8 @@ import PostBackLink from "../components/PostBackLink";
 import { getPostBySlug } from "../posts";
 import type { RichImage } from "../utils/types";
 
+const POST_RETURN_FLAG_KEY = "route-from-post-return";
+
 function formatPostDate(raw: string) {
   if (!raw) return "";
   const parsed = new Date(raw);
@@ -24,6 +26,13 @@ export default function Post() {
   const [lightboxOpened, setLightboxOpened] = useState(false);
   const [lightboxImage, setLightboxImage] = useState<RichImage | null>(null);
   const [postImages, setPostImages] = useState<RichImage[]>([]);
+
+  useEffect(() => {
+    return () => {
+      if (typeof window === "undefined") return;
+      window.sessionStorage.setItem(POST_RETURN_FLAG_KEY, "1");
+    };
+  }, []);
 
   useEffect(() => {
     if (!post) {

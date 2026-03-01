@@ -1,11 +1,25 @@
 import PageTitle from "../components/PageTitle";
 import { useLocation } from "react-router-dom";
+import { useState } from "react";
 import type { RouteTransitionState } from "../utils/types";
+
+const POST_RETURN_FLAG_KEY = "route-from-post-return";
+
+function consumePostReturnFlag() {
+  if (typeof window === "undefined") return false;
+  const hasFlag = window.sessionStorage.getItem(POST_RETURN_FLAG_KEY) === "1";
+  if (hasFlag) {
+    window.sessionStorage.removeItem(POST_RETURN_FLAG_KEY);
+  }
+  return hasFlag;
+}
 
 export default function About() {
   const location = useLocation();
   const transitionState = location.state as RouteTransitionState | null;
-  const shouldAnimateSurfaceEntry = transitionState?.fromPost === true;
+  const [fromPostReturnFlag] = useState<boolean>(consumePostReturnFlag);
+  const shouldAnimateSurfaceEntry =
+    transitionState?.fromPost === true || fromPostReturnFlag;
 
   return (
     <main
