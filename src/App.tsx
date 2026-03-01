@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import Home from "./pages/Home.tsx";
 import NavMenu from "./components/NavMenu.tsx";
-import About, { DataProvider } from "./pages/About.tsx";
+import About from "./pages/About.tsx";
 import Blog from "./pages/Blog.tsx";
 
 const imagesToPreload = [
@@ -45,17 +45,15 @@ export default function App() {
         v7_relativeSplatPath: true,
       }}
     >
-      <DataProvider>
-        <RouteBackground />
-        <div className="container">
-          <NavMenu />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/blog" element={<Blog />} />
-          </Routes>
-        </div>
-      </DataProvider>
+      <RouteBackground />
+      <div className="container">
+        <NavMenu />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/blog" element={<Blog />} />
+        </Routes>
+      </div>
     </BrowserRouter>
   );
 }

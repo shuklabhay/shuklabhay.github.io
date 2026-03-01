@@ -1,13 +1,12 @@
 # portfolio
 
-[![Build Resume](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/resume.yml/badge.svg)](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/resume.yml)
 [![Deploy GitHub Page](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/deploy.yml/badge.svg)](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/deploy.yml)
 [![Update GitHub Data](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/ghdata.yml/badge.svg)](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/ghdata.yml/badge.svg)
 [![Push Checks](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/push.yml/badge.svg)](https://github.com/shuklabhay/shuklabhay.github.io/actions/workflows/push.yml/badge.svg)
 
 ## App Info
 
-Portfolio website, data repository and dynamic resume compiler
+Portfolio website and data repository
 
 ## Setup
 
@@ -31,4 +30,3 @@ Portfolio website, data repository and dynamic resume compiler
 - Run `npm run dev` to start dev server
 - Run `npm run lint` to format code and fix lint issues
 - Run `npm run update-gh-data` to update JSON data from Gitub API
-- Run `npm run compile-tex-resume` to compile JSON information into LaTeX template
