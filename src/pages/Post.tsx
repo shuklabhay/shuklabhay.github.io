@@ -26,10 +26,6 @@ export default function Post() {
   const [postImages, setPostImages] = useState<RichImage[]>([]);
 
   const onBackClick = () => {
-    if (window.history.length > 1) {
-      navigate(-1);
-      return;
-    }
     navigate("/blog", { state: { fromPost: true } });
   };
 
