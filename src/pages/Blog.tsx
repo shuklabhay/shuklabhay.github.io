@@ -40,21 +40,26 @@ export default function Blog() {
       </button>
       <section className="posts-list">
         {sortedPosts.map((post) => (
-          <article key={post.slug} className="post-card">
+          <article
+            key={post.slug}
+            className={`post-card${post.cover ? "" : " post-card-no-cover"}`}
+          >
             {post.cover ? (
-              <Link to={`/posts/${post.slug}`} className="post-card-cover-link">
+              <Link to={`/blog/${post.slug}`} className="post-card-cover-link">
                 <img src={post.cover} alt={post.title} className="post-card-cover" />
               </Link>
             ) : null}
-            <h2 className="post-card-title">
-              <Link to={`/posts/${post.slug}`} className="post-card-title-link">
-                {post.title}
-              </Link>
-            </h2>
-            {post.date ? (
-              <p className="post-card-date">{formatPostDate(post.date)}</p>
-            ) : null}
-            <p className="post-card-summary">{post.excerpt}</p>
+            <div className="post-card-content">
+              <h2 className="post-card-title">
+                <Link to={`/blog/${post.slug}`} className="post-card-title-link">
+                  {post.title}
+                </Link>
+              </h2>
+              {post.date ? (
+                <p className="post-card-date">{formatPostDate(post.date)}</p>
+              ) : null}
+              <p className="post-card-summary">{post.excerpt}</p>
+            </div>
           </article>
         ))}
       </section>
