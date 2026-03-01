@@ -72,7 +72,6 @@ export default function NavMenu() {
     event: ReactMouseEvent<HTMLAnchorElement>,
     path: string,
   ) => {
-    if (isPostRoute) return;
     if (event.defaultPrevented) return;
     if (event.button !== 0) return;
     if (event.metaKey || event.altKey || event.ctrlKey || event.shiftKey)
@@ -83,8 +82,14 @@ export default function NavMenu() {
     }
 
     event.preventDefault();
+    const navigateState = isPostRoute ? { fromPost: true } : undefined;
+    if (isPostRoute) {
+      navigate(path, { state: navigateState });
+      return;
+    }
+
     runWithRootViewTransition(() => {
-      navigate(path);
+      navigate(path, { state: navigateState });
     });
   };
 
