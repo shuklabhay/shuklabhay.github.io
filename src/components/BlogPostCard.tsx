@@ -19,6 +19,7 @@ export default function BlogPostCard({
     <Link
       to={postPath}
       viewTransition
+      state={{ fromBlog: true }}
       className={`post-card${post.cover ? "" : " post-card-no-cover"}`}
       onMouseEnter={warmHeroImage}
       onFocus={warmHeroImage}

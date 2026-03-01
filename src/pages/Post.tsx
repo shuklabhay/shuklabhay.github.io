@@ -1,13 +1,15 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
+import BlogPost from "../components/BlogPost";
 import ImageLightbox from "../components/ImageLightbox";
 import PostBackLink from "../components/PostBackLink";
 import { getPostBySlug } from "../posts";
 import { getImagePreloadStatus, preloadImage } from "../utils/imagePreload";
-import type { RichImage } from "../utils/types";
+import type { RichImage, RouteTransitionState } from "../utils/types";
 
 const POST_RETURN_FLAG_KEY = "route-from-post-return";
+const POST_SCROLL_POSITION_PREFIX = "post-scroll-position:";
 type HeroLoadStatus = "loading" | "loaded" | "error";
 
 function formatPostDate(raw: string) {
@@ -21,8 +23,43 @@ function formatPostDate(raw: string) {
   });
 }
 
+function didDocumentReload() {
+  if (typeof window === "undefined" || typeof performance === "undefined") {
+    return false;
+  }
+
+  const navigationEntries = performance.getEntriesByType?.("navigation");
+  const navigationEntry = navigationEntries?.[0] as
+    | PerformanceNavigationTiming
+    | undefined;
+  if (navigationEntry?.type) {
+    return navigationEntry.type === "reload";
+  }
+
+  const legacyNavigation = (
+    performance as Performance & {
+      navigation?: {
+        type?: number;
+        TYPE_RELOAD?: number;
+      };
+    }
+  ).navigation;
+  if (!legacyNavigation) return false;
+  return legacyNavigation.type === legacyNavigation.TYPE_RELOAD;
+}
+
+function getPostScrollStorageKey(pathname: string) {
+  return `${POST_SCROLL_POSITION_PREFIX}${pathname}`;
+}
+
 export default function Post() {
   const { slug = "" } = useParams();
+  const location = useLocation();
+  const transitionState = location.state as RouteTransitionState | null;
+  const isDocumentReload = didDocumentReload();
+  const postScrollStorageKey = getPostScrollStorageKey(location.pathname);
+  const shouldAnimatePostEntry =
+    transitionState?.fromBlog === true && !isDocumentReload;
   const post = getPostBySlug(slug);
   const heroImage = post?.cover ?? "/static/landing-1280.avif";
   const postContentRef = useRef<HTMLElement>(null);
@@ -139,6 +176,64 @@ export default function Post() {
     };
   }, [heroImage, post]);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const saveScrollPosition = () => {
+      window.sessionStorage.setItem(
+        postScrollStorageKey,
+        String(window.scrollY),
+      );
+    };
+
+    const onVisibilityChange = () => {
+      if (document.visibilityState !== "hidden") return;
+      saveScrollPosition();
+    };
+
+    window.addEventListener("beforeunload", saveScrollPosition);
+    window.addEventListener("pagehide", saveScrollPosition);
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
+    return () => {
+      saveScrollPosition();
+      window.removeEventListener("beforeunload", saveScrollPosition);
+      window.removeEventListener("pagehide", saveScrollPosition);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
+  }, [postScrollStorageKey]);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !isDocumentReload) return;
+
+    const raw = window.sessionStorage.getItem(postScrollStorageKey);
+    const savedY = Number(raw);
+    if (!Number.isFinite(savedY)) return;
+
+    const restoreScroll = () => {
+      window.scrollTo(0, Math.max(0, savedY));
+    };
+
+    restoreScroll();
+    let frameB = 0;
+    const frameA = window.requestAnimationFrame(() => {
+      restoreScroll();
+      frameB = window.requestAnimationFrame(restoreScroll);
+    });
+    const timeoutIds = [120, 280, 520, 900].map((delayMs) =>
+      window.setTimeout(restoreScroll, delayMs),
+    );
+    const onLoad = () => restoreScroll();
+    window.addEventListener("load", onLoad);
+
+    return () => {
+      window.cancelAnimationFrame(frameA);
+      window.cancelAnimationFrame(frameB);
+      timeoutIds.forEach((timeoutId) => window.clearTimeout(timeoutId));
+      window.removeEventListener("load", onLoad);
+    };
+  }, [isDocumentReload, postScrollStorageKey]);
+
   if (!post) {
     return (
       <>
@@ -155,7 +250,8 @@ export default function Post() {
     heroLoadState.src === heroImage ? heroLoadState.status : "loading";
   const isHeroLoaded = currentHeroLoadStatus === "loaded";
   const isPostEntryReady =
-    currentHeroLoadStatus !== "loading" && isPostContentReady;
+    !shouldAnimatePostEntry ||
+    (currentHeroLoadStatus !== "loading" && isPostContentReady);
   const postPageClassName = `post-page ${
     isPostEntryReady ? "post-page-enter" : "post-page-await-hero"
   }`;
@@ -183,35 +279,27 @@ export default function Post() {
   return (
     <>
       <PostBackLink />
-      <main className={postPageClassName} key={slug}>
-        <div
-          className={`post-hero${isHeroLoaded ? " post-hero-loaded" : ""}`}
-          style={{ backgroundImage: `url(${heroImage})` }}
-          aria-hidden
+      <BlogPost
+        key={slug}
+        pageClassName={postPageClassName}
+        title={post.title}
+        byline={
+          post.date ? `Abhay Shukla · ${formatPostDate(post.date)}` : undefined
+        }
+        heroImage={heroImage}
+        isHeroLoaded={isHeroLoaded}
+        contentRef={postContentRef}
+        onContentClick={onPostContentClick}
+      >
+        <Content />
+      </BlogPost>
+      {postImages.length > 0 ? (
+        <ImageLightbox
+          opened={lightboxOpened}
+          setOpened={setLightboxOpened}
+          image={lightboxImage}
         />
-        <div className="post-title-block">
-          <h1 className="post-title">{post.title}</h1>
-          {post.date ? (
-            <p className="post-date">
-              Abhay Shukla · {formatPostDate(post.date)}
-            </p>
-          ) : null}
-        </div>
-        <article
-          ref={postContentRef}
-          className="post-content"
-          onClick={onPostContentClick}
-        >
-          <Content />
-        </article>
-        {postImages.length > 0 ? (
-          <ImageLightbox
-            opened={lightboxOpened}
-            setOpened={setLightboxOpened}
-            image={lightboxImage}
-          />
-        ) : null}
-      </main>
+      ) : null}
     </>
   );
 }
