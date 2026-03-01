@@ -1,9 +1,4 @@
-import {
-  BrowserRouter,
-  Route,
-  Routes,
-  useLocation,
-} from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Home from "./pages/Home.tsx";
 import NavMenu from "./components/NavMenu.tsx";
