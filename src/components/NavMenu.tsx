@@ -16,14 +16,14 @@ export default function NavMenu() {
     : (location.pathname.split("/").filter(Boolean)[0]?.toLowerCase() ??
       "home");
   const navRef = useRef<HTMLElement>(null);
+  const prevActiveKeyRef = useRef<string | null>(null);
+  const hasInitializedRef = useRef(false);
   const [underlineStyle, setUnderlineStyle] = useState({
     left: 0,
     width: 0,
     opacity: 0,
+    mode: "none" as "none" | "fade" | "move",
   });
-  const [underlineTransitionMode, setUnderlineTransitionMode] = useState<
-    "fade" | "move"
-  >("fade");
 
   useLayoutEffect(() => {
     const navEl = navRef.current;
@@ -39,27 +39,41 @@ export default function NavMenu() {
       const activeLink = links[activeIndex];
 
       if (!activeLink) {
-        setUnderlineTransitionMode("fade");
         setUnderlineStyle((prev) =>
-          prev.opacity === 0 ? prev : { ...prev, opacity: 0 },
+          prev.opacity === 0 && prev.mode === "fade"
+            ? prev
+            : { ...prev, opacity: 0, mode: "fade" },
         );
+        prevActiveKeyRef.current = null;
+        hasInitializedRef.current = true;
         return;
       }
+
+      const isFirstVisibleUnderline = !hasInitializedRef.current;
+      const shouldMove =
+        hasInitializedRef.current &&
+        prevActiveKeyRef.current !== null &&
+        activeKey !== null &&
+        prevActiveKeyRef.current !== activeKey;
 
       const next = {
         left: activeLink.offsetLeft,
         width: activeLink.offsetWidth,
         opacity: 1,
+        mode: isFirstVisibleUnderline ? "none" : shouldMove ? "move" : "fade",
       };
 
       setUnderlineStyle((prev) => {
-        setUnderlineTransitionMode(prev.opacity === 0 ? "fade" : "move");
         return prev.left === next.left &&
           prev.width === next.width &&
-          prev.opacity === next.opacity
+          prev.opacity === next.opacity &&
+          prev.mode === next.mode
           ? prev
           : next;
       });
+
+      prevActiveKeyRef.current = activeKey;
+      hasInitializedRef.current = true;
     };
 
     updateUnderline();
@@ -91,6 +105,9 @@ export default function NavMenu() {
         justifyContent: "flex-end",
         paddingTop: "1rem",
         paddingBottom: "4px",
+        userSelect: "none",
+        WebkitUserSelect: "none",
+        WebkitTouchCallout: "none",
       }}
     >
       {MENU_ITEMS.map(({ label, path }) => (
@@ -107,6 +124,9 @@ export default function NavMenu() {
             lineHeight: 1.1,
             paddingBottom: "0.45rem",
             marginBottom: "-0.45rem",
+            userSelect: "none",
+            WebkitUserSelect: "none",
+            WebkitTouchCallout: "none",
           }}
         >
           {label}
@@ -123,9 +143,11 @@ export default function NavMenu() {
           transform: `translateX(${underlineStyle.left}px)`,
           opacity: underlineStyle.opacity,
           transition:
-            underlineTransitionMode === "move"
+            underlineStyle.mode === "move"
               ? "transform 0.28s ease, width 0.28s ease, opacity 0.2s ease"
-              : "opacity 0.2s ease",
+              : underlineStyle.mode === "fade"
+                ? "opacity 0.2s ease"
+                : "none",
           willChange: "transform, width, opacity",
           pointerEvents: "none",
         }}

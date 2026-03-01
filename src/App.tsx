@@ -1,5 +1,5 @@
 import { BrowserRouter, Link, Route, Routes, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Home from "./pages/Home.tsx";
 import NavMenu from "./components/NavMenu.tsx";
 import About from "./pages/About.tsx";
@@ -17,6 +17,8 @@ const imagesToPreload = [
 function RouteBackground() {
   const location = useLocation();
   const isHome = location.pathname === "/";
+  const [backgroundTransitionEnabled, setBackgroundTransitionEnabled] =
+    useState(false);
 
   useEffect(() => {
     imagesToPreload.forEach((src) => {
@@ -27,10 +29,21 @@ function RouteBackground() {
 
   useEffect(() => {
     document.body.dataset.route = isHome ? "home" : "surface";
+    document.documentElement.dataset.route = isHome ? "home" : "surface";
     return () => {
       delete document.body.dataset.route;
+      delete document.documentElement.dataset.route;
     };
   }, [isHome]);
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      setBackgroundTransitionEnabled(true);
+    });
+    return () => {
+      window.cancelAnimationFrame(frame);
+    };
+  }, []);
 
   return (
     <>
@@ -39,6 +52,7 @@ function RouteBackground() {
         className="route-background-image"
         style={{
           opacity: isHome ? 1 : 0,
+          transition: backgroundTransitionEnabled ? undefined : "none",
         }}
       />
     </>
@@ -56,7 +70,7 @@ function PostBackLink() {
     <div
       style={{
         position: "absolute",
-        top: 0,
+        top: "-2px",
         left: 0,
         zIndex: 11,
         display: "flex",
@@ -64,6 +78,9 @@ function PostBackLink() {
         paddingTop: "1rem",
         paddingBottom: "4px",
         pointerEvents: "none",
+        userSelect: "none",
+        WebkitUserSelect: "none",
+        WebkitTouchCallout: "none",
       }}
     >
       <Link
@@ -79,6 +96,9 @@ function PostBackLink() {
           paddingBottom: "0.45rem",
           marginBottom: "-0.45rem",
           pointerEvents: "auto",
+          userSelect: "none",
+          WebkitUserSelect: "none",
+          WebkitTouchCallout: "none",
         }}
       >
         ← back

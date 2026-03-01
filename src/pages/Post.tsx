@@ -96,7 +96,7 @@ export default function Post() {
       <div className="post-title-block">
         <h1 className="post-title">{post.title}</h1>
         {post.date ? (
-          <p className="post-date">{formatPostDate(post.date)}</p>
+          <p className="post-date">Abhay Shukla · {formatPostDate(post.date)}</p>
         ) : null}
       </div>
       <article
