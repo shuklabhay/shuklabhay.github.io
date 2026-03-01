@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import Lightbox from "react-spring-lightbox";
 import type { RichImage } from "../utils/types";
 
@@ -24,49 +23,30 @@ function CloseIcon({ size = 18 }: { size?: number }) {
 export default function ImageGallery({
   opened,
   setOpened,
-  images,
-  initialSlideIndex,
-  setSlideIndex,
+  image,
 }: {
   opened: boolean;
   setOpened: (value: React.SetStateAction<boolean>) => void;
-  images: RichImage[];
-  initialSlideIndex: number;
-  setSlideIndex: React.Dispatch<React.SetStateAction<number>>;
+  image: RichImage | null;
 }) {
-  const [currentSlide, setCurrentSlide] = useState(initialSlideIndex);
-
   const handleClose = () => {
     setOpened(false);
-    setSlideIndex(currentSlide);
   };
 
-  const navigateSlides = (scrollAmount: number) => {
-    if (images.length <= 1) return;
-    setCurrentSlide((prevSlide) => {
-      const newSlide = (prevSlide + scrollAmount) % images.length;
-      return newSlide < 0 ? images.length - 1 : newSlide;
-    });
-  };
-
-  useEffect(() => {
-    if (!opened) {
-      setCurrentSlide(initialSlideIndex);
-    }
-  }, [initialSlideIndex, opened]);
+  const images = image ? [image] : [];
 
   return (
     <Lightbox
       isOpen={opened}
-      onPrev={() => navigateSlides(-1)}
-      onNext={() => navigateSlides(1)}
+      onPrev={() => {}}
+      onNext={() => {}}
       renderHeader={() => (
         <div
           style={{
             display: "flex",
             justifyContent: "flex-end",
             padding: "1rem",
-            pointerEvents: "none",
+            pointerEvents: "auto",
           }}
         >
           <button
@@ -74,32 +54,33 @@ export default function ImageGallery({
             aria-label="Close image"
             onClick={handleClose}
             style={{
-              width: 36,
-              height: 36,
-              borderRadius: 999,
               display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",
-              border: "1px solid rgba(255, 255, 255, 0.35)",
-              backgroundColor: "rgba(8, 10, 18, 0.52)",
+              border: 0,
+              backgroundColor: "transparent",
               color: "white",
               cursor: "pointer",
-              pointerEvents: "auto",
+              padding: 0,
+              lineHeight: 1,
             }}
           >
-            <CloseIcon size={18} />
+            <CloseIcon size={20} />
           </button>
         </div>
       )}
+      renderPrevButton={() => null}
+      renderNextButton={() => null}
+      renderFooter={() => null}
       images={images}
-      currentIndex={currentSlide}
+      currentIndex={0}
       onClose={handleClose}
-      style={{ background: "rgba(10, 12, 20, 0.88)" }}
+      style={{ background: "rgba(8, 10, 18, 0.9)" }}
       pageTransitionConfig={{
-        from: { transform: "scale(0.94)", opacity: 0 },
-        enter: { transform: "scale(1)", opacity: 1 },
-        leave: { transform: "scale(0.94)", opacity: 0 },
-        config: { mass: 1, tension: 320, friction: 32 },
+        from: { opacity: 0 },
+        enter: { opacity: 1 },
+        leave: { opacity: 0 },
+        config: { duration: 170 },
       }}
     />
   );

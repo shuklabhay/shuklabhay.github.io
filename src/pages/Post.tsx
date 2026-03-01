@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import ImageGallery from "../components/ImageGallery";
 import { getPostBySlug } from "../posts";
 import type { RichImage } from "../utils/types";
@@ -17,22 +17,17 @@ function formatPostDate(raw: string) {
 }
 
 export default function Post() {
-  const navigate = useNavigate();
   const { slug = "" } = useParams();
   const post = getPostBySlug(slug);
   const postContentRef = useRef<HTMLElement>(null);
   const [lightboxOpened, setLightboxOpened] = useState(false);
-  const [lightboxSlideIndex, setLightboxSlideIndex] = useState(0);
+  const [lightboxImage, setLightboxImage] = useState<RichImage | null>(null);
   const [postImages, setPostImages] = useState<RichImage[]>([]);
-
-  const onBackClick = () => {
-    navigate("/blog", { state: { fromPost: true } });
-  };
 
   useEffect(() => {
     if (!post) {
       setPostImages([]);
-      setLightboxSlideIndex(0);
+      setLightboxImage(null);
       setLightboxOpened(false);
       return;
     }
@@ -54,16 +49,13 @@ export default function Post() {
     });
 
     setPostImages(images);
-    setLightboxSlideIndex(0);
+    setLightboxImage(null);
     setLightboxOpened(false);
   }, [slug, post]);
 
   if (!post) {
     return (
       <main className="post-page post-page-enter" key={slug}>
-        <button type="button" className="post-back-link" onClick={onBackClick}>
-          ← Back to blog
-        </button>
         <h1 className="post-missing-title">Post not found</h1>
       </main>
     );
@@ -88,15 +80,17 @@ export default function Post() {
       return;
 
     event.preventDefault();
-    setLightboxSlideIndex(index);
+    setLightboxImage(postImages[index] ?? null);
     setLightboxOpened(true);
   };
 
   return (
     <main className="post-page post-page-enter" key={slug}>
-      <button type="button" className="post-back-link" onClick={onBackClick}>
-        ← Back to blog
-      </button>
+      <div className="post-back-link-row">
+        <Link to="/blog" state={{ fromPost: true }} className="post-back-link">
+          back to blog
+        </Link>
+      </div>
       <div
         className="post-hero"
         style={{
@@ -121,9 +115,7 @@ export default function Post() {
         <ImageGallery
           opened={lightboxOpened}
           setOpened={setLightboxOpened}
-          images={postImages}
-          initialSlideIndex={lightboxSlideIndex}
-          setSlideIndex={setLightboxSlideIndex}
+          image={lightboxImage}
         />
       ) : null}
     </main>
