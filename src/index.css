@@ -131,10 +131,10 @@ code {
 .posts-list {
   display: flex;
   flex-direction: column;
+  width: 100%;
   gap: 0.65rem;
   margin-top: 1rem;
   padding-bottom: calc(2rem + env(safe-area-inset-bottom));
-  max-width: 84rem;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
@@ -158,17 +158,18 @@ code {
 .blog-page-return {
   opacity: 0;
   transform: none;
-  animation: blog-fade 550ms ease forwards;
+  animation: blog-fade 525ms ease forwards;
 }
 
 .surface-page-return {
   opacity: 0;
   transform: none;
-  animation: blog-fade 550ms ease forwards;
+  animation: blog-fade 525ms ease forwards;
 }
 
 .post-card {
   display: grid;
+  width: 100%;
   grid-template-columns: clamp(105px, 13.75vw, 120px) minmax(0, 1fr);
   gap: 0.9rem;
   align-items: start;
@@ -451,9 +452,9 @@ code {
 }
 
 .post-page-enter {
-  opacity: 0;
+  opacity: 1;
   transform: none;
-  animation: blog-fade 375ms ease forwards;
+  transition: opacity 375ms ease;
 }
 
 .post-page-await-hero {
@@ -462,31 +463,18 @@ code {
 }
 
 .post-page-enter .post-date,
-.post-page-enter .post-title-block {
-  opacity: 0;
-  transform: none;
-  animation: blog-fade 220ms ease forwards;
-}
-
+.post-page-enter .post-title-block,
 .post-page-enter .post-content {
-  opacity: 0;
+  opacity: 1;
   transform: none;
-  animation: blog-fade 240ms ease forwards;
-}
-
-.post-page-enter .post-date {
-  animation-delay: 0ms;
-}
-
-.post-page-enter .post-title-block {
-  animation-delay: 0ms;
-}
-
-.post-page-enter .post-content {
-  animation-delay: 160ms;
+  animation: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .post-page-enter {
+    transition: none;
+  }
+
   .post-page-enter .post-date,
   .post-page-enter .post-title-block,
   .post-page-enter .post-content {
