@@ -94,6 +94,10 @@ main {
   transition: none;
 }
 
+.route-background-image-post-return {
+  animation: blog-fade 512ms ease forwards;
+}
+
 @supports (height: 100dvh) {
   .route-background-base,
   .route-background-image {

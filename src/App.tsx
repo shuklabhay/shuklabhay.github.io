@@ -6,19 +6,31 @@ import About from "./pages/About.tsx";
 import Blog from "./pages/Blog.tsx";
 import Post from "./pages/Post.tsx";
 import { buildRootViewTransitionStyles } from "./animations";
+import type { RouteTransitionState } from "./utils/types";
 
 const TOP_LEVEL_VIEW_TRANSITION_MS = 128;
 const TOP_LEVEL_VIEW_TRANSITION_EASING = "linear";
+const POST_RETURN_FLAG_KEY = "route-from-post-return";
 
 function RouteBackground() {
   const location = useLocation();
   const isHome = location.pathname === "/";
+  const transitionState = location.state as RouteTransitionState | null;
+  const fromPostReturnFlag =
+    typeof window !== "undefined" &&
+    window.sessionStorage.getItem(POST_RETURN_FLAG_KEY) === "1";
+  const shouldAnimateHomeBackgroundFade =
+    isHome && (transitionState?.fromPost === true || fromPostReturnFlag);
 
   return (
     <>
       <div className="route-background-base" />
       <div
-        className="route-background-image"
+        className={`route-background-image${
+          shouldAnimateHomeBackgroundFade
+            ? " route-background-image-post-return"
+            : ""
+        }`}
         style={{
           opacity: isHome ? 1 : 0,
         }}

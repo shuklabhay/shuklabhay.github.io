@@ -54,14 +54,13 @@ export default function NavMenu() {
       "[data-underline-target]",
     ) as HTMLElement | null;
     const linkRect = (underlineTarget ?? activeLink).getBoundingClientRect();
-    const snapToPixel = (value: number) => Math.round(value);
     const shouldMove =
       prevActiveKeyRef.current !== null &&
       prevActiveKeyRef.current !== activeKey;
 
     setUnderlineStyle({
-      left: snapToPixel(linkRect.left - navRect.left),
-      width: snapToPixel(linkRect.width),
+      left: linkRect.left - navRect.left,
+      width: linkRect.width,
       opacity: 1,
       mode: shouldMove ? "move" : "none",
     });
@@ -93,8 +92,7 @@ export default function NavMenu() {
     });
   };
 
-  const underlineMoveTransition =
-    "transform 0.32s ease, width 0.32s ease, opacity 0.2s ease";
+  const underlineMoveTransition = "transform 0.32s ease, opacity 0.2s ease";
 
   return (
     <nav
@@ -148,10 +146,11 @@ export default function NavMenu() {
           position: "absolute",
           bottom: 0,
           left: 0,
-          width: `${underlineStyle.width}px`,
+          width: "1px",
           height: "2px",
           backgroundColor: "white",
-          transform: `translate3d(${underlineStyle.left}px, 0, 0)`,
+          transform: `translate3d(${underlineStyle.left}px, 0, 0) scaleX(${underlineStyle.width})`,
+          transformOrigin: "0 50%",
           opacity: underlineStyle.opacity,
           transition:
             underlineStyle.mode === "move"
@@ -159,7 +158,8 @@ export default function NavMenu() {
               : underlineStyle.mode === "fade"
                 ? "opacity 0.2s ease"
                 : "none",
-          willChange: "transform, width, opacity",
+          willChange: "transform, opacity",
+          backfaceVisibility: "hidden",
           pointerEvents: "none",
         }}
       />
