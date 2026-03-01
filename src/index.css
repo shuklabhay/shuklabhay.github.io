@@ -94,7 +94,12 @@ main {
   transition: none;
 }
 
+.route-background-image-ready {
+  transition: opacity 220ms ease;
+}
+
 .route-background-image-post-return {
+  transition: none;
   animation: blog-fade 512ms ease -40ms forwards;
 }
 
@@ -158,13 +163,13 @@ code {
 .blog-page-return {
   opacity: 0;
   transform: none;
-  animation: blog-fade 525ms ease forwards;
+  animation: blog-fade 512ms ease forwards;
 }
 
 .surface-page-return {
   opacity: 0;
   transform: none;
-  animation: blog-fade 525ms ease forwards;
+  animation: blog-fade 512ms ease forwards;
 }
 
 .post-card {
