@@ -1,21 +1,23 @@
 import { useEffect, useState } from "react";
 import type { CheckboxItem } from "../utils/types";
+import { getTriangleIconGeometry } from "../utils/icons";
 
 function SortArrowIcon({ direction }: { direction: "up" | "down" }) {
+  const icon = getTriangleIconGeometry(direction);
   return (
     <svg
       width="9"
       height="9"
-      viewBox="0 0 10 10"
+      viewBox={icon.viewBox}
       aria-hidden
       focusable="false"
-      style={{
-        display: "block",
-        transform: direction === "up" ? "rotate(180deg)" : "none",
-        transformOrigin: "50% 50%",
-      }}
+      style={{ display: "block" }}
     >
-      <path d="M5 8L1.4 3h7.2L5 8z" fill="currentColor" />
+      <path
+        d={icon.path}
+        fill="currentColor"
+        transform={icon.transform}
+      />
     </svg>
   );
 }
