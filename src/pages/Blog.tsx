@@ -1,7 +1,6 @@
 import PageTitle, { CheckboxSubtitle } from "../components/PageTitle";
-import type { CSSProperties } from "react";
 import { useEffect, useMemo, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { allPosts } from "../posts";
 
 type SortField = "date" | "alpha";
@@ -64,10 +63,6 @@ function formatPostDate(raw: string) {
 }
 
 export default function Blog() {
-  const location = useLocation();
-  const fromPost =
-    (location.state as { fromPost?: boolean } | null)?.fromPost === true;
-  const blogPageClassName = `blog-page${fromPost ? " blog-page-return" : " blog-page-enter"}`;
   const [sortState, setSortState] = useState<BlogSortState>(
     readBlogSortStateFromStorage,
   );
@@ -137,7 +132,7 @@ export default function Blog() {
   }, [sortField, dateDirection, alphaDirection]);
 
   return (
-    <main className={blogPageClassName}>
+    <main className="blog-page">
       <div className="blog-page-title">
         <PageTitle title="I also write" />
       </div>
@@ -161,16 +156,11 @@ export default function Blog() {
         />
       </div>
       <section className="posts-list">
-        {sortedPosts.map((post, index) => (
+        {sortedPosts.map((post) => (
           <Link
             key={post.slug}
             to={`/blog/${post.slug}`}
             className={`post-card${post.cover ? "" : " post-card-no-cover"}`}
-            style={
-              {
-                "--post-card-fade-index": index,
-              } as CSSProperties
-            }
           >
             {post.cover ? (
               <img

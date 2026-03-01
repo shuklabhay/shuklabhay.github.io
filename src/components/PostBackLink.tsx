@@ -19,8 +19,7 @@ export default function PostBackLink() {
     >
       <Link
         to="/blog"
-        viewTransition
-        state={{ fromPost: true }}
+        viewTransition={false}
         style={{
           color: "white",
           textDecoration: "none",

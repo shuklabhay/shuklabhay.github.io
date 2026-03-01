@@ -1,13 +1,8 @@
 import PageTitle from "../components/PageTitle";
-import { useLocation } from "react-router-dom";
 
 export default function About() {
-  const location = useLocation();
-  const fromPost =
-    (location.state as { fromPost?: boolean } | null)?.fromPost === true;
-
   return (
-    <main className={fromPost ? "surface-page-return" : undefined}>
+    <main>
       <PageTitle
         title="Hi, I'm Abhay"
         subtitle={

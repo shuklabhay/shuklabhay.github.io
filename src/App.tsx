@@ -61,18 +61,26 @@ function RouteBackground() {
 
 function AppShell() {
   const location = useLocation();
+  const isTopLevelSurfaceRoute =
+    location.pathname === "/" ||
+    location.pathname === "/about" ||
+    location.pathname === "/blog";
 
   return (
     <>
       <RouteBackground />
       <div className="container" style={{ position: "relative", zIndex: 1 }}>
         <NavMenu />
-        <Routes location={location}>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:slug" element={<Post />} />
-        </Routes>
+        <div
+          className={isTopLevelSurfaceRoute ? "top-level-surface-transition" : undefined}
+        >
+          <Routes location={location}>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<Post />} />
+          </Routes>
+        </div>
       </div>
     </>
   );
