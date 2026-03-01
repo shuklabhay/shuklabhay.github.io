@@ -2,9 +2,10 @@ import { useRef } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import type { BlogPostCardProps } from "../utils/types";
-import { preloadImage } from "../utils/imagePreload";
+import { getImagePreloadStatus, preloadImage } from "../utils/imagePreload";
 
 const DEFAULT_POST_HERO_IMAGE = "/static/landing-1280.avif";
+const MAX_CLICK_PRELOAD_WAIT_MS = 140;
 
 export default function BlogPostCard({
   post,
@@ -19,6 +20,11 @@ export default function BlogPostCard({
     void preloadImage(heroSrc);
   };
 
+  const wait = (ms: number) =>
+    new Promise<void>((resolve) => {
+      window.setTimeout(resolve, ms);
+    });
+
   const onPostCardClick = async (event: ReactMouseEvent<HTMLAnchorElement>) => {
     if (event.defaultPrevented) return;
     if (event.button !== 0) return;
@@ -31,7 +37,13 @@ export default function BlogPostCard({
 
     event.preventDefault();
     isNavigatingRef.current = true;
-    await preloadImage(heroSrc);
+    const cachedStatus = getImagePreloadStatus(heroSrc);
+    if (cachedStatus !== "loaded" && cachedStatus !== "error") {
+      await Promise.race([
+        preloadImage(heroSrc).then(() => undefined),
+        wait(MAX_CLICK_PRELOAD_WAIT_MS),
+      ]);
+    }
     navigate(postPath);
     isNavigatingRef.current = false;
   };
@@ -43,6 +55,7 @@ export default function BlogPostCard({
       onMouseEnter={warmHeroImage}
       onFocus={warmHeroImage}
       onTouchStart={warmHeroImage}
+      onPointerDown={warmHeroImage}
       onClick={onPostCardClick}
     >
       {post.cover ? (

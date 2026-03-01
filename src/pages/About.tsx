@@ -1,31 +1,8 @@
 import PageTitle from "../components/PageTitle";
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
-import type { RouteTransitionState } from "../utils/types";
-
-const POST_RETURN_FLAG_KEY = "route-from-post-return";
 
 export default function About() {
-  const location = useLocation();
-  const transitionState = location.state as RouteTransitionState | null;
-  const fromPostReturnFlag =
-    typeof window !== "undefined" &&
-    window.sessionStorage.getItem(POST_RETURN_FLAG_KEY) === "1";
-  const shouldAnimateSurfaceEntry =
-    transitionState?.fromPost === true || fromPostReturnFlag;
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const clearId = window.setTimeout(() => {
-      window.sessionStorage.removeItem(POST_RETURN_FLAG_KEY);
-    }, 0);
-    return () => window.clearTimeout(clearId);
-  }, []);
-
   return (
-    <main
-      className={shouldAnimateSurfaceEntry ? "surface-page-return" : undefined}
-    >
+    <main>
       <PageTitle
         title="Hi, I'm Abhay"
         subtitle={

@@ -150,6 +150,17 @@ code {
   position: relative;
 }
 
+.route-reveal {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.route-reveal-ready {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 375ms ease;
+}
+
 @keyframes blog-fade {
   from {
     opacity: 0;
@@ -158,18 +169,6 @@ code {
   to {
     opacity: 1;
   }
-}
-
-.blog-page-return {
-  opacity: 0;
-  transform: none;
-  animation: blog-fade 512ms ease forwards;
-}
-
-.surface-page-return {
-  opacity: 0;
-  transform: none;
-  animation: blog-fade 512ms ease forwards;
 }
 
 .post-card {
@@ -456,37 +455,9 @@ code {
   max-width: 100%;
 }
 
-.post-page-enter {
-  opacity: 1;
-  transform: none;
-  transition: opacity 375ms ease;
-}
-
-.post-page-await-hero {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.post-page-enter .post-date,
-.post-page-enter .post-title-block,
-.post-page-enter .post-content {
-  opacity: 1;
-  transform: none;
-  animation: none;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .post-page-enter {
+  .route-reveal-ready {
     transition: none;
-  }
-
-  .post-page-enter .post-date,
-  .post-page-enter .post-title-block,
-  .post-page-enter .post-content {
-    opacity: 1;
-    animation: none;
-    transform: none;
-    filter: none;
   }
 }
 

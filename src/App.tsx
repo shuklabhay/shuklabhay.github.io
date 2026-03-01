@@ -6,6 +6,7 @@ import About from "./pages/About.tsx";
 import Blog from "./pages/Blog.tsx";
 import Post from "./pages/Post.tsx";
 import { buildRootViewTransitionStyles } from "./animations";
+import { RouteRevealBoundary } from "./utils/routeReveal";
 import type { RouteTransitionState } from "./utils/types";
 
 const TOP_LEVEL_VIEW_TRANSITION_MS = 128;
@@ -15,15 +16,36 @@ const POST_RETURN_FLAG_KEY = "route-from-post-return";
 function getHomeBackgroundCandidates() {
   if (typeof window === "undefined") return ["/static/landing-1280.avif"];
 
+  const viewportWidth = Math.max(
+    window.innerWidth,
+    document.documentElement?.clientWidth ?? 0,
+  );
   const prefersReducedData =
     window.matchMedia?.("(prefers-reduced-data: reduce)").matches ?? false;
-  const viewportPixels = window.innerWidth * (window.devicePixelRatio || 1);
+  const isMobileViewport =
+    window.matchMedia?.("(max-width: 860px)").matches ?? false;
+  const isCoarsePointer =
+    window.matchMedia?.("(pointer: coarse)").matches ?? false;
+  const networkConnection = (
+    navigator as Navigator & {
+      connection?: {
+        saveData?: boolean;
+        downlink?: number;
+      };
+    }
+  ).connection;
+  const shouldPreferSmallerAsset =
+    prefersReducedData ||
+    networkConnection?.saveData === true ||
+    (networkConnection?.downlink ?? Infinity) <= 1.5 ||
+    isMobileViewport ||
+    isCoarsePointer;
 
-  if (prefersReducedData) {
+  if (shouldPreferSmallerAsset) {
     return ["/static/landing-1280.avif", "/static/landing-1280.webp"];
   }
 
-  if (viewportPixels >= 2200) {
+  if (viewportWidth >= 2200) {
     return [
       "/static/landing-1920.avif",
       "/static/landing-1920.webp",
@@ -33,7 +55,7 @@ function getHomeBackgroundCandidates() {
     ];
   }
 
-  if (viewportPixels >= 1600) {
+  if (viewportWidth >= 1600) {
     return [
       "/static/landing-1920.avif",
       "/static/landing-1920.webp",
@@ -161,6 +183,7 @@ function RouteBackground() {
 
 function AppShell() {
   const location = useLocation();
+  const routeRevealKey = `${location.pathname}${location.search}${location.hash}`;
 
   useEffect(() => {
     const styleId = "app-top-level-view-transition-style";
@@ -178,17 +201,32 @@ function AppShell() {
     }
   }, []);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const isPostRoute =
+      location.pathname.startsWith("/blog/") && location.pathname !== "/blog";
+    if (isPostRoute) return;
+
+    const clearId = window.setTimeout(() => {
+      window.sessionStorage.removeItem(POST_RETURN_FLAG_KEY);
+    }, 0);
+
+    return () => window.clearTimeout(clearId);
+  }, [location.pathname]);
+
   return (
     <>
       <RouteBackground />
       <div className="container" style={{ position: "relative", zIndex: 1 }}>
         <NavMenu />
-        <Routes location={location}>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:slug" element={<Post />} />
-        </Routes>
+        <RouteRevealBoundary key={routeRevealKey}>
+          <Routes location={location}>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<Post />} />
+          </Routes>
+        </RouteRevealBoundary>
       </div>
     </>
   );

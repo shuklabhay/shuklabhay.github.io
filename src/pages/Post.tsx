@@ -5,6 +5,7 @@ import ImageLightbox from "../components/ImageLightbox";
 import PostBackLink from "../components/PostBackLink";
 import { getPostBySlug } from "../posts";
 import { getImagePreloadStatus, preloadImage } from "../utils/imagePreload";
+import { useRouteRevealBlocker } from "../utils/routeReveal";
 import type { RichImage } from "../utils/types";
 
 const POST_RETURN_FLAG_KEY = "route-from-post-return";
@@ -143,7 +144,7 @@ export default function Post() {
     return (
       <>
         <PostBackLink />
-        <main className="post-page post-page-enter" key={slug}>
+        <main className="post-page" key={slug}>
           <h1 className="post-missing-title">Post not found</h1>
         </main>
       </>
@@ -156,9 +157,7 @@ export default function Post() {
   const isHeroLoaded = currentHeroLoadStatus === "loaded";
   const isPostEntryReady =
     currentHeroLoadStatus !== "loading" && isPostContentReady;
-  const postPageClassName = `post-page ${
-    isPostEntryReady ? "post-page-enter" : "post-page-await-hero"
-  }`;
+  useRouteRevealBlocker("post-entry-ready", !isPostEntryReady);
 
   const onPostContentClick = (event: ReactMouseEvent<HTMLElement>) => {
     const target = event.target;
@@ -183,7 +182,7 @@ export default function Post() {
   return (
     <>
       <PostBackLink />
-      <main className={postPageClassName} key={slug}>
+      <main className="post-page" key={slug}>
         <div
           className={`post-hero${isHeroLoaded ? " post-hero-loaded" : ""}`}
           style={
