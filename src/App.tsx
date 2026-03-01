@@ -5,6 +5,7 @@ import NavMenu from "./components/NavMenu.tsx";
 import About from "./pages/About.tsx";
 import Blog from "./pages/Blog.tsx";
 import Post from "./pages/Post.tsx";
+import { allPosts } from "./posts";
 
 const imagesToPreload = [
   "/static/icons/bmir.jpeg",
@@ -21,7 +22,11 @@ function RouteBackground() {
     useState(false);
 
   useEffect(() => {
-    imagesToPreload.forEach((src) => {
+    const postCoversToPreload = allPosts
+      .map((post) => post.cover)
+      .filter((cover): cover is string => Boolean(cover));
+
+    [...imagesToPreload, ...postCoversToPreload].forEach((src) => {
       const img = new Image();
       img.src = src;
     });
@@ -61,26 +66,18 @@ function RouteBackground() {
 
 function AppShell() {
   const location = useLocation();
-  const isTopLevelSurfaceRoute =
-    location.pathname === "/" ||
-    location.pathname === "/about" ||
-    location.pathname === "/blog";
 
   return (
     <>
       <RouteBackground />
       <div className="container" style={{ position: "relative", zIndex: 1 }}>
         <NavMenu />
-        <div
-          className={isTopLevelSurfaceRoute ? "top-level-surface-transition" : undefined}
-        >
-          <Routes location={location}>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blog/:slug" element={<Post />} />
-          </Routes>
-        </div>
+        <Routes location={location}>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<Post />} />
+        </Routes>
       </div>
     </>
   );

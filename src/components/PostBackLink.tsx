@@ -20,6 +20,7 @@ export default function PostBackLink() {
       <Link
         to="/blog"
         viewTransition={false}
+        state={{ fromPost: true }}
         style={{
           color: "white",
           textDecoration: "none",
@@ -27,8 +28,8 @@ export default function PostBackLink() {
           position: "relative",
           display: "inline-flex",
           alignItems: "center",
-          gap: "0.24rem",
-          lineHeight: 1.1,
+          gap: "0.26rem",
+          lineHeight: 1,
           paddingBottom: "0.45rem",
           marginBottom: "-0.45rem",
           pointerEvents: "auto",
@@ -40,14 +41,29 @@ export default function PostBackLink() {
         <span
           aria-hidden
           style={{
-            display: "inline-block",
-            lineHeight: 1,
-            transform: "translateY(-1.5px)",
+            display: "inline-flex",
+            width: "0.6em",
+            height: "0.6em",
+            alignItems: "center",
+            justifyContent: "center",
+            flex: "0 0 auto",
           }}
         >
-          ←
+          <svg
+            viewBox="0 0 10 10"
+            width="100%"
+            height="100%"
+            fill="currentColor"
+            style={{
+              display: "block",
+              transform: "rotate(90deg)",
+              transformOrigin: "50% 50%",
+            }}
+          >
+            <path d="M5 8L1.4 3h7.2L5 8z" />
+          </svg>
         </span>
-        <span style={{ display: "inline-block", lineHeight: 1.1 }}>back</span>
+        <span style={{ display: "inline-block", lineHeight: 1 }}>back</span>
       </Link>
     </div>
   );

@@ -173,26 +173,22 @@ code {
   }
 }
 
-@supports (view-transition-name: top-level-surface) {
-  .top-level-surface-transition {
-    view-transition-name: top-level-surface;
-  }
-
+@supports (view-transition-name: none) {
   ::view-transition-old(root),
   ::view-transition-new(root) {
-    animation: none;
+    mix-blend-mode: normal;
   }
 
-  ::view-transition-old(top-level-surface) {
-    animation: top-level-surface-fade-out 230ms ease both;
+  ::view-transition-old(root) {
+    animation: page-root-fade-out 10000ms ease both;
   }
 
-  ::view-transition-new(top-level-surface) {
-    animation: top-level-surface-fade-in 320ms ease both;
+  ::view-transition-new(root) {
+    animation: page-root-fade-in 10000ms ease both;
   }
 }
 
-@keyframes top-level-surface-fade-out {
+@keyframes page-root-fade-out {
   from {
     opacity: 1;
   }
@@ -202,7 +198,7 @@ code {
   }
 }
 
-@keyframes top-level-surface-fade-in {
+@keyframes page-root-fade-in {
   from {
     opacity: 0;
   }
@@ -210,6 +206,22 @@ code {
   to {
     opacity: 1;
   }
+}
+
+.blog-page-return .blog-page-title,
+.blog-page-return .blog-page-controls,
+.blog-page-return .post-card {
+  opacity: 0;
+  transform: none;
+  animation: blog-fade 360ms ease forwards;
+}
+
+.blog-page-return .blog-page-controls {
+  animation-delay: 45ms;
+}
+
+.blog-page-return .post-card {
+  animation-delay: 100ms;
 }
 
 .post-card {
@@ -452,6 +464,19 @@ code {
   border-radius: 10px;
   margin: 0.5rem 0;
   cursor: zoom-in;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+}
+
+.post-content video,
+.post-content picture,
+.post-content canvas {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
 }
 
 .post-content blockquote {
@@ -512,8 +537,8 @@ code {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(top-level-surface),
-  ::view-transition-new(top-level-surface) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
     animation: none;
   }
 
