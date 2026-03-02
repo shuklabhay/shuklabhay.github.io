@@ -1,4 +1,10 @@
 {
   "author": "Abhay Shukla",
-  "dateCreated": "2026-02-28"
+  "dateCreated": "2026-02-28",
+  "buttons": [
+    {
+      "title": "Source Code",
+      "link": "https://github.com/shuklabhay/infinipaint"
+    }
+  ]
 }

@@ -296,6 +296,7 @@ export default function Post() {
         isEntryReady={isPostEntryReady}
         title={postSummary.title}
         byline={bylineParts.length ? bylineParts.join(" · ") : undefined}
+        buttons={postSummary.buttons}
         heroImage={heroImage}
         contentRef={postContentRef}
         onContentClick={onPostContentClick}

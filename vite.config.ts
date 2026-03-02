@@ -48,24 +48,6 @@ function extractPostTitle(source: string, slug: string): string {
   return heading?.[1]?.trim() ?? formatSlug(slug);
 }
 
-function extractPostExcerpt(source: string): string {
-  const withoutCode = source.replace(/```[\s\S]*?```/g, " ");
-  const normalized = withoutCode
-    .replace(/^import\s.+$/gm, " ")
-    .replace(/^export\s+const\s+meta\s*=\s*{[\s\S]*?};?/m, " ")
-    .replace(/^#.*$/gm, " ")
-    .replace(/!\[\[[^\]]+\]\]/g, " ")
-    .replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1")
-    .replace(/^>\s?/gm, " ")
-    .replace(/[*_`~]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-
-  if (normalized.length <= 240) return normalized;
-  return `${normalized.slice(0, 237).trimEnd()}...`;
-}
-
 function extractPostWordCount(source: string): number {
   const withoutCode = source
     .replace(/```[\s\S]*?```/g, " ")
@@ -98,17 +80,17 @@ function extractPostWordCount(source: string): number {
 
 type PostMetaFile = {
   title?: unknown;
-  excerpt?: unknown;
   author?: unknown;
   date?: unknown;
   dateCreated?: unknown;
+  buttons?: unknown;
 };
 
 type ParsedPostMeta = {
   title?: string;
-  excerpt?: string;
   author?: string;
   date?: string;
+  buttons: Array<{ title: string; link: string }>;
 };
 
 function asOptionalString(value: unknown): string | undefined {
@@ -127,27 +109,45 @@ function toIsoDateString(value: string): string | undefined {
   return parsed.toISOString().slice(0, 10);
 }
 
+function readPostButtons(value: unknown): Array<{ title: string; link: string }> {
+  if (!Array.isArray(value)) return [];
+
+  return value
+    .map((entry) => {
+      if (!entry || typeof entry !== "object") return null;
+      const maybeButton = entry as { title?: unknown; link?: unknown };
+      const title = asOptionalString(maybeButton.title);
+      const link = asOptionalString(maybeButton.link);
+      if (!title || !link) return null;
+      return { title, link };
+    })
+    .filter(
+      (button): button is { title: string; link: string } =>
+        button !== null,
+    );
+}
+
 function readPostMeta(metaPath: string): ParsedPostMeta {
-  if (!fs.existsSync(metaPath)) return {};
+  if (!fs.existsSync(metaPath)) return { buttons: [] };
 
   try {
     const raw = fs.readFileSync(metaPath, "utf8");
     const parsed = JSON.parse(raw) as PostMetaFile;
     const title = asOptionalString(parsed.title);
-    const excerpt = asOptionalString(parsed.excerpt);
     const author = asOptionalString(parsed.author);
+    const buttons = readPostButtons(parsed.buttons);
     const dateSource =
       asOptionalString(parsed.dateCreated) ?? asOptionalString(parsed.date);
     const date = dateSource ? toIsoDateString(dateSource) : undefined;
 
     return {
       title,
-      excerpt,
       author,
       date,
+      buttons,
     };
   } catch {
-    return {};
+    return { buttons: [] };
   }
 }
 
@@ -206,12 +206,10 @@ export default defineConfig({
 
           const postMeta = readPostMeta(metaPath);
           const title = postMeta.title ?? extractPostTitle(source, slug);
-          const excerpt = postMeta.excerpt ?? extractPostExcerpt(source);
           const wordCount = extractPostWordCount(source);
           const date = postMeta.date ?? stat.mtime.toISOString().slice(0, 10);
-          const authorExpr = postMeta.author
-            ? JSON.stringify(postMeta.author)
-            : "undefined";
+          const authorExpr = JSON.stringify(postMeta.author ?? "");
+          const buttonsExpr = JSON.stringify(postMeta.buttons);
 
           const coverCandidates = [
             "banner.png",
@@ -237,9 +235,7 @@ export default defineConfig({
           itemLines.push(
             `{ slug: ${JSON.stringify(slug)}, title: ${JSON.stringify(
               title,
-            )}, date: ${JSON.stringify(date)}, excerpt: ${JSON.stringify(
-              excerpt,
-            )}, author: ${authorExpr}, cover: ${coverExpr}, wordCount: ${wordCount} }`,
+            )}, date: ${JSON.stringify(date)}, author: ${authorExpr}, buttons: ${buttonsExpr}, cover: ${coverExpr}, wordCount: ${wordCount} }`,
           );
         }
 

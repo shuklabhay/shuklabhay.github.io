@@ -25,12 +25,17 @@ export type RichImage = {
   alt: string;
 };
 
+export type PostButton = {
+  title: string;
+  link: string;
+};
+
 export type PostMeta = {
   slug: string;
   title: string;
   date: string;
-  author?: string;
-  excerpt: string;
+  author: string;
+  buttons: PostButton[];
   cover?: string;
   wordCount?: number;
 };
@@ -127,6 +132,7 @@ export type BlogPostProps = {
   isEntryReady: boolean;
   title: string;
   byline?: string;
+  buttons: PostButton[];
   heroImage: string;
   contentRef: RefObject<HTMLElement>;
   onContentClick?: MouseEventHandler<HTMLElement>;

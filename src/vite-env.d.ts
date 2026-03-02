@@ -23,8 +23,8 @@ declare module "virtual:posts-manifest" {
     slug: string;
     title: string;
     date: string;
-    excerpt: string;
-    author?: string;
+    author: string;
+    buttons: Array<{ title: string; link: string }>;
     cover?: string;
     wordCount?: number;
   }>;

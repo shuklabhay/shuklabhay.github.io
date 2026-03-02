@@ -17,6 +17,7 @@ export default function BlogPost({
   isEntryReady,
   title,
   byline,
+  buttons,
   heroImage,
   contentRef,
   onContentClick,
@@ -29,6 +30,9 @@ export default function BlogPost({
   const [isResizing, setIsResizing] = useState(false);
   const [hoveredHandle, setHoveredHandle] = useState<ResizeEdge | null>(null);
   const [focusedHandle, setFocusedHandle] = useState<ResizeEdge | null>(null);
+  const [hoveredButtonIndex, setHoveredButtonIndex] = useState<number | null>(
+    null,
+  );
   const resizeStateRef = useRef<ResizeState | null>(null);
   const pendingWidthRef = useRef<number | null>(null);
   const resizeFrameRef = useRef<number | null>(null);
@@ -46,6 +50,29 @@ export default function BlogPost({
     onViewportResize();
     window.addEventListener("resize", onViewportResize);
     return () => window.removeEventListener("resize", onViewportResize);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || typeof document === "undefined")
+      return;
+
+    const clearSourceHover = () => {
+      setHoveredButtonIndex(null);
+    };
+
+    const onVisibilityChange = () => {
+      if (document.hidden) clearSourceHover();
+    };
+
+    window.addEventListener("blur", clearSourceHover);
+    window.addEventListener("pagehide", clearSourceHover);
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
+    return () => {
+      window.removeEventListener("blur", clearSourceHover);
+      window.removeEventListener("pagehide", clearSourceHover);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
   }, []);
 
   useEffect(() => {
@@ -225,6 +252,58 @@ export default function BlogPost({
           >
             {byline}
           </p>
+        ) : null}
+        {buttons.length ? (
+          <div
+            style={{
+              marginTop: "0.55rem",
+              display: "flex",
+              gap: "0.5rem",
+              flexWrap: "wrap",
+            }}
+          >
+            {buttons.map((button, index) => {
+              const isHovered = hoveredButtonIndex === index;
+              return (
+                <a
+                  key={`${button.link}-${index}`}
+                  href={button.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={button.title}
+                  onMouseEnter={() => setHoveredButtonIndex(index)}
+                  onMouseLeave={() => setHoveredButtonIndex(null)}
+                  onFocus={() => setHoveredButtonIndex(index)}
+                  onBlur={() => setHoveredButtonIndex(null)}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: "0.38rem 0.74rem",
+                    borderRadius: "0.38rem",
+                    border: isHovered
+                      ? "1px solid rgba(255, 255, 255, 0.9)"
+                      : "1px solid rgba(255, 255, 255, 0.5)",
+                    backgroundColor: isHovered
+                      ? "rgba(255, 255, 255, 0.16)"
+                      : "rgba(255, 255, 255, 0.12)",
+                    color: isHovered
+                      ? "rgba(255, 255, 255, 1)"
+                      : "rgba(255, 255, 255, 0.98)",
+                    textDecoration: "none",
+                    fontWeight: 600,
+                    fontSize: "0.84rem",
+                    letterSpacing: "0.01em",
+                    lineHeight: 1,
+                    transition:
+                      "background-color 120ms ease, border-color 120ms ease, color 120ms ease",
+                  }}
+                >
+                  {button.title}
+                </a>
+              );
+            })}
+          </div>
         ) : null}
       </div>
       <div
