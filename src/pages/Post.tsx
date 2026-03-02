@@ -1,11 +1,22 @@
-import { Suspense, lazy, useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  Suspense,
+  lazy,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import BlogPost from "../components/BlogPost";
 import PostBackLink from "../components/PostBackLink";
 import { getPostBySlug, loadPostBySlug } from "../posts";
 import { preloadImage } from "../utils/imagePreload";
-import type { PostEntry, RichImage, RouteTransitionState } from "../utils/types";
+import type {
+  PostEntry,
+  RichImage,
+  RouteTransitionState,
+} from "../utils/types";
 
 const POST_SCROLL_POSITION_PREFIX = "post-scroll-position:";
 const ImageLightbox = lazy(() => import("../components/ImageLightbox"));

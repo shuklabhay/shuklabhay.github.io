@@ -10,11 +10,15 @@ const moduleLoaderBySlug = new Map(
   }),
 );
 
-export const allPosts: PostMeta[] = [...postsManifest]
-  .sort((a, b) => b.date.localeCompare(a.date));
+export const allPosts: PostMeta[] = [...postsManifest].sort((a, b) =>
+  b.date.localeCompare(a.date),
+);
 
 const postBySlug = new Map(allPosts.map((post) => [post.slug, post] as const));
-const postEntryPromiseBySlug = new Map<string, Promise<PostEntry | undefined>>();
+const postEntryPromiseBySlug = new Map<
+  string,
+  Promise<PostEntry | undefined>
+>();
 
 export function getPostBySlug(slug: string): PostMeta | undefined {
   return postBySlug.get(slug);

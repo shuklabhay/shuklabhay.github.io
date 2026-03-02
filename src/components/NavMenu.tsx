@@ -148,6 +148,9 @@ export default function NavMenu() {
             userSelect: "none",
             WebkitUserSelect: "none",
             WebkitTouchCallout: "none",
+            WebkitTapHighlightColor: "transparent",
+            outline: "none",
+            boxShadow: "none",
           }}
         >
           <span data-underline-target style={{ display: "inline-block" }}>

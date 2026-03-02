@@ -243,7 +243,8 @@ function RouteBackground({ isMobileViewport }: { isMobileViewport: boolean }) {
           backgroundPosition: isMobileViewport ? "70% center" : "center",
           willChange: "opacity",
           transition: backgroundTransition,
-          opacity: shouldShowHomeBackground && enhancedHomeBackgroundSrc ? 1 : 0,
+          opacity:
+            shouldShowHomeBackground && enhancedHomeBackgroundSrc ? 1 : 0,
           backgroundImage: enhancedHomeBackgroundSrc
             ? `url("${enhancedHomeBackgroundSrc}")`
             : "none",
@@ -280,7 +281,7 @@ function AppShell() {
           position: "relative",
           zIndex: 1,
         }}
-        >
+      >
         <NavMenu />
         <Suspense fallback={null}>
           <Routes location={location}>
