@@ -1,16 +1,20 @@
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import Home from "./pages/Home.tsx";
 import NavMenu from "./components/NavMenu.tsx";
 import About from "./pages/About.tsx";
 import Blog from "./pages/Blog.tsx";
 import Post from "./pages/Post.tsx";
-import { buildRootViewTransitionStyles } from "./animations";
 import type { RouteTransitionState } from "./utils/types";
+import {
+  getLastPathname,
+  isBlogPostPath,
+  setLastPathname,
+} from "./utils/routeTransitions";
 
-const TOP_LEVEL_VIEW_TRANSITION_MS = 128;
-const TOP_LEVEL_VIEW_TRANSITION_EASING = "linear";
-const POST_RETURN_FLAG_KEY = "route-from-post-return";
+const MOBILE_BREAKPOINT_QUERY = "(max-width: 860px)";
+const PAGE_X_PADDING_DESKTOP = "1.125rem";
+const PAGE_X_PADDING_MOBILE = "0.625rem";
 
 function getHomeBackgroundCandidates() {
   if (typeof window === "undefined") return ["/static/landing-1280.avif"];
@@ -123,7 +127,33 @@ async function preloadFirstAvailableImage(candidates: string[]) {
   return null;
 }
 
-function RouteBackground() {
+function useIsMobileViewport() {
+  const [isMobileViewport, setIsMobileViewport] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia(MOBILE_BREAKPOINT_QUERY).matches;
+  });
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mediaQuery = window.matchMedia(MOBILE_BREAKPOINT_QUERY);
+    const onChange = (event: MediaQueryListEvent) => {
+      setIsMobileViewport(event.matches);
+    };
+
+    setIsMobileViewport(mediaQuery.matches);
+    if (typeof mediaQuery.addEventListener === "function") {
+      mediaQuery.addEventListener("change", onChange);
+      return () => mediaQuery.removeEventListener("change", onChange);
+    }
+
+    mediaQuery.addListener(onChange);
+    return () => mediaQuery.removeListener(onChange);
+  }, []);
+
+  return isMobileViewport;
+}
+
+function RouteBackground({ isMobileViewport }: { isMobileViewport: boolean }) {
   const location = useLocation();
   const isHome = location.pathname === "/";
   const [homeBackgroundSrc, setHomeBackgroundSrc] = useState<string | null>(
@@ -131,13 +161,17 @@ function RouteBackground() {
   );
   const [isHomeBackgroundReady, setIsHomeBackgroundReady] = useState(false);
   const transitionState = location.state as RouteTransitionState | null;
-  const fromPostReturnFlag =
-    typeof window !== "undefined" &&
-    window.sessionStorage.getItem(POST_RETURN_FLAG_KEY) === "1";
+  const lastPathname = getLastPathname();
   const shouldShowHomeBackground = isHome && isHomeBackgroundReady;
   const shouldAnimateHomeBackgroundFade =
     shouldShowHomeBackground &&
-    (transitionState?.fromPost === true || fromPostReturnFlag);
+    (transitionState?.fromPost === true ||
+      (lastPathname ? isBlogPostPath(lastPathname) : false));
+  const backgroundTransition = shouldAnimateHomeBackgroundFade
+    ? "opacity 512ms ease"
+    : isHomeBackgroundReady
+      ? "opacity 220ms ease"
+      : "none";
 
   useEffect(() => {
     let cancelled = false;
@@ -155,18 +189,32 @@ function RouteBackground() {
 
   return (
     <>
-      <div className="route-background-base" />
       <div
-        className={`route-background-image${
-          isHomeBackgroundReady && homeBackgroundSrc
-            ? " route-background-image-ready"
-            : ""
-        }${
-          shouldAnimateHomeBackgroundFade
-            ? " route-background-image-post-return"
-            : ""
-        }`}
         style={{
+          position: "fixed",
+          left: 0,
+          top: 0,
+          width: "100vw",
+          height: "100vh",
+          zIndex: 0,
+          pointerEvents: "none",
+          backgroundColor: "#5a6c99",
+        }}
+      />
+      <div
+        style={{
+          position: "fixed",
+          left: 0,
+          top: 0,
+          width: "100vw",
+          height: "100vh",
+          zIndex: 0,
+          pointerEvents: "none",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: isMobileViewport ? "70% center" : "center",
+          willChange: "opacity",
+          transition: backgroundTransition,
           opacity: shouldShowHomeBackground ? 1 : 0,
           backgroundImage: isHomeBackgroundReady
             ? homeBackgroundSrc
@@ -181,46 +229,26 @@ function RouteBackground() {
 
 function AppShell() {
   const location = useLocation();
+  const isMobileViewport = useIsMobileViewport();
 
-  useEffect(() => {
-    const isHome = location.pathname === "/";
-    document.documentElement.classList.toggle("route-home", isHome);
-    document.body.classList.toggle("route-home", isHome);
-  }, [location.pathname]);
-
-  useEffect(() => {
-    const styleId = "app-top-level-view-transition-style";
-    const styleEl =
-      document.getElementById(styleId) ??
-      Object.assign(document.createElement("style"), { id: styleId });
-
-    styleEl.textContent = buildRootViewTransitionStyles(
-      TOP_LEVEL_VIEW_TRANSITION_MS,
-      TOP_LEVEL_VIEW_TRANSITION_EASING,
-    );
-
-    if (!styleEl.parentNode) {
-      document.head.appendChild(styleEl);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const isPostRoute =
-      location.pathname.startsWith("/blog/") && location.pathname !== "/blog";
-    if (isPostRoute) return;
-
-    const clearId = window.setTimeout(() => {
-      window.sessionStorage.removeItem(POST_RETURN_FLAG_KEY);
-    }, 0);
-
-    return () => window.clearTimeout(clearId);
+  useLayoutEffect(() => {
+    setLastPathname(location.pathname);
   }, [location.pathname]);
 
   return (
     <>
-      <RouteBackground />
-      <div className="container" style={{ position: "relative", zIndex: 1 }}>
+      <RouteBackground isMobileViewport={isMobileViewport} />
+      <div
+        style={{
+          width: "100%",
+          margin: "0 auto",
+          paddingInline: isMobileViewport
+            ? PAGE_X_PADDING_MOBILE
+            : PAGE_X_PADDING_DESKTOP,
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
         <NavMenu />
         <Routes location={location}>
           <Route path="/" element={<Home />} />

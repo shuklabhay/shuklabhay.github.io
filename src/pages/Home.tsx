@@ -1,12 +1,22 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import PageTitle, { CheckboxSubtitle } from "../components/PageTitle";
-import type { ContactInfo } from "../utils/types";
+import { useEntryFade } from "../utils/useEntryFade";
+import { getLastPathname, isBlogPostPath } from "../utils/routeTransitions";
+import type { ContactInfo, RouteTransitionState } from "../utils/types";
 
 const contactPromise = fetch("/static/sitedata/contact.json").then((res) =>
   res.json(),
 );
 
 export default function Home() {
+  const location = useLocation();
+  const transitionState = location.state as RouteTransitionState | null;
+  const lastPathname = getLastPathname();
+  const shouldAnimateEntry =
+    transitionState?.fromPost === true ||
+    (lastPathname ? isBlogPostPath(lastPathname) : false);
+  const entryFadeStyle = useEntryFade(shouldAnimateEntry, 525);
   const [contactData, setContactData] = useState<ContactInfo[]>([]);
 
   useEffect(() => {
@@ -21,7 +31,12 @@ export default function Home() {
   const linkedin = contactData.find((c) => c.title === "Linkedin")?.link;
 
   return (
-    <main className="home-main">
+    <main
+      style={{
+        ...entryFadeStyle,
+        paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))",
+      }}
+    >
       <PageTitle
         title="Hi, I'm Abhay"
         subtitle={

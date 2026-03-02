@@ -1,8 +1,25 @@
+import { useLocation } from "react-router-dom";
 import PageTitle from "../components/PageTitle";
+import { useEntryFade } from "../utils/useEntryFade";
+import { getLastPathname, isBlogPostPath } from "../utils/routeTransitions";
+import type { RouteTransitionState } from "../utils/types";
 
 export default function About() {
+  const location = useLocation();
+  const transitionState = location.state as RouteTransitionState | null;
+  const lastPathname = getLastPathname();
+  const shouldAnimateEntry =
+    transitionState?.fromPost === true ||
+    (lastPathname ? isBlogPostPath(lastPathname) : false);
+  const entryFadeStyle = useEntryFade(shouldAnimateEntry, 525);
+
   return (
-    <main>
+    <main
+      style={{
+        ...entryFadeStyle,
+        paddingBottom: "max(1.25rem, env(safe-area-inset-bottom))",
+      }}
+    >
       <PageTitle
         title="Hi, I'm Abhay"
         subtitle={

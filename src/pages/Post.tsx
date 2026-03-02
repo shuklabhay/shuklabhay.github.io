@@ -6,9 +6,8 @@ import ImageLightbox from "../components/ImageLightbox";
 import PostBackLink from "../components/PostBackLink";
 import { getPostBySlug } from "../posts";
 import { getImagePreloadStatus, preloadImage } from "../utils/imagePreload";
-import type { RichImage, RouteTransitionState } from "../utils/types";
+import type { RichImage } from "../utils/types";
 
-const POST_RETURN_FLAG_KEY = "route-from-post-return";
 const POST_SCROLL_POSITION_PREFIX = "post-scroll-position:";
 type HeroLoadStatus = "loading" | "loaded" | "error";
 
@@ -55,11 +54,8 @@ function getPostScrollStorageKey(pathname: string) {
 export default function Post() {
   const { slug = "" } = useParams();
   const location = useLocation();
-  const transitionState = location.state as RouteTransitionState | null;
   const isDocumentReload = didDocumentReload();
   const postScrollStorageKey = getPostScrollStorageKey(location.pathname);
-  const shouldAnimatePostEntry =
-    transitionState?.fromBlog === true && !isDocumentReload;
   const post = getPostBySlug(slug);
   const heroImage = post?.cover ?? "/static/landing-1280.avif";
   const postContentRef = useRef<HTMLElement>(null);
@@ -79,12 +75,6 @@ export default function Post() {
           ? "error"
           : "loading",
   });
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.sessionStorage.setItem(POST_RETURN_FLAG_KEY, "1");
-    }
-  }, []);
 
   useEffect(() => {
     if (!post) {
@@ -238,8 +228,17 @@ export default function Post() {
     return (
       <>
         <PostBackLink />
-        <main className="post-page post-page-enter" key={slug}>
-          <h1 className="post-missing-title">Post not found</h1>
+        <main
+          key={slug}
+          style={{
+            width: "100%",
+            color: "white",
+            paddingBottom: "calc(3rem + env(safe-area-inset-bottom))",
+            position: "relative",
+            opacity: 1,
+          }}
+        >
+          <h1 style={{ marginTop: "0.75rem" }}>Post not found</h1>
         </main>
       </>
     );
@@ -248,13 +247,8 @@ export default function Post() {
   const Content = post.Component;
   const currentHeroLoadStatus =
     heroLoadState.src === heroImage ? heroLoadState.status : "loading";
-  const isHeroLoaded = currentHeroLoadStatus === "loaded";
   const isPostEntryReady =
-    !shouldAnimatePostEntry ||
-    (currentHeroLoadStatus !== "loading" && isPostContentReady);
-  const postPageClassName = `post-page ${
-    isPostEntryReady ? "post-page-enter" : "post-page-await-hero"
-  }`;
+    currentHeroLoadStatus !== "loading" && isPostContentReady;
 
   const onPostContentClick = (event: ReactMouseEvent<HTMLElement>) => {
     const target = event.target;
@@ -281,13 +275,12 @@ export default function Post() {
       <PostBackLink />
       <BlogPost
         key={slug}
-        pageClassName={postPageClassName}
+        isEntryReady={isPostEntryReady}
         title={post.title}
         byline={
           post.date ? `Abhay Shukla · ${formatPostDate(post.date)}` : undefined
         }
         heroImage={heroImage}
-        isHeroLoaded={isHeroLoaded}
         contentRef={postContentRef}
         onContentClick={onPostContentClick}
       >

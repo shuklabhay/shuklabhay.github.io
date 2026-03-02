@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import type { BlogPostCardProps } from "../utils/types";
 import { preloadImage } from "../utils/imagePreload";
 
@@ -10,6 +11,7 @@ export default function BlogPostCard({
 }: BlogPostCardProps) {
   const postPath = `/blog/${post.slug}`;
   const heroSrc = post.cover ?? DEFAULT_POST_HERO_IMAGE;
+  const [isHovered, setIsHovered] = useState(false);
 
   const warmHeroImage = () => {
     void preloadImage(heroSrc);
@@ -20,21 +22,89 @@ export default function BlogPostCard({
       to={postPath}
       viewTransition
       state={{ fromBlog: true }}
-      className={`post-card${post.cover ? "" : " post-card-no-cover"}`}
-      onMouseEnter={warmHeroImage}
-      onFocus={warmHeroImage}
+      style={{
+        display: "grid",
+        width: "100%",
+        gridTemplateColumns: post.cover
+          ? "clamp(105px, 13.75vw, 120px) minmax(0, 1fr)"
+          : "1fr",
+        gap: post.cover ? "0.9rem" : "0.75rem",
+        alignItems: "start",
+        color: "white",
+        border: "2px solid rgba(255, 255, 255, 0.3)",
+        borderRadius: "12px",
+        padding: "0.7rem",
+        background: "rgba(0, 0, 0, 0.12)",
+        backdropFilter: "blur(1px)",
+        textDecoration: "none",
+        userSelect: "none",
+        WebkitUserSelect: "none",
+        WebkitTouchCallout: "none",
+      }}
+      onMouseEnter={() => {
+        warmHeroImage();
+        setIsHovered(true);
+      }}
+      onPointerLeave={() => setIsHovered(false)}
+      onFocus={() => {
+        warmHeroImage();
+        setIsHovered(true);
+      }}
+      onBlur={() => setIsHovered(false)}
       onTouchStart={warmHeroImage}
       onPointerDown={warmHeroImage}
     >
       {post.cover ? (
-        <img src={post.cover} alt={post.title} className="post-card-cover" />
+        <img
+          src={post.cover}
+          alt={post.title}
+          style={{
+            width: "100%",
+            aspectRatio: "1 / 1",
+            objectFit: "cover",
+            borderRadius: "8px",
+            border: "1px solid rgba(255, 255, 255, 0.28)",
+            display: "block",
+            WebkitUserDrag: "none",
+          }}
+        />
       ) : null}
-      <div className="post-card-content">
-        <h2 className="post-card-title">
-          <span className="post-card-title-link">{post.title}</span>
+      <div
+        style={{
+          minWidth: 0,
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.42rem",
+        }}
+      >
+        <h2
+          style={{
+            margin: 0,
+            fontSize: "clamp(1.18rem, 2.6vw, 2.24rem)",
+            lineHeight: 1.14,
+          }}
+        >
+          <span
+            style={{
+              color: isHovered ? "#d7e4ff" : "white",
+              textDecoration: "none",
+              transition: "color 140ms ease",
+            }}
+          >
+            {post.title}
+          </span>
         </h2>
         {post.date ? (
-          <p className="post-card-date">{formatPostDate(post.date)}</p>
+          <p
+            style={{
+              margin: 0,
+              opacity: 0.85,
+              fontSize: "0.82rem",
+              letterSpacing: "0.01em",
+            }}
+          >
+            {formatPostDate(post.date)}
+          </p>
         ) : null}
       </div>
     </Link>

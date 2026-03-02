@@ -3,6 +3,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import BlogPostCard from "../components/BlogPostCard";
 import { allPosts } from "../posts";
+import { useEntryFade } from "../utils/useEntryFade";
+import { getLastPathname, isBlogPostPath } from "../utils/routeTransitions";
 import type {
   BlogSortDirection,
   BlogSortField,
@@ -11,7 +13,7 @@ import type {
 } from "../utils/types";
 
 const BLOG_SORT_STORAGE_KEY = "blog-sort-state-v1";
-const POST_RETURN_FLAG_KEY = "route-from-post-return";
+const BLOG_ENTRY_FADE_MS = 620;
 const DEFAULT_BLOG_SORT_STATE: BlogSortState = {
   sortField: "date",
   dateDirection: "desc",
@@ -64,11 +66,14 @@ function formatPostDate(raw: string) {
 export default function Blog() {
   const location = useLocation();
   const blogTransitionState = location.state as RouteTransitionState | null;
-  const fromPostReturnFlag =
-    typeof window !== "undefined" &&
-    window.sessionStorage.getItem(POST_RETURN_FLAG_KEY) === "1";
+  const lastPathname = getLastPathname();
   const shouldAnimateBlogEntry =
-    blogTransitionState?.fromPost === true || fromPostReturnFlag;
+    blogTransitionState?.fromPost === true ||
+    (lastPathname ? isBlogPostPath(lastPathname) : false);
+  const blogEntryFadeStyle = useEntryFade(
+    shouldAnimateBlogEntry,
+    BLOG_ENTRY_FADE_MS,
+  );
   const [sortState, setSortState] = useState<BlogSortState>(
     readBlogSortStateFromStorage,
   );
@@ -85,14 +90,6 @@ export default function Blog() {
       } satisfies BlogSortState),
     );
   }, [sortField, dateDirection, alphaDirection]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const clearId = window.setTimeout(() => {
-      window.sessionStorage.removeItem(POST_RETURN_FLAG_KEY);
-    }, 0);
-    return () => window.clearTimeout(clearId);
-  }, []);
 
   const onDateSortClick = () => {
     setSortState((prev) =>
@@ -147,12 +144,17 @@ export default function Blog() {
 
   return (
     <main
-      className={`blog-page${shouldAnimateBlogEntry ? " blog-page-return" : ""}`}
+      style={{
+        ...blogEntryFadeStyle,
+        width: "100%",
+        color: "white",
+        paddingBottom: "calc(2rem + env(safe-area-inset-bottom))",
+      }}
     >
-      <div className="blog-page-title">
+      <div style={{ position: "relative" }}>
         <PageTitle title="I write" />
       </div>
-      <div className="blog-page-controls">
+      <div style={{ position: "relative" }}>
         <CheckboxSubtitle
           mode="link"
           hoverFill
@@ -171,7 +173,18 @@ export default function Blog() {
           ]}
         />
       </div>
-      <section className="posts-list">
+      <section
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          gap: "0.65rem",
+          marginTop: "1rem",
+          userSelect: "none",
+          WebkitUserSelect: "none",
+          WebkitTouchCallout: "none",
+        }}
+      >
         {sortedPosts.map((post) => (
           <BlogPostCard
             key={post.slug}

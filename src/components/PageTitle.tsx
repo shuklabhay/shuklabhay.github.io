@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { CheckboxSubtitleProps, PageTitleProps } from "../utils/types";
-import TriangleIcon from "../utils/TriangleIcon";
+import TriangleIcon from "./TriangleIcon";
 
 export default function PageTitle({ title, subtitle }: PageTitleProps) {
   return (

@@ -1,4 +1,4 @@
-import type { TriangleIconProps } from "./types";
+import type { TriangleIconProps } from "../utils/types";
 
 export default function TriangleIcon({
   direction,

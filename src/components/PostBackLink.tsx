@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import TriangleIcon from "../utils/TriangleIcon";
+import TriangleIcon from "./TriangleIcon";
 
 export default function PostBackLink() {
   return (
