@@ -66,6 +66,7 @@ export default function Blog() {
     entryFadeDecisionByLocationKeyRef.current = {
       key: location.key,
       shouldAnimate:
+        blogTransitionState?.fromTopNav === true ||
         blogTransitionState?.fromPost === true ||
         (lastPathname ? isBlogPostPath(lastPathname) : false),
     };

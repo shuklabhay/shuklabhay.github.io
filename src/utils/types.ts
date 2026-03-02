@@ -6,6 +6,7 @@ export type GitHubRepo = { full_name: string };
 export type RouteTransitionState = {
   fromPost?: boolean;
   fromBlog?: boolean;
+  fromTopNav?: boolean;
 };
 
 export type ContactInfo = {

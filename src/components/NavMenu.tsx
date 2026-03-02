@@ -2,7 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import type { MouseEvent as ReactMouseEvent } from "react";
 import { runWithRootViewTransition } from "../utils/viewTransitions";
-import type { NavUnderlineState } from "../utils/types";
+import type { NavUnderlineState, RouteTransitionState } from "../utils/types";
 
 const MENU_ITEMS = [
   { label: "home", path: "/" },
@@ -127,7 +127,9 @@ export default function NavMenu() {
     }
 
     event.preventDefault();
-    const navigateState = isPostRoute ? { fromPost: true } : undefined;
+    const navigateState: RouteTransitionState | undefined = isPostRoute
+      ? { fromPost: true }
+      : undefined;
     if (isPostRoute) {
       navigate(path, { state: navigateState });
       return;
@@ -139,7 +141,12 @@ export default function NavMenu() {
         window.matchMedia("(hover: none)").matches ||
         window.matchMedia("(prefers-reduced-motion: reduce)").matches);
     if (shouldSkipRootViewTransition) {
-      navigate(path, { state: navigateState });
+      navigate(path, {
+        state: {
+          ...(navigateState ?? {}),
+          fromTopNav: true,
+        } satisfies RouteTransitionState,
+      });
       return;
     }
 
