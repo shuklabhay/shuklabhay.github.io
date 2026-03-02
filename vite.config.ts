@@ -6,6 +6,14 @@ import path from "path";
 
 const VIRTUAL_POSTS_ID = "virtual:posts-manifest";
 const RESOLVED_VIRTUAL_POSTS_ID = `\0${VIRTUAL_POSTS_ID}`;
+const SITE_ORIGIN = "https://shuklabhay.github.io";
+const DEFAULT_SOCIAL_IMAGE_PATH = "/static/landing-1280.webp";
+const POST_COVER_CANDIDATES = [
+  "banner.png",
+  "banner.jpg",
+  "banner.jpeg",
+  "banner.webp",
+];
 
 function rewriteWikiEmbedsToMarkdown(source: string): string {
   const importByPath = new Map<string, string>();
@@ -76,6 +84,51 @@ function extractPostWordCount(source: string): number {
 
   if (!normalized) return 0;
   return normalized.match(/[A-Za-z0-9]+(?:['’-][A-Za-z0-9]+)*/g)?.length ?? 0;
+}
+
+function escapeHtmlAttribute(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function extractPostDescription(source: string, fallbackTitle: string): string {
+  const lines = source.split(/\r?\n/);
+  let hasSeenTitle = false;
+  const paragraphParts: string[] = [];
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed) {
+      if (paragraphParts.length > 0) break;
+      continue;
+    }
+
+    if (trimmed.startsWith("import ")) continue;
+    if (trimmed.startsWith("#")) {
+      hasSeenTitle = true;
+      continue;
+    }
+    if (!hasSeenTitle) continue;
+    if (trimmed.startsWith(">")) continue;
+    if (trimmed.startsWith("<")) continue;
+    if (/^\d+\.\s/.test(trimmed)) continue;
+    if (/^[-*+]\s/.test(trimmed)) continue;
+
+    paragraphParts.push(trimmed);
+    if (paragraphParts.join(" ").length >= 220) break;
+  }
+
+  const normalized =
+    paragraphParts.join(" ").trim() || `${fallbackTitle} by Abhay Shukla.`;
+
+  return normalized
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1")
+    .replace(/[*_`]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 type PostMetaFile = {
@@ -249,6 +302,86 @@ export default defineConfig({
       name: "copy-static-deps",
       closeBundle: () => {
         fs.copyFileSync("404.html", "dist/404.html");
+
+        const distDir = path.resolve(process.cwd(), "dist");
+        const postsDir = path.resolve(process.cwd(), "src/posts");
+        if (!fs.existsSync(distDir) || !fs.existsSync(postsDir)) return;
+
+        const slugs = fs
+          .readdirSync(postsDir, { withFileTypes: true })
+          .filter((entry) => entry.isDirectory())
+          .map((entry) => entry.name)
+          .sort();
+
+        for (const slug of slugs) {
+          const postPath = path.join(postsDir, slug, "index.mdx");
+          if (!fs.existsSync(postPath)) continue;
+
+          const source = fs.readFileSync(postPath, "utf8");
+          const title = extractPostTitle(source, slug);
+          const description = extractPostDescription(source, title);
+          const distPostDir = path.join(distDir, "blog", slug);
+          fs.mkdirSync(distPostDir, { recursive: true });
+
+          const coverFile = POST_COVER_CANDIDATES.find((fileName) =>
+            fs.existsSync(path.join(postsDir, slug, fileName)),
+          );
+
+          let socialImagePath = DEFAULT_SOCIAL_IMAGE_PATH;
+          if (coverFile) {
+            const srcCoverPath = path.join(postsDir, slug, coverFile);
+            const distCoverPath = path.join(distPostDir, coverFile);
+            fs.copyFileSync(srcCoverPath, distCoverPath);
+            socialImagePath = `/blog/${slug}/${coverFile}`;
+          }
+
+          const canonicalPath = `/blog/${slug}`;
+          const canonicalUrl = `${SITE_ORIGIN}${canonicalPath}`;
+          const socialImageUrl = `${SITE_ORIGIN}${socialImagePath}`;
+          const escapedTitle = escapeHtmlAttribute(title);
+          const escapedDescription = escapeHtmlAttribute(description);
+
+          const socialHtml = `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>${escapedTitle}</title>
+    <meta name="description" content="${escapedDescription}" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="${escapedTitle}" />
+    <meta property="og:description" content="${escapedDescription}" />
+    <meta property="og:url" content="${canonicalUrl}" />
+    <meta property="og:image" content="${socialImageUrl}" />
+    <meta property="og:image:alt" content="${escapedTitle}" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="${escapedTitle}" />
+    <meta name="twitter:description" content="${escapedDescription}" />
+    <meta name="twitter:image" content="${socialImageUrl}" />
+    <link rel="canonical" href="${canonicalUrl}" />
+    <meta name="robots" content="index,follow" />
+    <script type="text/javascript">
+      (function () {
+        var l = window.location;
+        if (l.search[1] === "/") return;
+        l.replace(
+          l.protocol +
+            "//" +
+            l.hostname +
+            (l.port ? ":" + l.port : "") +
+            "/?/" +
+            l.pathname.slice(1).replace(/&/g, "~and~") +
+            (l.search ? "&" + l.search.slice(1).replace(/&/g, "~and~") : "") +
+            l.hash,
+        );
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>
+`;
+
+          fs.writeFileSync(path.join(distPostDir, "index.html"), socialHtml);
+        }
       },
     },
   ],

@@ -16,6 +16,16 @@ const MENU_ITEMS = [
   { label: "blog", path: "/blog" },
 ];
 
+function preloadTopLevelRoute(path: string) {
+  if (path === "/about") {
+    return import("../pages/About.tsx");
+  }
+  if (path === "/blog") {
+    return import("../pages/Blog.tsx");
+  }
+  return Promise.resolve();
+}
+
 export default function NavMenu() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -140,8 +150,12 @@ export default function NavMenu() {
     const navigateState: RouteTransitionState | undefined = isPostRoute
       ? { fromPost: true }
       : undefined;
+    const preloadPromise = preloadTopLevelRoute(path);
+
     if (isPostRoute) {
-      navigate(path, { state: navigateState });
+      preloadPromise.finally(() => {
+        navigate(path, { state: navigateState });
+      });
       return;
     }
 
@@ -151,17 +165,21 @@ export default function NavMenu() {
         window.matchMedia("(hover: none)").matches ||
         prefersReducedMotion);
     if (shouldSkipRootViewTransition) {
-      navigate(path, {
-        state: {
-          ...(navigateState ?? {}),
-          fromTopNav: true,
-        } satisfies RouteTransitionState,
+      preloadPromise.finally(() => {
+        navigate(path, {
+          state: {
+            ...(navigateState ?? {}),
+            fromTopNav: true,
+          } satisfies RouteTransitionState,
+        });
       });
       return;
     }
 
-    runWithRootViewTransition(() => {
-      navigate(path, { state: navigateState });
+    preloadPromise.finally(() => {
+      runWithRootViewTransition(() => {
+        navigate(path, { state: navigateState });
+      });
     });
   };
 
@@ -189,6 +207,12 @@ export default function NavMenu() {
             to={path}
             viewTransition={false}
             state={isPostRoute ? { fromPost: true } : undefined}
+            onMouseEnter={() => {
+              void preloadTopLevelRoute(path);
+            }}
+            onTouchStart={() => {
+              void preloadTopLevelRoute(path);
+            }}
             onClick={(event) => handleTopLevelNavClick(event, path)}
             aria-current={isActive ? "page" : undefined}
             style={{
