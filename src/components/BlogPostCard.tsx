@@ -1,8 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import type { MouseEvent as ReactMouseEvent } from "react";
 import type { PostMeta } from "../utils/types";
 import { loadPostBySlug } from "../posts";
 import { preloadImage } from "../utils/imagePreload";
+import { runWithRootViewTransition } from "../utils/viewTransitions";
 
 type BlogPostCardProps = {
   post: PostMeta;
@@ -19,6 +21,7 @@ export default function BlogPostCard({
   prioritizeImage = false,
   shouldUseViewTransition = true,
 }: BlogPostCardProps) {
+  const navigate = useNavigate();
   const postPath = `/blog/${post.slug}`;
   const heroSrc = post.cover ?? DEFAULT_POST_HERO_IMAGE;
   const [isHovered, setIsHovered] = useState(false);
@@ -34,13 +37,32 @@ export default function BlogPostCard({
   const warmPostResources = () => {
     void preloadImage(heroSrc);
     void loadPostBySlug(post.slug);
+    void import("../pages/Post.tsx");
+  };
+
+  const onCardClick = (event: ReactMouseEvent<HTMLAnchorElement>) => {
+    if (event.defaultPrevented) return;
+    if (event.button !== 0) return;
+    if (event.metaKey || event.altKey || event.ctrlKey || event.shiftKey)
+      return;
+
+    event.preventDefault();
+    const navigateToPost = () => {
+      navigate(postPath, { state: { fromBlog: true } });
+    };
+    if (shouldUseViewTransition) {
+      runWithRootViewTransition(navigateToPost);
+      return;
+    }
+    navigateToPost();
   };
 
   return (
     <Link
       to={postPath}
-      viewTransition={shouldUseViewTransition}
+      viewTransition={false}
       state={{ fromBlog: true }}
+      onClick={onCardClick}
       style={{
         display: "grid",
         width: "100%",

@@ -59,8 +59,8 @@ export default function About() {
         subtitle={
           <div
             style={{
-              color: "white",
-              maxWidth: "100%",
+              color: "#eef3ff",
+              maxWidth: "65%",
               lineHeight: 1.6,
               marginTop: "0.5rem",
               fontSize: "1.1rem",
@@ -75,23 +75,22 @@ export default function About() {
               <strong>machine learning </strong> to do interesting, imaginative
               things. For example, I've:
             </p>
-            <ul style={{ marginTop: 0, paddingLeft: "1.25rem" }}>
+            <ul style={{ marginTop: 0, paddingLeft: "1.25rem", lineHeight: 1.5 }}>
               <li>
                 Combined ViTs & PDEs to{" "}
                 <strong>simulate biological tissue</strong> and generate{" "}
-                <strong>synthetic medical imagery</strong>
-                at Stanford
+                <strong>synthetic medical imagery</strong> at Stanford
               </li>
-              <li>
+              <li style={{ marginTop: "0.45rem" }}>
                 Worked with <strong>Prime Intellect,</strong> building{" "}
                 <strong>RL environments</strong> and fine-tuning small LLMs
               </li>
-              <li>
+              <li style={{ marginTop: "0.45rem" }}>
                 Built <strong>multimodal agents</strong> to{" "}
                 <strong>translate music</strong> while preserving musicality,
                 reaching <strong>1M+ listeners</strong>
               </li>
-              <li>
+              <li style={{ marginTop: "0.45rem" }}>
                 <strong>Simulated rat neurons</strong> at UCLA; trained{" "}
                 <strong>CNN-based world models</strong> on my own
               </li>
@@ -99,35 +98,35 @@ export default function About() {
             <p style={{ marginTop: "1.5rem", marginBottom: "0.5rem" }}>
               I'm primarily <strong>motivated by/curious about:</strong>
             </p>
-            <ul style={{ marginTop: 0, paddingLeft: "1.25rem" }}>
+            <ul style={{ marginTop: 0, paddingLeft: "1.25rem", lineHeight: 1.5 }}>
               <li>
                 Understanding the <strong>incomplete and the unknown, </strong>
-                regardless of field or form: I dive deep into questions across{" "}
+                regardless of field or form: I dive deep into questions across
                 biology, psychology, physics, history.
               </li>
-              <li>
+              <li style={{ marginTop: "0.45rem" }}>
                 <strong>Craft:</strong> I grew up learning to row, caring deeply
                 about every element of every thing I work on, though more
                 recently I've been learning to steer.
               </li>
-              <li>
+              <li style={{ marginTop: "0.45rem" }}>
                 <strong>Thinking</strong>, dreaming, imagining,{" "}
                 <strong>
                   following intuition, listening and telling stories.
                 </strong>
               </li>
-              <li>
+              <li style={{ marginTop: "0.45rem" }}>
                 How we <strong>perceive, interpret, and understand</strong> the
                 world; the boundary between what we can feel and formalize.
               </li>
-              <li>
+              <li style={{ marginTop: "0.45rem" }}>
                 <strong>Technically:</strong> the new primitives machine
                 learning makes possible. <strong>Philosophically:</strong> what
                 we learn about ourselves, our world, and the nature of
                 intelligence when we teach machines to perceive &amp; interact
                 with the world.
               </li>
-              <li>
+              <li style={{ marginTop: "0.45rem" }}>
                 <strong>Being human:</strong> living life, making mistakes,
                 making memories, learning to understand and appreciate oneself.
               </li>

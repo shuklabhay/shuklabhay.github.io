@@ -210,7 +210,7 @@ export default function Blog() {
             formatPostDate={formatPostDate}
             prioritizeImage={index < 4}
             shouldUseViewTransition={
-              !prefersReducedMotion && !shouldSkipEntryAnimation()
+              !prefersReducedMotion
             }
           />
         ))}
