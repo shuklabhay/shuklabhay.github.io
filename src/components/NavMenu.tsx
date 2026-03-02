@@ -133,6 +133,16 @@ export default function NavMenu() {
       return;
     }
 
+    const shouldSkipRootViewTransition =
+      typeof window !== "undefined" &&
+      (window.matchMedia("(pointer: coarse)").matches ||
+        window.matchMedia("(hover: none)").matches ||
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    if (shouldSkipRootViewTransition) {
+      navigate(path, { state: navigateState });
+      return;
+    }
+
     runWithRootViewTransition(() => {
       navigate(path, { state: navigateState });
     });
