@@ -64,8 +64,8 @@ export default function Post() {
   const heroImage = postSummary?.cover ?? "/static/landing-1280.avif";
   const postContentRef = useRef<HTMLElement>(null);
   const [lightboxOpened, setLightboxOpened] = useState(false);
-  const [lightboxImage, setLightboxImage] = useState<RichImage | null>(null);
   const [postImages, setPostImages] = useState<RichImage[]>([]);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
   const [postEntry, setPostEntry] = useState<PostEntry | null>(null);
   const [isPostEntryReady, setIsPostEntryReady] = useState(false);
 
@@ -90,7 +90,7 @@ export default function Post() {
   useEffect(() => {
     if (!postEntry) {
       setPostImages([]);
-      setLightboxImage(null);
+    setLightboxIndex(0);
       setLightboxOpened(false);
       return;
     }
@@ -112,7 +112,7 @@ export default function Post() {
     });
 
     setPostImages(images);
-    setLightboxImage(null);
+    setLightboxIndex(0);
     setLightboxOpened(false);
   }, [slug, postEntry]);
 
@@ -284,7 +284,7 @@ export default function Post() {
       return;
 
     event.preventDefault();
-    setLightboxImage(postImages[index] ?? null);
+    setLightboxIndex(index);
     setLightboxOpened(true);
   };
 
@@ -307,7 +307,9 @@ export default function Post() {
           <ImageLightbox
             opened={lightboxOpened}
             setOpened={setLightboxOpened}
-            image={lightboxImage}
+            images={postImages}
+            currentIndex={lightboxIndex}
+            setCurrentIndex={setLightboxIndex}
           />
         </Suspense>
       ) : null}

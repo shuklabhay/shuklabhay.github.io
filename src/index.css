@@ -196,6 +196,7 @@ code {
 .post-content blockquote img {
   margin: 0 0 0.28rem;
   max-width: 100%;
+  box-shadow: none;
 }
 
 @media (max-width: 860px) {

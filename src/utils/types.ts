@@ -92,7 +92,11 @@ export type TriangleIconProps = {
 export type ImageLightboxProps = {
   opened: boolean;
   setOpened: (value: SetStateAction<boolean>) => void;
-  image: RichImage | null;
+  images: RichImage[];
+  currentIndex: number;
+  setCurrentIndex: (
+    value: SetStateAction<number>,
+  ) => void;
 };
 
 type UnderlineMode = "none" | "fade" | "move";
