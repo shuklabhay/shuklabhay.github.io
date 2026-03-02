@@ -259,7 +259,7 @@ function RouteBackground({
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backgroundPosition: isMobileViewport ? "70% center" : "center",
-          backgroundColor: "#5a6c99",
+          backgroundColor: "#52668b",
           opacity: shouldShowHomeBackground ? 1 : 0,
           backgroundImage: `url("${homeBackgroundSrc}")`,
         }}
@@ -274,7 +274,7 @@ function RouteBackground({
           height: "100vh",
           zIndex: 1,
           pointerEvents: "none",
-          backgroundColor: "#5a6c99",
+          backgroundColor: "#52668b",
           willChange: "opacity",
           transition: backgroundVeilTransition,
           opacity: backgroundVeilOpacity,

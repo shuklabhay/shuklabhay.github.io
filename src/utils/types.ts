@@ -99,9 +99,7 @@ export type ImageLightboxProps = {
   setOpened: (value: SetStateAction<boolean>) => void;
   images: RichImage[];
   currentIndex: number;
-  setCurrentIndex: (
-    value: SetStateAction<number>,
-  ) => void;
+  setCurrentIndex: (value: SetStateAction<number>) => void;
 };
 
 type UnderlineMode = "none" | "fade" | "move";

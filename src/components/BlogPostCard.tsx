@@ -84,7 +84,7 @@ export default function BlogPostCard({
             width: "100%",
             aspectRatio: "1 / 1",
             objectFit: "cover",
-            backgroundColor: "rgba(90, 108, 153, 0.2)",
+            backgroundColor: "rgba(82, 102, 139, 0.2)",
             borderRadius: "8px",
             border: "1px solid rgba(255, 255, 255, 0.28)",
             display: "block",

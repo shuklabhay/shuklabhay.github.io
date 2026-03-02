@@ -7,7 +7,7 @@ html {
   box-sizing: border-box;
   min-height: 100%;
   height: -webkit-fill-available;
-  background-color: #5a6c99;
+  background-color: #52668b;
 }
 
 *,
@@ -24,7 +24,7 @@ body {
     Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #5a6c99;
+  background-color: #52668b;
   min-height: 100vh;
   min-height: 100lvh;
   min-height: 100svh;
@@ -43,7 +43,7 @@ body {
 
 html,
 body {
-  background-color: #5a6c99;
+  background-color: #52668b;
 }
 
 html.route-home,
@@ -125,6 +125,35 @@ code {
 
 .post-content a:focus-visible {
   outline: 2px solid rgba(51, 94, 194, 0.35);
+  outline-offset: 2px;
+}
+
+.about-contact-link {
+  display: inline;
+  color: #b8d6ff;
+  font-weight: 600;
+  border: 0;
+  padding: 0;
+  border-radius: 0;
+  transition:
+    color 130ms ease,
+    opacity 130ms ease;
+  opacity: 1;
+}
+
+.about-contact-link:hover,
+.about-contact-link:focus-visible {
+  opacity: 0.75;
+  color: #9ec3ff;
+}
+
+.about-contact-link:active {
+  opacity: 0.6;
+  color: #83adff;
+}
+
+.about-contact-link:focus-visible {
+  outline: none;
   outline-offset: 2px;
 }
 

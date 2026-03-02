@@ -109,7 +109,9 @@ function toIsoDateString(value: string): string | undefined {
   return parsed.toISOString().slice(0, 10);
 }
 
-function readPostButtons(value: unknown): Array<{ title: string; link: string }> {
+function readPostButtons(
+  value: unknown,
+): Array<{ title: string; link: string }> {
   if (!Array.isArray(value)) return [];
 
   return value
@@ -122,8 +124,7 @@ function readPostButtons(value: unknown): Array<{ title: string; link: string }>
       return { title, link };
     })
     .filter(
-      (button): button is { title: string; link: string } =>
-        button !== null,
+      (button): button is { title: string; link: string } => button !== null,
     );
 }
 

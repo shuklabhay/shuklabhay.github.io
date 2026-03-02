@@ -90,7 +90,7 @@ export default function Post() {
   useEffect(() => {
     if (!postEntry) {
       setPostImages([]);
-    setLightboxIndex(0);
+      setLightboxIndex(0);
       setLightboxOpened(false);
       return;
     }

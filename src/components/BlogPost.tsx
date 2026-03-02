@@ -199,7 +199,7 @@ export default function BlogPost({
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backgroundPosition: isMobile ? "center 28px" : "center 44px",
-          backgroundColor: "#5a6c99",
+          backgroundColor: "#52668b",
           overflow: "hidden",
           isolation: "isolate",
           pointerEvents: "none",
@@ -223,7 +223,7 @@ export default function BlogPost({
             inset: 0,
             pointerEvents: "none",
             background:
-              "linear-gradient(to bottom, rgba(90, 108, 153, 0) 0%, rgba(90, 108, 153, 0.03) 16%, rgba(90, 108, 153, 0.12) 34%, rgba(90, 108, 153, 0.32) 54%, rgba(90, 108, 153, 0.6) 72%, rgba(90, 108, 153, 0.84) 88%, rgba(90, 108, 153, 1) 100%), linear-gradient(to bottom, rgba(90, 108, 153, 0) 0%, rgba(90, 108, 153, 0.28) 100%)",
+              "linear-gradient(to bottom, rgba(82, 102, 139, 0) 0%, rgba(82, 102, 139, 0.03) 16%, rgba(82, 102, 139, 0.12) 34%, rgba(82, 102, 139, 0.32) 54%, rgba(82, 102, 139, 0.6) 72%, rgba(82, 102, 139, 0.84) 88%, rgba(82, 102, 139, 1) 100%), linear-gradient(to bottom, rgba(82, 102, 139, 0) 0%, rgba(82, 102, 139, 0.28) 100%)",
           }}
         />
       </div>
