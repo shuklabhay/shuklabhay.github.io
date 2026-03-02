@@ -105,6 +105,12 @@ code {
   margin-top: 0.12em;
 }
 
+.post-content > h1:first-child + h2,
+.post-content > h1:first-child + h3,
+.post-content > h1:first-child + h4 {
+  margin-top: 0.12em;
+}
+
 .post-content p,
 .post-content li {
   line-height: 1.7;

@@ -66,6 +66,38 @@ function extractPostExcerpt(source: string): string {
   return `${normalized.slice(0, 237).trimEnd()}...`;
 }
 
+function extractPostWordCount(source: string): number {
+  const withoutCode = source
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/~~~[\s\S]*?~~~/g, " ");
+
+  const normalized = withoutCode
+    .replace(/^import\s.+$/gm, " ")
+    .replace(/^export\s+const\s+meta\s*=\s*{[\s\S]*?};?/m, " ")
+    .replace(/^export\s.+$/gm, " ")
+    .replace(/<!--[\s\S]*?-->/g, " ")
+    .replace(/\{\/\*[\s\S]*?\*\/\}/g, " ")
+    .replace(/<[\w.-]+[\s\S]*?\/>/g, " ")
+    .replace(/<\/?[\w.-]+[^>]*>/g, " ")
+    .replace(/!\[\[[^\]]+\]\]/g, " ")
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/\{[^{}]*\}/g, " ")
+    .replace(/^>\s?/gm, " ")
+    .replace(/^\s*[-*+]\s+/gm, " ")
+    .replace(/^\s*\d+\.\s+/gm, " ")
+    .replace(/[|*_~#]/g, " ")
+    .replace(/https?:\/\/\S+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (!normalized) return 0;
+  return (
+    normalized.match(/[A-Za-z0-9]+(?:['’-][A-Za-z0-9]+)*/g)?.length ?? 0
+  );
+}
+
 type PostMetaFile = {
   title?: unknown;
   excerpt?: unknown;
@@ -177,6 +209,7 @@ export default defineConfig({
           const postMeta = readPostMeta(metaPath);
           const title = postMeta.title ?? extractPostTitle(source, slug);
           const excerpt = postMeta.excerpt ?? extractPostExcerpt(source);
+          const wordCount = extractPostWordCount(source);
           const date = postMeta.date ?? stat.mtime.toISOString().slice(0, 10);
           const authorExpr = postMeta.author
             ? JSON.stringify(postMeta.author)
@@ -208,7 +241,7 @@ export default defineConfig({
               title,
             )}, date: ${JSON.stringify(date)}, excerpt: ${JSON.stringify(
               excerpt,
-            )}, author: ${authorExpr}, cover: ${coverExpr} }`,
+            )}, author: ${authorExpr}, cover: ${coverExpr}, wordCount: ${wordCount} }`,
           );
         }
 

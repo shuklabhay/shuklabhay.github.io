@@ -256,9 +256,16 @@ export default function Post() {
 
   const Content = postEntry?.Component;
   const shouldShowPostSkeleton = isPostEntryLoading && !Content;
+  const wordCountBylinePart =
+    typeof postSummary.wordCount === "number"
+      ? `${postSummary.wordCount.toLocaleString()} ${
+          postSummary.wordCount === 1 ? "word" : "words"
+        }`
+      : undefined;
   const bylineParts = [
     postSummary.author,
     postSummary.date ? formatPostDate(postSummary.date) : undefined,
+    wordCountBylinePart,
   ].filter((part): part is string => Boolean(part));
 
   const onPostContentClick = (event: ReactMouseEvent<HTMLElement>) => {

@@ -13,6 +13,14 @@ export default function BlogPostCard({
   const postPath = `/blog/${post.slug}`;
   const heroSrc = post.cover ?? DEFAULT_POST_HERO_IMAGE;
   const [isHovered, setIsHovered] = useState(false);
+  const postMetaParts = [
+    post.date ? formatPostDate(post.date) : undefined,
+    typeof post.wordCount === "number"
+      ? `${post.wordCount.toLocaleString()} ${
+          post.wordCount === 1 ? "word" : "words"
+        }`
+      : undefined,
+  ].filter((part): part is string => Boolean(part));
 
   const warmPostResources = () => {
     void preloadImage(heroSrc);
@@ -96,7 +104,7 @@ export default function BlogPostCard({
             {post.title}
           </span>
         </h2>
-        {post.date ? (
+        {postMetaParts.length ? (
           <p
             style={{
               margin: 0,
@@ -105,7 +113,7 @@ export default function BlogPostCard({
               letterSpacing: "0.01em",
             }}
           >
-            {formatPostDate(post.date)}
+            {postMetaParts.join(" · ")}
           </p>
         ) : null}
       </div>

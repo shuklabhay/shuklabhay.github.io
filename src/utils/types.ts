@@ -25,6 +25,7 @@ export type PostMeta = {
   author?: string;
   excerpt: string;
   cover?: string;
+  wordCount?: number;
 };
 
 export type PostEntry = PostMeta & {

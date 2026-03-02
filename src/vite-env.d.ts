@@ -24,6 +24,8 @@ declare module "virtual:posts-manifest" {
     title: string;
     date: string;
     excerpt: string;
+    author?: string;
     cover?: string;
+    wordCount?: number;
   }>;
 }
