@@ -177,7 +177,7 @@ code {
 
 .post-content blockquote {
   margin: 1rem 0;
-  padding: 0.76rem 0.95rem;
+  padding: 0.76rem 0.95rem 0.4rem;
   border-left: 3px solid rgba(51, 94, 194, 0.6);
   border-radius: 0 12px 12px 0;
   background: rgba(51, 94, 194, 0.12);
