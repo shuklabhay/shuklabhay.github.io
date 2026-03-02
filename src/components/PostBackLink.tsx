@@ -41,9 +41,10 @@ export default function PostBackLink() {
           WebkitUserSelect: "none",
           WebkitTouchCallout: "none",
           WebkitTapHighlightColor: "transparent",
-          outline: "none",
-          boxShadow: "none",
+          borderRadius: "0.2rem",
+          padding: "0.2rem 0.3rem",
         }}
+        className="post-back-link"
       >
         <span
           aria-hidden

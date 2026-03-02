@@ -191,28 +191,30 @@ export default function NavMenu() {
             state={isPostRoute ? { fromPost: true } : undefined}
             onClick={(event) => handleTopLevelNavClick(event, path)}
             aria-current={isActive ? "page" : undefined}
-            style={{
-              color: "white",
-              textDecoration: "none",
-              fontSize: "1.25rem",
-              position: "relative",
-              display: "inline-flex",
-              alignItems: "center",
-              lineHeight: 1.1,
+	            style={{
+	              color: "white",
+	              textDecoration: "none",
+	              fontSize: "1.25rem",
+	              boxShadow: "none",
+	              position: "relative",
+	              display: "inline-flex",
+	              alignItems: "center",
+	              lineHeight: 1.1,
               paddingTop: "0.24rem",
               paddingInline: "0.3rem",
               paddingBottom: "0.45rem",
               marginTop: "-0.24rem",
               marginInline: "-0.3rem",
-              marginBottom: "-0.45rem",
-              userSelect: "none",
-              WebkitUserSelect: "none",
-              WebkitTouchCallout: "none",
-              WebkitTapHighlightColor: "transparent",
-              outline: "none",
-              boxShadow: "none",
-            }}
-          >
+	              marginBottom: "-0.45rem",
+	              userSelect: "none",
+	              WebkitUserSelect: "none",
+	              WebkitTouchCallout: "none",
+	              WebkitTapHighlightColor: "transparent",
+	              borderRadius: "0.2rem",
+	              padding: "0.2rem 0.3rem",
+	            }}
+	            className="top-nav-link"
+	          >
             <span
               ref={(node) => {
                 itemLabelRefByKey.current[label] = node;

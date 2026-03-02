@@ -35,6 +35,12 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
+.top-nav-link:focus-visible,
+.post-back-link:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.9);
+  outline-offset: 2px;
+}
+
 html,
 body {
   background-color: #5a6c99;
