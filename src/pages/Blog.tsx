@@ -1,4 +1,4 @@
-import PageTitle, { CheckboxSubtitle } from "../components/PageTitle";
+import PageTitle, { CheckboxSubtitleLink } from "../components/PageTitle";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import BlogPostCard from "../components/BlogPostCard";
@@ -173,8 +173,7 @@ export default function Blog() {
         <PageTitle title="I write" />
       </div>
       <div style={{ position: "relative" }}>
-        <CheckboxSubtitle
-          mode="link"
+        <CheckboxSubtitleLink
           hoverFill
           activeIndexes={[sortField === "date" ? 0 : 1]}
           marginBottom="0.8rem"

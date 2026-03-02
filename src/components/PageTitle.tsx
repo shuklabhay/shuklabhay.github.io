@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import type { CheckboxSubtitleProps, PageTitleProps } from "../utils/types";
+import type {
+  CheckboxSubtitleLinkProps,
+  CheckboxSubtitleToggleProps,
+  PageTitleProps,
+} from "../utils/types";
 import TriangleIcon from "./TriangleIcon";
 
 export default function PageTitle({ title, subtitle }: PageTitleProps) {
@@ -20,17 +24,7 @@ export default function PageTitle({ title, subtitle }: PageTitleProps) {
   );
 }
 
-export function CheckboxSubtitle<T extends string = string>({
-  items,
-  storageKey,
-  mode = "toggle",
-  hoverFill = true,
-  selectedTags,
-  setSelectedTags,
-  activeIndexes,
-  marginTop = "0.5rem",
-  marginBottom = "4rem",
-}: CheckboxSubtitleProps<T>) {
+function useCheckboxSubtitleInteraction() {
   const [hovered, setHovered] = useState<number | null>(null);
   const [canHover, setCanHover] = useState(() => {
     if (typeof window === "undefined") return false;
@@ -73,53 +67,51 @@ export function CheckboxSubtitle<T extends string = string>({
     };
   }, []);
 
-  useEffect(() => {
-    if (mode !== "toggle" || !storageKey) return;
-    window.localStorage.setItem(storageKey, JSON.stringify(selectedTags));
+  return { hovered, setHovered, canHover };
+}
 
-    const hashParams = new URLSearchParams(window.location.hash.slice(1));
-    const currentTags = hashParams.get("tags");
-    const newTags =
-      selectedTags && selectedTags.length > 0 ? selectedTags.join(",") : "";
+function getCheckboxStyle({
+  isOn,
+  isHover,
+  canHover,
+}: {
+  isOn: boolean;
+  isHover: boolean;
+  canHover: boolean;
+}) {
+  const bg = isOn || isHover ? "white" : "transparent";
+  const fg = isOn || isHover ? "#5a6c99" : "white";
 
-    if (currentTags !== newTags) {
-      if (newTags) {
-        hashParams.set("tags", newTags);
-      } else {
-        hashParams.delete("tags");
-      }
-      const newHash = hashParams.toString();
-      history.replaceState(
-        null,
-        "",
-        newHash ? `#${newHash}` : window.location.pathname,
-      );
-    }
-  }, [selectedTags, mode, storageKey]);
-
-  const onClick = (index: number) => {
-    const item = items[index];
-    if (!item) return;
-
-    if (item.onClick) {
-      item.onClick();
-      return;
-    }
-
-    if (mode === "toggle" && setSelectedTags) {
-      const label = item.label;
-      if (!label) return;
-      const wasSelected = selectedTags ? selectedTags.includes(label) : false;
-      setSelectedTags((prev) =>
-        prev.includes(label)
-          ? (prev.filter((t) => t !== label) as T[])
-          : ([...prev, label] as T[]),
-      );
-      if (wasSelected && hoverFill && hovered === index) {
-        setHovered(null);
-      }
-    }
+  return {
+    padding: "0.25rem 0.5rem",
+    borderRadius: "6px",
+    border: "2px solid white",
+    backgroundColor: bg,
+    color: fg,
+    fontSize: "1rem",
+    fontWeight: 600,
+    cursor: "pointer",
+    userSelect: "none" as const,
+    WebkitUserSelect: "none" as const,
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 0,
+    transition: canHover
+      ? "background-color 150ms ease, color 150ms ease"
+      : "none",
+    textDecoration: "none",
+    WebkitTextFillColor: fg,
   };
+}
+
+export function CheckboxSubtitleLink<T extends string = string>({
+  items,
+  activeIndexes,
+  hoverFill = true,
+  marginTop = "0.5rem",
+  marginBottom = "4rem",
+}: CheckboxSubtitleLinkProps<T>) {
+  const { hovered, setHovered, canHover } = useCheckboxSubtitleInteraction();
 
   return (
     <div
@@ -133,54 +125,38 @@ export function CheckboxSubtitle<T extends string = string>({
       }}
     >
       {items.map((item, idx) => {
-        const isOn =
-          activeIndexes !== undefined
-            ? activeIndexes.includes(idx)
-            : mode === "toggle" && selectedTags
-              ? selectedTags.includes(item.label)
-              : false;
+        const isOn = activeIndexes?.includes(idx) ?? false;
         const isHover = canHover && hoverFill && hovered === idx;
-        const bg = isOn || isHover ? "white" : "transparent";
-        const fg = isOn || isHover ? "#5a6c99" : "white";
-        const sharedStyle = {
-          padding: "0.25rem 0.5rem",
-          borderRadius: "6px",
-          border: "2px solid white",
-          backgroundColor: bg,
-          color: fg,
-          fontSize: "1rem",
-          fontWeight: 600,
-          cursor: "pointer",
-          userSelect: "none" as const,
-          WebkitUserSelect: "none" as const,
-          display: "inline-flex",
-          alignItems: "center",
+        const sharedStyle = getCheckboxStyle({ isOn, isHover, canHover });
+
+        const sharedStyleWithArrowGap = {
+          ...sharedStyle,
           gap: item.arrowDirection ? "0.33rem" : 0,
-          transition: canHover
-            ? "background-color 150ms ease, color 150ms ease"
-            : "none",
-          textDecoration: "none",
-          WebkitTextFillColor: fg,
         };
 
-        if (mode === "link" && item.href && !item.onClick) {
+        const onMouseEnter = () => {
+          if (!canHover) return;
+          setHovered(idx);
+        };
+        const onMouseLeave = () => {
+          setHovered((current) => (current === idx ? null : current));
+        };
+
+        if (item.href && !item.onClick) {
           return (
             <a
               key={item.label}
               href={item.href}
               target="_blank"
               rel="noopener noreferrer"
-              onMouseEnter={() => {
-                if (!canHover) return;
-                setHovered(idx);
-              }}
-              onMouseLeave={() => setHovered((h) => (h === idx ? null : h))}
+              onMouseEnter={onMouseEnter}
+              onMouseLeave={onMouseLeave}
               onClick={() => setHovered(null)}
               onPointerDown={() => setHovered(null)}
               onTouchStart={() => setHovered(null)}
-              onBlur={() => setHovered((h) => (h === idx ? null : h))}
+              onBlur={() => setHovered((current) => (current === idx ? null : current))}
               style={{
-                ...sharedStyle,
+                ...sharedStyleWithArrowGap,
                 userSelect: "auto",
                 WebkitUserSelect: "auto",
                 WebkitTouchCallout: "default",
@@ -211,15 +187,137 @@ export function CheckboxSubtitle<T extends string = string>({
         return (
           <button
             key={item.label}
-            onClick={() => onClick(idx)}
-            onMouseEnter={() => {
-              if (!canHover) return;
-              setHovered(idx);
-            }}
-            onMouseLeave={() => setHovered((h) => (h === idx ? null : h))}
+            onClick={item.onClick}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
             aria-pressed={isOn}
             style={{
-              ...sharedStyle,
+              ...sharedStyleWithArrowGap,
+              WebkitTouchCallout: "none",
+            }}
+          >
+            {item.label}
+            {item.arrowDirection ? (
+              <span
+                aria-hidden
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "0.6rem",
+                  visibility:
+                    item.arrowVisible === undefined || item.arrowVisible
+                      ? "visible"
+                      : "hidden",
+                }}
+              >
+                <TriangleIcon direction={item.arrowDirection} />
+              </span>
+            ) : null}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+export function CheckboxSubtitleToggle<T extends string = string>({
+  items,
+  storageKey,
+  hoverFill = true,
+  selectedTags,
+  setSelectedTags,
+  marginTop = "0.5rem",
+  marginBottom = "4rem",
+}: CheckboxSubtitleToggleProps<T>) {
+  const { hovered, setHovered, canHover } = useCheckboxSubtitleInteraction();
+
+  useEffect(() => {
+    if (!storageKey || typeof window === "undefined") return;
+
+    window.localStorage.setItem(storageKey, JSON.stringify(selectedTags));
+
+    const hashParams = new URLSearchParams(window.location.hash.slice(1));
+    const currentTags = hashParams.get("tags");
+    const newTags =
+      selectedTags && selectedTags.length > 0 ? selectedTags.join(",") : "";
+
+    if (currentTags !== newTags) {
+      if (newTags) {
+        hashParams.set("tags", newTags);
+      } else {
+        hashParams.delete("tags");
+      }
+      const newHash = hashParams.toString();
+      history.replaceState(
+        null,
+        "",
+        newHash ? `#${newHash}` : window.location.pathname,
+      );
+    }
+  }, [selectedTags, storageKey]);
+
+  const onClick = (index: number) => {
+    const item = items[index];
+    if (!item) return;
+
+    if (item.onClick) {
+      item.onClick();
+      return;
+    }
+
+    if (!setSelectedTags) return;
+    const label = item.label;
+    const wasSelected = selectedTags ? selectedTags.includes(label) : false;
+
+    setSelectedTags((prev) =>
+      prev.includes(label)
+        ? (prev.filter((tag) => tag !== label) as T[])
+        : ([...prev, label] as T[]),
+    );
+
+    if (wasSelected && hoverFill && hovered === index) {
+      setHovered(null);
+    }
+  };
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        gap: "0.5rem",
+        marginTop,
+        marginBottom,
+        userSelect: "none",
+        WebkitUserSelect: "none",
+      }}
+    >
+      {items.map((item, idx) => {
+        const isOn = selectedTags ? selectedTags.includes(item.label) : false;
+        const isHover = canHover && hoverFill && hovered === idx;
+        const sharedStyle = getCheckboxStyle({ isOn, isHover, canHover });
+        const sharedStyleWithArrowGap = {
+          ...sharedStyle,
+          gap: item.arrowDirection ? "0.33rem" : 0,
+        };
+
+        const onMouseEnter = () => {
+          if (!canHover) return;
+          setHovered(idx);
+        };
+        const onMouseLeave = () => {
+          setHovered((current) => (current === idx ? null : current));
+        };
+
+        return (
+          <button
+            key={item.label}
+            onClick={() => onClick(idx)}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            aria-pressed={isOn}
+            style={{
+              ...sharedStyleWithArrowGap,
               WebkitTouchCallout: "none",
             }}
           >

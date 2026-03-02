@@ -58,14 +58,20 @@ export type PageTitleProps = {
   subtitle?: ReactNode;
 };
 
-export type CheckboxSubtitleProps<T extends string = string> = {
+export type CheckboxSubtitleLinkProps<T extends string = string> = {
+  items: ReadonlyArray<CheckboxItem<T>>;
+  hoverFill?: boolean;
+  activeIndexes?: number[];
+  marginTop?: string;
+  marginBottom?: string;
+};
+
+export type CheckboxSubtitleToggleProps<T extends string = string> = {
   items: ReadonlyArray<CheckboxItem<T>>;
   storageKey?: string;
-  mode?: "toggle" | "link";
   hoverFill?: boolean;
   selectedTags?: T[];
   setSelectedTags?: (value: T[] | ((prev: T[]) => T[])) => void;
-  activeIndexes?: number[];
   marginTop?: string;
   marginBottom?: string;
 };

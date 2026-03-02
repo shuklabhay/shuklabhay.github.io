@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
-import PageTitle, { CheckboxSubtitle } from "../components/PageTitle";
+import PageTitle, { CheckboxSubtitleLink } from "../components/PageTitle";
 import { useEntryFade } from "../utils/useEntryFade";
 import { getLastPathname, isBlogPostPath } from "../utils/routeTransitions";
 import type { ContactInfo, RouteTransitionState } from "../utils/types";
@@ -58,8 +58,7 @@ export default function Home() {
       <PageTitle
         title="Hi, I'm Abhay"
         subtitle={
-          <CheckboxSubtitle
-            mode="link"
+          <CheckboxSubtitleLink
             hoverFill
             items={[
               { label: "Email", href: email },
