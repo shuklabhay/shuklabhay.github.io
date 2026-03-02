@@ -16,7 +16,6 @@ export function formatPostDate(raw: string) {
     const year = Number(yearText);
     const month = Number(monthText);
     const day = Number(dayText);
-    // Treat date-only inputs as Pacific calendar dates regardless of viewer locale.
     const parsed = new Date(Date.UTC(year, month - 1, day, 12, 0, 0));
     if (!Number.isNaN(parsed.getTime())) {
       return PACIFIC_DATE_FORMATTER.format(parsed);
