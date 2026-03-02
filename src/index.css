@@ -54,28 +54,10 @@ body.route-home {
   height: calc(100lvh);
 }
 
-html.route-home {
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-image: image-set(
-    url("/static/landing-1280.avif") type("image/avif") 1x,
-    url("/static/landing-1920.avif") type("image/avif") 1.5x,
-    url("/static/landing-1280.webp") type("image/webp") 1x,
-    url("/static/landing-1920.webp") type("image/webp") 1.5x,
-    url("/static/landing.webp") type("image/webp") 3x
-  );
-}
-
 body.route-home {
   background-color: transparent;
   background-image: none;
   overscroll-behavior-y: auto;
-}
-
-html.route-home .route-background-base,
-html.route-home .route-background-image {
-  display: none !important;
 }
 
 #root {
@@ -274,7 +256,7 @@ code {
     --home-canvas-height-offset: -36px;
   }
 
-  html.route-home {
+  .route-home {
     background-position: var(--home-mobile-focal-x) center;
   }
 }

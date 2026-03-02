@@ -27,6 +27,21 @@
 
       (function (l) {
         if (l.pathname === "/") {
+          var criticalHomeStyle = document.createElement("style");
+          criticalHomeStyle.id = "route-home-critical-style";
+          criticalHomeStyle.textContent =
+            ".route-home {" +
+            "  background-color: #5a6c99;" +
+            "  background-repeat: no-repeat;" +
+            "  background-size: cover;" +
+            "  background-position: center;" +
+            '  background-image: url("/static/landing-1280.webp");' +
+            '  background-image: image-set(' +
+            'url("/static/landing-1280.avif") type("image/avif") 1x,' +
+            'url("/static/landing-1280.webp") type("image/webp") 1x' +
+            ');' +
+            "}";
+          document.head.appendChild(criticalHomeStyle);
           document.documentElement.classList.add("route-home");
         }
       })(window.location);
@@ -37,6 +52,13 @@
       rel="preload"
       href="/static/landing-1280.avif"
       as="image"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      href="/static/landing-1280.webp"
+      as="image"
+      type="image/webp"
       fetchpriority="high"
     />
     <link rel="preload" href="/static/landing-1920.avif" as="image" />

@@ -6,6 +6,7 @@ import { allPosts } from "../posts";
 import { useEntryFade } from "../utils/useEntryFade";
 import { getLastPathname, isBlogPostPath } from "../utils/routeTransitions";
 import { formatPostDate } from "../utils/formatPostDate";
+import { preloadImage } from "../utils/imagePreload";
 import type {
   BlogSortDirection,
   BlogSortField,
@@ -150,6 +151,15 @@ export default function Blog() {
     return sorted;
   }, [sortField, dateDirection, alphaDirection]);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const topPostsToPrime = 4;
+    for (const post of sortedPosts.slice(0, topPostsToPrime)) {
+      void preloadImage(post.cover ?? "/static/landing-1280.avif");
+    }
+  }, [sortedPosts]);
+
   return (
     <main
       style={{
@@ -193,11 +203,12 @@ export default function Blog() {
           WebkitTouchCallout: "none",
         }}
       >
-        {sortedPosts.map((post) => (
+        {sortedPosts.map((post, index) => (
           <BlogPostCard
             key={post.slug}
             post={post}
             formatPostDate={formatPostDate}
+            prioritizeImage={index < 4}
             shouldUseViewTransition={!prefersReducedMotion}
           />
         ))}

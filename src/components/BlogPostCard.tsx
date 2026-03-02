@@ -7,6 +7,7 @@ import { preloadImage } from "../utils/imagePreload";
 type BlogPostCardProps = {
   post: PostMeta;
   formatPostDate: (raw: string) => string;
+  prioritizeImage?: boolean;
   shouldUseViewTransition?: boolean;
 };
 
@@ -15,6 +16,7 @@ const DEFAULT_POST_HERO_IMAGE = "/static/landing-1280.avif";
 export default function BlogPostCard({
   post,
   formatPostDate,
+  prioritizeImage = false,
   shouldUseViewTransition = true,
 }: BlogPostCardProps) {
   const postPath = `/blog/${post.slug}`;
@@ -75,10 +77,14 @@ export default function BlogPostCard({
         <img
           src={post.cover}
           alt={post.title}
+          loading={prioritizeImage ? "eager" : "lazy"}
+          decoding="async"
+          fetchPriority={prioritizeImage ? "high" : "auto"}
           style={{
             width: "100%",
             aspectRatio: "1 / 1",
             objectFit: "cover",
+            backgroundColor: "rgba(90, 108, 153, 0.2)",
             borderRadius: "8px",
             border: "1px solid rgba(255, 255, 255, 0.28)",
             display: "block",

@@ -14,7 +14,7 @@ import { setLastPathname } from "./utils/routeTransitions";
 const MOBILE_BREAKPOINT_QUERY = "(max-width: 860px)";
 const PAGE_X_PADDING_DESKTOP = "1.125rem";
 const PAGE_X_PADDING_MOBILE = "0.625rem";
-const HOME_BACKGROUND_IMMEDIATE_SRC = "/static/landing-1280.avif";
+const HOME_BACKGROUND_IMMEDIATE_SRC = "/static/landing-1280.webp";
 const About = lazy(() => import("./pages/About.tsx"));
 const Blog = lazy(() => import("./pages/Blog.tsx"));
 const Post = lazy(() => import("./pages/Post.tsx"));
@@ -48,7 +48,7 @@ function getHomeBackgroundCandidates() {
     isCoarsePointer;
 
   if (shouldPreferSmallerAsset) {
-    return [HOME_BACKGROUND_IMMEDIATE_SRC, "/static/landing-1280.webp"];
+    return [HOME_BACKGROUND_IMMEDIATE_SRC, "/static/landing-1280.avif"];
   }
 
   if (viewportWidth >= 2200) {
@@ -56,7 +56,7 @@ function getHomeBackgroundCandidates() {
       "/static/landing-1920.avif",
       "/static/landing-1920.webp",
       HOME_BACKGROUND_IMMEDIATE_SRC,
-      "/static/landing-1280.webp",
+      "/static/landing-1280.avif",
       "/static/landing.webp",
     ];
   }
@@ -66,14 +66,14 @@ function getHomeBackgroundCandidates() {
       "/static/landing-1920.avif",
       "/static/landing-1920.webp",
       HOME_BACKGROUND_IMMEDIATE_SRC,
-      "/static/landing-1280.webp",
+      "/static/landing-1280.avif",
       "/static/landing.webp",
     ];
   }
 
   return [
     HOME_BACKGROUND_IMMEDIATE_SRC,
-    "/static/landing-1280.webp",
+    "/static/landing-1280.avif",
     "/static/landing-1920.avif",
     "/static/landing-1920.webp",
     "/static/landing.webp",
@@ -209,7 +209,6 @@ function RouteBackground({
     () => HOME_BACKGROUND_IMMEDIATE_SRC,
   );
   const decodedHomeBackgroundSrcSetRef = useRef(new Set<string>());
-  const [isHomeBackgroundReady, setIsHomeBackgroundReady] = useState(false);
   const queuedHomeBackgroundSrcRef = useRef<string | null>(null);
   const isHomeRef = useRef(isHome);
   isHomeRef.current = isHome;
@@ -217,32 +216,23 @@ function RouteBackground({
   const backgroundVeilTransition = shouldShowHomeBackground
     ? prefersReducedMotion
       ? "none"
-      : "opacity 512ms ease"
+      : "none"
     : "none";
   const backgroundVeilOpacity =
-    shouldShowHomeBackground && isHomeBackgroundReady ? 0 : 1;
+    shouldShowHomeBackground ? 0 : 1;
 
   useEffect(() => {
-    let cancelled = false;
     const src = homeBackgroundSrc;
 
     if (decodedHomeBackgroundSrcSetRef.current.has(src)) {
-      setIsHomeBackgroundReady(true);
       return;
     }
 
-    setIsHomeBackgroundReady(false);
     preloadDecodedImage(src).then((success) => {
-      if (cancelled) return;
       if (success) {
         decodedHomeBackgroundSrcSetRef.current.add(src);
       }
-      setIsHomeBackgroundReady(success);
     });
-
-    return () => {
-      cancelled = true;
-    };
   }, [homeBackgroundSrc]);
 
   useEffect(() => {
@@ -289,6 +279,7 @@ function RouteBackground({
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backgroundPosition: isMobileViewport ? "70% center" : "center",
+          backgroundColor: "#5a6c99",
           opacity: shouldShowHomeBackground ? 1 : 0,
           backgroundImage: `url("${homeBackgroundSrc}")`,
         }}
