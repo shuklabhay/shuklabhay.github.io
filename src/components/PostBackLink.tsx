@@ -1,7 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import TriangleIcon from "./TriangleIcon";
+import type { RouteTransitionState } from "../utils/types";
 
 export default function PostBackLink() {
+  const location = useLocation();
+  const transitionState = location.state as RouteTransitionState | null;
+  const backTargetPath = transitionState?.fromPath ?? "/blog";
   const prefersReducedMotion =
     typeof window !== "undefined" &&
     window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
@@ -22,7 +26,7 @@ export default function PostBackLink() {
       }}
     >
       <Link
-        to="/blog"
+        to={backTargetPath}
         viewTransition={!prefersReducedMotion}
         state={{ fromPost: true }}
         style={{

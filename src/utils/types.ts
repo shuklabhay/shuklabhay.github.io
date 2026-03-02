@@ -13,6 +13,7 @@ export type RouteTransitionState = {
   fromPost?: boolean;
   fromBlog?: boolean;
   fromTopNav?: boolean;
+  fromPath?: string;
 };
 
 export type ContactInfo = {

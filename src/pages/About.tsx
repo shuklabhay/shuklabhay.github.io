@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import PageTitle from "../components/PageTitle";
 import { shouldSkipEntryAnimation, useEntryFade } from "../utils/useEntryFade";
 import { getLastPathname, isBlogPostPath } from "../utils/routeTransitions";
@@ -46,6 +46,7 @@ export default function About() {
   const rawEmail = contactData.find((c) => c.title === "Email")?.link;
   const email = rawEmail ? `mailto:${rawEmail}` : undefined;
   const twitter = contactData.find((c) => c.title === "Twitter")?.link;
+  const github = contactData.find((c) => c.title === "GitHub")?.link;
 
   return (
     <main
@@ -72,42 +73,86 @@ export default function About() {
               <strong>producing music,</strong> programming audio effects, and{" "}
               building synthesizers, <strong>all self-taught</strong>. Nowadays,
               as a <strong>senior @ Leland High School,</strong> I've been using{" "}
-              <strong>machine learning </strong> to do interesting, imaginative
-              things. For example, I've:
+              <strong>machine learning </strong> to do{" "}
+              <strong>interesting, imaginative things</strong>. For example,
+              I've:
             </p>
-            <ul style={{ marginTop: 0, paddingLeft: "1.25rem", lineHeight: 1.5 }}>
+            <ul
+              style={{ marginTop: 0, paddingLeft: "1.25rem", lineHeight: 1.5 }}
+            >
               <li>
                 Combined ViTs & PDEs to{" "}
                 <strong>simulate biological tissue</strong> and generate{" "}
-                <strong>synthetic medical imagery</strong> at Stanford
+                <strong>synthetic medical imagery</strong> at{" "}
+                <a
+                  href="https://postdocs.stanford.edu/stanford-departments/medicine-biomedical-informatics-research"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="about-contact-link"
+                >
+                  <strong>Stanford</strong>
+                </a>
               </li>
               <li style={{ marginTop: "0.45rem" }}>
                 Worked with <strong>Prime Intellect,</strong> building{" "}
-                <strong>RL environments</strong> and fine-tuning small LLMs
+                <a
+                  href="https://app.primeintellect.ai/dashboard/environments"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="about-contact-link"
+                >
+                  <strong>RL Environments</strong>
+                </a>{" "}
+                and fine-tuning small LLMs
               </li>
               <li style={{ marginTop: "0.45rem" }}>
-                Built <strong>multimodal agents</strong> to{" "}
-                <strong>translate music</strong> while preserving musicality,
-                reaching <strong>1M+ listeners</strong>
+                Built{" "}
+                <a
+                  href="https://raw.githubusercontent.com/shuklabhay/shuklabhay.github.io/refs/heads/main/public/static/sitedata/vt_poster.png"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="about-contact-link"
+                >
+                  <strong>multimodal agents</strong>
+                </a>{" "}
+                to <strong>translate music</strong> while preserving musicality,{" "}
+                <a
+                  href="https://www.youtube.com/@translateanyaudio/shorts"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="about-contact-link"
+                >
+                  <strong>reaching 1M+ listeners</strong>
+                </a>
               </li>
               <li style={{ marginTop: "0.45rem" }}>
                 <strong>Simulated rat neurons</strong> at UCLA; trained{" "}
-                <strong>CNN-based world models</strong> on my own
+                <Link
+                  to="/blog/infinipaint"
+                  viewTransition
+                  state={{ fromBlog: true, fromPath: "/about" }}
+                  className="about-contact-link"
+                >
+                  <strong>CNN-based world models</strong>
+                </Link>{" "}
+                on my own
               </li>
             </ul>
             <p style={{ marginTop: "1.5rem", marginBottom: "0.5rem" }}>
               I'm primarily <strong>motivated by/curious about:</strong>
             </p>
-            <ul style={{ marginTop: 0, paddingLeft: "1.25rem", lineHeight: 1.5 }}>
+            <ul
+              style={{ marginTop: 0, paddingLeft: "1.25rem", lineHeight: 1.5 }}
+            >
               <li>
                 Understanding the <strong>incomplete and the unknown, </strong>
-                regardless of field or form: I dive deep into questions across
-                biology, psychology, physics, history.
+                regardless of field or form: incessantly I pursue the edges of
+                my understanding across biology, psychology, physics, history.
               </li>
               <li style={{ marginTop: "0.45rem" }}>
-                <strong>Craft:</strong> I grew up learning to row, caring deeply
-                about every element of every thing I work on, though more
-                recently I've been learning to steer.
+                <strong>Craft:</strong> I grew up learning to row,{" "}
+                <strong>caring deeply about every element of every thing</strong>{" "}
+                I work on, though more recently I've been learning to steer.
               </li>
               <li style={{ marginTop: "0.45rem" }}>
                 <strong>Thinking</strong>, dreaming, imagining,{" "}
@@ -128,16 +173,26 @@ export default function About() {
               </li>
               <li style={{ marginTop: "0.45rem" }}>
                 <strong>Being human:</strong> living life, making mistakes,
-                making memories, learning to understand and appreciate oneself.
+                <strong>making memories,</strong> learning to understand and
+                appreciate oneself.
               </li>
             </ul>
-            <p style={{ marginTop: "1.5rem", marginBottom: 0 }}>
-              My <strong>resume</strong> is available here, and I’m reachable
-              via{" "}
-              <a href={email} className="about-contact-link">
-                <strong>email</strong>
+            <p
+              style={{ marginTop: "1.5rem", marginBottom: 0, paddingBottom: "0.3rem" }}
+            >
+              <a
+                href="https://docs.google.com/document/d/1AmxSqHyPKsZIAPha-v2eDTIGKNvpwcFVRLMoa6gTJuk/edit?tab=t.0"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="about-contact-link"
+              >
+                <strong>Resume</strong>
               </a>{" "}
-              or{" "}
+              |{" "}
+              <a href={email} className="about-contact-link">
+                <strong>Email</strong>
+              </a>{" "}
+              |{" "}
               <a
                 href={twitter}
                 target="_blank"
@@ -146,7 +201,15 @@ export default function About() {
               >
                 <strong>Twitter/X</strong>
               </a>
-              .
+              {" "}|
+              <a
+                href={github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="about-contact-link"
+              >
+                <strong>GitHub</strong>
+              </a>
             </p>
           </div>
         }
