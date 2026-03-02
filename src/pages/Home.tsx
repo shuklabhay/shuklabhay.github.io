@@ -29,7 +29,9 @@ export default function Home() {
   }
 
   const shouldAnimateEntry =
-    entryFadeDecisionByLocationKeyRef.current?.shouldAnimate ?? false;
+    (entryFadeDecisionByLocationKeyRef.current?.shouldAnimate ?? false) &&
+    !(typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true);
   const entryFadeStyle = useEntryFade(shouldAnimateEntry, 525);
   const [contactData, setContactData] = useState<ContactInfo[]>([]);
 

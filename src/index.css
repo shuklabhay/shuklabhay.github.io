@@ -272,3 +272,18 @@ code {
     background-position: var(--home-mobile-focal-x) center;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    transition-delay: 0s !important;
+  }
+
+  .loading-skeleton::after {
+    animation: none;
+  }
+}

@@ -1,14 +1,21 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import type { BlogPostCardProps } from "../utils/types";
+import type { PostMeta } from "../utils/types";
 import { loadPostBySlug } from "../posts";
 import { preloadImage } from "../utils/imagePreload";
+
+type BlogPostCardProps = {
+  post: PostMeta;
+  formatPostDate: (raw: string) => string;
+  shouldUseViewTransition?: boolean;
+};
 
 const DEFAULT_POST_HERO_IMAGE = "/static/landing-1280.avif";
 
 export default function BlogPostCard({
   post,
   formatPostDate,
+  shouldUseViewTransition = true,
 }: BlogPostCardProps) {
   const postPath = `/blog/${post.slug}`;
   const heroSrc = post.cover ?? DEFAULT_POST_HERO_IMAGE;
@@ -30,7 +37,7 @@ export default function BlogPostCard({
   return (
     <Link
       to={postPath}
-      viewTransition
+      viewTransition={shouldUseViewTransition}
       state={{ fromBlog: true }}
       style={{
         display: "grid",

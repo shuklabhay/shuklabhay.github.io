@@ -14,6 +14,9 @@ export default function NavMenu() {
   const location = useLocation();
   const navigate = useNavigate();
   const navRef = useRef<HTMLElement>(null);
+  const prefersReducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
   const itemLabelRefByKey = useRef<Record<string, HTMLSpanElement | null>>({});
   const previousActiveKeyRef = useRef<string | null>(null);
   const hasMeasuredUnderlineRef = useRef(false);
@@ -76,12 +79,13 @@ export default function NavMenu() {
       hasMeasuredUnderlineRef.current &&
       previousActiveKey !== null &&
       activeKey !== null &&
-      previousActiveKey !== activeKey;
+      previousActiveKey !== activeKey &&
+      !prefersReducedMotion;
 
     updateUnderline(activeKey, { animate: shouldAnimateUnderline });
     hasMeasuredUnderlineRef.current = true;
     previousActiveKeyRef.current = activeKey;
-  }, [activeKey, updateUnderline]);
+  }, [activeKey, updateUnderline, prefersReducedMotion]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -139,7 +143,7 @@ export default function NavMenu() {
       typeof window !== "undefined" &&
       (window.matchMedia("(pointer: coarse)").matches ||
         window.matchMedia("(hover: none)").matches ||
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+        prefersReducedMotion);
     if (shouldSkipRootViewTransition) {
       navigate(path, {
         state: {

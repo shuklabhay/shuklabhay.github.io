@@ -82,7 +82,11 @@ export default function Post() {
   const { slug = "" } = useParams();
   const location = useLocation();
   const transitionState = location.state as RouteTransitionState | null;
-  const shouldAnimatePostEntry = transitionState?.fromBlog === true;
+  const prefersReducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
+  const shouldAnimatePostEntry =
+    transitionState?.fromBlog === true && !prefersReducedMotion;
   const isDocumentReload = didDocumentReload();
   const postScrollStorageKey = getPostScrollStorageKey(location.pathname);
   const postSummary = getPostBySlug(slug);

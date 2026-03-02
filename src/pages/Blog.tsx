@@ -56,6 +56,9 @@ function readBlogSortStateFromStorage(): BlogSortState {
 export default function Blog() {
   const location = useLocation();
   const blogTransitionState = location.state as RouteTransitionState | null;
+  const prefersReducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
   const entryFadeDecisionByLocationKeyRef = useRef<{
     key: string;
     shouldAnimate: boolean;
@@ -73,7 +76,8 @@ export default function Blog() {
   }
 
   const shouldAnimateBlogEntry =
-    entryFadeDecisionByLocationKeyRef.current?.shouldAnimate ?? false;
+    (entryFadeDecisionByLocationKeyRef.current?.shouldAnimate ?? false) &&
+    !prefersReducedMotion;
   const blogEntryFadeStyle = useEntryFade(
     shouldAnimateBlogEntry,
     BLOG_ENTRY_FADE_MS,
@@ -194,6 +198,7 @@ export default function Blog() {
             key={post.slug}
             post={post}
             formatPostDate={formatPostDate}
+            shouldUseViewTransition={!prefersReducedMotion}
           />
         ))}
       </section>

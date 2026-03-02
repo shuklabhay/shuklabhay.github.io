@@ -196,7 +196,13 @@ function useIsMobileViewport() {
   return isMobileViewport;
 }
 
-function RouteBackground({ isMobileViewport }: { isMobileViewport: boolean }) {
+function RouteBackground({
+  isMobileViewport,
+  prefersReducedMotion,
+}: {
+  isMobileViewport: boolean;
+  prefersReducedMotion: boolean;
+}) {
   const location = useLocation();
   const isHome = location.pathname === "/";
   const [homeBackgroundSrc, setHomeBackgroundSrc] = useState(
@@ -209,7 +215,9 @@ function RouteBackground({ isMobileViewport }: { isMobileViewport: boolean }) {
   isHomeRef.current = isHome;
   const shouldShowHomeBackground = isHome;
   const backgroundVeilTransition = shouldShowHomeBackground
-    ? "opacity 512ms ease"
+    ? prefersReducedMotion
+      ? "none"
+      : "opacity 512ms ease"
     : "none";
   const backgroundVeilOpacity =
     shouldShowHomeBackground && isHomeBackgroundReady ? 0 : 1;
@@ -308,6 +316,9 @@ function RouteBackground({ isMobileViewport }: { isMobileViewport: boolean }) {
 function AppShell() {
   const location = useLocation();
   const isMobileViewport = useIsMobileViewport();
+  const prefersReducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
 
   useLayoutEffect(() => {
     const isHome = location.pathname === "/";
@@ -318,7 +329,10 @@ function AppShell() {
 
   return (
     <>
-      <RouteBackground isMobileViewport={isMobileViewport} />
+      <RouteBackground
+        isMobileViewport={isMobileViewport}
+        prefersReducedMotion={prefersReducedMotion}
+      />
       <div
         style={{
           width: "100%",

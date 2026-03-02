@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 import TriangleIcon from "./TriangleIcon";
 
 export default function PostBackLink() {
+  const prefersReducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
   return (
     <div
       style={{
@@ -20,7 +23,7 @@ export default function PostBackLink() {
     >
       <Link
         to="/blog"
-        viewTransition
+        viewTransition={!prefersReducedMotion}
         state={{ fromPost: true }}
         style={{
           color: "white",
@@ -37,6 +40,9 @@ export default function PostBackLink() {
           userSelect: "none",
           WebkitUserSelect: "none",
           WebkitTouchCallout: "none",
+          WebkitTapHighlightColor: "transparent",
+          outline: "none",
+          boxShadow: "none",
         }}
       >
         <span

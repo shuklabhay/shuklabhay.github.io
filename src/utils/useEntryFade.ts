@@ -5,10 +5,14 @@ export function useEntryFade(
   shouldAnimate: boolean,
   durationMs: number,
 ): CSSProperties {
-  const [isVisible, setIsVisible] = useState(!shouldAnimate);
+  const prefersReducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
+  const effectiveShouldAnimate = shouldAnimate && !prefersReducedMotion;
+  const [isVisible, setIsVisible] = useState(!effectiveShouldAnimate);
 
   useEffect(() => {
-    if (!shouldAnimate) {
+    if (!effectiveShouldAnimate) {
       setIsVisible(true);
       return;
     }
@@ -19,14 +23,14 @@ export function useEntryFade(
     });
 
     return () => window.cancelAnimationFrame(frameId);
-  }, [shouldAnimate]);
+  }, [effectiveShouldAnimate]);
 
   return useMemo(
     () => ({
       opacity: isVisible ? 1 : 0,
       transform: "none",
-      transition: shouldAnimate ? `opacity ${durationMs}ms ease` : "none",
+      transition: effectiveShouldAnimate ? `opacity ${durationMs}ms ease` : "none",
     }),
-    [durationMs, isVisible, shouldAnimate],
+    [durationMs, isVisible, effectiveShouldAnimate],
   );
 }

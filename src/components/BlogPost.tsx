@@ -54,6 +54,9 @@ export default function BlogPost({
   const resizeStateRef = useRef<ResizeState | null>(null);
   const pendingWidthRef = useRef<number | null>(null);
   const resizeFrameRef = useRef<number | null>(null);
+  const prefersReducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -170,7 +173,9 @@ export default function BlogPost({
         position: "relative",
         opacity: isEntryReady ? 1 : 0,
         pointerEvents: isEntryReady ? "auto" : "none",
-        transition: `opacity ${POST_ENTRY_FADE_MS}ms ease`,
+        transition: prefersReducedMotion
+          ? "none"
+          : `opacity ${POST_ENTRY_FADE_MS}ms ease`,
       }}
     >
       <div
