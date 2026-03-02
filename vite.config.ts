@@ -66,6 +66,61 @@ function extractPostExcerpt(source: string): string {
   return `${normalized.slice(0, 237).trimEnd()}...`;
 }
 
+type PostMetaFile = {
+  title?: unknown;
+  excerpt?: unknown;
+  author?: unknown;
+  date?: unknown;
+  dateCreated?: unknown;
+};
+
+type ParsedPostMeta = {
+  title?: string;
+  excerpt?: string;
+  author?: string;
+  date?: string;
+};
+
+function asOptionalString(value: unknown): string | undefined {
+  if (typeof value !== "string") return undefined;
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : undefined;
+}
+
+function toIsoDateString(value: string): string | undefined {
+  const trimmed = value.trim();
+  if (!trimmed) return undefined;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return trimmed;
+
+  const parsed = new Date(trimmed);
+  if (Number.isNaN(parsed.getTime())) return undefined;
+  return parsed.toISOString().slice(0, 10);
+}
+
+function readPostMeta(metaPath: string): ParsedPostMeta {
+  if (!fs.existsSync(metaPath)) return {};
+
+  try {
+    const raw = fs.readFileSync(metaPath, "utf8");
+    const parsed = JSON.parse(raw) as PostMetaFile;
+    const title = asOptionalString(parsed.title);
+    const excerpt = asOptionalString(parsed.excerpt);
+    const author = asOptionalString(parsed.author);
+    const dateSource =
+      asOptionalString(parsed.dateCreated) ?? asOptionalString(parsed.date);
+    const date = dateSource ? toIsoDateString(dateSource) : undefined;
+
+    return {
+      title,
+      excerpt,
+      author,
+      date,
+    };
+  } catch {
+    return {};
+  }
+}
+
 export default defineConfig({
   plugins: [
     {
@@ -112,13 +167,20 @@ export default defineConfig({
         for (const slug of dirs) {
           const postPath = path.join(postsDir, slug, "index.mdx");
           if (!fs.existsSync(postPath)) continue;
+          const metaPath = path.join(postsDir, slug, "meta.json");
 
           this.addWatchFile(postPath);
           const source = fs.readFileSync(postPath, "utf8");
           const stat = fs.statSync(postPath);
-          const title = extractPostTitle(source, slug);
-          const excerpt = extractPostExcerpt(source);
-          const date = stat.mtime.toISOString().slice(0, 10);
+          this.addWatchFile(metaPath);
+
+          const postMeta = readPostMeta(metaPath);
+          const title = postMeta.title ?? extractPostTitle(source, slug);
+          const excerpt = postMeta.excerpt ?? extractPostExcerpt(source);
+          const date = postMeta.date ?? stat.mtime.toISOString().slice(0, 10);
+          const authorExpr = postMeta.author
+            ? JSON.stringify(postMeta.author)
+            : "undefined";
 
           const coverCandidates = [
             "banner.png",
@@ -146,7 +208,7 @@ export default defineConfig({
               title,
             )}, date: ${JSON.stringify(date)}, excerpt: ${JSON.stringify(
               excerpt,
-            )}, cover: ${coverExpr} }`,
+            )}, author: ${authorExpr}, cover: ${coverExpr} }`,
           );
         }
 

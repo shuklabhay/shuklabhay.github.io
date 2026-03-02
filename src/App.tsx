@@ -122,10 +122,50 @@ function preloadDecodedImage(src: string) {
 }
 
 async function preloadFirstAvailableImage(candidates: string[]) {
-  for (const candidate of candidates) {
-    if (await preloadDecodedImage(candidate)) return candidate;
-  }
-  return null;
+  if (candidates.length === 0) return null;
+
+  return new Promise<string | null>((resolve) => {
+    let settled = false;
+    let pending = candidates.length;
+
+    const finish = (src: string | null) => {
+      if (settled) return;
+      settled = true;
+      resolve(src);
+    };
+
+    for (const candidate of candidates) {
+      preloadDecodedImage(candidate).then((success) => {
+        pending -= 1;
+
+        if (success) {
+          finish(candidate);
+          return;
+        }
+
+        if (pending === 0) finish(null);
+      });
+    }
+  });
+}
+
+function RouteLoadingFallback() {
+  return (
+    <main
+      aria-hidden
+      style={{
+        width: "100%",
+        color: "white",
+        marginTop: "1rem",
+        display: "grid",
+        gap: "0.75rem",
+      }}
+    >
+      <div className="loading-skeleton loading-skeleton-title" />
+      <div className="loading-skeleton loading-skeleton-line" />
+      <div className="loading-skeleton loading-skeleton-line-short" />
+    </main>
+  );
 }
 
 function useIsMobileViewport() {
@@ -283,7 +323,7 @@ function AppShell() {
         }}
       >
         <NavMenu />
-        <Suspense fallback={null}>
+        <Suspense fallback={<RouteLoadingFallback />}>
           <Routes location={location}>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />

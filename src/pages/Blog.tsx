@@ -5,6 +5,7 @@ import BlogPostCard from "../components/BlogPostCard";
 import { allPosts } from "../posts";
 import { useEntryFade } from "../utils/useEntryFade";
 import { getLastPathname, isBlogPostPath } from "../utils/routeTransitions";
+import { formatPostDate } from "../utils/formatPostDate";
 import type {
   BlogSortDirection,
   BlogSortField,
@@ -50,17 +51,6 @@ function readBlogSortStateFromStorage(): BlogSortState {
   } catch {
     return DEFAULT_BLOG_SORT_STATE;
   }
-}
-
-function formatPostDate(raw: string) {
-  if (!raw) return "";
-  const parsed = new Date(raw);
-  if (Number.isNaN(parsed.getTime())) return raw;
-  return parsed.toLocaleDateString(undefined, {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
 }
 
 export default function Blog() {

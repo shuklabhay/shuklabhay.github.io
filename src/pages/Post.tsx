@@ -12,6 +12,7 @@ import BlogPost from "../components/BlogPost";
 import PostBackLink from "../components/PostBackLink";
 import { getPostBySlug, loadPostBySlug } from "../posts";
 import { preloadImage } from "../utils/imagePreload";
+import { formatPostDate } from "../utils/formatPostDate";
 import type {
   PostEntry,
   RichImage,
@@ -20,17 +21,6 @@ import type {
 
 const POST_SCROLL_POSITION_PREFIX = "post-scroll-position:";
 const ImageLightbox = lazy(() => import("../components/ImageLightbox"));
-
-function formatPostDate(raw: string) {
-  if (!raw) return "";
-  const parsed = new Date(raw);
-  if (Number.isNaN(parsed.getTime())) return raw;
-  return parsed.toLocaleDateString(undefined, {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-}
 
 function didDocumentReload() {
   if (typeof window === "undefined" || typeof performance === "undefined") {
@@ -61,6 +51,33 @@ function getPostScrollStorageKey(pathname: string) {
   return `${POST_SCROLL_POSITION_PREFIX}${pathname}`;
 }
 
+function PostContentLoadingFallback() {
+  return (
+    <div
+      aria-hidden
+      style={{
+        display: "grid",
+        gap: "0.72rem",
+      }}
+    >
+      <div className="loading-skeleton loading-skeleton-post-block-lg" />
+      <div className="loading-skeleton loading-skeleton-post-block" />
+      <div
+        className="loading-skeleton loading-skeleton-post-block"
+        style={{ width: "94%" }}
+      />
+      <div
+        className="loading-skeleton loading-skeleton-post-block"
+        style={{ width: "89%" }}
+      />
+      <div
+        className="loading-skeleton loading-skeleton-post-block"
+        style={{ width: "76%" }}
+      />
+    </div>
+  );
+}
+
 export default function Post() {
   const { slug = "" } = useParams();
   const location = useLocation();
@@ -75,20 +92,24 @@ export default function Post() {
   const [lightboxImage, setLightboxImage] = useState<RichImage | null>(null);
   const [postImages, setPostImages] = useState<RichImage[]>([]);
   const [postEntry, setPostEntry] = useState<PostEntry | null>(null);
+  const [isPostEntryLoading, setIsPostEntryLoading] = useState(false);
   const [isPostEntryReady, setIsPostEntryReady] = useState(false);
 
   useEffect(() => {
     if (!postSummary) {
       setPostEntry(null);
+      setIsPostEntryLoading(false);
       return;
     }
 
     let cancelled = false;
     setPostEntry(null);
+    setIsPostEntryLoading(true);
 
     loadPostBySlug(slug).then((loadedPost) => {
       if (cancelled) return;
       setPostEntry(loadedPost ?? null);
+      setIsPostEntryLoading(false);
     });
 
     return () => {
@@ -234,6 +255,11 @@ export default function Post() {
   }
 
   const Content = postEntry?.Component;
+  const shouldShowPostSkeleton = isPostEntryLoading && !Content;
+  const bylineParts = [
+    postSummary.author,
+    postSummary.date ? formatPostDate(postSummary.date) : undefined,
+  ].filter((part): part is string => Boolean(part));
 
   const onPostContentClick = (event: ReactMouseEvent<HTMLElement>) => {
     const target = event.target;
@@ -262,16 +288,16 @@ export default function Post() {
         key={slug}
         isEntryReady={isPostEntryReady}
         title={postSummary.title}
-        byline={
-          postSummary.date
-            ? `Abhay Shukla · ${formatPostDate(postSummary.date)}`
-            : undefined
-        }
+        byline={bylineParts.length ? bylineParts.join(" · ") : undefined}
         heroImage={heroImage}
         contentRef={postContentRef}
         onContentClick={onPostContentClick}
       >
-        {Content ? <Content /> : null}
+        {Content ? (
+          <Content />
+        ) : shouldShowPostSkeleton ? (
+          <PostContentLoadingFallback />
+        ) : null}
       </BlogPost>
       {lightboxOpened && postImages.length > 0 ? (
         <Suspense fallback={null}>
