@@ -1,34 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import type {
-  MouseEventHandler,
-  PointerEvent as ReactPointerEvent,
-  ReactNode,
-  RefObject,
-} from "react";
+import type { CSSProperties, PointerEvent as ReactPointerEvent } from "react";
+import type { BlogPostProps, ResizeEdge, ResizeState } from "../utils/types";
 
 const MOBILE_BREAKPOINT_PX = 860;
 const POST_ENTRY_FADE_MS = 375;
 const DEFAULT_DESKTOP_WIDTH_PERCENT = 95;
 const DESKTOP_WIDTH_MIN_PERCENT = 65;
 const DESKTOP_WIDTH_MAX_PERCENT = 95;
-
-type ResizeEdge = "left" | "right";
-
-type ResizeState = {
-  edge: ResizeEdge;
-  startX: number;
-  startWidth: number;
-};
-
-type BlogPostProps = {
-  isEntryReady: boolean;
-  title: string;
-  byline?: string;
-  heroImage: string;
-  contentRef: RefObject<HTMLElement>;
-  onContentClick?: MouseEventHandler<HTMLElement>;
-  children: ReactNode;
-};
 
 function getIsMobileViewport() {
   if (typeof window === "undefined") return false;
@@ -163,6 +141,15 @@ export default function BlogPost({
   const titleMargin = isMobile ? "-1.9rem 0 0.94rem" : "-2.8rem 0 1.02rem";
   const showResizeHandles =
     isResizing || hoveredHandle !== null || focusedHandle !== null;
+  const postContentFadeStyle: CSSProperties = isEntryReady
+    ? {
+        opacity: 1,
+        pointerEvents: "auto",
+      }
+    : {
+        opacity: 0,
+        pointerEvents: "none",
+      };
 
   return (
     <main
@@ -171,11 +158,6 @@ export default function BlogPost({
         color: "white",
         paddingBottom: "calc(3rem + env(safe-area-inset-bottom))",
         position: "relative",
-        opacity: isEntryReady ? 1 : 0,
-        pointerEvents: isEntryReady ? "auto" : "none",
-        transition: prefersReducedMotion
-          ? "none"
-          : `opacity ${POST_ENTRY_FADE_MS}ms ease`,
       }}
     >
       <div
@@ -247,6 +229,10 @@ export default function BlogPost({
       </div>
       <div
         style={{
+          ...postContentFadeStyle,
+          transition: prefersReducedMotion
+            ? "none"
+            : `opacity ${POST_ENTRY_FADE_MS}ms ease`,
           width: "100%",
           display: "flex",
           justifyContent: "center",

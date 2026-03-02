@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import PageTitle, { CheckboxSubtitleLink } from "../components/PageTitle";
-import { useEntryFade } from "../utils/useEntryFade";
+import { shouldSkipEntryAnimation, useEntryFade } from "../utils/useEntryFade";
 import { getLastPathname, isBlogPostPath } from "../utils/routeTransitions";
 import type { ContactInfo, RouteTransitionState } from "../utils/types";
 
@@ -30,6 +30,7 @@ export default function Home() {
 
   const shouldAnimateEntry =
     (entryFadeDecisionByLocationKeyRef.current?.shouldAnimate ?? false) &&
+    !shouldSkipEntryAnimation() &&
     !(
       typeof window !== "undefined" &&
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true

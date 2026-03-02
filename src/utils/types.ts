@@ -1,4 +1,10 @@
-import type { ComponentType, ReactNode, SetStateAction } from "react";
+import type {
+  ComponentType,
+  MouseEventHandler,
+  ReactNode,
+  RefObject,
+  SetStateAction,
+} from "react";
 
 export type GitHubRestReturn = unknown;
 export type GitHubRepo = { full_name: string };
@@ -103,6 +109,24 @@ export type NavUnderlineState = {
   width: number;
   visible: boolean;
   animate: boolean;
+};
+
+export type ResizeEdge = "left" | "right";
+
+export type ResizeState = {
+  edge: ResizeEdge;
+  startX: number;
+  startWidth: number;
+};
+
+export type BlogPostProps = {
+  isEntryReady: boolean;
+  title: string;
+  byline?: string;
+  heroImage: string;
+  contentRef: RefObject<HTMLElement>;
+  onContentClick?: MouseEventHandler<HTMLElement>;
+  children: ReactNode;
 };
 
 export type BlogSortField = "date" | "alpha";

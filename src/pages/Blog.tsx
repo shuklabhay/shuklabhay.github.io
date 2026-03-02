@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import BlogPostCard from "../components/BlogPostCard";
 import { allPosts } from "../posts";
-import { useEntryFade } from "../utils/useEntryFade";
+import { shouldSkipEntryAnimation, useEntryFade } from "../utils/useEntryFade";
 import { getLastPathname, isBlogPostPath } from "../utils/routeTransitions";
 import { formatPostDate } from "../utils/formatPostDate";
 import { preloadImage } from "../utils/imagePreload";
@@ -78,7 +78,8 @@ export default function Blog() {
 
   const shouldAnimateBlogEntry =
     (entryFadeDecisionByLocationKeyRef.current?.shouldAnimate ?? false) &&
-    !prefersReducedMotion;
+    !prefersReducedMotion &&
+    !shouldSkipEntryAnimation();
   const blogEntryFadeStyle = useEntryFade(
     shouldAnimateBlogEntry,
     BLOG_ENTRY_FADE_MS,
@@ -208,7 +209,9 @@ export default function Blog() {
             post={post}
             formatPostDate={formatPostDate}
             prioritizeImage={index < 4}
-            shouldUseViewTransition={!prefersReducedMotion}
+            shouldUseViewTransition={
+              !prefersReducedMotion && !shouldSkipEntryAnimation()
+            }
           />
         ))}
       </section>

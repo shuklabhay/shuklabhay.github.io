@@ -13,6 +13,7 @@ import PostBackLink from "../components/PostBackLink";
 import { getPostBySlug, loadPostBySlug } from "../posts";
 import { preloadImage } from "../utils/imagePreload";
 import { formatPostDate } from "../utils/formatPostDate";
+import { shouldSkipEntryAnimation } from "../utils/useEntryFade";
 import type {
   PostEntry,
   RichImage,
@@ -51,42 +52,12 @@ function getPostScrollStorageKey(pathname: string) {
   return `${POST_SCROLL_POSITION_PREFIX}${pathname}`;
 }
 
-function PostContentLoadingFallback() {
-  return (
-    <div
-      aria-hidden
-      style={{
-        display: "grid",
-        gap: "0.72rem",
-      }}
-    >
-      <div className="loading-skeleton loading-skeleton-post-block-lg" />
-      <div className="loading-skeleton loading-skeleton-post-block" />
-      <div
-        className="loading-skeleton loading-skeleton-post-block"
-        style={{ width: "94%" }}
-      />
-      <div
-        className="loading-skeleton loading-skeleton-post-block"
-        style={{ width: "89%" }}
-      />
-      <div
-        className="loading-skeleton loading-skeleton-post-block"
-        style={{ width: "76%" }}
-      />
-    </div>
-  );
-}
-
 export default function Post() {
   const { slug = "" } = useParams();
   const location = useLocation();
   const transitionState = location.state as RouteTransitionState | null;
-  const prefersReducedMotion =
-    typeof window !== "undefined" &&
-    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
   const shouldAnimatePostEntry =
-    transitionState?.fromBlog === true && !prefersReducedMotion;
+    transitionState?.fromBlog === true && !shouldSkipEntryAnimation();
   const isDocumentReload = didDocumentReload();
   const postScrollStorageKey = getPostScrollStorageKey(location.pathname);
   const postSummary = getPostBySlug(slug);
@@ -96,24 +67,19 @@ export default function Post() {
   const [lightboxImage, setLightboxImage] = useState<RichImage | null>(null);
   const [postImages, setPostImages] = useState<RichImage[]>([]);
   const [postEntry, setPostEntry] = useState<PostEntry | null>(null);
-  const [isPostEntryLoading, setIsPostEntryLoading] = useState(false);
   const [isPostEntryReady, setIsPostEntryReady] = useState(false);
 
   useEffect(() => {
     if (!postSummary) {
       setPostEntry(null);
-      setIsPostEntryLoading(false);
       return;
     }
 
     let cancelled = false;
     setPostEntry(null);
-    setIsPostEntryLoading(true);
-
     loadPostBySlug(slug).then((loadedPost) => {
       if (cancelled) return;
       setPostEntry(loadedPost ?? null);
-      setIsPostEntryLoading(false);
     });
 
     return () => {
@@ -290,7 +256,6 @@ export default function Post() {
   }
 
   const Content = postEntry?.Component;
-  const shouldShowPostSkeleton = isPostEntryLoading && !Content;
   const wordCountBylinePart =
     typeof postSummary.wordCount === "number"
       ? `${postSummary.wordCount.toLocaleString()} ${
@@ -335,11 +300,7 @@ export default function Post() {
         contentRef={postContentRef}
         onContentClick={onPostContentClick}
       >
-        {Content ? (
-          <Content />
-        ) : shouldShowPostSkeleton ? (
-          <PostContentLoadingFallback />
-        ) : null}
+        {Content ? <Content /> : null}
       </BlogPost>
       {lightboxOpened && postImages.length > 0 ? (
         <Suspense fallback={null}>

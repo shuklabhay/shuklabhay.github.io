@@ -151,25 +151,6 @@ async function preloadFirstAvailableImage(candidates: string[]) {
   });
 }
 
-function RouteLoadingFallback() {
-  return (
-    <main
-      aria-hidden
-      style={{
-        width: "100%",
-        color: "white",
-        marginTop: "1rem",
-        display: "grid",
-        gap: "0.75rem",
-      }}
-    >
-      <div className="loading-skeleton loading-skeleton-title" />
-      <div className="loading-skeleton loading-skeleton-line" />
-      <div className="loading-skeleton loading-skeleton-line-short" />
-    </main>
-  );
-}
-
 function useIsMobileViewport() {
   const [isMobileViewport, setIsMobileViewport] = useState(() => {
     if (typeof window === "undefined") return false;
@@ -335,7 +316,7 @@ function AppShell() {
         }}
       >
         <NavMenu />
-        <Suspense fallback={<RouteLoadingFallback />}>
+        <Suspense fallback={null}>
           <Routes location={location}>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />

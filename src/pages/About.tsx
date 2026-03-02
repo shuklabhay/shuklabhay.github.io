@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useLocation } from "react-router-dom";
 import PageTitle from "../components/PageTitle";
-import { useEntryFade } from "../utils/useEntryFade";
+import { shouldSkipEntryAnimation, useEntryFade } from "../utils/useEntryFade";
 import { getLastPathname, isBlogPostPath } from "../utils/routeTransitions";
 import type { RouteTransitionState } from "../utils/types";
 
@@ -26,6 +26,7 @@ export default function About() {
 
   const shouldAnimateEntry =
     (entryFadeDecisionByLocationKeyRef.current?.shouldAnimate ?? false) &&
+    !shouldSkipEntryAnimation() &&
     !(
       typeof window !== "undefined" &&
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true
