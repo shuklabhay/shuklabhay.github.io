@@ -18,13 +18,15 @@ export type RichImage = {
   alt: string;
 };
 
-type PostMeta = {
+export type PostMeta = {
   slug: string;
   title: string;
   date: string;
   excerpt: string;
   cover?: string;
 };
+
+export type PostSummary = PostMeta;
 
 export type PostEntry = PostMeta & {
   Component: ComponentType;
@@ -35,7 +37,7 @@ export type PostModule = {
 };
 
 export type BlogPostCardProps = {
-  post: PostEntry;
+  post: PostSummary;
   formatPostDate: (raw: string) => string;
 };
 

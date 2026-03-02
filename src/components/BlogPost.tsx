@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type {
   MouseEventHandler,
   PointerEvent as ReactPointerEvent,
@@ -144,7 +144,7 @@ export default function BlogPost({
     };
   }, [isResizing, stopResize, updateReadingWidth]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const contentRoot = contentRef.current;
     if (!contentRoot) return;
     return applyPostContentInlineStyles(contentRoot);

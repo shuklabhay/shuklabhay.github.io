@@ -27,7 +27,7 @@ function rewriteWikiEmbedsToMarkdown(source: string): string {
         );
       }
 
-      return `<img className="post-embed-image" data-embed={${JSON.stringify(embedName)}} src={${importName}} alt="" loading="lazy" />`;
+      return `<img className="post-embed-image" data-embed={${JSON.stringify(embedName)}} src={${importName}} alt="" loading="lazy" decoding="async" />`;
     },
   );
 

@@ -46,3 +46,13 @@ code {
   font-family:
     source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+
+[data-post-content] > h1:first-child {
+  display: none;
+}
+
+[data-post-content] > h2:first-child,
+[data-post-content] > h3:first-child,
+[data-post-content] > h4:first-child {
+  margin-top: 0.12em;
+}

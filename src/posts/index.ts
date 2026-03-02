@@ -1,27 +1,46 @@
 import { postsManifest } from "virtual:posts-manifest";
-import type { PostEntry, PostModule } from "../utils/types";
+import type { PostEntry, PostModule, PostSummary } from "../utils/types";
 
-const modules = import.meta.glob<PostModule>("./*/index.mdx", { eager: true });
+const moduleLoaders = import.meta.glob<PostModule>("./*/index.mdx");
 
-const componentBySlug = new Map(
-  Object.entries(modules).map(([filePath, module]) => {
+const moduleLoaderBySlug = new Map(
+  Object.entries(moduleLoaders).map(([filePath, loadModule]) => {
     const slug = filePath.split("/").slice(-2, -1)[0];
-    return [slug, module.default] as const;
+    return [slug, loadModule] as const;
   }),
 );
 
-export const allPosts: PostEntry[] = postsManifest
-  .map((meta) => {
-    const Component = componentBySlug.get(meta.slug);
-    if (!Component) return null;
-    return {
-      ...meta,
-      Component,
-    };
-  })
-  .filter((entry): entry is PostEntry => entry !== null)
+export const allPosts: PostSummary[] = [...postsManifest]
   .sort((a, b) => b.date.localeCompare(a.date));
 
-export function getPostBySlug(slug: string): PostEntry | undefined {
-  return allPosts.find((post) => post.slug === slug);
+const postBySlug = new Map(allPosts.map((post) => [post.slug, post] as const));
+const postEntryPromiseBySlug = new Map<string, Promise<PostEntry | undefined>>();
+
+export function getPostBySlug(slug: string): PostSummary | undefined {
+  return postBySlug.get(slug);
+}
+
+export function loadPostBySlug(slug: string): Promise<PostEntry | undefined> {
+  const inFlightTask = postEntryPromiseBySlug.get(slug);
+  if (inFlightTask) return inFlightTask;
+
+  const postSummary = postBySlug.get(slug);
+  const loadModule = moduleLoaderBySlug.get(slug);
+
+  if (!postSummary || !loadModule) {
+    return Promise.resolve(undefined);
+  }
+
+  const task = loadModule()
+    .then((module) => ({
+      ...postSummary,
+      Component: module.default,
+    }))
+    .catch((error: unknown) => {
+      console.error(`Failed to load post module for slug "${slug}"`, error);
+      return undefined;
+    });
+
+  postEntryPromiseBySlug.set(slug, task);
+  return task;
 }

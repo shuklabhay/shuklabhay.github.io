@@ -1,10 +1,6 @@
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
-import { useEffect, useLayoutEffect, useState } from "react";
-import Home from "./pages/Home.tsx";
+import { Suspense, lazy, useEffect, useLayoutEffect, useState } from "react";
 import NavMenu from "./components/NavMenu.tsx";
-import About from "./pages/About.tsx";
-import Blog from "./pages/Blog.tsx";
-import Post from "./pages/Post.tsx";
 import type { RouteTransitionState } from "./utils/types";
 import {
   getLastPathname,
@@ -15,9 +11,14 @@ import {
 const MOBILE_BREAKPOINT_QUERY = "(max-width: 860px)";
 const PAGE_X_PADDING_DESKTOP = "1.125rem";
 const PAGE_X_PADDING_MOBILE = "0.625rem";
+const HOME_BACKGROUND_IMMEDIATE_SRC = "/static/landing-1280.avif";
+const Home = lazy(() => import("./pages/Home.tsx"));
+const About = lazy(() => import("./pages/About.tsx"));
+const Blog = lazy(() => import("./pages/Blog.tsx"));
+const Post = lazy(() => import("./pages/Post.tsx"));
 
 function getHomeBackgroundCandidates() {
-  if (typeof window === "undefined") return ["/static/landing-1280.avif"];
+  if (typeof window === "undefined") return [HOME_BACKGROUND_IMMEDIATE_SRC];
 
   const viewportWidth = Math.max(
     window.innerWidth,
@@ -45,14 +46,14 @@ function getHomeBackgroundCandidates() {
     isCoarsePointer;
 
   if (shouldPreferSmallerAsset) {
-    return ["/static/landing-1280.avif", "/static/landing-1280.webp"];
+    return [HOME_BACKGROUND_IMMEDIATE_SRC, "/static/landing-1280.webp"];
   }
 
   if (viewportWidth >= 2200) {
     return [
       "/static/landing-1920.avif",
       "/static/landing-1920.webp",
-      "/static/landing-1280.avif",
+      HOME_BACKGROUND_IMMEDIATE_SRC,
       "/static/landing-1280.webp",
       "/static/landing.webp",
     ];
@@ -62,14 +63,14 @@ function getHomeBackgroundCandidates() {
     return [
       "/static/landing-1920.avif",
       "/static/landing-1920.webp",
-      "/static/landing-1280.avif",
+      HOME_BACKGROUND_IMMEDIATE_SRC,
       "/static/landing-1280.webp",
       "/static/landing.webp",
     ];
   }
 
   return [
-    "/static/landing-1280.avif",
+    HOME_BACKGROUND_IMMEDIATE_SRC,
     "/static/landing-1280.webp",
     "/static/landing-1920.avif",
     "/static/landing-1920.webp",
@@ -156,30 +157,34 @@ function useIsMobileViewport() {
 function RouteBackground({ isMobileViewport }: { isMobileViewport: boolean }) {
   const location = useLocation();
   const isHome = location.pathname === "/";
-  const [homeBackgroundSrc, setHomeBackgroundSrc] = useState<string | null>(
-    null,
-  );
-  const [isHomeBackgroundReady, setIsHomeBackgroundReady] = useState(false);
+  const [baseHomeBackgroundSrc, setBaseHomeBackgroundSrc] = useState<
+    string | null
+  >(() => HOME_BACKGROUND_IMMEDIATE_SRC);
+  const [enhancedHomeBackgroundSrc, setEnhancedHomeBackgroundSrc] = useState<
+    string | null
+  >(null);
   const transitionState = location.state as RouteTransitionState | null;
   const lastPathname = getLastPathname();
-  const shouldShowHomeBackground = isHome && isHomeBackgroundReady;
+  const shouldShowHomeBackground = isHome;
   const shouldAnimateHomeBackgroundFade =
     shouldShowHomeBackground &&
     (transitionState?.fromPost === true ||
       (lastPathname ? isBlogPostPath(lastPathname) : false));
   const backgroundTransition = shouldAnimateHomeBackgroundFade
     ? "opacity 512ms ease"
-    : isHomeBackgroundReady
+    : enhancedHomeBackgroundSrc
       ? "opacity 220ms ease"
       : "none";
 
   useEffect(() => {
     let cancelled = false;
+    const candidates = getHomeBackgroundCandidates();
+    setBaseHomeBackgroundSrc(HOME_BACKGROUND_IMMEDIATE_SRC);
+    setEnhancedHomeBackgroundSrc(null);
 
-    preloadFirstAvailableImage(getHomeBackgroundCandidates()).then((src) => {
+    preloadFirstAvailableImage(candidates).then((src) => {
       if (cancelled) return;
-      setHomeBackgroundSrc(src);
-      setIsHomeBackgroundReady(true);
+      if (src) setEnhancedHomeBackgroundSrc(src);
     });
 
     return () => {
@@ -216,10 +221,28 @@ function RouteBackground({ isMobileViewport }: { isMobileViewport: boolean }) {
           willChange: "opacity",
           transition: backgroundTransition,
           opacity: shouldShowHomeBackground ? 1 : 0,
-          backgroundImage: isHomeBackgroundReady
-            ? homeBackgroundSrc
-              ? `url("${homeBackgroundSrc}")`
-              : undefined
+          backgroundImage: baseHomeBackgroundSrc
+            ? `url("${baseHomeBackgroundSrc}")`
+            : "none",
+        }}
+      />
+      <div
+        style={{
+          position: "fixed",
+          left: 0,
+          top: 0,
+          width: "100vw",
+          height: "100vh",
+          zIndex: 0,
+          pointerEvents: "none",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: isMobileViewport ? "70% center" : "center",
+          willChange: "opacity",
+          transition: backgroundTransition,
+          opacity: shouldShowHomeBackground && enhancedHomeBackgroundSrc ? 1 : 0,
+          backgroundImage: enhancedHomeBackgroundSrc
+            ? `url("${enhancedHomeBackgroundSrc}")`
             : "none",
         }}
       />
@@ -248,14 +271,16 @@ function AppShell() {
           position: "relative",
           zIndex: 1,
         }}
-      >
+        >
         <NavMenu />
-        <Routes location={location}>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:slug" element={<Post />} />
-        </Routes>
+        <Suspense fallback={null}>
+          <Routes location={location}>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<Post />} />
+          </Routes>
+        </Suspense>
       </div>
     </>
   );

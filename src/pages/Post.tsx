@@ -1,15 +1,14 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Suspense, lazy, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import BlogPost from "../components/BlogPost";
-import ImageLightbox from "../components/ImageLightbox";
 import PostBackLink from "../components/PostBackLink";
-import { getPostBySlug } from "../posts";
-import { getImagePreloadStatus, preloadImage } from "../utils/imagePreload";
-import type { RichImage } from "../utils/types";
+import { getPostBySlug, loadPostBySlug } from "../posts";
+import { preloadImage } from "../utils/imagePreload";
+import type { PostEntry, RichImage, RouteTransitionState } from "../utils/types";
 
 const POST_SCROLL_POSITION_PREFIX = "post-scroll-position:";
-type HeroLoadStatus = "loading" | "loaded" | "error";
+const ImageLightbox = lazy(() => import("../components/ImageLightbox"));
 
 function formatPostDate(raw: string) {
   if (!raw) return "";
@@ -54,30 +53,40 @@ function getPostScrollStorageKey(pathname: string) {
 export default function Post() {
   const { slug = "" } = useParams();
   const location = useLocation();
+  const transitionState = location.state as RouteTransitionState | null;
+  const shouldAnimatePostEntry = transitionState?.fromBlog === true;
   const isDocumentReload = didDocumentReload();
   const postScrollStorageKey = getPostScrollStorageKey(location.pathname);
-  const post = getPostBySlug(slug);
-  const heroImage = post?.cover ?? "/static/landing-1280.avif";
+  const postSummary = getPostBySlug(slug);
+  const heroImage = postSummary?.cover ?? "/static/landing-1280.avif";
   const postContentRef = useRef<HTMLElement>(null);
   const [lightboxOpened, setLightboxOpened] = useState(false);
   const [lightboxImage, setLightboxImage] = useState<RichImage | null>(null);
   const [postImages, setPostImages] = useState<RichImage[]>([]);
-  const [isPostContentReady, setIsPostContentReady] = useState(false);
-  const [heroLoadState, setHeroLoadState] = useState<{
-    src: string;
-    status: HeroLoadStatus;
-  }>({
-    src: heroImage,
-    status:
-      getImagePreloadStatus(heroImage) === "loaded"
-        ? "loaded"
-        : getImagePreloadStatus(heroImage) === "error"
-          ? "error"
-          : "loading",
-  });
+  const [postEntry, setPostEntry] = useState<PostEntry | null>(null);
+  const [isPostEntryReady, setIsPostEntryReady] = useState(false);
 
   useEffect(() => {
-    if (!post) {
+    if (!postSummary) {
+      setPostEntry(null);
+      return;
+    }
+
+    let cancelled = false;
+    setPostEntry(null);
+
+    loadPostBySlug(slug).then((loadedPost) => {
+      if (cancelled) return;
+      setPostEntry(loadedPost ?? null);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [postSummary, slug]);
+
+  useEffect(() => {
+    if (!postEntry) {
       setPostImages([]);
       setLightboxImage(null);
       setLightboxOpened(false);
@@ -103,68 +112,37 @@ export default function Post() {
     setPostImages(images);
     setLightboxImage(null);
     setLightboxOpened(false);
-  }, [slug, post]);
-
-  useLayoutEffect(() => {
-    if (!post) {
-      setIsPostContentReady(true);
-      return;
-    }
-
-    setIsPostContentReady(false);
-    let cancelled = false;
-    let frameA = 0;
-    let frameB = 0;
-
-    frameA = window.requestAnimationFrame(() => {
-      frameB = window.requestAnimationFrame(() => {
-        if (cancelled) return;
-        setIsPostContentReady(true);
-      });
-    });
-
-    return () => {
-      cancelled = true;
-      window.cancelAnimationFrame(frameA);
-      window.cancelAnimationFrame(frameB);
-    };
-  }, [slug, post]);
+  }, [slug, postEntry]);
 
   useEffect(() => {
-    if (!post) {
-      setHeroLoadState({
-        src: heroImage,
-        status: "loaded",
-      });
+    if (!postSummary) return;
+    void preloadImage(heroImage);
+  }, [heroImage, postSummary]);
+
+  useLayoutEffect(() => {
+    if (!shouldAnimatePostEntry) {
+      setIsPostEntryReady(true);
       return;
     }
 
-    const cachedStatus = getImagePreloadStatus(heroImage);
-    if (cachedStatus === "loaded" || cachedStatus === "error") {
-      setHeroLoadState({
-        src: heroImage,
-        status: cachedStatus,
-      });
-      return;
-    }
-
-    setHeroLoadState({
-      src: heroImage,
-      status: "loading",
-    });
+    setIsPostEntryReady(false);
     let cancelled = false;
-    preloadImage(heroImage).then((status) => {
-      if (cancelled) return;
-      setHeroLoadState({
-        src: heroImage,
-        status,
-      });
+    let frame = 0;
+    let timeoutId = 0;
+
+    frame = window.requestAnimationFrame(() => {
+      timeoutId = window.setTimeout(() => {
+        if (cancelled) return;
+        setIsPostEntryReady(true);
+      }, 40);
     });
 
     return () => {
       cancelled = true;
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(timeoutId);
     };
-  }, [heroImage, post]);
+  }, [shouldAnimatePostEntry, slug]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -224,7 +202,7 @@ export default function Post() {
     };
   }, [isDocumentReload, postScrollStorageKey]);
 
-  if (!post) {
+  if (!postSummary) {
     return (
       <>
         <PostBackLink />
@@ -244,11 +222,7 @@ export default function Post() {
     );
   }
 
-  const Content = post.Component;
-  const currentHeroLoadStatus =
-    heroLoadState.src === heroImage ? heroLoadState.status : "loading";
-  const isPostEntryReady =
-    currentHeroLoadStatus !== "loading" && isPostContentReady;
+  const Content = postEntry?.Component;
 
   const onPostContentClick = (event: ReactMouseEvent<HTMLElement>) => {
     const target = event.target;
@@ -276,22 +250,26 @@ export default function Post() {
       <BlogPost
         key={slug}
         isEntryReady={isPostEntryReady}
-        title={post.title}
+        title={postSummary.title}
         byline={
-          post.date ? `Abhay Shukla · ${formatPostDate(post.date)}` : undefined
+          postSummary.date
+            ? `Abhay Shukla · ${formatPostDate(postSummary.date)}`
+            : undefined
         }
         heroImage={heroImage}
         contentRef={postContentRef}
         onContentClick={onPostContentClick}
       >
-        <Content />
+        {Content ? <Content /> : null}
       </BlogPost>
-      {postImages.length > 0 ? (
-        <ImageLightbox
-          opened={lightboxOpened}
-          setOpened={setLightboxOpened}
-          image={lightboxImage}
-        />
+      {lightboxOpened && postImages.length > 0 ? (
+        <Suspense fallback={null}>
+          <ImageLightbox
+            opened={lightboxOpened}
+            setOpened={setLightboxOpened}
+            image={lightboxImage}
+          />
+        </Suspense>
       ) : null}
     </>
   );

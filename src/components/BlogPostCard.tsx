@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import type { BlogPostCardProps } from "../utils/types";
+import { loadPostBySlug } from "../posts";
 import { preloadImage } from "../utils/imagePreload";
 
 const DEFAULT_POST_HERO_IMAGE = "/static/landing-1280.avif";
@@ -13,8 +14,9 @@ export default function BlogPostCard({
   const heroSrc = post.cover ?? DEFAULT_POST_HERO_IMAGE;
   const [isHovered, setIsHovered] = useState(false);
 
-  const warmHeroImage = () => {
+  const warmPostResources = () => {
     void preloadImage(heroSrc);
+    void loadPostBySlug(post.slug);
   };
 
   return (
@@ -42,17 +44,17 @@ export default function BlogPostCard({
         WebkitTouchCallout: "none",
       }}
       onMouseEnter={() => {
-        warmHeroImage();
+        warmPostResources();
         setIsHovered(true);
       }}
       onPointerLeave={() => setIsHovered(false)}
       onFocus={() => {
-        warmHeroImage();
+        warmPostResources();
         setIsHovered(true);
       }}
       onBlur={() => setIsHovered(false)}
-      onTouchStart={warmHeroImage}
-      onPointerDown={warmHeroImage}
+      onTouchStart={warmPostResources}
+      onPointerDown={warmPostResources}
     >
       {post.cover ? (
         <img
