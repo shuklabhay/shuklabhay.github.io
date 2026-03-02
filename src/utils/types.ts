@@ -26,8 +26,6 @@ export type PostMeta = {
   cover?: string;
 };
 
-export type PostSummary = PostMeta;
-
 export type PostEntry = PostMeta & {
   Component: ComponentType;
 };
@@ -37,7 +35,7 @@ export type PostModule = {
 };
 
 export type BlogPostCardProps = {
-  post: PostSummary;
+  post: PostMeta;
   formatPostDate: (raw: string) => string;
 };
 

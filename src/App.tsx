@@ -195,6 +195,7 @@ function RouteBackground({ isMobileViewport }: { isMobileViewport: boolean }) {
   return (
     <>
       <div
+        className="route-background-base"
         style={{
           position: "fixed",
           left: 0,
@@ -207,6 +208,7 @@ function RouteBackground({ isMobileViewport }: { isMobileViewport: boolean }) {
         }}
       />
       <div
+        className="route-background-image"
         style={{
           position: "fixed",
           left: 0,
@@ -227,6 +229,7 @@ function RouteBackground({ isMobileViewport }: { isMobileViewport: boolean }) {
         }}
       />
       <div
+        className="route-background-image"
         style={{
           position: "fixed",
           left: 0,
@@ -253,6 +256,12 @@ function RouteBackground({ isMobileViewport }: { isMobileViewport: boolean }) {
 function AppShell() {
   const location = useLocation();
   const isMobileViewport = useIsMobileViewport();
+
+  useEffect(() => {
+    const isHome = location.pathname === "/";
+    document.documentElement.classList.toggle("route-home", isHome);
+    document.body.classList.toggle("route-home", isHome);
+  }, [location.pathname]);
 
   useLayoutEffect(() => {
     setLastPathname(location.pathname);

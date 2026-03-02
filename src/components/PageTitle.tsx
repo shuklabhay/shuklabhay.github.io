@@ -66,10 +66,7 @@ export function CheckboxSubtitle<T extends string = string>({
       return;
     }
 
-    if (mode === "link") {
-      const href = item.href;
-      if (href) window.open(href, "_blank", "noopener,noreferrer");
-    } else if (mode === "toggle" && setSelectedTags) {
+    if (mode === "toggle" && setSelectedTags) {
       const label = item.label;
       if (!label) return;
       const wasSelected = selectedTags ? selectedTags.includes(label) : false;
@@ -106,6 +103,58 @@ export function CheckboxSubtitle<T extends string = string>({
         const isHover = hoverFill && hovered === idx;
         const bg = isOn || isHover ? "white" : "transparent";
         const fg = isOn || isHover ? "#5a6c99" : "white";
+        const sharedStyle = {
+          padding: "0.25rem 0.5rem",
+          borderRadius: "6px",
+          border: "2px solid white",
+          backgroundColor: bg,
+          color: fg,
+          fontSize: "1rem",
+          fontWeight: 600,
+          cursor: "pointer",
+          userSelect: "none" as const,
+          WebkitUserSelect: "none" as const,
+          WebkitTouchCallout: "none" as const,
+          display: "inline-flex",
+          alignItems: "center",
+          gap: item.arrowDirection ? "0.33rem" : 0,
+          transition: "background-color 150ms ease, color 150ms ease",
+          textDecoration: "none",
+        };
+
+        if (mode === "link" && item.href && !item.onClick) {
+          return (
+            <a
+              key={item.label}
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              onMouseEnter={() => setHovered(idx)}
+              onMouseLeave={() => setHovered((h) => (h === idx ? null : h))}
+              style={sharedStyle}
+            >
+              {item.label}
+              {item.arrowDirection ? (
+                <span
+                  aria-hidden
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "0.6rem",
+                    visibility:
+                      item.arrowVisible === undefined || item.arrowVisible
+                        ? "visible"
+                        : "hidden",
+                  }}
+                >
+                  <TriangleIcon direction={item.arrowDirection} />
+                </span>
+              ) : null}
+            </a>
+          );
+        }
+
         return (
           <button
             key={item.label}
@@ -113,23 +162,7 @@ export function CheckboxSubtitle<T extends string = string>({
             onMouseEnter={() => setHovered(idx)}
             onMouseLeave={() => setHovered((h) => (h === idx ? null : h))}
             aria-pressed={isOn}
-            style={{
-              padding: "0.25rem 0.5rem",
-              borderRadius: "6px",
-              border: "2px solid white",
-              backgroundColor: bg,
-              color: fg,
-              fontSize: "1rem",
-              fontWeight: 600,
-              cursor: "pointer",
-              userSelect: "none",
-              WebkitUserSelect: "none",
-              WebkitTouchCallout: "none",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: item.arrowDirection ? "0.33rem" : 0,
-              transition: "background-color 150ms ease, color 150ms ease",
-            }}
+            style={sharedStyle}
           >
             {item.label}
             {item.arrowDirection ? (

@@ -26,7 +26,7 @@ export default function Home() {
   }, []);
 
   const rawEmail = contactData.find((c) => c.title === "Email")?.link;
-  const email = `mailto:${rawEmail}`;
+  const email = rawEmail ? `mailto:${rawEmail}` : undefined;
   const github = contactData.find((c) => c.title === "GitHub")?.link;
   const linkedin = contactData.find((c) => c.title === "Linkedin")?.link;
 

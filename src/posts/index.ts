@@ -1,5 +1,5 @@
 import { postsManifest } from "virtual:posts-manifest";
-import type { PostEntry, PostModule, PostSummary } from "../utils/types";
+import type { PostEntry, PostMeta, PostModule } from "../utils/types";
 
 const moduleLoaders = import.meta.glob<PostModule>("./*/index.mdx");
 
@@ -10,13 +10,13 @@ const moduleLoaderBySlug = new Map(
   }),
 );
 
-export const allPosts: PostSummary[] = [...postsManifest]
+export const allPosts: PostMeta[] = [...postsManifest]
   .sort((a, b) => b.date.localeCompare(a.date));
 
 const postBySlug = new Map(allPosts.map((post) => [post.slug, post] as const));
 const postEntryPromiseBySlug = new Map<string, Promise<PostEntry | undefined>>();
 
-export function getPostBySlug(slug: string): PostSummary | undefined {
+export function getPostBySlug(slug: string): PostMeta | undefined {
   return postBySlug.get(slug);
 }
 

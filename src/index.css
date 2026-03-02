@@ -1,5 +1,7 @@
 :root {
   color-scheme: only light;
+  --home-mobile-focal-x: 70%;
+  --home-canvas-height-offset: -36px;
 }
 
 html {
@@ -34,6 +36,43 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
+html,
+body {
+  background-color: #5a6c99;
+}
+
+html.route-home,
+body.route-home {
+  min-height: calc(100vh + var(--home-canvas-height-offset));
+  min-height: calc(100lvh + var(--home-canvas-height-offset));
+  height: calc(100vh + var(--home-canvas-height-offset));
+  height: calc(100lvh + var(--home-canvas-height-offset));
+}
+
+html.route-home {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-image: image-set(
+    url("/static/landing-1280.avif") type("image/avif") 1x,
+    url("/static/landing-1920.avif") type("image/avif") 1.5x,
+    url("/static/landing-1280.webp") type("image/webp") 1x,
+    url("/static/landing-1920.webp") type("image/webp") 1.5x,
+    url("/static/landing.webp") type("image/webp") 3x
+  );
+}
+
+body.route-home {
+  background-color: transparent;
+  background-image: none;
+  overscroll-behavior-y: auto;
+}
+
+html.route-home .route-background-base,
+html.route-home .route-background-image {
+  display: none !important;
+}
+
 #root {
   min-height: 100vh;
   min-height: 100lvh;
@@ -55,4 +94,10 @@ code {
 [data-post-content] > h3:first-child,
 [data-post-content] > h4:first-child {
   margin-top: 0.12em;
+}
+
+@media (max-width: 860px) {
+  html.route-home {
+    background-position: var(--home-mobile-focal-x) center;
+  }
 }
