@@ -26,8 +26,10 @@ export default function About() {
 
   const shouldAnimateEntry =
     (entryFadeDecisionByLocationKeyRef.current?.shouldAnimate ?? false) &&
-    !(typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true);
+    !(
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true
+    );
   const entryFadeStyle = useEntryFade(shouldAnimateEntry, 525);
 
   return (

@@ -29,7 +29,9 @@ export function useEntryFade(
     () => ({
       opacity: isVisible ? 1 : 0,
       transform: "none",
-      transition: effectiveShouldAnimate ? `opacity ${durationMs}ms ease` : "none",
+      transition: effectiveShouldAnimate
+        ? `opacity ${durationMs}ms ease`
+        : "none",
     }),
     [durationMs, isVisible, effectiveShouldAnimate],
   );
