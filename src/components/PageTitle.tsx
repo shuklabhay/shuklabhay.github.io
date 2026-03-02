@@ -154,7 +154,9 @@ export function CheckboxSubtitleLink<T extends string = string>({
               onClick={() => setHovered(null)}
               onPointerDown={() => setHovered(null)}
               onTouchStart={() => setHovered(null)}
-              onBlur={() => setHovered((current) => (current === idx ? null : current))}
+              onBlur={() =>
+                setHovered((current) => (current === idx ? null : current))
+              }
               style={{
                 ...sharedStyleWithArrowGap,
                 userSelect: "auto",

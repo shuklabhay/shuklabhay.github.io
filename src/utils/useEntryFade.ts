@@ -18,7 +18,7 @@ export function shouldSkipEntryAnimation() {
     queryBooleanMedia("(pointer: coarse)") ||
     queryBooleanMedia("(hover: none)") ||
     queryBooleanMedia("(any-pointer: coarse)") ||
-    ("ontouchstart" in window) ||
+    "ontouchstart" in window ||
     navigator.maxTouchPoints > 0;
   if (isTouchDevice) return true;
 
