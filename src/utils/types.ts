@@ -91,6 +91,13 @@ export type UnderlineStyle = {
   mode: UnderlineMode;
 };
 
+export type NavUnderlineState = {
+  left: number;
+  width: number;
+  visible: boolean;
+  animate: boolean;
+};
+
 export type BlogSortField = "date" | "alpha";
 export type BlogSortDirection = "desc" | "asc";
 

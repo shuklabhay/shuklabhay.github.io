@@ -9,12 +9,7 @@ import {
 } from "react";
 import NavMenu from "./components/NavMenu.tsx";
 import Home from "./pages/Home.tsx";
-import type { RouteTransitionState } from "./utils/types";
-import {
-  getLastPathname,
-  isBlogPostPath,
-  setLastPathname,
-} from "./utils/routeTransitions";
+import { setLastPathname } from "./utils/routeTransitions";
 
 const MOBILE_BREAKPOINT_QUERY = "(max-width: 860px)";
 const PAGE_X_PADDING_DESKTOP = "1.125rem";
@@ -212,31 +207,8 @@ function RouteBackground({ isMobileViewport }: { isMobileViewport: boolean }) {
   const queuedHomeBackgroundSrcRef = useRef<string | null>(null);
   const isHomeRef = useRef(isHome);
   isHomeRef.current = isHome;
-  const transitionState = location.state as RouteTransitionState | null;
   const shouldShowHomeBackground = isHome;
-  const homeFadeDecisionByLocationKeyRef = useRef<{
-    key: string;
-    shouldAnimate: boolean;
-  } | null>(null);
-
-  if (homeFadeDecisionByLocationKeyRef.current?.key !== location.key) {
-    const lastPathname = getLastPathname();
-    homeFadeDecisionByLocationKeyRef.current = {
-      key: location.key,
-      shouldAnimate:
-        shouldShowHomeBackground &&
-        (transitionState?.fromPost === true ||
-          (lastPathname ? isBlogPostPath(lastPathname) : false)),
-    };
-  }
-
-  const shouldAnimateHomeBackgroundFade =
-    homeFadeDecisionByLocationKeyRef.current?.shouldAnimate ?? false;
-  const shouldFadeOutBackgroundVeil =
-    shouldAnimateHomeBackgroundFade &&
-    shouldShowHomeBackground &&
-    isHomeBackgroundReady;
-  const backgroundVeilTransition = shouldFadeOutBackgroundVeil
+  const backgroundVeilTransition = shouldShowHomeBackground
     ? "opacity 512ms ease"
     : "none";
   const backgroundVeilOpacity =
