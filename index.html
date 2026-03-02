@@ -36,10 +36,6 @@
             "  background-size: cover;" +
             "  background-position: center;" +
             '  background-image: url("/static/landing-1280.webp");' +
-            '  background-image: image-set(' +
-            'url("/static/landing-1280.avif") type("image/avif") 1x,' +
-            'url("/static/landing-1280.webp") type("image/webp") 1x' +
-            ');' +
             "}";
           document.head.appendChild(criticalHomeStyle);
           document.documentElement.classList.add("route-home");
@@ -50,18 +46,17 @@
     <link rel="apple-touch-icon" href="/logo192.png" />
     <link
       rel="preload"
-      href="/static/landing-1280.avif"
-      as="image"
-      fetchpriority="high"
-    />
-    <link
-      rel="preload"
       href="/static/landing-1280.webp"
       as="image"
       type="image/webp"
       fetchpriority="high"
     />
-    <link rel="preload" href="/static/landing-1920.avif" as="image" />
+    <link
+      rel="preload"
+      href="/static/landing-1920.webp"
+      as="image"
+      type="image/webp"
+    />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
