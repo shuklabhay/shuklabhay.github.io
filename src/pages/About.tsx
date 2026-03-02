@@ -151,7 +151,9 @@ export default function About() {
               </li>
               <li style={{ marginTop: "0.45rem" }}>
                 <strong>Craft:</strong> I grew up learning to row,{" "}
-                <strong>caring deeply about every element of every thing</strong>{" "}
+                <strong>
+                  caring deeply about every element of every thing
+                </strong>{" "}
                 I work on, though more recently I've been learning to steer.
               </li>
               <li style={{ marginTop: "0.45rem" }}>
@@ -178,7 +180,11 @@ export default function About() {
               </li>
             </ul>
             <p
-              style={{ marginTop: "1.5rem", marginBottom: 0, paddingBottom: "0.3rem" }}
+              style={{
+                marginTop: "1.5rem",
+                marginBottom: 0,
+                paddingBottom: "0.3rem",
+              }}
             >
               <a
                 href="https://docs.google.com/document/d/1AmxSqHyPKsZIAPha-v2eDTIGKNvpwcFVRLMoa6gTJuk/edit?tab=t.0"
@@ -200,8 +206,8 @@ export default function About() {
                 className="about-contact-link"
               >
                 <strong>Twitter/X</strong>
-              </a>
-              {" "}|
+              </a>{" "}
+              |
               <a
                 href={github}
                 target="_blank"

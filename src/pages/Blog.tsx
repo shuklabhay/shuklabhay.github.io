@@ -209,9 +209,7 @@ export default function Blog() {
             post={post}
             formatPostDate={formatPostDate}
             prioritizeImage={index < 4}
-            shouldUseViewTransition={
-              !prefersReducedMotion
-            }
+            shouldUseViewTransition={!prefersReducedMotion}
           />
         ))}
       </section>
