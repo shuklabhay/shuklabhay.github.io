@@ -218,8 +218,7 @@ function RouteBackground({
       ? "none"
       : "none"
     : "none";
-  const backgroundVeilOpacity =
-    shouldShowHomeBackground ? 0 : 1;
+  const backgroundVeilOpacity = shouldShowHomeBackground ? 0 : 1;
 
   useEffect(() => {
     const src = homeBackgroundSrc;
