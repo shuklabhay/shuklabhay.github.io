@@ -77,7 +77,10 @@ export default function BlogPost({
 
     const clampWidthPercent = (value: number) =>
       Math.round(
-        Math.min(DESKTOP_WIDTH_MAX_PERCENT, Math.max(DESKTOP_WIDTH_MIN_PERCENT, value)),
+        Math.min(
+          DESKTOP_WIDTH_MAX_PERCENT,
+          Math.max(DESKTOP_WIDTH_MIN_PERCENT, value),
+        ),
       );
 
     const updateDesktopWidth = (next: number) => {
@@ -259,120 +262,120 @@ export default function BlogPost({
             isolation: "isolate",
           }}
         >
-        {!isMobile ? (
-          <>
-            <button
-              type="button"
-              onMouseEnter={() => setHoveredHandle("left")}
-              onMouseLeave={() =>
-                setHoveredHandle((current) =>
-                  current === "left" ? null : current,
-                )
-              }
-              onFocus={() => setFocusedHandle("left")}
-              onBlur={() =>
-                setFocusedHandle((current) =>
-                  current === "left" ? null : current,
-                )
-              }
-              onPointerDown={onResizeHandlePointerDown("left")}
-              aria-label="Decrease content width"
-              style={{
-                position: "absolute",
-                left: "-9px",
-                top: "0.8rem",
-                bottom: "0.8rem",
-                width: "18px",
-                border: 0,
-                margin: 0,
-                padding: 0,
-                background: "transparent",
-                cursor: "ew-resize",
-                zIndex: 2,
-                opacity: showResizeHandles ? 1 : 0,
-                transition: "opacity 140ms ease",
-                outline:
-                  focusedHandle === "left" ? "2px solid #4c649f" : "none",
-                outlineOffset: "2px",
-              }}
-            >
-              <span
-                aria-hidden
+          {!isMobile ? (
+            <>
+              <button
+                type="button"
+                onMouseEnter={() => setHoveredHandle("left")}
+                onMouseLeave={() =>
+                  setHoveredHandle((current) =>
+                    current === "left" ? null : current,
+                  )
+                }
+                onFocus={() => setFocusedHandle("left")}
+                onBlur={() =>
+                  setFocusedHandle((current) =>
+                    current === "left" ? null : current,
+                  )
+                }
+                onPointerDown={onResizeHandlePointerDown("left")}
+                aria-label="Decrease content width"
                 style={{
                   position: "absolute",
-                  top: "50%",
-                  left: "4px",
-                  width: "10px",
-                  height: "46px",
-                  transform: "translateY(-50%)",
-                  borderRadius: "999px",
-                  background:
-                    "repeating-linear-gradient(to bottom, rgba(45, 61, 101, 0.75) 0 2px, rgba(45, 61, 101, 0.2) 2px 4px)",
+                  left: "-9px",
+                  top: "0.8rem",
+                  bottom: "0.8rem",
+                  width: "18px",
+                  border: 0,
+                  margin: 0,
+                  padding: 0,
+                  background: "transparent",
+                  cursor: "ew-resize",
+                  zIndex: 2,
+                  opacity: showResizeHandles ? 1 : 0,
+                  transition: "opacity 140ms ease",
+                  outline:
+                    focusedHandle === "left" ? "2px solid #4c649f" : "none",
+                  outlineOffset: "2px",
                 }}
-              />
-            </button>
-            <button
-              type="button"
-              onMouseEnter={() => setHoveredHandle("right")}
-              onMouseLeave={() =>
-                setHoveredHandle((current) =>
-                  current === "right" ? null : current,
-                )
-              }
-              onFocus={() => setFocusedHandle("right")}
-              onBlur={() =>
-                setFocusedHandle((current) =>
-                  current === "right" ? null : current,
-                )
-              }
-              onPointerDown={onResizeHandlePointerDown("right")}
-              aria-label="Increase content width"
-              style={{
-                position: "absolute",
-                right: "-9px",
-                top: "0.8rem",
-                bottom: "0.8rem",
-                width: "18px",
-                border: 0,
-                margin: 0,
-                padding: 0,
-                background: "transparent",
-                cursor: "ew-resize",
-                zIndex: 2,
-                opacity: showResizeHandles ? 1 : 0,
-                transition: "opacity 140ms ease",
-                outline:
-                  focusedHandle === "right" ? "2px solid #4c649f" : "none",
-                outlineOffset: "2px",
-              }}
-            >
-              <span
-                aria-hidden
+              >
+                <span
+                  aria-hidden
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "4px",
+                    width: "10px",
+                    height: "46px",
+                    transform: "translateY(-50%)",
+                    borderRadius: "999px",
+                    background:
+                      "repeating-linear-gradient(to bottom, rgba(45, 61, 101, 0.75) 0 2px, rgba(45, 61, 101, 0.2) 2px 4px)",
+                  }}
+                />
+              </button>
+              <button
+                type="button"
+                onMouseEnter={() => setHoveredHandle("right")}
+                onMouseLeave={() =>
+                  setHoveredHandle((current) =>
+                    current === "right" ? null : current,
+                  )
+                }
+                onFocus={() => setFocusedHandle("right")}
+                onBlur={() =>
+                  setFocusedHandle((current) =>
+                    current === "right" ? null : current,
+                  )
+                }
+                onPointerDown={onResizeHandlePointerDown("right")}
+                aria-label="Increase content width"
                 style={{
                   position: "absolute",
-                  top: "50%",
-                  left: "4px",
-                  width: "10px",
-                  height: "46px",
-                  transform: "translateY(-50%)",
-                  borderRadius: "999px",
-                  background:
-                    "repeating-linear-gradient(to bottom, rgba(45, 61, 101, 0.75) 0 2px, rgba(45, 61, 101, 0.2) 2px 4px)",
+                  right: "-9px",
+                  top: "0.8rem",
+                  bottom: "0.8rem",
+                  width: "18px",
+                  border: 0,
+                  margin: 0,
+                  padding: 0,
+                  background: "transparent",
+                  cursor: "ew-resize",
+                  zIndex: 2,
+                  opacity: showResizeHandles ? 1 : 0,
+                  transition: "opacity 140ms ease",
+                  outline:
+                    focusedHandle === "right" ? "2px solid #4c649f" : "none",
+                  outlineOffset: "2px",
                 }}
-              />
-            </button>
-          </>
-        ) : null}
-        <div
-          aria-hidden
-          style={{
-            position: "absolute",
-            inset: 0,
-            borderRadius: "inherit",
-            border: "1px solid rgba(255, 255, 255, 0.44)",
-            pointerEvents: "none",
-          }}
-        />
+              >
+                <span
+                  aria-hidden
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "4px",
+                    width: "10px",
+                    height: "46px",
+                    transform: "translateY(-50%)",
+                    borderRadius: "999px",
+                    background:
+                      "repeating-linear-gradient(to bottom, rgba(45, 61, 101, 0.75) 0 2px, rgba(45, 61, 101, 0.2) 2px 4px)",
+                  }}
+                />
+              </button>
+            </>
+          ) : null}
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              inset: 0,
+              borderRadius: "inherit",
+              border: "1px solid rgba(255, 255, 255, 0.44)",
+              pointerEvents: "none",
+            }}
+          />
           <article
             ref={contentRef}
             className="post-content"

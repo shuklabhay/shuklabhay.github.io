@@ -1,6 +1,14 @@
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
-import { Suspense, lazy, useEffect, useLayoutEffect, useState } from "react";
+import {
+  Suspense,
+  lazy,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import NavMenu from "./components/NavMenu.tsx";
+import Home from "./pages/Home.tsx";
 import type { RouteTransitionState } from "./utils/types";
 import {
   getLastPathname,
@@ -12,7 +20,6 @@ const MOBILE_BREAKPOINT_QUERY = "(max-width: 860px)";
 const PAGE_X_PADDING_DESKTOP = "1.125rem";
 const PAGE_X_PADDING_MOBILE = "0.625rem";
 const HOME_BACKGROUND_IMMEDIATE_SRC = "/static/landing-1280.avif";
-const Home = lazy(() => import("./pages/Home.tsx"));
 const About = lazy(() => import("./pages/About.tsx"));
 const Blog = lazy(() => import("./pages/Blog.tsx"));
 const Post = lazy(() => import("./pages/Post.tsx"));
@@ -197,34 +204,89 @@ function useIsMobileViewport() {
 function RouteBackground({ isMobileViewport }: { isMobileViewport: boolean }) {
   const location = useLocation();
   const isHome = location.pathname === "/";
-  const [baseHomeBackgroundSrc, setBaseHomeBackgroundSrc] = useState<
-    string | null
-  >(() => HOME_BACKGROUND_IMMEDIATE_SRC);
-  const [enhancedHomeBackgroundSrc, setEnhancedHomeBackgroundSrc] = useState<
-    string | null
-  >(null);
+  const [homeBackgroundSrc, setHomeBackgroundSrc] = useState(
+    () => HOME_BACKGROUND_IMMEDIATE_SRC,
+  );
+  const decodedHomeBackgroundSrcSetRef = useRef(new Set<string>());
+  const [isHomeBackgroundReady, setIsHomeBackgroundReady] = useState(false);
+  const queuedHomeBackgroundSrcRef = useRef<string | null>(null);
+  const isHomeRef = useRef(isHome);
+  isHomeRef.current = isHome;
   const transitionState = location.state as RouteTransitionState | null;
-  const lastPathname = getLastPathname();
   const shouldShowHomeBackground = isHome;
+  const homeFadeDecisionByLocationKeyRef = useRef<{
+    key: string;
+    shouldAnimate: boolean;
+  } | null>(null);
+
+  if (homeFadeDecisionByLocationKeyRef.current?.key !== location.key) {
+    const lastPathname = getLastPathname();
+    homeFadeDecisionByLocationKeyRef.current = {
+      key: location.key,
+      shouldAnimate:
+        shouldShowHomeBackground &&
+        (transitionState?.fromPost === true ||
+          (lastPathname ? isBlogPostPath(lastPathname) : false)),
+    };
+  }
+
   const shouldAnimateHomeBackgroundFade =
+    homeFadeDecisionByLocationKeyRef.current?.shouldAnimate ?? false;
+  const shouldFadeOutBackgroundVeil =
+    shouldAnimateHomeBackgroundFade &&
     shouldShowHomeBackground &&
-    (transitionState?.fromPost === true ||
-      (lastPathname ? isBlogPostPath(lastPathname) : false));
-  const backgroundTransition = shouldAnimateHomeBackgroundFade
+    isHomeBackgroundReady;
+  const backgroundVeilTransition = shouldFadeOutBackgroundVeil
     ? "opacity 512ms ease"
-    : enhancedHomeBackgroundSrc
-      ? "opacity 220ms ease"
-      : "none";
+    : "none";
+  const backgroundVeilOpacity =
+    shouldShowHomeBackground && isHomeBackgroundReady ? 0 : 1;
+
+  useEffect(() => {
+    let cancelled = false;
+    const src = homeBackgroundSrc;
+
+    if (decodedHomeBackgroundSrcSetRef.current.has(src)) {
+      setIsHomeBackgroundReady(true);
+      return;
+    }
+
+    setIsHomeBackgroundReady(false);
+    preloadDecodedImage(src).then((success) => {
+      if (cancelled) return;
+      if (success) {
+        decodedHomeBackgroundSrcSetRef.current.add(src);
+      }
+      setIsHomeBackgroundReady(success);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [homeBackgroundSrc]);
+
+  useEffect(() => {
+    if (!isHome && queuedHomeBackgroundSrcRef.current) {
+      const queuedSrc = queuedHomeBackgroundSrcRef.current;
+      queuedHomeBackgroundSrcRef.current = null;
+      setHomeBackgroundSrc((current) =>
+        current === queuedSrc ? current : queuedSrc,
+      );
+    }
+  }, [isHome]);
 
   useEffect(() => {
     let cancelled = false;
     const candidates = getHomeBackgroundCandidates();
-    setBaseHomeBackgroundSrc(HOME_BACKGROUND_IMMEDIATE_SRC);
-    setEnhancedHomeBackgroundSrc(null);
 
     preloadFirstAvailableImage(candidates).then((src) => {
       if (cancelled) return;
-      if (src) setEnhancedHomeBackgroundSrc(src);
+      if (!src) return;
+      if (isHomeRef.current) {
+        queuedHomeBackgroundSrcRef.current = src;
+        return;
+      }
+      setHomeBackgroundSrc((current) => (current === src ? current : src));
     });
 
     return () => {
@@ -235,6 +297,23 @@ function RouteBackground({ isMobileViewport }: { isMobileViewport: boolean }) {
   return (
     <>
       <div
+        className="route-background-image"
+        style={{
+          position: "fixed",
+          left: 0,
+          top: 0,
+          width: "100vw",
+          height: "100vh",
+          zIndex: 0,
+          pointerEvents: "none",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: isMobileViewport ? "70% center" : "center",
+          opacity: shouldShowHomeBackground ? 1 : 0,
+          backgroundImage: `url("${homeBackgroundSrc}")`,
+        }}
+      />
+      <div
         className="route-background-base"
         style={{
           position: "fixed",
@@ -242,52 +321,12 @@ function RouteBackground({ isMobileViewport }: { isMobileViewport: boolean }) {
           top: 0,
           width: "100vw",
           height: "100vh",
-          zIndex: 0,
+          zIndex: 1,
           pointerEvents: "none",
           backgroundColor: "#5a6c99",
-        }}
-      />
-      <div
-        className="route-background-image"
-        style={{
-          position: "fixed",
-          left: 0,
-          top: 0,
-          width: "100vw",
-          height: "100vh",
-          zIndex: 0,
-          pointerEvents: "none",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: isMobileViewport ? "70% center" : "center",
           willChange: "opacity",
-          transition: backgroundTransition,
-          opacity: shouldShowHomeBackground ? 1 : 0,
-          backgroundImage: baseHomeBackgroundSrc
-            ? `url("${baseHomeBackgroundSrc}")`
-            : "none",
-        }}
-      />
-      <div
-        className="route-background-image"
-        style={{
-          position: "fixed",
-          left: 0,
-          top: 0,
-          width: "100vw",
-          height: "100vh",
-          zIndex: 0,
-          pointerEvents: "none",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: isMobileViewport ? "70% center" : "center",
-          willChange: "opacity",
-          transition: backgroundTransition,
-          opacity:
-            shouldShowHomeBackground && enhancedHomeBackgroundSrc ? 1 : 0,
-          backgroundImage: enhancedHomeBackgroundSrc
-            ? `url("${enhancedHomeBackgroundSrc}")`
-            : "none",
+          transition: backgroundVeilTransition,
+          opacity: backgroundVeilOpacity,
         }}
       />
     </>
@@ -298,13 +337,10 @@ function AppShell() {
   const location = useLocation();
   const isMobileViewport = useIsMobileViewport();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const isHome = location.pathname === "/";
     document.documentElement.classList.toggle("route-home", isHome);
     document.body.classList.toggle("route-home", isHome);
-  }, [location.pathname]);
-
-  useLayoutEffect(() => {
     setLastPathname(location.pathname);
   }, [location.pathname]);
 

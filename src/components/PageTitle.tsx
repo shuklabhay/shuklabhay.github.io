@@ -56,7 +56,8 @@ export function CheckboxSubtitle<T extends string = string>({
   }, []);
 
   useEffect(() => {
-    if (typeof document === "undefined" || typeof window === "undefined") return;
+    if (typeof document === "undefined" || typeof window === "undefined")
+      return;
 
     const clearHover = () => setHovered(null);
     const onVisibilityChange = () => {

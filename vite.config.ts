@@ -93,9 +93,7 @@ function extractPostWordCount(source: string): number {
     .trim();
 
   if (!normalized) return 0;
-  return (
-    normalized.match(/[A-Za-z0-9]+(?:['’-][A-Za-z0-9]+)*/g)?.length ?? 0
-  );
+  return normalized.match(/[A-Za-z0-9]+(?:['’-][A-Za-z0-9]+)*/g)?.length ?? 0;
 }
 
 type PostMetaFile = {

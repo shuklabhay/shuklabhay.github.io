@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { useLocation } from "react-router-dom";
 import PageTitle from "../components/PageTitle";
 import { useEntryFade } from "../utils/useEntryFade";
@@ -7,10 +8,23 @@ import type { RouteTransitionState } from "../utils/types";
 export default function About() {
   const location = useLocation();
   const transitionState = location.state as RouteTransitionState | null;
-  const lastPathname = getLastPathname();
+  const entryFadeDecisionByLocationKeyRef = useRef<{
+    key: string;
+    shouldAnimate: boolean;
+  } | null>(null);
+
+  if (entryFadeDecisionByLocationKeyRef.current?.key !== location.key) {
+    const lastPathname = getLastPathname();
+    entryFadeDecisionByLocationKeyRef.current = {
+      key: location.key,
+      shouldAnimate:
+        transitionState?.fromPost === true ||
+        (lastPathname ? isBlogPostPath(lastPathname) : false),
+    };
+  }
+
   const shouldAnimateEntry =
-    transitionState?.fromPost === true ||
-    (lastPathname ? isBlogPostPath(lastPathname) : false);
+    entryFadeDecisionByLocationKeyRef.current?.shouldAnimate ?? false;
   const entryFadeStyle = useEntryFade(shouldAnimateEntry, 525);
 
   return (

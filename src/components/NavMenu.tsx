@@ -102,9 +102,7 @@ export default function NavMenu() {
             <span
               style={{
                 display: "inline-block",
-                borderBottom: `2px solid ${
-                  isActive ? "white" : "transparent"
-                }`,
+                borderBottom: `2px solid ${isActive ? "white" : "transparent"}`,
                 paddingBottom: "1px",
                 transition: "border-color 140ms ease",
               }}

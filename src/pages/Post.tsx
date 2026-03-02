@@ -209,9 +209,30 @@ export default function Post() {
     const raw = window.sessionStorage.getItem(postScrollStorageKey);
     const savedY = Number(raw);
     if (!Number.isFinite(savedY)) return;
+    const targetY = Math.max(0, savedY);
+    if (targetY <= 0) return;
+
+    let didUserInteract = false;
+
+    const onUserInteraction = () => {
+      didUserInteract = true;
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      const isScrollKey =
+        event.key === "ArrowDown" ||
+        event.key === "ArrowUp" ||
+        event.key === "PageDown" ||
+        event.key === "PageUp" ||
+        event.key === "Home" ||
+        event.key === "End" ||
+        event.key === " ";
+      if (!isScrollKey) return;
+      didUserInteract = true;
+    };
 
     const restoreScroll = () => {
-      window.scrollTo(0, Math.max(0, savedY));
+      if (didUserInteract) return;
+      window.scrollTo(0, targetY);
     };
 
     restoreScroll();
@@ -224,12 +245,22 @@ export default function Post() {
       window.setTimeout(restoreScroll, delayMs),
     );
     const onLoad = () => restoreScroll();
+    window.addEventListener("wheel", onUserInteraction, { passive: true });
+    window.addEventListener("touchstart", onUserInteraction, { passive: true });
+    window.addEventListener("pointerdown", onUserInteraction, {
+      passive: true,
+    });
+    window.addEventListener("keydown", onKeyDown);
     window.addEventListener("load", onLoad);
 
     return () => {
       window.cancelAnimationFrame(frameA);
       window.cancelAnimationFrame(frameB);
       timeoutIds.forEach((timeoutId) => window.clearTimeout(timeoutId));
+      window.removeEventListener("wheel", onUserInteraction);
+      window.removeEventListener("touchstart", onUserInteraction);
+      window.removeEventListener("pointerdown", onUserInteraction);
+      window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("load", onLoad);
     };
   }, [isDocumentReload, postScrollStorageKey]);

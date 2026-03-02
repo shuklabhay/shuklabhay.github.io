@@ -1,5 +1,5 @@
 import PageTitle, { CheckboxSubtitle } from "../components/PageTitle";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import BlogPostCard from "../components/BlogPostCard";
 import { allPosts } from "../posts";
@@ -56,10 +56,23 @@ function readBlogSortStateFromStorage(): BlogSortState {
 export default function Blog() {
   const location = useLocation();
   const blogTransitionState = location.state as RouteTransitionState | null;
-  const lastPathname = getLastPathname();
+  const entryFadeDecisionByLocationKeyRef = useRef<{
+    key: string;
+    shouldAnimate: boolean;
+  } | null>(null);
+
+  if (entryFadeDecisionByLocationKeyRef.current?.key !== location.key) {
+    const lastPathname = getLastPathname();
+    entryFadeDecisionByLocationKeyRef.current = {
+      key: location.key,
+      shouldAnimate:
+        blogTransitionState?.fromPost === true ||
+        (lastPathname ? isBlogPostPath(lastPathname) : false),
+    };
+  }
+
   const shouldAnimateBlogEntry =
-    blogTransitionState?.fromPost === true ||
-    (lastPathname ? isBlogPostPath(lastPathname) : false);
+    entryFadeDecisionByLocationKeyRef.current?.shouldAnimate ?? false;
   const blogEntryFadeStyle = useEntryFade(
     shouldAnimateBlogEntry,
     BLOG_ENTRY_FADE_MS,
