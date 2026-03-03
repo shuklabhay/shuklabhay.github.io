@@ -96,7 +96,7 @@ Our goal is to create **Infinipaint,** a robust world model of Minipaint that:
 
 ### Data Collection
 
-Following [NeuralOS](https://arxiv.org/pdf/2507.08800), data is stored as frame-action pairs. Each action is applied to Minipaint, and the resulting rendered image is recorded as the corresponding frame. When predicting the next frame, the model conditions on the next action, which is known at prediction time. At training time, sparse actions are converted to a `(56, 56, 2)` tensor, where channel 0 is a 2D Gaussian heatmap centered at the cursor and channel 1 is the button state spread across all spatial positions.
+Following [NeuralOS](https://arxiv.org/pdf/2507.08800), data is stored as frame-action pairs. Each action is applied to Minipaint, and the resulting rendered image is recorded as the corresponding frame. Frames are stored as `(56, 56, 3)` RGB tensors and actions downsampled to a `(56, 56, 2)` tensor, where channel 0 is a 2D Gaussian heatmap centered at the cursor and channel 1 is the button state spread across all spatial positions.
 
 > <img
 >   loading="lazy"
