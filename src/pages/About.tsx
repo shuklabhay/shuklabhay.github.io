@@ -174,7 +174,7 @@ export default function About() {
                 with the world.
               </li>
               <li style={{ marginTop: "0.45rem" }}>
-                <strong>Being human:</strong> living life, making mistakes,
+                <strong>Being human:</strong> living life, making mistakes,{" "}
                 <strong>making memories,</strong> learning to understand and
                 appreciate oneself.
               </li>
