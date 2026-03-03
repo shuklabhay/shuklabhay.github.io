@@ -159,11 +159,13 @@ export default function NavMenu() {
       return;
     }
 
+    const isTransitionInvolvingHome = location.pathname === "/" || path === "/";
     const shouldSkipRootViewTransition =
       typeof window !== "undefined" &&
       (window.matchMedia("(pointer: coarse)").matches ||
         window.matchMedia("(hover: none)").matches ||
-        prefersReducedMotion);
+        prefersReducedMotion ||
+        isTransitionInvolvingHome);
     if (shouldSkipRootViewTransition) {
       preloadPromise.finally(() => {
         navigate(path, {
