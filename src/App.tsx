@@ -15,9 +15,74 @@ const MOBILE_BREAKPOINT_QUERY = "(max-width: 860px)";
 const PAGE_X_PADDING_DESKTOP = "1.125rem";
 const PAGE_X_PADDING_MOBILE = "0.625rem";
 const HOME_BACKGROUND_IMMEDIATE_SRC = "/static/landing-1280.webp";
+const SITE_TITLE = "Abhay Shukla";
+const SITE_TITLE_SEPARATOR = " · ";
 const About = lazy(() => import("./pages/About.tsx"));
 const Blog = lazy(() => import("./pages/Blog.tsx"));
 const Post = lazy(() => import("./pages/Post.tsx"));
+
+function normalizePathname(pathname: string) {
+  if (pathname === "/") return pathname;
+  return pathname.replace(/\/+$/, "");
+}
+
+function decodeSegment(segment: string) {
+  try {
+    return decodeURIComponent(segment);
+  } catch {
+    return segment;
+  }
+}
+
+function humanizeRouteSegment(segment: string) {
+  return decodeSegment(segment).replace(/[-_]+/g, " ").trim();
+}
+
+function capitalizeWords(value: string) {
+  return value
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+function getRouteDocumentTitle(pathname: string) {
+  const normalizedPathname = normalizePathname(pathname);
+
+  if (normalizedPathname === "/") {
+    return SITE_TITLE;
+  }
+
+  if (normalizedPathname === "/about") {
+    return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}About`;
+  }
+
+  if (normalizedPathname === "/blog") {
+    return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Blog`;
+  }
+
+  if (normalizedPathname.startsWith("/blog/")) {
+    const slug = normalizedPathname.slice("/blog/".length).split("/")[0] ?? "";
+    const postTitle = capitalizeWords(humanizeRouteSegment(slug));
+    if (!postTitle) {
+      return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Blog`;
+    }
+    return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}${postTitle}`;
+  }
+
+  const sectionLabel = normalizedPathname
+    .split("/")
+    .filter(Boolean)
+    .map(humanizeRouteSegment)
+    .filter(Boolean)
+    .join(SITE_TITLE_SEPARATOR);
+
+  if (!sectionLabel) {
+    return SITE_TITLE;
+  }
+
+  return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}${sectionLabel}`;
+}
 
 function getHomeBackgroundCandidates() {
   if (typeof window === "undefined") return [HOME_BACKGROUND_IMMEDIATE_SRC];
@@ -290,6 +355,10 @@ function AppShell() {
   const prefersReducedMotion =
     typeof window !== "undefined" &&
     window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
+
+  useEffect(() => {
+    document.title = getRouteDocumentTitle(location.pathname);
+  }, [location.pathname]);
 
   useLayoutEffect(() => {
     const isHome = location.pathname === "/";
