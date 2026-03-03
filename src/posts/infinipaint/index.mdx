@@ -120,7 +120,7 @@ The Infinipaint world model follows the [standard world model framework,](https:
 1. A variational autoencoder (VAE) that compresses frames into a compact latent space, discarding redundant pixel-level details.
 2. A convolutional neural network (CNN) dynamics model that predicts `z_{t+1}` from `z_t`, `a_t`, and `a_{t+1}`.
 
-Once we include both `a_t` and `a_{t+1}` Minipaint is effectively deterministic: selected variables are directly observable on each frame, and the second action exposes previous cursor position during continuous drawing. As a result, there's no multimodal next-frame distribution to sample from and no hidden variables/states to keep track of, meaning a non-recurrent CNN is likely sufficient for next latent prediction.
+Once we include both `a_t` and `a_{t+1}` Minipaint is effectively deterministic: selected variables are directly observable on each frame, and the second action exposes previous cursor position during continuous drawing. As a result, there's no multimodal next-frame distribution to sample from and no hidden variables/states to keep track of, meaning a non-recurrent CNN is sufficient for next latent prediction.
 
 > <img
 >   loading="lazy"
