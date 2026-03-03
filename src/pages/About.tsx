@@ -68,8 +68,8 @@ export default function About() {
             }}
           >
             <p style={{ marginTop: 0, marginBottom: "1rem" }}>
-              I've been <strong>experimenting with computers</strong> since I
-              was 9: first making games, later (at 12){" "}
+              I've been <strong>manipulating computers</strong> since I was 9:
+              first making games, later (at 12){" "}
               <strong>producing music,</strong> programming audio effects, and{" "}
               building synthesizers, <strong>all self-taught</strong>. Nowadays,
               as a <strong>senior @ Leland High School,</strong> I've been using{" "}
