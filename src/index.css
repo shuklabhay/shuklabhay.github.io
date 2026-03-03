@@ -157,6 +157,10 @@ code {
   outline-offset: 2px;
 }
 
+.about-subtitle {
+  max-width: 65%;
+}
+
 .post-content code {
   display: inline;
   padding: 0.22em 0.22em;
@@ -231,6 +235,10 @@ code {
 @media (max-width: 860px) {
   :root {
     --home-canvas-height-offset: -36px;
+  }
+
+  .about-subtitle {
+    max-width: 100%;
   }
 
   .route-home {

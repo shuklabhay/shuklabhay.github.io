@@ -59,9 +59,9 @@ export default function About() {
         title="Hi, I'm Abhay"
         subtitle={
           <div
+            className="about-subtitle"
             style={{
               color: "#eef3ff",
-              maxWidth: "65%",
               lineHeight: 1.6,
               marginTop: "0.5rem",
               fontSize: "1.1rem",
