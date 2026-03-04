@@ -61,7 +61,7 @@ export default function About() {
           <div
             className="about-subtitle"
             style={{
-              color: "#eef3ff",
+              color: "#f5f8ff",
               lineHeight: 1.6,
               marginTop: "0.5rem",
               fontSize: "1.1rem",
