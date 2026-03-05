@@ -1,0 +1,1176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Infinipaint: World Modeling a Trivially Simple World</title>
+    <style>
+      :root {
+        --bg: #ffffff;
+        --text: #111111;
+        --muted: #555555;
+        --line: #d9d9d9;
+        --status-bar-h: 22px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Charter", "Georgia", "Times New Roman", serif;
+        line-height: 1.35;
+        overflow: hidden;
+      }
+
+      main {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(1540px, 99vw);
+        height: calc(100vh - var(--status-bar-h));
+        padding: 8px 0 6px;
+        overflow: hidden;
+      }
+
+      .slide {
+        display: none;
+        width: 100%;
+        height: 100%;
+        padding: 0 2px;
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
+
+      .slide.active {
+        display: block;
+      }
+
+      h1,
+      h2 {
+        line-height: 1.2;
+        margin: 0 0 8px;
+        font-size: clamp(1.45rem, 2.6vw, 2rem);
+      }
+
+      p {
+        margin: 0 0 6px;
+        max-width: 110ch;
+      }
+
+      ul,
+      ol {
+        margin: 0 0 8px 20px;
+        max-width: 110ch;
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      .split {
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start;
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        padding: 8px;
+      }
+
+      .image {
+        margin: 6px 0 0;
+      }
+
+      .image img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border: 0;
+      }
+
+      .image figcaption {
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+
+      .metric {
+        font-size: 1.05rem;
+        border-left: 3px solid #111;
+        padding-left: 8px;
+        margin: 6px 0;
+      }
+
+      .foot {
+        color: var(--muted);
+        font-size: 0.9rem;
+        margin-top: 16px;
+      }
+
+      .slide-title {
+        height: 100%;
+        flex-direction: column;
+      }
+
+      .slide-title.active {
+        display: flex;
+      }
+
+      .slide-title .image {
+        margin-top: 12px;
+        flex: 1 1 auto;
+        min-height: 0;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+      }
+
+      .slide-title .image img {
+        max-width: 75%;
+        max-height: 100%;
+        margin: 0 auto;
+        object-fit: contain;
+      }
+
+      .slide-premise {
+        height: 100%;
+        flex-direction: column;
+      }
+
+      .slide-premise.active {
+        display: flex;
+      }
+
+      .slide-premise .premise-gifs {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 8px;
+      }
+
+      .slide-premise .premise-gifs .image {
+        margin-top: 0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .slide-premise .premise-gifs img {
+        width: 100%;
+        height: auto;
+        max-height: calc(100vh - 335px);
+        object-fit: contain;
+      }
+
+      .slide-premise .premise-gifs .image figcaption {
+        margin-top: 4px;
+        text-align: center;
+      }
+
+      .slide-premise .ask-wrap {
+        flex: 1 1 auto;
+        min-height: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .slide-premise .ask-box {
+        width: min(1100px, 100%);
+        border: 0;
+        padding: 0;
+        text-align: center;
+      }
+
+      .slide-premise .ask-box p {
+        margin: 0;
+        max-width: none;
+        font-size: clamp(1.1rem, 1.9vw, 1.55rem);
+        line-height: 1.25;
+      }
+
+      .slide-goals .goals-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 10px;
+        align-items: start;
+        flex: 1 1 auto;
+        min-height: 0;
+      }
+
+      .slide-goals {
+        height: 100%;
+        flex-direction: column;
+      }
+
+      .slide-goals.active {
+        display: flex;
+      }
+
+      .slide-goals .goals-left {
+        display: grid;
+        grid-template-rows: repeat(2, auto);
+        gap: 8px;
+        height: auto;
+        align-content: start;
+      }
+
+      .slide-goals .goals-left .card {
+        height: auto;
+        align-self: start;
+        font-size: 1.05rem;
+      }
+
+      .slide-goals .goals-left .card strong {
+        font-size: 1.08em;
+      }
+
+      .slide-goals .goals-right {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 10px;
+        min-height: 0;
+        width: min(100%, clamp(360px, 34vw, 620px));
+        justify-self: end;
+      }
+
+      .slide-goals .goals-right .image {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: stretch;
+      }
+
+      .slide-goals .goals-right .image figcaption {
+        margin-top: 3px;
+        text-align: center;
+      }
+
+      .slide-goals .goals-right .image img {
+        width: 100%;
+        height: auto;
+        max-height: clamp(200px, calc((100vh - 240px) / 2), 320px);
+        object-fit: contain;
+      }
+
+      .slide-architecture {
+        height: 100%;
+        flex-direction: column;
+      }
+
+      .slide-architecture.active {
+        display: flex;
+      }
+
+      .slide-architecture .architecture-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        flex: 1 1 auto;
+        min-height: 0;
+      }
+
+      .slide-architecture .card {
+        height: auto;
+      }
+
+      .slide-architecture .image {
+        margin-top: 0;
+        flex: 1 1 auto;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .slide-architecture .image img {
+        flex: 1 1 auto;
+        min-height: 0;
+        width: 100%;
+        max-height: none;
+        object-fit: contain;
+      }
+
+      .slide-engineering {
+        height: 100%;
+        flex-direction: column;
+        gap: 6px;
+        overflow: hidden;
+      }
+
+      .slide-engineering.active {
+        display: flex;
+      }
+
+      .slide-engineering h2 {
+        margin-bottom: 4px;
+      }
+
+      .slide-engineering .card {
+        padding: 6px;
+      }
+
+      .slide-engineering ul {
+        margin: 4px 0 6px 18px;
+        line-height: 1.22;
+        font-size: 0.94rem;
+      }
+
+      .slide-engineering .decision-layout-single {
+        grid-template-columns: 1fr;
+        flex: 0 0 auto;
+      }
+
+      .slide-engineering .decision-layout {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        flex: 1 1 auto;
+        min-height: 0;
+        gap: 6px;
+        align-items: stretch;
+      }
+
+      .slide-engineering .decision-layout .card {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .slide-engineering .compression-card {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .slide-engineering .compression-card .compression-grid {
+        margin-top: 2px;
+      }
+
+      .slide-engineering .compression-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 6px;
+      }
+
+      .slide-engineering .compression-grid .image {
+        margin-top: 0;
+      }
+
+      .slide-engineering .compression-grid img {
+        width: 100%;
+        height: clamp(165px, 21vh, 245px);
+        max-height: none;
+        object-fit: contain;
+      }
+
+      .slide-engineering .compression-grid figcaption {
+        margin-top: 2px;
+        font-size: 0.72rem;
+      }
+
+      .slide-behavior {
+        height: 100%;
+        flex-direction: column;
+      }
+
+      .slide-behavior.active {
+        display: flex;
+      }
+
+      .slide-behavior .behavior-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 10px;
+        align-items: start;
+        flex: 1 1 auto;
+        min-height: 0;
+      }
+
+      .slide-behavior .card {
+        height: auto;
+        align-self: start;
+      }
+
+      .slide-behavior .behavior-media {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        align-items: flex-end;
+        align-self: stretch;
+        min-height: 0;
+        justify-content: flex-start;
+      }
+
+      .slide-behavior .behavior-media .image {
+        margin-top: 0;
+        align-self: start;
+        width: fit-content;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .slide-behavior .behavior-media .image img {
+        flex: 0 0 auto;
+        width: auto;
+        max-width: min(100%, 920px);
+        height: clamp(235px, calc((100vh - 280px) / 2), 420px);
+        max-height: none;
+        object-fit: contain;
+        margin-left: auto;
+      }
+
+      .slide-behavior .behavior-media .image figcaption {
+        width: 100%;
+        margin-top: 2px;
+        text-align: right;
+      }
+
+      .slide-limitations {
+        height: 100%;
+        flex-direction: column;
+        gap: 8px;
+        overflow: hidden;
+        position: relative;
+        padding-bottom: 20px;
+      }
+
+      .slide-limitations.active {
+        display: flex;
+      }
+
+      .slide-limitations .limits-top {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        flex: 0 0 auto;
+      }
+
+      .slide-limitations .limits-top .card {
+        height: auto;
+        padding: 7px;
+      }
+
+      .slide-limitations .limits-top ul,
+      .slide-limitations .limits-top ol {
+        margin: 4px 0 0 18px;
+      }
+
+      .slide-limitations .image {
+        margin-top: 0;
+        flex: 1 1 auto;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .slide-limitations .image img {
+        width: min(100%, 1140px);
+        height: auto;
+        max-height: calc(100vh - 285px);
+        object-fit: contain;
+      }
+
+      .slide-limitations .image figcaption {
+        margin-top: 3px;
+        text-align: center;
+      }
+
+      .slide-limitations .limits-source {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 2px;
+        margin: 0;
+        width: 100%;
+        max-width: none;
+        text-align: center;
+        line-height: 1.2;
+        white-space: nowrap;
+        font-size: 0.86rem;
+        color: var(--muted);
+      }
+
+      .slide-limitations .limits-source a {
+        display: inline;
+      }
+
+      .mini-diagram {
+        border: 1px dashed #b5b5b5;
+        padding: 5px;
+      }
+
+      .mini-diagram .contrast-row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+      }
+
+      .mini-diagram .panel {
+        border: 1px solid #bfbfbf;
+        background: #fcfcfc;
+        padding: 5px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .mini-diagram .panel-body {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .mini-diagram .panel-title {
+        font-size: 0.74rem;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+
+      .mini-diagram .panel-flow {
+        display: grid;
+        grid-template-columns: max-content 60px max-content;
+        gap: 4px;
+        align-items: center;
+      }
+
+      .mini-diagram .source-pair {
+        display: flex;
+        justify-content: flex-start;
+        gap: 5px;
+      }
+
+      .mini-diagram .source-node {
+        width: 72px;
+        height: 34px;
+        border: 1px solid #b5b5b5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-size: 0.66rem;
+        line-height: 1.05;
+      }
+
+      .mini-diagram .source-node.changed {
+        background: #111;
+        color: #fff;
+      }
+
+      .mini-diagram .source-node.unchanged {
+        background: #efefef;
+        color: #111;
+      }
+
+      .mini-diagram .single-loss {
+        border: 1px solid #b5b5b5;
+        background: #fff;
+        padding: 3px 8px;
+        font-size: 0.67rem;
+        text-align: center;
+        display: inline-block;
+        width: fit-content;
+        justify-self: start;
+      }
+
+      .mini-diagram .single-loss.value {
+        min-width: 58px;
+      }
+
+      .mini-diagram .single-loss.final {
+        font-weight: 700;
+      }
+
+      .mini-diagram .right-arrow {
+        text-align: center;
+        font-size: 0.7rem;
+        font-weight: 700;
+      }
+
+      .mini-diagram .with-balance-flow {
+        display: grid;
+        grid-template-columns: 72px 60px max-content 24px max-content;
+        column-gap: 4px;
+        row-gap: 3px;
+        align-items: center;
+        justify-content: start;
+      }
+
+      .mini-diagram .merge-tip {
+        text-align: center;
+        font-size: 0.92rem;
+        line-height: 1;
+      }
+
+      .mini-diagram .final-box {
+        display: block;
+        width: fit-content;
+        margin: 0;
+      }
+
+      .mini-diagram .final-target {
+        grid-column: 5;
+        grid-row: 1 / span 2;
+      }
+
+      .focusable {
+        cursor: zoom-in;
+      }
+
+      .focus-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.96);
+        pointer-events: none;
+      }
+
+      .focus-overlay.active {
+        display: flex;
+      }
+
+      .focus-overlay img {
+        max-width: min(96vw, 1700px);
+        max-height: 94vh;
+        object-fit: contain;
+      }
+
+      a {
+        color: #111;
+      }
+
+      .status-bar {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: var(--status-bar-h);
+        border-top: 1px solid var(--line);
+        background: #fff;
+        padding: 1px 8px 0;
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.72rem;
+        line-height: 1.25;
+      }
+
+      @media (max-width: 900px) {
+        .split {
+          grid-template-columns: 1fr;
+        }
+
+        .slide-architecture .architecture-layout,
+        .slide-engineering .decision-layout,
+        .slide-behavior .behavior-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .slide-limitations .limits-top {
+          grid-template-columns: 1fr;
+        }
+
+        .slide-engineering .compression-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .slide-engineering .compression-card {
+          grid-template-columns: 1fr;
+        }
+
+        .mini-diagram .contrast-row {
+          grid-template-columns: 1fr;
+        }
+
+        .mini-diagram .with-balance-flow {
+          grid-template-columns: 72px 60px max-content;
+        }
+
+        .mini-diagram .merge-tip {
+          display: none;
+        }
+
+        .mini-diagram .final-target {
+          grid-column: 1 / -1;
+          grid-row: auto;
+          margin-top: 4px;
+          justify-self: start;
+        }
+
+        .slide-premise .premise-gifs {
+          grid-template-columns: 1fr;
+        }
+
+        .slide-title .image img {
+          max-width: 100%;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .slide-goals .goals-layout {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main id="deck">
+      <section class="slide slide-title" data-title="Title">
+        <h1>Infinipaint: World Modeling a Trivially Simple World</h1>
+        <figure class="image">
+          <img
+            src="/src/posts/infinipaint/banner.png"
+            alt="Infinipaint banner"
+          />
+        </figure>
+      </section>
+
+      <section class="slide slide-premise" data-title="Premise Setup">
+        <h2>Premise Setup</h2>
+        <p class="metric">
+          World models are useful when simulating complex, high-entropy
+          environments.
+        </p>
+        <div class="premise-gifs">
+          <figure class="image">
+            <img
+              src="/src/posts/infinipaint/assets/csgo.gif"
+              alt="CSGO world model scenario"
+            />
+            <figcaption>Game world model example.</figcaption>
+          </figure>
+          <figure class="image">
+            <img
+              src="/src/posts/infinipaint/assets/waymo%20wm.gif"
+              alt="Waymo world model driving scenario"
+            />
+            <figcaption>Waymo world model example.</figcaption>
+          </figure>
+        </div>
+        <div class="ask-wrap">
+          <div class="ask-box">
+            <p>
+              What happens if we world-model a trivially simple environment with
+              only a few rules?
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="slide slide-goals"
+        data-title="Project Setup + Data Collection"
+      >
+        <h2>Project Setup + Data Collection</h2>
+        <div class="goals-layout">
+          <div class="goals-left">
+            <div class="card">
+              <strong>We want to understand:</strong>
+              <ol>
+                <li>How simple can model architecture get?</li>
+                <li>How effective is that architecture?</li>
+              </ol>
+            </div>
+            <div class="card">
+              <strong>Training Data</strong>
+              <ul>
+                <li>
+                  Procedural agents generate diverse synthetic drawing episodes.
+                </li>
+                <li>Train models on 250-350K frames.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="goals-right">
+            <figure class="image">
+              <img
+                src="/src/posts/infinipaint/assets/minipaint.gif"
+                alt="Minipaint environment in action"
+              />
+              <figcaption>
+                Minipaint used as a controlled world-model benchmark.
+              </figcaption>
+            </figure>
+            <figure class="image">
+              <img
+                src="/src/posts/infinipaint/assets/episode_0.gif"
+                alt="Action heatmap over Minipaint frames"
+              />
+              <figcaption>
+                Frame-action pairs used for supervised world-model training.
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide slide-architecture" data-title="Architecture">
+        <h2>Architecture</h2>
+        <p class="metric">
+          A VAE compresses frames; a stateless CNN predicts latent deltas
+        </p>
+        <div class="architecture-layout">
+          <div class="card">
+            <strong>Why a stateless CNN?</strong>
+            <ul>
+              <li>Main UI variables are visible on-screen.</li>
+              <li>
+                Conditioning on (a_t and a_t+1) makes the last cursor position
+                explicit.
+              </li>
+              <li>No hidden state &rarr; recurrence is unnecessary.</li>
+              <li>
+                Deterministic dynamics &rarr; direct prediction over diffusion
+              </li>
+            </ul>
+          </div>
+          <figure class="image">
+            <img
+              src="/src/posts/infinipaint/assets/main%20architecture.png"
+              alt="Infinipaint VAE and LatentCNN architecture"
+            />
+            <figcaption>
+              Infinipaint pipeline from action-conditioned latent prediction to
+              rendered frame.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section
+        class="slide slide-engineering"
+        data-title="Engineering Decisions"
+      >
+        <h2>Key Engineering Decisions</h2>
+        <div class="decision-layout decision-layout-single">
+          <div class="card compression-card">
+            <div>
+              <strong>Tuning latent compression</strong>
+              <ul>
+                <li>
+                  8x compression too aggressive; 4x preserves fine structure
+                </li>
+                <li>Latent-diff shows sparse, localized update patterns</li>
+              </ul>
+            </div>
+            <div class="compression-grid">
+              <figure class="image">
+                <img
+                  src="/src/posts/infinipaint/assets/8x%20compression.png"
+                  alt="VAE reconstructions at eight times compression"
+                />
+                <figcaption>8x compression.</figcaption>
+              </figure>
+              <figure class="image">
+                <img
+                  src="/src/posts/infinipaint/assets/4x%20compression.png"
+                  alt="VAE reconstructions at four times compression"
+                />
+                <figcaption>4x compression.</figcaption>
+              </figure>
+              <figure class="image">
+                <img
+                  src="/src/posts/infinipaint/assets/latent%20diff.png"
+                  alt="Latent difference analysis visualization"
+                />
+                <figcaption>Latent diff analysis.</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+        <div class="decision-layout decision-layout-single">
+          <div class="card">
+            <strong>Sparse-delta loss balancing</strong>
+            <ul>
+              <li>
+                Unchanged regions dominate loss, LatentCNN predicts 0 change.
+              </li>
+              <li>Fix: compute L1 on changed vs unchanged, then average.</li>
+            </ul>
+            <div class="mini-diagram">
+              <div class="contrast-row">
+                <div class="panel">
+                  <div class="panel-title">Without balancing (single mean)</div>
+                  <div class="panel-body">
+                    <div class="panel-flow">
+                      <div class="source-pair">
+                        <div class="source-node changed">Changed<br />1%</div>
+                        <div class="source-node unchanged">
+                          Unchanged<br />99%
+                        </div>
+                      </div>
+                      <div class="right-arrow">&rarr; avg L1</div>
+                      <div class="single-loss final">0.02</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="panel">
+                  <div class="panel-title">
+                    With balancing (average of means)
+                  </div>
+                  <div class="panel-body">
+                    <div class="with-balance-flow">
+                      <div class="source-node changed">Changed<br />1%</div>
+                      <div class="right-arrow">&rarr; avg L1</div>
+                      <div class="single-loss value">1.00</div>
+                      <div class="merge-tip">&searrow;</div>
+
+                      <div class="source-node unchanged">
+                        Unchanged<br />99%
+                      </div>
+                      <div class="right-arrow">&rarr; avg L1</div>
+                      <div class="single-loss value">0.01</div>
+                      <div class="merge-tip">&nearrow;</div>
+
+                      <div class="single-loss final final-box final-target">
+                        0.505
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="Core Results">
+        <h2>Core Results</h2>
+        <p class="metric">
+          Step 1 quality: SSIM 0.995 +/- 0.006 and PSNR 36.0 dB +/- 6.0.
+        </p>
+        <div class="card">
+          <strong>Three rollout phases</strong>
+          <ol>
+            <li>Steps 1 to 150: stable (SSIM stays above 0.95).</li>
+            <li>Steps 150 to 500: steady degradation (SSIM ~0.92 to ~0.85).</li>
+            <li>Steps 500+: collapse (SSIM below 0.75, ~0.62 by step 800).</li>
+          </ol>
+        </div>
+        <figure class="image">
+          <img
+            src="/src/posts/infinipaint/assets/degradation%20curves.png"
+            alt="SSIM and PSNR degradation curves across rollouts"
+          />
+          <figcaption>
+            Held-out autoregressive evaluation across 20 episodes.
+          </figcaption>
+        </figure>
+      </section>
+
+      <section class="slide slide-behavior" data-title="Behavioral Findings">
+        <h2>Behavioral Findings</h2>
+        <div class="behavior-layout">
+          <div class="card">
+            <ul>
+              <li>Lines curve & thin, colors fringe.</li>
+              <li>
+                During late stages: pen response drops to 18.9% while eraser
+                response remains high at 94.7%.
+              </li>
+            </ul>
+          </div>
+          <div class="behavior-media">
+            <figure class="image">
+              <img
+                src="/src/posts/infinipaint/assets/toolbar%20canvas%20progression.gif"
+                alt="Rollout progression grid across episodes"
+              />
+              <figcaption>
+                2x4 rollout grid showing degradation over time.
+              </figcaption>
+            </figure>
+            <figure class="image">
+              <img
+                src="/src/posts/infinipaint/assets/final%20moments.gif"
+                alt="Late rollout degradation in final moments"
+              />
+              <figcaption>
+                Late-stage collapse in the interactive viewer.
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="slide slide-limitations"
+        data-title="Limitations + Conclusion"
+      >
+        <h2>Limitations + Conclusion</h2>
+        <div class="limits-top">
+          <div class="card">
+            <strong>Main Limitations</strong>
+            <ol>
+              <li>Up to 280x slower than deterministic simulation (MLX).</li>
+              <li>Autoregressive errors compound over long rollouts.</li>
+            </ol>
+          </div>
+          <div class="card">
+            <strong>Concluding Thoughts</strong>
+            <ul>
+              <li>A simple stateless CNN is surprisingly effective.</li>
+              <li>Rollouts introduce long-horizon failure modes.</li>
+            </ul>
+          </div>
+        </div>
+        <figure class="image">
+          <img
+            src="/src/posts/infinipaint/assets/viewer.gif"
+            alt="Interactive viewer rollout"
+          />
+          <figcaption>Viewer rollout behavior.</figcaption>
+        </figure>
+        <p class="limits-source">
+          Source code:
+          <a
+            href="https://github.com/shuklabhay/infinipaint"
+            target="_blank"
+            rel="noreferrer"
+            >github.com/shuklabhay/infinipaint</a
+          >
+        </p>
+      </section>
+    </main>
+    <div class="status-bar" aria-live="polite">
+      <span id="slide-status-text">Slide 1 / 8</span>
+    </div>
+    <div id="focus-overlay" class="focus-overlay" aria-hidden="true">
+      <img id="focus-overlay-image" alt="" />
+    </div>
+
+    <script>
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const slideStatusText = document.getElementById("slide-status-text");
+      const focusOverlay = document.getElementById("focus-overlay");
+      const focusOverlayImage = document.getElementById("focus-overlay-image");
+      const baseTitle = "Infinipaint: World Modeling a Trivially Simple World";
+
+      let current = 0;
+      function showImageFocus(img) {
+        focusOverlayImage.src = img.currentSrc || img.src;
+        focusOverlayImage.alt = img.alt || "";
+        focusOverlay.classList.add("active");
+        focusOverlay.setAttribute("aria-hidden", "false");
+      }
+
+      function hideImageFocus() {
+        if (!focusOverlay.classList.contains("active")) return;
+        focusOverlay.classList.remove("active");
+        focusOverlay.setAttribute("aria-hidden", "true");
+        focusOverlayImage.removeAttribute("src");
+      }
+
+      function show(index) {
+        current = Math.max(0, Math.min(index, slides.length - 1));
+
+        slides.forEach((slide, i) => {
+          slide.classList.toggle("active", i === current);
+          slide.setAttribute("aria-hidden", String(i !== current));
+          if (i === current) slide.scrollTop = 0;
+        });
+
+        document.title = `${baseTitle} - Slide ${current + 1}/${slides.length}`;
+        slideStatusText.textContent = `Slide ${current + 1} / ${slides.length}`;
+        history.replaceState(null, "", `#slide-${current + 1}`);
+      }
+
+      function go(delta) {
+        show(current + delta);
+      }
+
+      window.addEventListener("keydown", (event) => {
+        const key = event.key;
+        if (key === "Escape") {
+          hideImageFocus();
+          return;
+        }
+        if (key === "ArrowRight" || key === "PageDown" || key === " ") {
+          event.preventDefault();
+          go(1);
+        }
+        if (key === "ArrowLeft" || key === "PageUp") {
+          event.preventDefault();
+          go(-1);
+        }
+        if (key === "Home") {
+          event.preventDefault();
+          show(0);
+        }
+        if (key === "End") {
+          event.preventDefault();
+          show(slides.length - 1);
+        }
+      });
+
+      let touchStartX = null;
+      window.addEventListener(
+        "touchstart",
+        (event) => {
+          touchStartX = event.changedTouches[0].clientX;
+        },
+        { passive: true },
+      );
+
+      window.addEventListener(
+        "touchend",
+        (event) => {
+          hideImageFocus();
+          if (touchStartX === null) return;
+          const delta = event.changedTouches[0].clientX - touchStartX;
+          if (Math.abs(delta) > 45) {
+            go(delta < 0 ? 1 : -1);
+          }
+          touchStartX = null;
+        },
+        { passive: true },
+      );
+
+      function initialSlideFromHash() {
+        const match = window.location.hash.match(/slide-(\d+)/);
+        if (!match) return 0;
+        const parsed = Number(match[1]);
+        if (Number.isNaN(parsed)) return 0;
+        return Math.max(0, Math.min(parsed - 1, slides.length - 1));
+      }
+
+      document.querySelectorAll(".image img").forEach((img) => {
+        img.classList.add("focusable");
+        img.draggable = false;
+
+        img.addEventListener("pointerdown", (event) => {
+          if (event.pointerType === "mouse" && event.button !== 0) return;
+          showImageFocus(img);
+          try {
+            img.setPointerCapture(event.pointerId);
+          } catch (_err) {}
+          event.preventDefault();
+        });
+
+        img.addEventListener("pointerup", hideImageFocus);
+        img.addEventListener("pointercancel", hideImageFocus);
+        img.addEventListener("lostpointercapture", hideImageFocus);
+      });
+
+      window.addEventListener("pointerup", hideImageFocus);
+      window.addEventListener("blur", hideImageFocus);
+
+      show(initialSlideFromHash());
+    </script>
+  </body>
+</html>

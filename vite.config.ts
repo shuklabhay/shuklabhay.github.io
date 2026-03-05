@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig, type ViteDevServer } from "vite";
 import react from "@vitejs/plugin-react";
 import mdx from "@mdx-js/rollup";
 import fs from "fs";
@@ -300,6 +300,38 @@ export default defineConfig({
     },
     {
       name: "copy-static-deps",
+      configureServer(server: ViteDevServer) {
+        server.middlewares.use((req, res, next) => {
+          const rawUrl = req.url?.split("?")[0] ?? "";
+          const match = rawUrl.match(/^\/blog\/([^/]+)\/slideshow\.html$/);
+          if (!match) {
+            next();
+            return;
+          }
+
+          const slug = decodeURIComponent(match[1] ?? "");
+          const slideshowPath = path.resolve(
+            process.cwd(),
+            "src/posts",
+            slug,
+            "slideshow.html",
+          );
+
+          if (!fs.existsSync(slideshowPath)) {
+            next();
+            return;
+          }
+
+          try {
+            const html = fs.readFileSync(slideshowPath, "utf8");
+            res.statusCode = 200;
+            res.setHeader("Content-Type", "text/html; charset=utf-8");
+            res.end(html);
+          } catch (error) {
+            next(error as Error);
+          }
+        });
+      },
       closeBundle: () => {
         fs.copyFileSync("404.html", "dist/404.html");
 
@@ -381,6 +413,22 @@ export default defineConfig({
 `;
 
           fs.writeFileSync(path.join(distPostDir, "index.html"), socialHtml);
+        }
+
+        for (const slug of slugs) {
+          const sourcePostDir = path.join(postsDir, slug);
+          const slideshowSrcPath = path.join(sourcePostDir, "slideshow.html");
+          if (!fs.existsSync(slideshowSrcPath)) continue;
+
+          const distSlideshowDir = path.join(distDir, "blog", slug);
+          fs.mkdirSync(distSlideshowDir, { recursive: true });
+          fs.copyFileSync(
+            slideshowSrcPath,
+            path.join(distSlideshowDir, "slideshow.html"),
+          );
+
+          const distSrcPostDir = path.join(distDir, "src", "posts", slug);
+          fs.cpSync(sourcePostDir, distSrcPostDir, { recursive: true });
         }
       },
     },
