@@ -168,7 +168,7 @@ export default function About() {
               <li style={{ marginTop: "0.45rem" }}>
                 <strong>Thinking</strong>, dreaming, imagining,{" "}
                 <strong>
-                  following intuition, listening and telling stories.
+                  following intuition, listening to and telling stories.
                 </strong>
               </li>
               <li style={{ marginTop: "0.45rem" }}>
