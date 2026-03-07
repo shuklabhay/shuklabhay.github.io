@@ -131,7 +131,7 @@ code {
 .about-contact-link {
   display: inline;
   color: #f5f8ff;
-  font-weight: 600;
+  font-weight: 700;
   border: 0;
   padding: 0;
   border-radius: 0;
@@ -139,6 +139,10 @@ code {
     color 130ms ease,
     opacity 130ms ease;
   opacity: 1;
+}
+
+.about-contact-link strong {
+  font-weight: inherit;
 }
 
 .about-contact-link:hover,

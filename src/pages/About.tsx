@@ -133,8 +133,17 @@ export default function About() {
                   state={{ fromBlog: true, fromPath: "/about" }}
                   className="about-contact-link"
                 >
-                  <strong>CNN-based world models</strong>
+                  <strong>world models</strong>
                 </Link>{" "}
+                &{" "}
+                <a
+                  href="https://github.com/shuklabhay/percgan"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="about-contact-link"
+                >
+                  <strong>music generators</strong>
+                </a>{" "}
                 on my own
               </li>
             </ul>
