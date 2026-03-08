@@ -1,6 +1,11 @@
 import Lightbox from "react-spring-lightbox";
 import type { ImageLightboxProps } from "../utils/types";
-import type { CSSProperties, MouseEvent as ReactMouseEvent } from "react";
+import {
+  useEffect,
+  useState,
+  type CSSProperties,
+  type MouseEvent as ReactMouseEvent,
+} from "react";
 
 function CloseIcon({ size = 18 }: { size?: number }) {
   return (
@@ -21,16 +26,50 @@ function CloseIcon({ size = 18 }: { size?: number }) {
   );
 }
 
+function getViewportSize() {
+  if (typeof window === "undefined") {
+    return { width: 0, height: 0 };
+  }
+
+  return {
+    width: window.innerWidth,
+    height: window.innerHeight,
+  };
+}
+
+function getLightboxPaddingPx(viewportWidth: number) {
+  return Math.min(28.8, Math.max(14.4, viewportWidth * 0.024));
+}
+
 export default function ImageLightbox({
   opened,
   setOpened,
   images,
   currentIndex,
-  setCurrentIndex,
 }: ImageLightboxProps) {
   const handleClose = () => {
     setOpened(false);
   };
+
+  const lightboxPadding = "clamp(0.9rem, 2.4vw, 1.8rem)";
+  const [viewportSize, setViewportSize] = useState(getViewportSize);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const syncViewportSize = () => {
+      setViewportSize(getViewportSize());
+    };
+
+    syncViewportSize();
+    window.addEventListener("resize", syncViewportSize);
+    window.addEventListener("orientationchange", syncViewportSize);
+
+    return () => {
+      window.removeEventListener("resize", syncViewportSize);
+      window.removeEventListener("orientationchange", syncViewportSize);
+    };
+  }, []);
 
   const isTouchAware = () => {
     if (typeof window === "undefined") return false;
@@ -40,32 +79,45 @@ export default function ImageLightbox({
     );
   };
 
+  const activeImage = images[currentIndex];
+  const paddingPx = getLightboxPaddingPx(viewportSize.width || 0);
+  const availableWidth = Math.max(0, viewportSize.width - paddingPx * 2);
+  const availableHeight = Math.max(0, viewportSize.height - paddingPx * 2 - 50);
+  const widthScale =
+    activeImage && activeImage.width > 0
+      ? availableWidth / activeImage.width
+      : Number.POSITIVE_INFINITY;
+  const heightScale =
+    activeImage && activeImage.height > 0
+      ? availableHeight / activeImage.height
+      : Number.POSITIVE_INFINITY;
+
   const imageStyle: CSSProperties = {
-    width: "auto",
+    display: "block",
     height: "auto",
-    maxWidth: "100vw",
-    maxHeight: "100dvh",
+    maxWidth: "100%",
+    maxHeight: "100%",
     objectFit: "contain",
     margin: "0 auto",
   };
 
-  const lightboxImages = images.map((image) => ({
-    ...image,
-    style: imageStyle,
-    draggable: false,
-  }));
+  if (
+    activeImage &&
+    activeImage.width > 0 &&
+    activeImage.height > 0 &&
+    availableWidth > 0 &&
+    availableHeight > 0
+  ) {
+    if (widthScale <= heightScale) {
+      imageStyle.width = `${Math.max(1, Math.round(activeImage.width * widthScale))}px`;
+    } else {
+      imageStyle.height = `${Math.max(1, Math.round(activeImage.height * heightScale))}px`;
+    }
+  }
 
-  const goToPrevious = () => {
-    setCurrentIndex((previous) =>
-      previous <= 0 ? images.length - 1 : previous - 1,
-    );
-  };
-
-  const goToNext = () => {
-    setCurrentIndex((previous) =>
-      previous >= images.length - 1 ? 0 : previous + 1,
-    );
-  };
+  const lightboxImages = activeImage
+    ? [{ ...activeImage, style: imageStyle, draggable: false }]
+    : [];
 
   const handleTintClick = (event: ReactMouseEvent<HTMLDivElement>) => {
     if (event.button !== undefined && event.button !== 0) return;
@@ -81,8 +133,8 @@ export default function ImageLightbox({
     <div onClick={handleTintClick}>
       <Lightbox
         isOpen={opened}
-        onPrev={goToPrevious}
-        onNext={goToNext}
+        onPrev={() => null}
+        onNext={() => null}
         renderHeader={() => (
           <div
             style={{
@@ -118,13 +170,15 @@ export default function ImageLightbox({
         renderNextButton={() => null}
         renderFooter={() => null}
         images={lightboxImages}
-        currentIndex={currentIndex}
+        currentIndex={0}
         onClose={handleClose}
         style={{
           background: "rgba(8, 10, 18, 0.78)",
           touchAction: "none",
           overscrollBehavior: "none",
           overflow: "hidden",
+          padding: lightboxPadding,
+          boxSizing: "border-box",
         }}
         pageTransitionConfig={{
           from: { opacity: 0 },

@@ -25,6 +25,7 @@ declare module "virtual:posts-manifest" {
     date: string;
     author: string;
     buttons: Array<{ title: string; link: string }>;
+    showInlineToc: boolean;
     cover?: string;
     wordCount?: number;
   }>;

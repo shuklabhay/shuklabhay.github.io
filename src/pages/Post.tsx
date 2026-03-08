@@ -21,6 +21,12 @@ import type {
 } from "../utils/types";
 
 const POST_SCROLL_POSITION_PREFIX = "post-scroll-position:";
+const HEADING_SCROLL_OFFSET_PX = 80;
+const ACTIVE_HEADING_THRESHOLD_PX = 140;
+const HEADING_JUMP_SETTLE_TOLERANCE_PX = 12;
+const HEADING_JUMP_RELEASE_DELAY_MS = 140;
+const CARD_TOP_CLAMP_MARGIN_PX = 12;
+const CARD_TOP_CLAMP_DISTANCE_PX = HEADING_SCROLL_OFFSET_PX + 40;
 
 type PostHeading = {
   id: string;
@@ -76,9 +82,62 @@ export default function Post() {
   const [postImages, setPostImages] = useState<RichImage[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [postHeadings, setPostHeadings] = useState<PostHeading[]>([]);
-  const [isSectionOverlayOpen, setIsSectionOverlayOpen] = useState(false);
+  const [activeHeadingId, setActiveHeadingId] = useState<string | null>(null);
   const [postEntry, setPostEntry] = useState<PostEntry | null>(null);
   const [isPostEntryReady, setIsPostEntryReady] = useState(false);
+  const pendingHeadingJumpIdRef = useRef<string | null>(null);
+  const pendingHeadingTargetScrollTopRef = useRef<number | null>(null);
+  const pendingHeadingJumpReleaseTimeoutIdRef = useRef<number | null>(null);
+
+  const clearPendingHeadingJump = useCallback(() => {
+    pendingHeadingJumpIdRef.current = null;
+    pendingHeadingTargetScrollTopRef.current = null;
+
+    if (pendingHeadingJumpReleaseTimeoutIdRef.current !== null) {
+      window.clearTimeout(pendingHeadingJumpReleaseTimeoutIdRef.current);
+      pendingHeadingJumpReleaseTimeoutIdRef.current = null;
+    }
+  }, []);
+
+  const getHeadingTargetScrollTop = useCallback((headingId: string) => {
+    if (typeof window === "undefined") return null;
+    const headingEl = document.getElementById(headingId);
+    if (!(headingEl instanceof HTMLElement)) return null;
+    const readingCardEl = document.querySelector("[data-post-reading-card]");
+    const headingDocumentTop =
+      window.scrollY + headingEl.getBoundingClientRect().top;
+    let nextScrollTop = headingDocumentTop - HEADING_SCROLL_OFFSET_PX;
+
+    if (readingCardEl instanceof HTMLElement) {
+      const cardDocumentTop =
+        window.scrollY + readingCardEl.getBoundingClientRect().top;
+      const headingDistanceFromCardTop = headingDocumentTop - cardDocumentTop;
+
+      if (headingDistanceFromCardTop <= CARD_TOP_CLAMP_DISTANCE_PX) {
+        nextScrollTop = Math.min(
+          nextScrollTop,
+          Math.max(cardDocumentTop - CARD_TOP_CLAMP_MARGIN_PX, 0),
+        );
+      }
+    }
+
+    return Math.max(nextScrollTop, 0);
+  }, []);
+
+  const alignHeadingToViewport = useCallback(
+    (headingId: string, behavior: ScrollBehavior) => {
+      if (typeof window === "undefined") return false;
+      const nextScrollTop = getHeadingTargetScrollTop(headingId);
+      if (nextScrollTop === null) return false;
+
+      window.scrollTo({
+        top: nextScrollTop,
+        behavior,
+      });
+      return true;
+    },
+    [getHeadingTargetScrollTop],
+  );
 
   const getImageHashToken = useCallback((imageSrc: string) => {
     if (typeof window === "undefined") return null;
@@ -129,8 +188,10 @@ export default function Post() {
 
   useEffect(() => {
     if (!postEntry) {
+      clearPendingHeadingJump();
       setPostImages([]);
       setPostHeadings([]);
+      setActiveHeadingId(null);
       setLightboxIndex(0);
       setLightboxOpened(false);
       return;
@@ -138,8 +199,10 @@ export default function Post() {
 
     const contentEl = postContentRef.current;
     if (!contentEl) {
+      clearPendingHeadingJump();
       setPostImages([]);
       setPostHeadings([]);
+      setActiveHeadingId(null);
       return;
     }
 
@@ -147,6 +210,8 @@ export default function Post() {
     const images: RichImage[] = imageElements.map((img) => ({
       src: img.currentSrc || img.src,
       alt: img.alt || "",
+      width: img.naturalWidth || img.width || img.clientWidth || 1,
+      height: img.naturalHeight || img.height || img.clientHeight || 1,
     }));
 
     imageElements.forEach((img, index) => {
@@ -191,9 +256,91 @@ export default function Post() {
 
     setPostImages(images);
     setPostHeadings(headings);
+    setActiveHeadingId(null);
     setLightboxIndex(0);
     setLightboxOpened(false);
-  }, [slug, postEntry]);
+  }, [clearPendingHeadingJump, slug, postEntry]);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || postHeadings.length === 0) {
+      clearPendingHeadingJump();
+      setActiveHeadingId(null);
+      return;
+    }
+
+    const updateActiveHeading = () => {
+      const pendingHeadingId = pendingHeadingJumpIdRef.current;
+      if (pendingHeadingId) {
+        const pendingHeadingEl = document.getElementById(pendingHeadingId);
+        if (pendingHeadingEl instanceof HTMLElement) {
+          const pendingTargetScrollTop =
+            getHeadingTargetScrollTop(pendingHeadingId) ??
+            pendingHeadingTargetScrollTopRef.current;
+          const isSettled =
+            pendingTargetScrollTop !== null &&
+            Math.abs(window.scrollY - pendingTargetScrollTop) <=
+              HEADING_JUMP_SETTLE_TOLERANCE_PX;
+
+          if (pendingTargetScrollTop !== null) {
+            pendingHeadingTargetScrollTopRef.current = pendingTargetScrollTop;
+          }
+
+          setActiveHeadingId((previous) =>
+            previous === pendingHeadingId ? previous : pendingHeadingId,
+          );
+
+          if (!isSettled) {
+            if (pendingHeadingJumpReleaseTimeoutIdRef.current !== null) {
+              window.clearTimeout(pendingHeadingJumpReleaseTimeoutIdRef.current);
+            }
+            pendingHeadingJumpReleaseTimeoutIdRef.current = window.setTimeout(
+              () => {
+                pendingHeadingJumpReleaseTimeoutIdRef.current = null;
+                pendingHeadingJumpIdRef.current = null;
+                pendingHeadingTargetScrollTopRef.current = null;
+                updateActiveHeading();
+              },
+              HEADING_JUMP_RELEASE_DELAY_MS,
+            );
+            return;
+          }
+        }
+
+        clearPendingHeadingJump();
+      }
+
+      let nextHeadingId: string | null = postHeadings[0]?.id ?? null;
+
+      for (const heading of postHeadings) {
+        const headingEl = document.getElementById(heading.id);
+        if (!headingEl) continue;
+        if (headingEl.getBoundingClientRect().top <= ACTIVE_HEADING_THRESHOLD_PX) {
+          nextHeadingId = heading.id;
+        } else {
+          break;
+        }
+      }
+
+      setActiveHeadingId((previous) =>
+        previous === nextHeadingId ? previous : nextHeadingId,
+      );
+    };
+
+    updateActiveHeading();
+    window.addEventListener("scroll", updateActiveHeading, { passive: true });
+    window.addEventListener("resize", updateActiveHeading);
+
+    return () => {
+      window.removeEventListener("scroll", updateActiveHeading);
+      window.removeEventListener("resize", updateActiveHeading);
+    };
+  }, [clearPendingHeadingJump, getHeadingTargetScrollTop, postHeadings]);
+
+  useEffect(() => {
+    return () => {
+      clearPendingHeadingJump();
+    };
+  }, [clearPendingHeadingJump]);
 
   useEffect(() => {
     if (typeof window === "undefined" || postImages.length === 0) return;
@@ -405,17 +552,78 @@ export default function Post() {
 
   const onHeadingJump = (headingId: string) => {
     if (typeof window === "undefined") return;
-    const headingEl = document.getElementById(headingId);
-    if (!headingEl) return;
+    clearPendingHeadingJump();
+    const initialTargetScrollTop = getHeadingTargetScrollTop(headingId);
+    if (initialTargetScrollTop === null) {
+      return;
+    }
 
-    headingEl.scrollIntoView({ behavior: "smooth", block: "start" });
-    window.history.replaceState(
-      window.history.state,
-      "",
-      `${window.location.pathname}${window.location.search}#${headingId}`,
-    );
-    setIsSectionOverlayOpen(false);
+    pendingHeadingJumpIdRef.current = headingId;
+    pendingHeadingTargetScrollTopRef.current = initialTargetScrollTop;
+    setActiveHeadingId(headingId);
+
+    if (
+      Math.abs(window.scrollY - initialTargetScrollTop) <=
+      HEADING_JUMP_SETTLE_TOLERANCE_PX
+    ) {
+      clearPendingHeadingJump();
+      return;
+    }
+
+    window.scrollTo({
+      top: initialTargetScrollTop,
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+    });
   };
+
+  const postSidebar =
+    (() => {
+      const activeHeadingIndex = postHeadings.findIndex(
+        (heading) => heading.id === activeHeadingId,
+      );
+      let activeParentHeadingId: string | null = null;
+
+      if (activeHeadingIndex >= 0) {
+        for (let index = activeHeadingIndex; index >= 0; index -= 1) {
+          const heading = postHeadings[index];
+          if (heading?.level === 2) {
+            activeParentHeadingId = heading.id;
+            break;
+          }
+        }
+      }
+
+      return postSummary.showInlineToc && postHeadings.length > 0 ? (
+        <nav aria-label="Post sections" className="post-toc">
+          <ul className="post-toc-list">
+            {postHeadings.map((heading) => {
+              const isActive = activeHeadingId === heading.id;
+              const isActiveParent =
+                !isActive && activeParentHeadingId === heading.id;
+
+              return (
+                <li key={heading.id}>
+                  <button
+                    type="button"
+                    onClick={() => onHeadingJump(heading.id)}
+                    className={`post-toc-link${
+                      heading.level === 2 ? " is-top-level" : ""
+                    }${isActive ? " is-active" : ""}${
+                      isActiveParent ? " is-parent-active" : ""
+                    }`}
+                    style={{
+                      paddingLeft: `${(heading.level - 2) * 0.72}rem`,
+                    }}
+                  >
+                    <span className="post-toc-label">{heading.text}</span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+      ) : undefined;
+    })();
 
   return (
     <>
@@ -429,134 +637,10 @@ export default function Post() {
         heroImage={heroImage}
         contentRef={postContentRef}
         onContentClick={onPostContentClick}
+        sidebar={postSidebar}
       >
         {Content ? <Content /> : null}
       </BlogPost>
-      {postHeadings.length > 0 ? (
-        <>
-          <button
-            type="button"
-            onClick={() => setIsSectionOverlayOpen(true)}
-            aria-label="Open section navigator"
-            style={{
-              position: "fixed",
-              right: "0.75rem",
-              top: "50%",
-              transform: "translateY(-50%)",
-              border: "1px solid rgba(255, 255, 255, 0.24)",
-              background: "rgba(7, 11, 22, 0.55)",
-              backdropFilter: "blur(6px)",
-              color: "rgba(255, 255, 255, 0.94)",
-              borderRadius: "999px",
-              padding: "0.42rem 0.72rem",
-              fontSize: "0.75rem",
-              fontWeight: 700,
-              letterSpacing: "0.04em",
-              cursor: "pointer",
-              zIndex: 18,
-            }}
-          >
-            ≡ Sections
-          </button>
-          <div
-            role="dialog"
-            aria-modal="true"
-            onClick={() => setIsSectionOverlayOpen(false)}
-            style={{
-              position: "fixed",
-              inset: 0,
-              zIndex: 24,
-              display: "flex",
-              justifyContent: "flex-end",
-              background:
-                "linear-gradient(115deg, rgba(8, 12, 23, 0) 28%, rgba(8, 12, 23, 0.28) 62%, rgba(8, 12, 23, 0.54) 100%)",
-              opacity: isSectionOverlayOpen ? 1 : 0,
-              pointerEvents: isSectionOverlayOpen ? "auto" : "none",
-              transition: "opacity 160ms ease",
-            }}
-          >
-            <aside
-              onClick={(event) => event.stopPropagation()}
-              style={{
-                width: "min(22rem, 88vw)",
-                height: "100%",
-                overflowY: "auto",
-                padding: "1.15rem 1rem 1.25rem",
-                background: "rgba(11, 17, 33, 0.84)",
-                backdropFilter: "blur(12px)",
-                borderLeft: "1px solid rgba(255, 255, 255, 0.16)",
-                color: "white",
-                transform: isSectionOverlayOpen
-                  ? "translateX(0)"
-                  : "translateX(22px)",
-                transition: "transform 190ms ease",
-              }}
-            >
-              <button
-                type="button"
-                onClick={() => setIsSectionOverlayOpen(false)}
-                style={{
-                  border: "none",
-                  background: "transparent",
-                  color: "rgba(255, 255, 255, 0.92)",
-                  padding: 0,
-                  fontSize: "0.88rem",
-                  fontWeight: 700,
-                  cursor: "pointer",
-                }}
-              >
-                Close
-              </button>
-              <p
-                style={{
-                  margin: "0.75rem 0 0.6rem",
-                  fontSize: "0.78rem",
-                  opacity: 0.8,
-                  letterSpacing: "0.05em",
-                  textTransform: "uppercase",
-                }}
-              >
-                Sections
-              </p>
-              <nav aria-label="Post sections">
-                <ul
-                  style={{
-                    listStyle: "none",
-                    margin: 0,
-                    padding: 0,
-                    display: "grid",
-                    gap: "0.28rem",
-                  }}
-                >
-                  {postHeadings.map((heading) => (
-                    <li key={heading.id}>
-                      <button
-                        type="button"
-                        onClick={() => onHeadingJump(heading.id)}
-                        style={{
-                          width: "100%",
-                          textAlign: "left",
-                          border: "none",
-                          padding: "0.18rem 0",
-                          background: "transparent",
-                          color: "rgba(255, 255, 255, 0.9)",
-                          cursor: "pointer",
-                          fontSize: "0.9rem",
-                          lineHeight: 1.35,
-                          textDecoration: "none",
-                          paddingLeft: `${(heading.level - 2) * 0.62}rem`,
-                        }}
-                      >
-                        {heading.text}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            </aside>
-          </div>
-        </>
-      ) : null}
       {lightboxOpened && postImages.length > 0 ? (
         <Suspense fallback={null}>
           <ImageLightbox
@@ -564,7 +648,6 @@ export default function Post() {
             setOpened={setLightboxOpened}
             images={postImages}
             currentIndex={lightboxIndex}
-            setCurrentIndex={setLightboxIndex}
           />
         </Suspense>
       ) : null}

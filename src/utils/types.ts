@@ -24,6 +24,8 @@ export type ContactInfo = {
 export type RichImage = {
   src: string;
   alt: string;
+  width: number;
+  height: number;
 };
 
 export type PostButton = {
@@ -37,6 +39,7 @@ export type PostMeta = {
   date: string;
   author: string;
   buttons: PostButton[];
+  showInlineToc: boolean;
   cover?: string;
   wordCount?: number;
 };
@@ -100,7 +103,6 @@ export type ImageLightboxProps = {
   setOpened: (value: SetStateAction<boolean>) => void;
   images: RichImage[];
   currentIndex: number;
-  setCurrentIndex: (value: SetStateAction<number>) => void;
 };
 
 type UnderlineMode = "none" | "fade" | "move";
@@ -119,14 +121,6 @@ export type NavUnderlineState = {
   animate: boolean;
 };
 
-export type ResizeEdge = "left" | "right";
-
-export type ResizeState = {
-  edge: ResizeEdge;
-  startX: number;
-  startWidth: number;
-};
-
 export type BlogPostProps = {
   isEntryReady: boolean;
   title: string;
@@ -135,6 +129,7 @@ export type BlogPostProps = {
   heroImage: string;
   contentRef: RefObject<HTMLElement>;
   onContentClick?: MouseEventHandler<HTMLElement>;
+  sidebar?: ReactNode;
   children: ReactNode;
 };
 

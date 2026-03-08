@@ -10,7 +10,7 @@
         --text: #111111;
         --muted: #555555;
         --line: #d9d9d9;
-        --status-bar-h: 22px;
+        --status-bar-h: 30px;
       }
 
       * {
@@ -326,11 +326,6 @@
         font-size: 0.94rem;
       }
 
-      .slide-engineering .decision-layout-single {
-        grid-template-columns: 1fr;
-        flex: 0 0 auto;
-      }
-
       .slide-engineering .decision-layout {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -340,9 +335,17 @@
         align-items: stretch;
       }
 
+      .slide-engineering .decision-layout.decision-layout-single {
+        grid-template-columns: 1fr;
+        flex: 0 0 auto;
+        width: 100%;
+        align-self: stretch;
+      }
+
       .slide-engineering .decision-layout .card {
         display: flex;
         flex-direction: column;
+        width: 100%;
       }
 
       .slide-engineering .compression-card {
@@ -444,7 +447,7 @@
         gap: 8px;
         overflow: hidden;
         position: relative;
-        padding-bottom: 20px;
+        padding-bottom: 44px;
       }
 
       .slide-limitations.active {
@@ -493,15 +496,19 @@
         position: absolute;
         left: 0;
         right: 0;
-        bottom: 2px;
+        bottom: 4px;
         margin: 0;
         width: 100%;
         max-width: none;
         text-align: center;
         line-height: 1.2;
-        white-space: nowrap;
+        white-space: normal;
         font-size: 0.86rem;
         color: var(--muted);
+      }
+
+      .slide-limitations .limits-source-line {
+        display: block;
       }
 
       .slide-limitations .limits-source a {
@@ -657,17 +664,51 @@
 
       .status-bar {
         position: fixed;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         left: 0;
         right: 0;
         bottom: 0;
         height: var(--status-bar-h);
         border-top: 1px solid var(--line);
         background: #fff;
-        padding: 1px 8px 0;
-        text-align: center;
+        padding: 0 42px;
         color: var(--muted);
         font-size: 0.72rem;
-        line-height: 1.25;
+        line-height: 1;
+      }
+
+      .status-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        border: 0;
+        background: transparent;
+        color: var(--muted);
+        font: inherit;
+        padding: 2px 8px;
+        cursor: pointer;
+        transition:
+          color 120ms ease,
+          opacity 120ms ease;
+      }
+
+      .status-nav:hover:not(:disabled) {
+        color: var(--text);
+      }
+
+      .status-nav:disabled {
+        opacity: 0.28;
+        cursor: default;
+      }
+
+      .status-nav-prev {
+        left: 6px;
+      }
+
+      .status-nav-next {
+        right: 6px;
       }
 
       @media (max-width: 900px) {
@@ -971,8 +1012,8 @@
             <ul>
               <li>Lines curve & thin, colors fringe.</li>
               <li>
-                During late stages: pen response drops to 18.9% while eraser
-                response remains high at 94.7%.
+                During very late stages (1k+): world-model collapses into
+                eraser-only
               </li>
             </ul>
           </div>
@@ -1028,18 +1069,45 @@
           <figcaption>Viewer rollout behavior.</figcaption>
         </figure>
         <p class="limits-source">
-          Source code:
-          <a
-            href="https://github.com/shuklabhay/infinipaint"
-            target="_blank"
-            rel="noreferrer"
-            >github.com/shuklabhay/infinipaint</a
-          >
+          <span class="limits-source-line">
+            Source code:
+            <a
+              href="https://github.com/shuklabhay/infinipaint"
+              target="_blank"
+              rel="noreferrer"
+              >github.com/shuklabhay/infinipaint</a
+            >
+          </span>
+          <span class="limits-source-line">
+            Full writeup:
+            <a
+              href="https://shuklabhay.github.io/blog/infinipaint"
+              target="_blank"
+              rel="noreferrer"
+              >shuklabhay.github.io/blog/infinipaint</a
+            >
+          </span>
         </p>
       </section>
     </main>
     <div class="status-bar" aria-live="polite">
+      <button
+        id="slide-prev-button"
+        class="status-nav status-nav-prev"
+        type="button"
+        aria-label="Previous slide"
+      >
+        &larr;
+      </button>
       <span id="slide-status-text">Slide 1 / 8</span>
+      <button
+        id="slide-next-button"
+        class="status-nav status-nav-next"
+        type="button"
+        aria-label="Next slide"
+      >
+        &rarr;
+      </button>
     </div>
     <div id="focus-overlay" class="focus-overlay" aria-hidden="true">
       <img id="focus-overlay-image" alt="" />
@@ -1047,6 +1115,8 @@
 
     <script>
       const slides = Array.from(document.querySelectorAll(".slide"));
+      const slidePrevButton = document.getElementById("slide-prev-button");
+      const slideNextButton = document.getElementById("slide-next-button");
       const slideStatusText = document.getElementById("slide-status-text");
       const focusOverlay = document.getElementById("focus-overlay");
       const focusOverlayImage = document.getElementById("focus-overlay-image");
@@ -1078,12 +1148,17 @@
 
         document.title = `${baseTitle} - Slide ${current + 1}/${slides.length}`;
         slideStatusText.textContent = `Slide ${current + 1} / ${slides.length}`;
+        slidePrevButton.disabled = current === 0;
+        slideNextButton.disabled = current === slides.length - 1;
         history.replaceState(null, "", `#slide-${current + 1}`);
       }
 
       function go(delta) {
         show(current + delta);
       }
+
+      slidePrevButton.addEventListener("click", () => go(-1));
+      slideNextButton.addEventListener("click", () => go(1));
 
       window.addEventListener("keydown", (event) => {
         const key = event.key;

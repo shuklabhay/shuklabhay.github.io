@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import type { CSSProperties, PointerEvent as ReactPointerEvent } from "react";
-import type { BlogPostProps, ResizeEdge, ResizeState } from "../utils/types";
+import type { CSSProperties } from "react";
+import ArrowFromLineIcon from "./ArrowFromLineIcon";
+import type { BlogPostProps } from "../utils/types";
 
 const MOBILE_BREAKPOINT_PX = 860;
 const POST_ENTRY_FADE_MS = 375;
-const DEFAULT_DESKTOP_WIDTH_PERCENT = 95;
-const DESKTOP_WIDTH_MIN_PERCENT = 65;
-const DESKTOP_WIDTH_MAX_PERCENT = 95;
+const SIDEBAR_STAGGER_PX = 15;
 
 function getIsMobileViewport() {
   if (typeof window === "undefined") return false;
@@ -21,21 +20,17 @@ export default function BlogPost({
   heroImage,
   contentRef,
   onContentClick,
+  sidebar,
   children,
 }: BlogPostProps) {
   const [isMobile, setIsMobile] = useState(getIsMobileViewport);
-  const [desktopWidthPercent, setDesktopWidthPercent] = useState(
-    DEFAULT_DESKTOP_WIDTH_PERCENT,
-  );
-  const [isResizing, setIsResizing] = useState(false);
-  const [hoveredHandle, setHoveredHandle] = useState<ResizeEdge | null>(null);
-  const [focusedHandle, setFocusedHandle] = useState<ResizeEdge | null>(null);
+  const [isSidebarDismissed, setIsSidebarDismissed] = useState(false);
+  const [sidebarTranslateYPx, setSidebarTranslateYPx] = useState(0);
   const [hoveredButtonIndex, setHoveredButtonIndex] = useState<number | null>(
     null,
   );
-  const resizeStateRef = useRef<ResizeState | null>(null);
-  const pendingWidthRef = useRef<number | null>(null);
-  const resizeFrameRef = useRef<number | null>(null);
+  const [isSidebarToggleHovered, setIsSidebarToggleHovered] = useState(false);
+  const readingCardRef = useRef<HTMLElement>(null);
   const prefersReducedMotion =
     typeof window !== "undefined" &&
     window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
@@ -58,6 +53,7 @@ export default function BlogPost({
 
     const clearSourceHover = () => {
       setHoveredButtonIndex(null);
+      setIsSidebarToggleHovered(false);
     };
 
     const onVisibilityChange = () => {
@@ -76,98 +72,40 @@ export default function BlogPost({
   }, []);
 
   useEffect(() => {
-    if (!isResizing) return;
+    if (typeof window === "undefined" || !sidebar || isMobile) {
+      setSidebarTranslateYPx(0);
+      return;
+    }
 
-    const previousCursor = document.body.style.cursor;
-    const previousUserSelect = document.body.style.userSelect;
-    document.body.style.cursor = "ew-resize";
-    document.body.style.userSelect = "none";
-
-    const clampWidthPercent = (value: number) =>
-      Math.round(
-        Math.min(
-          DESKTOP_WIDTH_MAX_PERCENT,
-          Math.max(DESKTOP_WIDTH_MIN_PERCENT, value),
-        ),
+    const updateSidebarOffset = () => {
+      const cardTop = readingCardRef.current?.getBoundingClientRect().top ?? 0;
+      const nextOffset = Math.round(
+        Math.min(Math.max(cardTop, 0), SIDEBAR_STAGGER_PX),
       );
-
-    const updateDesktopWidth = (next: number) => {
-      setDesktopWidthPercent((previous) => {
-        const clamped = clampWidthPercent(next);
-        return previous === clamped ? previous : clamped;
-      });
+      setSidebarTranslateYPx((current) =>
+        current === nextOffset ? current : nextOffset,
+      );
     };
 
-    const flushPendingWidth = () => {
-      const pendingWidth = pendingWidthRef.current;
-      pendingWidthRef.current = null;
-      if (pendingWidth === null) return;
-      updateDesktopWidth(pendingWidth);
-    };
-
-    const onPointerMove = (event: PointerEvent) => {
-      const state = resizeStateRef.current;
-      if (!state) return;
-
-      const xDelta = event.clientX - state.startX;
-      const edgeDelta = state.edge === "right" ? xDelta : -xDelta;
-      const viewportWidth = Math.max(window.innerWidth, 1);
-      const deltaPercent = (edgeDelta * 200) / viewportWidth;
-      pendingWidthRef.current = state.startWidth + deltaPercent;
-
-      if (resizeFrameRef.current !== null) return;
-      resizeFrameRef.current = window.requestAnimationFrame(() => {
-        resizeFrameRef.current = null;
-        flushPendingWidth();
-      });
-    };
-
-    const onPointerUp = () => {
-      if (resizeFrameRef.current !== null) {
-        window.cancelAnimationFrame(resizeFrameRef.current);
-        resizeFrameRef.current = null;
-      }
-      flushPendingWidth();
-      resizeStateRef.current = null;
-      setIsResizing(false);
-    };
-
-    window.addEventListener("pointermove", onPointerMove);
-    window.addEventListener("pointerup", onPointerUp);
-    window.addEventListener("pointercancel", onPointerUp);
+    updateSidebarOffset();
+    window.addEventListener("scroll", updateSidebarOffset, { passive: true });
+    window.addEventListener("resize", updateSidebarOffset);
 
     return () => {
-      window.removeEventListener("pointermove", onPointerMove);
-      window.removeEventListener("pointerup", onPointerUp);
-      window.removeEventListener("pointercancel", onPointerUp);
-      if (resizeFrameRef.current !== null) {
-        window.cancelAnimationFrame(resizeFrameRef.current);
-        resizeFrameRef.current = null;
-      }
-      flushPendingWidth();
-      document.body.style.cursor = previousCursor;
-      document.body.style.userSelect = previousUserSelect;
+      window.removeEventListener("scroll", updateSidebarOffset);
+      window.removeEventListener("resize", updateSidebarOffset);
     };
-  }, [isResizing]);
-
-  const onResizeHandlePointerDown =
-    (edge: ResizeEdge) => (event: ReactPointerEvent<HTMLButtonElement>) => {
-      if (isMobile) return;
-      event.preventDefault();
-      resizeStateRef.current = {
-        edge,
-        startX: event.clientX,
-        startWidth: desktopWidthPercent,
-      };
-      setIsResizing(true);
-    };
+  }, [isMobile, sidebar]);
 
   const pageXPadding = isMobile ? "0.625rem" : "1.125rem";
   const heroOverlap = isMobile ? 108 : 132;
   const heroHeight = isMobile ? 300 : 470;
   const titleMargin = isMobile ? "-1.9rem 0 0.94rem" : "-2.8rem 0 1.02rem";
-  const showResizeHandles =
-    isResizing || hoveredHandle !== null || focusedHandle !== null;
+  const contentPadding = isMobile
+    ? "0.58rem 0.72rem 0.72rem"
+    : "clamp(0.58rem, 0.92vw, 1rem) clamp(0.9rem, 1.4vw, 1.6rem) clamp(0.68rem, 1.06vw, 1.15rem)";
+  const showSidebar = Boolean(sidebar) && !isMobile && !isSidebarDismissed;
+  const hasDesktopSidebar = Boolean(sidebar) && !isMobile;
   const postContentFadeStyle: CSSProperties = isEntryReady
     ? {
         opacity: 1,
@@ -177,6 +115,30 @@ export default function BlogPost({
         opacity: 0,
         pointerEvents: "none",
       };
+  const sidebarMotionStyle: CSSProperties = {
+    transform: `translateY(${sidebarTranslateYPx}px)`,
+  };
+  const getHeaderButtonStyle = (isHovered: boolean): CSSProperties => ({
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "0.38rem 0.74rem",
+    borderRadius: "0.38rem",
+    border: isHovered
+      ? "1px solid rgba(255, 255, 255, 0.9)"
+      : "1px solid rgba(255, 255, 255, 0.5)",
+    backgroundColor: isHovered
+      ? "rgba(255, 255, 255, 0.16)"
+      : "rgba(255, 255, 255, 0.12)",
+    color: isHovered ? "rgba(255, 255, 255, 1)" : "rgba(255, 255, 255, 0.98)",
+    textDecoration: "none",
+    fontWeight: 600,
+    fontSize: "0.84rem",
+    letterSpacing: "0.01em",
+    lineHeight: 1,
+    transition:
+      "background-color 120ms ease, border-color 120ms ease, color 120ms ease",
+  });
 
   return (
     <main
@@ -275,29 +237,7 @@ export default function BlogPost({
                   onMouseLeave={() => setHoveredButtonIndex(null)}
                   onFocus={() => setHoveredButtonIndex(index)}
                   onBlur={() => setHoveredButtonIndex(null)}
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    padding: "0.38rem 0.74rem",
-                    borderRadius: "0.38rem",
-                    border: isHovered
-                      ? "1px solid rgba(255, 255, 255, 0.9)"
-                      : "1px solid rgba(255, 255, 255, 0.5)",
-                    backgroundColor: isHovered
-                      ? "rgba(255, 255, 255, 0.16)"
-                      : "rgba(255, 255, 255, 0.12)",
-                    color: isHovered
-                      ? "rgba(255, 255, 255, 1)"
-                      : "rgba(255, 255, 255, 0.98)",
-                    textDecoration: "none",
-                    fontWeight: 600,
-                    fontSize: "0.84rem",
-                    letterSpacing: "0.01em",
-                    lineHeight: 1,
-                    transition:
-                      "background-color 120ms ease, border-color 120ms ease, color 120ms ease",
-                  }}
+                  style={getHeaderButtonStyle(isHovered)}
                 >
                   {button.title}
                 </a>
@@ -318,124 +258,22 @@ export default function BlogPost({
         }}
       >
         <section
+          ref={readingCardRef}
+          data-post-reading-card
           style={{
-            width: isMobile ? "100%" : `${desktopWidthPercent}%`,
+            width: isMobile ? "100%" : "95%",
             marginInline: "auto",
             position: "relative",
             color: "#1f2740",
             borderRadius: isMobile ? "10px" : "12px",
             border: "1px solid rgba(210, 223, 255, 0.78)",
             background:
-              "linear-gradient(168deg, rgba(247, 243, 235, 0.98) 0%, rgba(239, 234, 224, 0.95) 100%)",
+              "linear-gradient(168deg, rgba(250, 248, 243, 0.98) 0%, rgba(245, 241, 234, 0.95) 100%)",
             boxShadow: "0 22px 46px rgba(7, 12, 24, 0.25)",
             overflow: "visible",
             isolation: "isolate",
           }}
         >
-          {!isMobile ? (
-            <>
-              <button
-                type="button"
-                onMouseEnter={() => setHoveredHandle("left")}
-                onMouseLeave={() =>
-                  setHoveredHandle((current) =>
-                    current === "left" ? null : current,
-                  )
-                }
-                onFocus={() => setFocusedHandle("left")}
-                onBlur={() =>
-                  setFocusedHandle((current) =>
-                    current === "left" ? null : current,
-                  )
-                }
-                onPointerDown={onResizeHandlePointerDown("left")}
-                aria-label="Decrease content width"
-                style={{
-                  position: "absolute",
-                  left: "-9px",
-                  top: "0.8rem",
-                  bottom: "0.8rem",
-                  width: "18px",
-                  border: 0,
-                  margin: 0,
-                  padding: 0,
-                  background: "transparent",
-                  cursor: "ew-resize",
-                  zIndex: 2,
-                  opacity: showResizeHandles ? 1 : 0,
-                  transition: "opacity 140ms ease",
-                  outline:
-                    focusedHandle === "left" ? "2px solid #4c649f" : "none",
-                  outlineOffset: "2px",
-                }}
-              >
-                <span
-                  aria-hidden
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "4px",
-                    width: "10px",
-                    height: "46px",
-                    transform: "translateY(-50%)",
-                    borderRadius: "999px",
-                    background:
-                      "repeating-linear-gradient(to bottom, rgba(45, 61, 101, 0.75) 0 2px, rgba(45, 61, 101, 0.2) 2px 4px)",
-                  }}
-                />
-              </button>
-              <button
-                type="button"
-                onMouseEnter={() => setHoveredHandle("right")}
-                onMouseLeave={() =>
-                  setHoveredHandle((current) =>
-                    current === "right" ? null : current,
-                  )
-                }
-                onFocus={() => setFocusedHandle("right")}
-                onBlur={() =>
-                  setFocusedHandle((current) =>
-                    current === "right" ? null : current,
-                  )
-                }
-                onPointerDown={onResizeHandlePointerDown("right")}
-                aria-label="Increase content width"
-                style={{
-                  position: "absolute",
-                  right: "-9px",
-                  top: "0.8rem",
-                  bottom: "0.8rem",
-                  width: "18px",
-                  border: 0,
-                  margin: 0,
-                  padding: 0,
-                  background: "transparent",
-                  cursor: "ew-resize",
-                  zIndex: 2,
-                  opacity: showResizeHandles ? 1 : 0,
-                  transition: "opacity 140ms ease",
-                  outline:
-                    focusedHandle === "right" ? "2px solid #4c649f" : "none",
-                  outlineOffset: "2px",
-                }}
-              >
-                <span
-                  aria-hidden
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "4px",
-                    width: "10px",
-                    height: "46px",
-                    transform: "translateY(-50%)",
-                    borderRadius: "999px",
-                    background:
-                      "repeating-linear-gradient(to bottom, rgba(45, 61, 101, 0.75) 0 2px, rgba(45, 61, 101, 0.2) 2px 4px)",
-                  }}
-                />
-              </button>
-            </>
-          ) : null}
           <div
             aria-hidden
             style={{
@@ -446,30 +284,98 @@ export default function BlogPost({
               pointerEvents: "none",
             }}
           />
-          <article
-            ref={contentRef}
-            className="post-content"
-            data-post-content
+          {hasDesktopSidebar && !showSidebar ? (
+            <button
+              type="button"
+              onClick={() => setIsSidebarDismissed(false)}
+              aria-label="Show contents"
+              className="post-reading-card-open-zone"
+            />
+          ) : null}
+          <div
             style={{
               width: "100%",
               maxWidth: "none",
               marginInline: "auto",
               marginBlock: 0,
-              padding: isMobile
-                ? "0.58rem 0.72rem 0.72rem"
-                : "clamp(0.58rem, 0.92vw, 1rem) clamp(0.9rem, 1.4vw, 1.6rem) clamp(0.68rem, 1.06vw, 1.15rem)",
-              lineHeight: 1.74,
-              fontSize: isMobile
-                ? "0.98rem"
-                : "clamp(1rem, 0.58vw + 0.91rem, 1.1rem)",
-              color: "#2a344f",
               position: "relative",
               zIndex: 1,
+              padding: contentPadding,
+              display: "grid",
+              gridTemplateColumns:
+                hasDesktopSidebar
+                  ? `${showSidebar ? "clamp(11.5rem, 16vw, 14.5rem)" : "0px"} minmax(0, 1fr)`
+                  : "minmax(0, 1fr)",
+              gap: showSidebar ? "clamp(1rem, 2vw, 1.8rem)" : 0,
+              alignItems: "start",
+              transition: prefersReducedMotion
+                ? "none"
+                : "grid-template-columns 220ms ease, gap 220ms ease",
             }}
-            onClick={onContentClick}
           >
-            {children}
-          </article>
+            {hasDesktopSidebar ? (
+              <aside
+                style={{
+                  alignSelf: "start",
+                  position: "sticky",
+                  top: "clamp(0.75rem, 2vh, 1.2rem)",
+                  minWidth: 0,
+                  overflow: "visible",
+                }}
+              >
+                <div
+                  className={`post-sidebar-panel${
+                    showSidebar ? " is-open" : " is-closed"
+                  }`}
+                  style={sidebarMotionStyle}
+                >
+                  <div className="post-sidebar-shell">
+                    <div className="post-sidebar-header">
+                      <p className="post-toc-eyebrow">Contents</p>
+                      <button
+                        type="button"
+                        onClick={() => setIsSidebarDismissed(true)}
+                        onMouseEnter={() => setIsSidebarToggleHovered(true)}
+                        onMouseLeave={() => setIsSidebarToggleHovered(false)}
+                        onFocus={() => setIsSidebarToggleHovered(true)}
+                        onBlur={() => setIsSidebarToggleHovered(false)}
+                        aria-label="Hide contents"
+                        className="post-sidebar-toggle"
+                        style={{
+                          opacity: isSidebarToggleHovered ? 1 : 0.86,
+                        }}
+                      >
+                        <ArrowFromLineIcon direction="left" />
+                      </button>
+                    </div>
+                    {sidebar}
+                  </div>
+                </div>
+              </aside>
+            ) : null}
+            <article
+              ref={contentRef}
+              className="post-content"
+              data-post-content
+              style={{
+                width: "100%",
+                maxWidth: "none",
+                marginInline: "auto",
+                marginBlock: 0,
+                minWidth: 0,
+                lineHeight: 1.74,
+                fontSize: isMobile
+                  ? "0.98rem"
+                  : "clamp(1rem, 0.58vw + 0.91rem, 1.1rem)",
+                color: "#2a344f",
+                position: "relative",
+                zIndex: 1,
+              }}
+              onClick={onContentClick}
+            >
+                {children}
+              </article>
+          </div>
         </section>
       </div>
     </main>

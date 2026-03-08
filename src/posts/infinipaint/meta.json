@@ -1,6 +1,7 @@
 {
   "author": "Abhay Shukla",
   "dateCreated": "2026-02-28",
+  "show_inline_toc": true,
   "buttons": [
     {
       "title": "Source Code",

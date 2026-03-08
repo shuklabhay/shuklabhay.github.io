@@ -137,6 +137,7 @@ type PostMetaFile = {
   date?: unknown;
   dateCreated?: unknown;
   buttons?: unknown;
+  show_inline_toc?: unknown;
 };
 
 type ParsedPostMeta = {
@@ -144,12 +145,17 @@ type ParsedPostMeta = {
   author?: string;
   date?: string;
   buttons: Array<{ title: string; link: string }>;
+  showInlineToc: boolean;
 };
 
 function asOptionalString(value: unknown): string | undefined {
   if (typeof value !== "string") return undefined;
   const trimmed = value.trim();
   return trimmed.length > 0 ? trimmed : undefined;
+}
+
+function asOptionalBoolean(value: unknown): boolean | undefined {
+  return typeof value === "boolean" ? value : undefined;
 }
 
 function toIsoDateString(value: string): string | undefined {
@@ -182,7 +188,9 @@ function readPostButtons(
 }
 
 function readPostMeta(metaPath: string): ParsedPostMeta {
-  if (!fs.existsSync(metaPath)) return { buttons: [] };
+  if (!fs.existsSync(metaPath)) {
+    throw new Error(`Missing required post metadata file: ${metaPath}`);
+  }
 
   try {
     const raw = fs.readFileSync(metaPath, "utf8");
@@ -193,15 +201,26 @@ function readPostMeta(metaPath: string): ParsedPostMeta {
     const dateSource =
       asOptionalString(parsed.dateCreated) ?? asOptionalString(parsed.date);
     const date = dateSource ? toIsoDateString(dateSource) : undefined;
+    const showInlineToc = asOptionalBoolean(parsed.show_inline_toc);
+
+    if (showInlineToc === undefined) {
+      throw new Error(
+        `Expected boolean "show_inline_toc" in post metadata: ${metaPath}`,
+      );
+    }
 
     return {
       title,
       author,
       date,
       buttons,
+      showInlineToc,
     };
-  } catch {
-    return { buttons: [] };
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error(`Failed to read post metadata: ${metaPath}`);
   }
 }
 
@@ -258,12 +277,21 @@ export default defineConfig({
           const stat = fs.statSync(postPath);
           this.addWatchFile(metaPath);
 
-          const postMeta = readPostMeta(metaPath);
+          let postMeta: ParsedPostMeta;
+          try {
+            postMeta = readPostMeta(metaPath);
+          } catch (error) {
+            this.error(
+              error instanceof Error ? error.message : String(error),
+            );
+            continue;
+          }
           const title = postMeta.title ?? extractPostTitle(source, slug);
           const wordCount = extractPostWordCount(source);
           const date = postMeta.date ?? stat.mtime.toISOString().slice(0, 10);
           const authorExpr = JSON.stringify(postMeta.author ?? "");
           const buttonsExpr = JSON.stringify(postMeta.buttons);
+          const showInlineTocExpr = JSON.stringify(postMeta.showInlineToc);
 
           const coverCandidates = [
             "banner.png",
@@ -289,7 +317,7 @@ export default defineConfig({
           itemLines.push(
             `{ slug: ${JSON.stringify(slug)}, title: ${JSON.stringify(
               title,
-            )}, date: ${JSON.stringify(date)}, author: ${authorExpr}, buttons: ${buttonsExpr}, cover: ${coverExpr}, wordCount: ${wordCount} }`,
+            )}, date: ${JSON.stringify(date)}, author: ${authorExpr}, buttons: ${buttonsExpr}, showInlineToc: ${showInlineTocExpr}, cover: ${coverExpr}, wordCount: ${wordCount} }`,
           );
         }
 
