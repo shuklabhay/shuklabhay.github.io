@@ -1,6 +1,7 @@
 import {
   Suspense,
   lazy,
+  useCallback,
   useEffect,
   useLayoutEffect,
   useRef,
@@ -20,6 +21,12 @@ import type {
 } from "../utils/types";
 
 const POST_SCROLL_POSITION_PREFIX = "post-scroll-position:";
+
+type PostHeading = {
+  id: string;
+  text: string;
+  level: number;
+};
 const ImageLightbox = lazy(() => import("../components/ImageLightbox"));
 
 function didDocumentReload() {
@@ -68,8 +75,39 @@ export default function Post() {
   const [lightboxOpened, setLightboxOpened] = useState(false);
   const [postImages, setPostImages] = useState<RichImage[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [postHeadings, setPostHeadings] = useState<PostHeading[]>([]);
+  const [isSectionOverlayOpen, setIsSectionOverlayOpen] = useState(false);
   const [postEntry, setPostEntry] = useState<PostEntry | null>(null);
   const [isPostEntryReady, setIsPostEntryReady] = useState(false);
+
+  const getImageHashToken = useCallback((imageSrc: string) => {
+    if (typeof window === "undefined") return null;
+
+    try {
+      const imageUrl = new URL(imageSrc, window.location.href);
+      const fileName = imageUrl.pathname.split("/").pop() ?? "";
+      const decodedFileName = decodeURIComponent(fileName).trim();
+      return decodedFileName || null;
+    } catch {
+      const fallbackName = imageSrc.split("?")[0]?.split("/").pop() ?? "";
+      const decodedFallbackName = decodeURIComponent(fallbackName).trim();
+      return decodedFallbackName || null;
+    }
+  }, []);
+
+  const getCurrentHashImageIndex = useCallback(() => {
+    if (typeof window === "undefined") return null;
+
+    const rawHash = window.location.hash.startsWith("#")
+      ? window.location.hash.slice(1)
+      : window.location.hash;
+    if (!rawHash || !rawHash.includes(".")) return null;
+
+    const hashToken = decodeURIComponent(rawHash);
+    return postImages.findIndex(
+      (image) => getImageHashToken(image.src) === hashToken,
+    );
+  }, [getImageHashToken, postImages]);
 
   useEffect(() => {
     if (!postSummary) {
@@ -92,6 +130,7 @@ export default function Post() {
   useEffect(() => {
     if (!postEntry) {
       setPostImages([]);
+      setPostHeadings([]);
       setLightboxIndex(0);
       setLightboxOpened(false);
       return;
@@ -100,6 +139,7 @@ export default function Post() {
     const contentEl = postContentRef.current;
     if (!contentEl) {
       setPostImages([]);
+      setPostHeadings([]);
       return;
     }
 
@@ -113,10 +153,83 @@ export default function Post() {
       img.dataset.lightboxIndex = String(index);
     });
 
+    const headingElements = Array.from(
+      contentEl.querySelectorAll("h2, h3, h4"),
+    ) as HTMLHeadingElement[];
+    const headingSlugCount = new Map<string, number>();
+    const headings: PostHeading[] = headingElements
+      .map((headingEl) => {
+        const text = headingEl.textContent?.trim() ?? "";
+        if (!text) return null;
+
+        const level = Number(headingEl.tagName.slice(1));
+        if (!Number.isFinite(level)) return null;
+
+        if (!headingEl.id) {
+          const baseSlug = text
+            .toLowerCase()
+            .replace(/[^a-z0-9\s-]/g, "")
+            .trim()
+            .replace(/\s+/g, "-")
+            .replace(/-+/g, "-");
+          const normalizedBase = baseSlug || "section";
+          const occurrence = headingSlugCount.get(normalizedBase) ?? 0;
+          headingSlugCount.set(normalizedBase, occurrence + 1);
+          headingEl.id =
+            occurrence > 0
+              ? `${normalizedBase}-${occurrence + 1}`
+              : normalizedBase;
+        }
+
+        return {
+          id: headingEl.id,
+          text,
+          level,
+        };
+      })
+      .filter((heading): heading is PostHeading => heading !== null);
+
     setPostImages(images);
+    setPostHeadings(headings);
     setLightboxIndex(0);
     setLightboxOpened(false);
   }, [slug, postEntry]);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || postImages.length === 0) return;
+
+    const hashIndex = getCurrentHashImageIndex();
+    if (hashIndex === null) return;
+    if (hashIndex < 0) return;
+
+    setLightboxIndex(hashIndex);
+    setLightboxOpened(true);
+  }, [getCurrentHashImageIndex, postImages]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (!lightboxOpened) return;
+    if (lightboxIndex < 0 || lightboxIndex >= postImages.length) return;
+
+    const activeImage = postImages[lightboxIndex];
+    const hashToken = activeImage ? getImageHashToken(activeImage.src) : null;
+    if (!hashToken) return;
+
+    const nextHash = `#${encodeURIComponent(hashToken)}`;
+    if (window.location.hash === nextHash) return;
+    window.history.replaceState(window.history.state, "", nextHash);
+  }, [getImageHashToken, lightboxIndex, lightboxOpened, postImages]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (lightboxOpened) return;
+
+    const hashIndex = getCurrentHashImageIndex();
+    if (hashIndex === null) return;
+
+    const nextUrl = `${window.location.pathname}${window.location.search}`;
+    window.history.replaceState(window.history.state, "", nextUrl);
+  }, [getCurrentHashImageIndex, lightboxOpened]);
 
   useEffect(() => {
     if (!postSummary) return;
@@ -290,6 +403,20 @@ export default function Post() {
     setLightboxOpened(true);
   };
 
+  const onHeadingJump = (headingId: string) => {
+    if (typeof window === "undefined") return;
+    const headingEl = document.getElementById(headingId);
+    if (!headingEl) return;
+
+    headingEl.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.history.replaceState(
+      window.history.state,
+      "",
+      `${window.location.pathname}${window.location.search}#${headingId}`,
+    );
+    setIsSectionOverlayOpen(false);
+  };
+
   return (
     <>
       <PostBackLink />
@@ -305,6 +432,131 @@ export default function Post() {
       >
         {Content ? <Content /> : null}
       </BlogPost>
+      {postHeadings.length > 0 ? (
+        <>
+          <button
+            type="button"
+            onClick={() => setIsSectionOverlayOpen(true)}
+            aria-label="Open section navigator"
+            style={{
+              position: "fixed",
+              right: "0.75rem",
+              top: "50%",
+              transform: "translateY(-50%)",
+              border: "1px solid rgba(255, 255, 255, 0.24)",
+              background: "rgba(7, 11, 22, 0.55)",
+              backdropFilter: "blur(6px)",
+              color: "rgba(255, 255, 255, 0.94)",
+              borderRadius: "999px",
+              padding: "0.42rem 0.72rem",
+              fontSize: "0.75rem",
+              fontWeight: 700,
+              letterSpacing: "0.04em",
+              cursor: "pointer",
+              zIndex: 18,
+            }}
+          >
+            ≡ Sections
+          </button>
+          <div
+            role="dialog"
+            aria-modal="true"
+            onClick={() => setIsSectionOverlayOpen(false)}
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 24,
+              display: "flex",
+              justifyContent: "flex-end",
+              background:
+                "linear-gradient(115deg, rgba(8, 12, 23, 0) 28%, rgba(8, 12, 23, 0.28) 62%, rgba(8, 12, 23, 0.54) 100%)",
+              opacity: isSectionOverlayOpen ? 1 : 0,
+              pointerEvents: isSectionOverlayOpen ? "auto" : "none",
+              transition: "opacity 160ms ease",
+            }}
+          >
+            <aside
+              onClick={(event) => event.stopPropagation()}
+              style={{
+                width: "min(22rem, 88vw)",
+                height: "100%",
+                overflowY: "auto",
+                padding: "1.15rem 1rem 1.25rem",
+                background: "rgba(11, 17, 33, 0.84)",
+                backdropFilter: "blur(12px)",
+                borderLeft: "1px solid rgba(255, 255, 255, 0.16)",
+                color: "white",
+                transform: isSectionOverlayOpen
+                  ? "translateX(0)"
+                  : "translateX(22px)",
+                transition: "transform 190ms ease",
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => setIsSectionOverlayOpen(false)}
+                style={{
+                  border: "none",
+                  background: "transparent",
+                  color: "rgba(255, 255, 255, 0.92)",
+                  padding: 0,
+                  fontSize: "0.88rem",
+                  fontWeight: 700,
+                  cursor: "pointer",
+                }}
+              >
+                Close
+              </button>
+              <p
+                style={{
+                  margin: "0.75rem 0 0.6rem",
+                  fontSize: "0.78rem",
+                  opacity: 0.8,
+                  letterSpacing: "0.05em",
+                  textTransform: "uppercase",
+                }}
+              >
+                Sections
+              </p>
+              <nav aria-label="Post sections">
+                <ul
+                  style={{
+                    listStyle: "none",
+                    margin: 0,
+                    padding: 0,
+                    display: "grid",
+                    gap: "0.28rem",
+                  }}
+                >
+                  {postHeadings.map((heading) => (
+                    <li key={heading.id}>
+                      <button
+                        type="button"
+                        onClick={() => onHeadingJump(heading.id)}
+                        style={{
+                          width: "100%",
+                          textAlign: "left",
+                          border: "none",
+                          padding: "0.18rem 0",
+                          background: "transparent",
+                          color: "rgba(255, 255, 255, 0.9)",
+                          cursor: "pointer",
+                          fontSize: "0.9rem",
+                          lineHeight: 1.35,
+                          textDecoration: "none",
+                          paddingLeft: `${(heading.level - 2) * 0.62}rem`,
+                        }}
+                      >
+                        {heading.text}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            </aside>
+          </div>
+        </>
+      ) : null}
       {lightboxOpened && postImages.length > 0 ? (
         <Suspense fallback={null}>
           <ImageLightbox
