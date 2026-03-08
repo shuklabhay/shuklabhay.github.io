@@ -155,7 +155,7 @@ export default function About() {
             >
               <li>
                 Understanding the <strong>incomplete and the unknown, </strong>
-                regardless of field or form: incessantly I pursue the edges of
+                regardless of field or form. Incessantly, I pursue the edges of
                 my understanding across biology, psychology, physics, history.
               </li>
               <li style={{ marginTop: "0.45rem" }}>
@@ -166,14 +166,14 @@ export default function About() {
                 I work on, though more recently I've been learning to steer.
               </li>
               <li style={{ marginTop: "0.45rem" }}>
+                How we <strong>perceive, interpret, and understand</strong> the
+                world; the boundary between what we can feel and formalize.
+              </li>
+              <li style={{ marginTop: "0.45rem" }}>
                 <strong>Thinking</strong>, dreaming, imagining,{" "}
                 <strong>
                   following intuition, listening to and telling stories.
                 </strong>
-              </li>
-              <li style={{ marginTop: "0.45rem" }}>
-                How we <strong>perceive, interpret, and understand</strong> the
-                world; the boundary between what we can feel and formalize.
               </li>
               <li style={{ marginTop: "0.45rem" }}>
                 <strong>Technically:</strong> the new primitives machine
