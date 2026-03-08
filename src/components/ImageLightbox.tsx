@@ -26,6 +26,7 @@ export default function ImageLightbox({
   setOpened,
   images,
   currentIndex,
+  setCurrentIndex,
 }: ImageLightboxProps) {
   const handleClose = () => {
     setOpened(false);
@@ -48,12 +49,23 @@ export default function ImageLightbox({
     margin: "0 auto",
   };
 
-  const activeImage = images[currentIndex];
-  const lightboxImages = activeImage
-    ? [{ ...activeImage, style: imageStyle, draggable: false }]
-    : [];
+  const lightboxImages = images.map((image) => ({
+    ...image,
+    style: imageStyle,
+    draggable: false,
+  }));
 
-  const handleNoop = () => {};
+  const goToPrevious = () => {
+    setCurrentIndex((previous) =>
+      previous <= 0 ? images.length - 1 : previous - 1,
+    );
+  };
+
+  const goToNext = () => {
+    setCurrentIndex((previous) =>
+      previous >= images.length - 1 ? 0 : previous + 1,
+    );
+  };
 
   const handleTintClick = (event: ReactMouseEvent<HTMLDivElement>) => {
     if (event.button !== undefined && event.button !== 0) return;
@@ -69,8 +81,8 @@ export default function ImageLightbox({
     <div onClick={handleTintClick}>
       <Lightbox
         isOpen={opened}
-        onPrev={handleNoop}
-        onNext={handleNoop}
+        onPrev={goToPrevious}
+        onNext={goToNext}
         renderHeader={() => (
           <div
             style={{
@@ -106,7 +118,7 @@ export default function ImageLightbox({
         renderNextButton={() => null}
         renderFooter={() => null}
         images={lightboxImages}
-        currentIndex={0}
+        currentIndex={currentIndex}
         onClose={handleClose}
         style={{
           background: "rgba(8, 10, 18, 0.78)",
