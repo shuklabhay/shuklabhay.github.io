@@ -65,6 +65,36 @@
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="./src/Main.tsx"></script>
+    <script type="module">
+      (async function () {
+        const normalizedPathname =
+          window.location.pathname.replace(/\/+$/, "") || "/";
+
+        if (normalizedPathname === "/resume") {
+          const fallbackPath = "/about";
+
+          try {
+            const response = await fetch("/static/sitedata/contact.json");
+            const contactData = await response.json();
+            const resumeLink = Array.isArray(contactData)
+              ? contactData.find((entry) => entry?.title === "Resume")?.link
+              : undefined;
+
+            window.location.replace(
+              typeof resumeLink === "string" && resumeLink
+                ? resumeLink
+                : fallbackPath,
+            );
+            return;
+          } catch (error) {
+            console.error("Failed to redirect to resume:", error);
+            window.location.replace(fallbackPath);
+            return;
+          }
+        }
+
+        await import("./src/Main.tsx");
+      })();
+    </script>
   </body>
 </html>

@@ -1,13 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import PageTitle from "../components/PageTitle";
+import { contactPromise, getContactLink } from "../utils/contactData";
 import { shouldSkipEntryAnimation, useEntryFade } from "../utils/useEntryFade";
 import { getLastPathname, isBlogPostPath } from "../utils/routeTransitions";
 import type { ContactInfo, RouteTransitionState } from "../utils/types";
-
-const contactPromise = fetch("/static/sitedata/contact.json").then((res) =>
-  res.json(),
-);
 
 export default function About() {
   const location = useLocation();
@@ -43,10 +40,11 @@ export default function About() {
       .catch((err) => console.error("Failed to load contact data:", err));
   }, []);
 
-  const rawEmail = contactData.find((c) => c.title === "Email")?.link;
+  const rawEmail = getContactLink(contactData, "Email");
   const email = rawEmail ? `mailto:${rawEmail}` : undefined;
-  const twitter = contactData.find((c) => c.title === "Twitter")?.link;
-  const github = contactData.find((c) => c.title === "GitHub")?.link;
+  const resume = getContactLink(contactData, "Resume");
+  const twitter = getContactLink(contactData, "Twitter");
+  const github = getContactLink(contactData, "GitHub");
 
   return (
     <main
@@ -196,9 +194,9 @@ export default function About() {
               }}
             >
               <a
-                href="https://docs.google.com/document/d/1AmxSqHyPKsZIAPha-v2eDTIGKNvpwcFVRLMoa6gTJuk/edit?tab=t.0"
-                target="_blank"
-                rel="noopener noreferrer"
+                href={resume ?? "/resume"}
+                target={resume ? "_blank" : undefined}
+                rel={resume ? "noopener noreferrer" : undefined}
                 className="about-contact-link"
               >
                 <strong>Resume</strong>

@@ -19,6 +19,7 @@ const SITE_TITLE = "Abhay Shukla";
 const SITE_TITLE_SEPARATOR = " · ";
 const About = lazy(() => import("./pages/About.tsx"));
 const Blog = lazy(() => import("./pages/Blog.tsx"));
+const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 const Post = lazy(() => import("./pages/Post.tsx"));
 
 function normalizePathname(pathname: string) {
@@ -61,7 +62,7 @@ function getRouteDocumentTitle(pathname: string) {
     return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Blog`;
   }
 
-  if (normalizedPathname.startsWith("/blog/")) {
+  if (/^\/blog\/[^/]+$/.test(normalizedPathname)) {
     const slug = normalizedPathname.slice("/blog/".length).split("/")[0] ?? "";
     const postTitle = capitalizeWords(humanizeRouteSegment(slug));
     if (!postTitle) {
@@ -70,18 +71,7 @@ function getRouteDocumentTitle(pathname: string) {
     return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}${postTitle}`;
   }
 
-  const sectionLabel = normalizedPathname
-    .split("/")
-    .filter(Boolean)
-    .map(humanizeRouteSegment)
-    .filter(Boolean)
-    .join(SITE_TITLE_SEPARATOR);
-
-  if (!sectionLabel) {
-    return SITE_TITLE;
-  }
-
-  return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}${sectionLabel}`;
+  return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Page Not Found`;
 }
 
 function getHomeBackgroundCandidates() {
@@ -391,6 +381,7 @@ function AppShell() {
             <Route path="/about" element={<About />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<Post />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
       </div>

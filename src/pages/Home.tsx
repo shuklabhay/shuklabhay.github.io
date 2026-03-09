@@ -1,13 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import PageTitle, { CheckboxSubtitleLink } from "../components/PageTitle";
+import { contactPromise, getContactLink } from "../utils/contactData";
 import { shouldSkipEntryAnimation, useEntryFade } from "../utils/useEntryFade";
 import { getLastPathname, isBlogPostPath } from "../utils/routeTransitions";
 import type { ContactInfo, RouteTransitionState } from "../utils/types";
-
-const contactPromise = fetch("/static/sitedata/contact.json").then((res) =>
-  res.json(),
-);
 
 export default function Home() {
   const location = useLocation();
@@ -44,10 +41,10 @@ export default function Home() {
       .catch((err) => console.error("Failed to load contact data:", err));
   }, []);
 
-  const rawEmail = contactData.find((c) => c.title === "Email")?.link;
+  const rawEmail = getContactLink(contactData, "Email");
   const email = rawEmail ? `mailto:${rawEmail}` : undefined;
-  const github = contactData.find((c) => c.title === "GitHub")?.link;
-  const linkedin = contactData.find((c) => c.title === "Linkedin")?.link;
+  const github = getContactLink(contactData, "GitHub");
+  const linkedin = getContactLink(contactData, "Linkedin");
 
   return (
     <main
