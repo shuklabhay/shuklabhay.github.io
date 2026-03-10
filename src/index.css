@@ -131,7 +131,7 @@ code {
 
 .about-contact-link {
   display: inline;
-  color: #f5f8ff;
+  color: #f7f8fb;
   font-weight: 700;
   border: 0;
   padding: 0;
@@ -149,12 +149,12 @@ code {
 .about-contact-link:hover,
 .about-contact-link:focus-visible {
   opacity: 0.75;
-  color: #f5f8ff;
+  color: #f7f8fb;
 }
 
 .about-contact-link:active {
   opacity: 0.6;
-  color: #f5f8ff;
+  color: #f7f8fb;
 }
 
 .about-contact-link:focus-visible {
