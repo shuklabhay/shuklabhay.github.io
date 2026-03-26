@@ -291,7 +291,9 @@ export default function Post() {
 
           if (!isSettled) {
             if (pendingHeadingJumpReleaseTimeoutIdRef.current !== null) {
-              window.clearTimeout(pendingHeadingJumpReleaseTimeoutIdRef.current);
+              window.clearTimeout(
+                pendingHeadingJumpReleaseTimeoutIdRef.current,
+              );
             }
             pendingHeadingJumpReleaseTimeoutIdRef.current = window.setTimeout(
               () => {
@@ -314,7 +316,9 @@ export default function Post() {
       for (const heading of postHeadings) {
         const headingEl = document.getElementById(heading.id);
         if (!headingEl) continue;
-        if (headingEl.getBoundingClientRect().top <= ACTIVE_HEADING_THRESHOLD_PX) {
+        if (
+          headingEl.getBoundingClientRect().top <= ACTIVE_HEADING_THRESHOLD_PX
+        ) {
           nextHeadingId = heading.id;
         } else {
           break;
@@ -576,54 +580,53 @@ export default function Post() {
     });
   };
 
-  const postSidebar =
-    (() => {
-      const activeHeadingIndex = postHeadings.findIndex(
-        (heading) => heading.id === activeHeadingId,
-      );
-      let activeParentHeadingId: string | null = null;
+  const postSidebar = (() => {
+    const activeHeadingIndex = postHeadings.findIndex(
+      (heading) => heading.id === activeHeadingId,
+    );
+    let activeParentHeadingId: string | null = null;
 
-      if (activeHeadingIndex >= 0) {
-        for (let index = activeHeadingIndex; index >= 0; index -= 1) {
-          const heading = postHeadings[index];
-          if (heading?.level === 2) {
-            activeParentHeadingId = heading.id;
-            break;
-          }
+    if (activeHeadingIndex >= 0) {
+      for (let index = activeHeadingIndex; index >= 0; index -= 1) {
+        const heading = postHeadings[index];
+        if (heading?.level === 2) {
+          activeParentHeadingId = heading.id;
+          break;
         }
       }
+    }
 
-      return postSummary.showInlineToc && postHeadings.length > 0 ? (
-        <nav aria-label="Post sections" className="post-toc">
-          <ul className="post-toc-list">
-            {postHeadings.map((heading) => {
-              const isActive = activeHeadingId === heading.id;
-              const isActiveParent =
-                !isActive && activeParentHeadingId === heading.id;
+    return postSummary.showInlineToc && postHeadings.length > 0 ? (
+      <nav aria-label="Post sections" className="post-toc">
+        <ul className="post-toc-list">
+          {postHeadings.map((heading) => {
+            const isActive = activeHeadingId === heading.id;
+            const isActiveParent =
+              !isActive && activeParentHeadingId === heading.id;
 
-              return (
-                <li key={heading.id}>
-                  <button
-                    type="button"
-                    onClick={() => onHeadingJump(heading.id)}
-                    className={`post-toc-link${
-                      heading.level === 2 ? " is-top-level" : ""
-                    }${isActive ? " is-active" : ""}${
-                      isActiveParent ? " is-parent-active" : ""
-                    }`}
-                    style={{
-                      paddingLeft: `${(heading.level - 2) * 0.72}rem`,
-                    }}
-                  >
-                    <span className="post-toc-label">{heading.text}</span>
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
-      ) : undefined;
-    })();
+            return (
+              <li key={heading.id}>
+                <button
+                  type="button"
+                  onClick={() => onHeadingJump(heading.id)}
+                  className={`post-toc-link${
+                    heading.level === 2 ? " is-top-level" : ""
+                  }${isActive ? " is-active" : ""}${
+                    isActiveParent ? " is-parent-active" : ""
+                  }`}
+                  style={{
+                    paddingLeft: `${(heading.level - 2) * 0.72}rem`,
+                  }}
+                >
+                  <span className="post-toc-label">{heading.text}</span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+    ) : undefined;
+  })();
 
   return (
     <>

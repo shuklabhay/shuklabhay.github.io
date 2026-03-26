@@ -281,9 +281,7 @@ export default defineConfig({
           try {
             postMeta = readPostMeta(metaPath);
           } catch (error) {
-            this.error(
-              error instanceof Error ? error.message : String(error),
-            );
+            this.error(error instanceof Error ? error.message : String(error));
             continue;
           }
           const title = postMeta.title ?? extractPostTitle(source, slug);

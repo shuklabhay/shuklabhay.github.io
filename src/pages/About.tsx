@@ -214,7 +214,7 @@ export default function About() {
               >
                 <strong>Twitter/X</strong>
               </a>{" "}
-              |
+              |{" "}
               <a
                 href={github}
                 target="_blank"

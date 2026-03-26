@@ -302,10 +302,9 @@ export default function BlogPost({
               zIndex: 1,
               padding: contentPadding,
               display: "grid",
-              gridTemplateColumns:
-                hasDesktopSidebar
-                  ? `${showSidebar ? "clamp(11.5rem, 16vw, 14.5rem)" : "0px"} minmax(0, 1fr)`
-                  : "minmax(0, 1fr)",
+              gridTemplateColumns: hasDesktopSidebar
+                ? `${showSidebar ? "clamp(11.5rem, 16vw, 14.5rem)" : "0px"} minmax(0, 1fr)`
+                : "minmax(0, 1fr)",
               gap: showSidebar ? "clamp(1rem, 2vw, 1.8rem)" : 0,
               alignItems: "start",
               transition: prefersReducedMotion
@@ -373,8 +372,8 @@ export default function BlogPost({
               }}
               onClick={onContentClick}
             >
-                {children}
-              </article>
+              {children}
+            </article>
           </div>
         </section>
       </div>
