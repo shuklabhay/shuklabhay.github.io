@@ -1,17 +1,36 @@
 import type { ContactInfo } from "./types";
 
-const CONTACT_DATA_URL = "/static/sitedata/contact.json";
+export const contactData: ReadonlyArray<ContactInfo> = [
+  {
+    title: "Resume",
+    link: "https://docs.google.com/document/d/1AmxSqHyPKsZIAPha-v2eDTIGKNvpwcFVRLMoa6gTJuk/edit?tab=t.0",
+  },
+  {
+    title: "Email",
+    link: "01shuklabhay@gmail.com",
+  },
+  {
+    title: "Linkedin",
+    link: "https://www.linkedin.com/in/shuklabhay/",
+  },
+  {
+    title: "GitHub",
+    link: "https://github.com/shuklabhay",
+  },
+  {
+    title: "Twitter",
+    link: "https://x.com/01shuklabhay",
+  },
+  {
+    title: "Website",
+    link: "https://shuklabhay.github.io",
+  },
+];
 
-export const contactPromise: Promise<ContactInfo[]> = fetch(
-  CONTACT_DATA_URL,
-).then(async (res) => {
-  if (!res.ok) {
-    throw new Error(`Failed to load contact data: ${res.status}`);
-  }
-
-  return (await res.json()) as ContactInfo[];
-});
-
-export function getContactLink(contactData: ContactInfo[], title: string) {
-  return contactData.find((contact) => contact.title === title)?.link;
+export function getContactLink(
+  contactItems: ReadonlyArray<ContactInfo>,
+  title: string,
+): string | undefined {
+  return contactItems.find((contact: ContactInfo) => contact.title === title)
+    ?.link;
 }

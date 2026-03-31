@@ -44,6 +44,7 @@
     </script>
     <link rel="icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/logo192.png" />
+    <link rel="canonical" href="https://shuklabhay.github.io/" />
     <link
       rel="preload"
       href="/static/landing-1280.webp"
@@ -51,51 +52,44 @@
       type="image/webp"
       fetchpriority="high"
     />
-    <link
-      rel="preload"
-      href="/static/landing-1920.webp"
-      as="image"
-      type="image/webp"
-    />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta
+      name="description"
+      content="Machine learning projects, writing, and research by Abhay Shukla."
+    />
+    <meta name="robots" content="index,follow" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Abhay Shukla" />
+    <meta
+      property="og:description"
+      content="Machine learning projects, writing, and research by Abhay Shukla."
+    />
+    <meta property="og:url" content="https://shuklabhay.github.io/" />
+    <meta
+      property="og:image"
+      content="https://shuklabhay.github.io/static/landing-1280.webp"
+    />
+    <meta
+      property="og:image:alt"
+      content="Abhay Shukla portfolio landing image"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Abhay Shukla" />
+    <meta
+      name="twitter:description"
+      content="Machine learning projects, writing, and research by Abhay Shukla."
+    />
+    <meta
+      name="twitter:image"
+      content="https://shuklabhay.github.io/static/landing-1280.webp"
     />
     <title>Abhay Shukla</title>
   </head>
   <body>
     <div id="root"></div>
-    <script type="module">
-      (async function () {
-        const normalizedPathname =
-          window.location.pathname.replace(/\/+$/, "") || "/";
-
-        if (normalizedPathname === "/resume") {
-          const fallbackPath = "/about";
-          document.title = "Abhay Shukla · Resume";
-
-          try {
-            const response = await fetch("/static/sitedata/contact.json");
-            const contactData = await response.json();
-            const resumeLink = Array.isArray(contactData)
-              ? contactData.find((entry) => entry?.title === "Resume")?.link
-              : undefined;
-
-            window.location.replace(
-              typeof resumeLink === "string" && resumeLink
-                ? resumeLink
-                : fallbackPath,
-            );
-            return;
-          } catch (error) {
-            console.error("Failed to redirect to resume:", error);
-            window.location.replace(fallbackPath);
-            return;
-          }
-        }
-
-        await import("./src/Main.tsx");
-      })();
-    </script>
+    <script type="module" src="/src/Main.tsx"></script>
   </body>
 </html>

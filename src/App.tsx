@@ -21,13 +21,14 @@ const About = lazy(() => import("./pages/About.tsx"));
 const Blog = lazy(() => import("./pages/Blog.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 const Post = lazy(() => import("./pages/Post.tsx"));
+const Resume = lazy(() => import("./pages/Resume.tsx"));
 
-function normalizePathname(pathname: string) {
+function normalizePathname(pathname: string): string {
   if (pathname === "/") return pathname;
   return pathname.replace(/\/+$/, "");
 }
 
-function decodeSegment(segment: string) {
+function decodeSegment(segment: string): string {
   try {
     return decodeURIComponent(segment);
   } catch {
@@ -35,11 +36,11 @@ function decodeSegment(segment: string) {
   }
 }
 
-function humanizeRouteSegment(segment: string) {
+function humanizeRouteSegment(segment: string): string {
   return decodeSegment(segment).replace(/[-_]+/g, " ").trim();
 }
 
-function capitalizeWords(value: string) {
+function capitalizeWords(value: string): string {
   return value
     .split(/\s+/)
     .filter(Boolean)
@@ -47,7 +48,7 @@ function capitalizeWords(value: string) {
     .join(" ");
 }
 
-function getRouteDocumentTitle(pathname: string) {
+function getRouteDocumentTitle(pathname: string): string {
   const normalizedPathname = normalizePathname(pathname);
 
   if (normalizedPathname === "/") {
@@ -62,6 +63,10 @@ function getRouteDocumentTitle(pathname: string) {
     return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Blog`;
   }
 
+  if (normalizedPathname === "/resume") {
+    return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Resume`;
+  }
+
   if (/^\/blog\/[^/]+$/.test(normalizedPathname)) {
     const slug = normalizedPathname.slice("/blog/".length).split("/")[0] ?? "";
     const postTitle = capitalizeWords(humanizeRouteSegment(slug));
@@ -74,7 +79,7 @@ function getRouteDocumentTitle(pathname: string) {
   return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Page Not Found`;
 }
 
-function getHomeBackgroundCandidates() {
+function getHomeBackgroundCandidates(): string[] {
   if (typeof window === "undefined") return [HOME_BACKGROUND_IMMEDIATE_SRC];
 
   const viewportWidth = Math.max(
@@ -135,7 +140,7 @@ function getHomeBackgroundCandidates() {
   ];
 }
 
-function preloadDecodedImage(src: string) {
+function preloadDecodedImage(src: string): Promise<boolean> {
   return new Promise<boolean>((resolve) => {
     const image = new Image();
     let settled = false;
@@ -178,7 +183,9 @@ function preloadDecodedImage(src: string) {
   });
 }
 
-async function preloadFirstAvailableImage(candidates: string[]) {
+async function preloadFirstAvailableImage(
+  candidates: string[],
+): Promise<string | null> {
   if (candidates.length === 0) return null;
 
   return new Promise<string | null>((resolve) => {
@@ -206,7 +213,7 @@ async function preloadFirstAvailableImage(candidates: string[]) {
   });
 }
 
-function useIsMobileViewport() {
+function useIsMobileViewport(): boolean {
   const [isMobileViewport, setIsMobileViewport] = useState(() => {
     if (typeof window === "undefined") return false;
     return window.matchMedia(MOBILE_BREAKPOINT_QUERY).matches;
@@ -238,16 +245,13 @@ function RouteBackground({
 }: {
   isMobileViewport: boolean;
   prefersReducedMotion: boolean;
-}) {
+}): JSX.Element {
   const location = useLocation();
   const isHome = location.pathname === "/";
   const [homeBackgroundSrc, setHomeBackgroundSrc] = useState(
     () => HOME_BACKGROUND_IMMEDIATE_SRC,
   );
   const decodedHomeBackgroundSrcSetRef = useRef(new Set<string>());
-  const queuedHomeBackgroundSrcRef = useRef<string | null>(null);
-  const isHomeRef = useRef(isHome);
-  isHomeRef.current = isHome;
   const shouldShowHomeBackground = isHome;
   const backgroundVeilTransition = shouldShowHomeBackground
     ? prefersReducedMotion
@@ -271,33 +275,23 @@ function RouteBackground({
   }, [homeBackgroundSrc]);
 
   useEffect(() => {
-    if (!isHome && queuedHomeBackgroundSrcRef.current) {
-      const queuedSrc = queuedHomeBackgroundSrcRef.current;
-      queuedHomeBackgroundSrcRef.current = null;
-      setHomeBackgroundSrc((current) =>
-        current === queuedSrc ? current : queuedSrc,
-      );
-    }
-  }, [isHome]);
+    if (isHome) return;
 
-  useEffect(() => {
     let cancelled = false;
-    const candidates = getHomeBackgroundCandidates();
+    const candidates = getHomeBackgroundCandidates().filter(
+      (candidate: string) => candidate !== HOME_BACKGROUND_IMMEDIATE_SRC,
+    );
 
     preloadFirstAvailableImage(candidates).then((src) => {
       if (cancelled) return;
       if (!src) return;
-      if (isHomeRef.current) {
-        queuedHomeBackgroundSrcRef.current = src;
-        return;
-      }
       setHomeBackgroundSrc((current) => (current === src ? current : src));
     });
 
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [isHome]);
 
   return (
     <>
@@ -339,7 +333,7 @@ function RouteBackground({
   );
 }
 
-function AppShell() {
+function AppShell(): JSX.Element {
   const location = useLocation();
   const isMobileViewport = useIsMobileViewport();
   const prefersReducedMotion =
@@ -381,6 +375,7 @@ function AppShell() {
             <Route path="/about" element={<About />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<Post />} />
+            <Route path="/resume" element={<Resume />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
@@ -389,7 +384,7 @@ function AppShell() {
   );
 }
 
-export default function App() {
+export default function App(): JSX.Element {
   return (
     <BrowserRouter
       future={{

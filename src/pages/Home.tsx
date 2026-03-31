@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { useLocation } from "react-router-dom";
 import PageTitle, { CheckboxSubtitleLink } from "../components/PageTitle";
-import { contactPromise, getContactLink } from "../utils/contactData";
+import { contactData, getContactLink } from "../utils/contactData";
 import { shouldSkipEntryAnimation, useEntryFade } from "../utils/useEntryFade";
 import { getLastPathname, isBlogPostPath } from "../utils/routeTransitions";
-import type { ContactInfo, RouteTransitionState } from "../utils/types";
+import type { RouteTransitionState } from "../utils/types";
 
-export default function Home() {
+export default function Home(): JSX.Element {
   const location = useLocation();
   const transitionState = location.state as RouteTransitionState | null;
   const entryFadeDecisionByLocationKeyRef = useRef<{
@@ -33,13 +33,6 @@ export default function Home() {
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true
     );
   const entryFadeStyle = useEntryFade(shouldAnimateEntry, 525);
-  const [contactData, setContactData] = useState<ContactInfo[]>([]);
-
-  useEffect(() => {
-    contactPromise
-      .then((data) => setContactData(data))
-      .catch((err) => console.error("Failed to load contact data:", err));
-  }, []);
 
   const rawEmail = getContactLink(contactData, "Email");
   const email = rawEmail ? `mailto:${rawEmail}` : undefined;

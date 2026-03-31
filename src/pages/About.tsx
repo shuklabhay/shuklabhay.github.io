@@ -1,19 +1,18 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import PageTitle from "../components/PageTitle";
-import { contactPromise, getContactLink } from "../utils/contactData";
+import { contactData, getContactLink } from "../utils/contactData";
 import { shouldSkipEntryAnimation, useEntryFade } from "../utils/useEntryFade";
 import { getLastPathname, isBlogPostPath } from "../utils/routeTransitions";
-import type { ContactInfo, RouteTransitionState } from "../utils/types";
+import type { RouteTransitionState } from "../utils/types";
 
-export default function About() {
+export default function About(): JSX.Element {
   const location = useLocation();
   const transitionState = location.state as RouteTransitionState | null;
   const entryFadeDecisionByLocationKeyRef = useRef<{
     key: string;
     shouldAnimate: boolean;
   } | null>(null);
-  const [contactData, setContactData] = useState<ContactInfo[]>([]);
 
   if (entryFadeDecisionByLocationKeyRef.current?.key !== location.key) {
     const lastPathname = getLastPathname();
@@ -34,11 +33,6 @@ export default function About() {
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true
     );
   const entryFadeStyle = useEntryFade(shouldAnimateEntry, 525);
-  useEffect(() => {
-    contactPromise
-      .then((data) => setContactData(data))
-      .catch((err) => console.error("Failed to load contact data:", err));
-  }, []);
 
   const rawEmail = getContactLink(contactData, "Email");
   const email = rawEmail ? `mailto:${rawEmail}` : undefined;
