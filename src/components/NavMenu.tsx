@@ -245,7 +245,7 @@ export default function NavMenu() {
               }}
               style={{
                 display: "inline-block",
-                paddingBottom: "2px",
+                paddingBottom: "3px",
               }}
             >
               {label}
