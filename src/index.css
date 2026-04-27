@@ -54,6 +54,14 @@ body.route-home {
   height: calc(100lvh);
 }
 
+html.route-home {
+  background-color: #5a6c99;
+  background-image: url("/static/landing-1280.webp");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
 body.route-home {
   background-color: transparent;
   background-image: none;
