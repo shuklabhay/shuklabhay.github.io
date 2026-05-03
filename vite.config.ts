@@ -213,61 +213,114 @@ function readPostMeta(metaPath: string): ParsedPostMeta {
   }
 }
 
-function createSpaRedirectScript(): string {
-  return `<script type="text/javascript">
-      (function () {
-        var l = window.location;
-        if (l.search[1] === "/") return;
-        l.replace(
-          l.protocol +
-            "//" +
-            l.hostname +
-            (l.port ? ":" + l.port : "") +
-            "/?/" +
-            l.pathname.slice(1).replace(/&/g, "~and~") +
-            (l.search ? "&" + l.search.slice(1).replace(/&/g, "~and~") : "") +
-            l.hash,
-        );
-      })();
-    </script>`;
+function replaceRequiredHtml(
+  html: string,
+  pattern: RegExp,
+  replacement: string,
+  label: string,
+): string {
+  if (!pattern.test(html)) {
+    throw new Error(`Missing ${label} in app shell HTML`);
+  }
+  return html.replace(pattern, replacement);
 }
 
-function createSocialHtml(meta: SocialPageMeta): string {
+function createSocialHtml(meta: SocialPageMeta, appShellHtml: string): string {
   const canonicalUrl = `${SITE_ORIGIN}${meta.canonicalPath}`;
   const socialImageUrl = `${SITE_ORIGIN}${DEFAULT_SOCIAL_IMAGE_PATH}`;
   const escapedTitle = escapeHtmlAttribute(meta.title);
   const escapedDescription = escapeHtmlAttribute(meta.description);
   const escapedImageAlt = escapeHtmlAttribute(SOCIAL_IMAGE_ALT);
 
-  return `<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>${escapedTitle}</title>
-    <meta name="description" content="${escapedDescription}" />
-    <meta property="og:type" content="${meta.type}" />
-    <meta property="og:title" content="${escapedTitle}" />
-    <meta property="og:description" content="${escapedDescription}" />
-    <meta property="og:url" content="${canonicalUrl}" />
-    <meta property="og:image" content="${socialImageUrl}" />
-    <meta property="og:image:alt" content="${escapedImageAlt}" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="${escapedTitle}" />
-    <meta name="twitter:description" content="${escapedDescription}" />
-    <meta name="twitter:image" content="${socialImageUrl}" />
-    <link rel="canonical" href="${canonicalUrl}" />
-    <meta name="robots" content="index,follow" />
-    ${createSpaRedirectScript()}
-  </head>
-  <body></body>
-</html>
-`;
+  let html = appShellHtml.replace(
+    /\s*<link\s+rel="preload"\s+href="\/static\/landing-1280\.webp"[\s\S]*?\/>\n/,
+    "\n",
+  );
+  html = replaceRequiredHtml(
+    html,
+    /<title>[\s\S]*?<\/title>/,
+    `<title>${escapedTitle}</title>`,
+    "title",
+  );
+  html = replaceRequiredHtml(
+    html,
+    /<meta\s+name="description"\s+content="[^"]*"\s*\/>/,
+    `<meta name="description" content="${escapedDescription}" />`,
+    "description meta",
+  );
+  html = replaceRequiredHtml(
+    html,
+    /<meta\s+property="og:type"\s+content="[^"]*"\s*\/>/,
+    `<meta property="og:type" content="${meta.type}" />`,
+    "Open Graph type meta",
+  );
+  html = replaceRequiredHtml(
+    html,
+    /<meta\s+property="og:title"\s+content="[^"]*"\s*\/>/,
+    `<meta property="og:title" content="${escapedTitle}" />`,
+    "Open Graph title meta",
+  );
+  html = replaceRequiredHtml(
+    html,
+    /<meta\s+property="og:description"\s+content="[^"]*"\s*\/>/,
+    `<meta property="og:description" content="${escapedDescription}" />`,
+    "Open Graph description meta",
+  );
+  html = replaceRequiredHtml(
+    html,
+    /<meta\s+property="og:url"\s+content="[^"]*"\s*\/>/,
+    `<meta property="og:url" content="${canonicalUrl}" />`,
+    "Open Graph URL meta",
+  );
+  html = replaceRequiredHtml(
+    html,
+    /<meta\s+property="og:image"\s+content="[^"]*"\s*\/>/,
+    `<meta property="og:image" content="${socialImageUrl}" />`,
+    "Open Graph image meta",
+  );
+  html = replaceRequiredHtml(
+    html,
+    /<meta\s+property="og:image:alt"\s+content="[^"]*"\s*\/>/,
+    `<meta property="og:image:alt" content="${escapedImageAlt}" />`,
+    "Open Graph image alt meta",
+  );
+  html = replaceRequiredHtml(
+    html,
+    /<meta\s+name="twitter:title"\s+content="[^"]*"\s*\/>/,
+    `<meta name="twitter:title" content="${escapedTitle}" />`,
+    "Twitter title meta",
+  );
+  html = replaceRequiredHtml(
+    html,
+    /<meta\s+name="twitter:description"\s+content="[^"]*"\s*\/>/,
+    `<meta name="twitter:description" content="${escapedDescription}" />`,
+    "Twitter description meta",
+  );
+  html = replaceRequiredHtml(
+    html,
+    /<meta\s+name="twitter:image"\s+content="[^"]*"\s*\/>/,
+    `<meta name="twitter:image" content="${socialImageUrl}" />`,
+    "Twitter image meta",
+  );
+  return replaceRequiredHtml(
+    html,
+    /<link\s+rel="canonical"\s+href="[^"]*"\s*\/>/,
+    `<link rel="canonical" href="${canonicalUrl}" />`,
+    "canonical link",
+  );
 }
 
-function writeSocialHtml(distDir: string, meta: SocialPageMeta): void {
+function writeSocialHtml(
+  distDir: string,
+  meta: SocialPageMeta,
+  appShellHtml: string,
+): void {
   const routeDir = path.join(distDir, meta.canonicalPath.slice(1));
   fs.mkdirSync(routeDir, { recursive: true });
-  fs.writeFileSync(path.join(routeDir, "index.html"), createSocialHtml(meta));
+  fs.writeFileSync(
+    path.join(routeDir, "index.html"),
+    createSocialHtml(meta, appShellHtml),
+  );
 }
 
 export default defineConfig({
@@ -404,6 +457,10 @@ export default defineConfig({
         const distDir = path.resolve(process.cwd(), "dist");
         const postsDir = path.resolve(process.cwd(), "src/posts");
         if (!fs.existsSync(distDir) || !fs.existsSync(postsDir)) return;
+        const appShellHtml = fs.readFileSync(
+          path.join(distDir, "index.html"),
+          "utf8",
+        );
 
         const slugs = fs
           .readdirSync(postsDir, { withFileTypes: true })
@@ -424,17 +481,20 @@ export default defineConfig({
 
           fs.writeFileSync(
             path.join(distPostDir, "index.html"),
-            createSocialHtml({
-              canonicalPath: `/blog/${slug}`,
-              title,
-              description: title,
-              type: "article",
-            }),
+            createSocialHtml(
+              {
+                canonicalPath: `/blog/${slug}`,
+                title,
+                description: title,
+                type: "article",
+              },
+              appShellHtml,
+            ),
           );
         }
 
         for (const page of TOP_LEVEL_SOCIAL_PAGES) {
-          writeSocialHtml(distDir, { ...page, type: "website" });
+          writeSocialHtml(distDir, { ...page, type: "website" }, appShellHtml);
         }
 
         for (const slug of slugs) {
