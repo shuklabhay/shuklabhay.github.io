@@ -113,7 +113,6 @@ export default function BlogPost({
     : "clamp(0.58rem, 0.92vw, 1rem) clamp(0.9rem, 1.4vw, 1.6rem) clamp(0.68rem, 1.06vw, 1.15rem)";
   const showSidebar = Boolean(sidebar) && !isMobile && !isSidebarDismissed;
   const hasDesktopSidebar = Boolean(sidebar) && !isMobile;
-  const articleMaxWidth = hasDesktopSidebar ? "none" : "min(100%, 760px)";
   const articleFontSize = isMobile
     ? "0.96rem"
     : hasDesktopSidebar
@@ -276,7 +275,7 @@ export default function BlogPost({
           ref={readingCardRef}
           data-post-reading-card
           style={{
-            width: isMobile ? "100%" : "95%",
+            width: isMobile ? "100%" : sidebar ? "95%" : "75%",
             marginInline: "auto",
             position: "relative",
             color: "#1f2740",
@@ -373,7 +372,7 @@ export default function BlogPost({
               data-post-content
               style={{
                 width: "100%",
-                maxWidth: articleMaxWidth,
+                maxWidth: "none",
                 marginInline: "auto",
                 marginBlock: 0,
                 minWidth: 0,
