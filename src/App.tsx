@@ -40,14 +40,6 @@ function humanizeRouteSegment(segment: string): string {
   return decodeSegment(segment).replace(/[-_]+/g, " ").trim();
 }
 
-function capitalizeWords(value: string): string {
-  return value
-    .split(/\s+/)
-    .filter(Boolean)
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-}
-
 function getRouteDocumentTitle(pathname: string): string {
   const normalizedPathname = normalizePathname(pathname);
 
@@ -73,7 +65,7 @@ function getRouteDocumentTitle(pathname: string): string {
 
   if (/^\/blog\/[^/]+$/.test(normalizedPathname)) {
     const slug = normalizedPathname.slice("/blog/".length).split("/")[0] ?? "";
-    const postTitle = capitalizeWords(humanizeRouteSegment(slug));
+    const postTitle = humanizeRouteSegment(slug);
     if (!postTitle) {
       return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Blog`;
     }
