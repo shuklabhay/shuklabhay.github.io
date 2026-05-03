@@ -196,19 +196,45 @@ export default function Blog() {
           display: "flex",
           flexDirection: "column",
           width: "100%",
-          gap: "0.65rem",
-          marginTop: "1rem",
+          maxWidth: "72rem",
+          marginTop: "1.7rem",
+          borderTop: "1px solid rgba(255, 255, 255, 0.28)",
           userSelect: "none",
           WebkitUserSelect: "none",
           WebkitTouchCallout: "none",
         }}
       >
-        {sortedPosts.map((post, index) => (
+        <div
+          aria-hidden
+          style={{
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 1fr) clamp(4rem, 10vw, 6.25rem)",
+            columnGap: "clamp(0.75rem, 2vw, 1.6rem)",
+            alignItems: "baseline",
+            width: "100%",
+            padding: "0.62rem 0 0.5rem",
+            borderBottom: "1px solid rgba(255, 255, 255, 0.28)",
+            color: "rgba(255, 255, 255, 0.86)",
+            fontSize: "clamp(1rem, 1.7vw, 1.36rem)",
+            fontWeight: 700,
+            lineHeight: 1.2,
+          }}
+        >
+          <span>Title</span>
+          <span
+            style={{
+              paddingLeft: "clamp(0.8rem, 2vw, 1.4rem)",
+              borderLeft: "1px solid rgba(255, 255, 255, 0.22)",
+            }}
+          >
+            Year
+          </span>
+        </div>
+        {sortedPosts.map((post) => (
           <BlogPostCard
             key={post.slug}
             post={post}
             formatPostDate={formatPostDate}
-            prioritizeImage={index < 4}
             shouldUseViewTransition={!prefersReducedMotion}
           />
         ))}

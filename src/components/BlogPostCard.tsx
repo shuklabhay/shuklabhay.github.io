@@ -1,53 +1,49 @@
-import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import type { MouseEvent as ReactMouseEvent } from "react";
-import type { PostMeta } from "../utils/types";
 import { loadPostBySlug } from "../posts";
 import { preloadImage } from "../utils/imagePreload";
+import type { PostMeta } from "../utils/types";
 import { runWithRootViewTransition } from "../utils/viewTransitions";
 
 type BlogPostCardProps = {
   post: PostMeta;
   formatPostDate: (raw: string) => string;
-  prioritizeImage?: boolean;
   shouldUseViewTransition?: boolean;
 };
 
 const DEFAULT_POST_HERO_IMAGE = "/static/landing-1280.avif";
 
+function getPostYear(raw: string): string {
+  return raw.match(/^\d{4}/)?.[0] ?? raw;
+}
+
 export default function BlogPostCard({
   post,
   formatPostDate,
-  prioritizeImage = false,
   shouldUseViewTransition = true,
-}: BlogPostCardProps) {
+}: BlogPostCardProps): JSX.Element {
   const navigate = useNavigate();
   const postPath = `/blog/${post.slug}`;
   const heroSrc = post.cover ?? DEFAULT_POST_HERO_IMAGE;
   const [isHovered, setIsHovered] = useState(false);
-  const postMetaParts = [
-    post.date ? formatPostDate(post.date) : undefined,
-    typeof post.wordCount === "number"
-      ? `${post.wordCount.toLocaleString()} ${
-          post.wordCount === 1 ? "word" : "words"
-        }`
-      : undefined,
-  ].filter((part): part is string => Boolean(part));
+  const dateLabel = post.date ? formatPostDate(post.date) : "";
+  const yearLabel = post.date ? getPostYear(post.date) : "";
 
-  const warmPostResources = () => {
+  const warmPostResources = (): void => {
     void preloadImage(heroSrc);
     void loadPostBySlug(post.slug);
     void import("../pages/Post.tsx");
   };
 
-  const onCardClick = (event: ReactMouseEvent<HTMLAnchorElement>) => {
+  const onCardClick = (event: ReactMouseEvent<HTMLAnchorElement>): void => {
     if (event.defaultPrevented) return;
     if (event.button !== 0) return;
     if (event.metaKey || event.altKey || event.ctrlKey || event.shiftKey)
       return;
 
     event.preventDefault();
-    const navigateToPost = () => {
+    const navigateToPost = (): void => {
       navigate(postPath, { state: { fromBlog: true } });
     };
     if (shouldUseViewTransition) {
@@ -65,22 +61,19 @@ export default function BlogPostCard({
       onClick={onCardClick}
       style={{
         display: "grid",
+        position: "relative",
         width: "100%",
-        gridTemplateColumns: post.cover
-          ? "clamp(105px, 13.75vw, 120px) minmax(0, 1fr)"
-          : "1fr",
-        gap: post.cover ? "0.9rem" : "0.75rem",
-        alignItems: "start",
+        gridTemplateColumns: "minmax(0, 1fr) clamp(4rem, 10vw, 6.25rem)",
+        alignItems: "baseline",
+        columnGap: "clamp(0.75rem, 2vw, 1.6rem)",
         color: "white",
-        border: "2px solid rgba(255, 255, 255, 0.3)",
-        borderRadius: "12px",
-        padding: "0.7rem",
-        background: "rgba(0, 0, 0, 0.12)",
-        backdropFilter: "blur(1px)",
+        borderBottom: "1px solid rgba(255, 255, 255, 0.24)",
+        padding: "0.52rem 0",
         textDecoration: "none",
         userSelect: "none",
         WebkitUserSelect: "none",
         WebkitTouchCallout: "none",
+        transition: "color 140ms ease, opacity 140ms ease",
       }}
       onMouseEnter={() => {
         warmPostResources();
@@ -95,63 +88,41 @@ export default function BlogPostCard({
       onTouchStart={warmPostResources}
       onPointerDown={warmPostResources}
     >
-      {post.cover ? (
-        <img
-          src={post.cover}
-          alt={post.title}
-          loading={prioritizeImage ? "eager" : "lazy"}
-          decoding="async"
-          fetchPriority={prioritizeImage ? "high" : "auto"}
-          draggable={false}
-          style={{
-            width: "100%",
-            aspectRatio: "1 / 1",
-            objectFit: "cover",
-            backgroundColor: "rgba(82, 102, 139, 0.2)",
-            borderRadius: "8px",
-            border: "1px solid rgba(255, 255, 255, 0.28)",
-            display: "block",
-          }}
-        />
-      ) : null}
-      <div
+      <span
+        title={post.title}
         style={{
           minWidth: 0,
-          display: "flex",
-          flexDirection: "column",
-          gap: "0.42rem",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+          color: isHovered ? "#d7e4ff" : "white",
+          fontSize: "clamp(1.35rem, 2.45vw, 2.25rem)",
+          fontWeight: 700,
+          lineHeight: 1.24,
+          transition: "color 140ms ease",
         }}
       >
-        <h2
-          style={{
-            margin: 0,
-            fontSize: "clamp(1.18rem, 2.6vw, 2.24rem)",
-            lineHeight: 1.14,
-          }}
-        >
-          <span
-            style={{
-              color: isHovered ? "#d7e4ff" : "white",
-              textDecoration: "none",
-              transition: "color 140ms ease",
-            }}
-          >
-            {post.title}
-          </span>
-        </h2>
-        {postMetaParts.length ? (
-          <p
-            style={{
-              margin: 0,
-              opacity: 0.85,
-              fontSize: "0.82rem",
-              letterSpacing: "0.01em",
-            }}
-          >
-            {postMetaParts.join(" · ")}
-          </p>
-        ) : null}
-      </div>
+        {post.title}
+      </span>
+      <span
+        title={dateLabel}
+        style={{
+          minWidth: 0,
+          paddingLeft: "clamp(0.8rem, 2vw, 1.4rem)",
+          borderLeft: "1px solid rgba(255, 255, 255, 0.22)",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+          color: "rgba(255, 255, 255, 0.86)",
+          fontSize: "clamp(1.05rem, 1.9vw, 1.55rem)",
+          fontWeight: 700,
+          lineHeight: 1.24,
+          textAlign: "left",
+          fontVariantNumeric: "tabular-nums",
+        }}
+      >
+        {yearLabel}
+      </span>
     </Link>
   );
 }
