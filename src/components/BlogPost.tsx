@@ -270,15 +270,15 @@ export default function BlogPost({
           ref={readingCardRef}
           data-post-reading-card
           style={{
-            width: isMobile ? "100%" : sidebar ? "95%" : "75%",
+            width: isMobile ? "100%" : sidebar ? "95%" : "78%",
             marginInline: "auto",
             position: "relative",
             color: "#1f2740",
-            borderRadius: isMobile ? "10px" : "12px",
-            border: "1px solid rgba(224, 216, 202, 0.78)",
+            borderRadius: isMobile ? "10px" : "14px",
+            border: "1px solid rgba(224, 216, 202, 0.58)",
             background:
               "linear-gradient(168deg, rgba(248, 245, 239, 0.98) 0%, rgba(243, 238, 229, 0.96) 100%)",
-            boxShadow: "0 12px 26px rgba(7, 12, 24, 0.16)",
+            boxShadow: "0 10px 22px rgba(7, 12, 24, 0.11)",
             overflow: "visible",
             isolation: "isolate",
           }}
@@ -289,7 +289,7 @@ export default function BlogPost({
               position: "absolute",
               inset: 0,
               borderRadius: "inherit",
-              border: "1px solid rgba(255, 255, 255, 0.28)",
+              border: "1px solid rgba(255, 255, 255, 0.18)",
               pointerEvents: "none",
             }}
           />
