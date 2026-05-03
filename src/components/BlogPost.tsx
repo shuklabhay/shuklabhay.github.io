@@ -113,6 +113,12 @@ export default function BlogPost({
     : "clamp(0.58rem, 0.92vw, 1rem) clamp(0.9rem, 1.4vw, 1.6rem) clamp(0.68rem, 1.06vw, 1.15rem)";
   const showSidebar = Boolean(sidebar) && !isMobile && !isSidebarDismissed;
   const hasDesktopSidebar = Boolean(sidebar) && !isMobile;
+  const articleMaxWidth = hasDesktopSidebar ? "none" : "min(100%, 760px)";
+  const articleFontSize = isMobile
+    ? "0.96rem"
+    : hasDesktopSidebar
+      ? "clamp(0.98rem, 0.5vw + 0.89rem, 1.06rem)"
+      : "clamp(0.92rem, 0.42vw + 0.84rem, 1rem)";
   const postContentFadeStyle: CSSProperties = isEntryReady
     ? {
         opacity: 1,
@@ -270,15 +276,15 @@ export default function BlogPost({
           ref={readingCardRef}
           data-post-reading-card
           style={{
-            width: isMobile ? "100%" : sidebar ? "95%" : "85.5%",
+            width: isMobile ? "100%" : "95%",
             marginInline: "auto",
             position: "relative",
             color: "#1f2740",
             borderRadius: isMobile ? "10px" : "12px",
-            border: "1px solid rgba(210, 223, 255, 0.78)",
+            border: "1px solid rgba(224, 216, 202, 0.78)",
             background:
-              "linear-gradient(168deg, rgba(250, 248, 243, 0.98) 0%, rgba(245, 241, 234, 0.95) 100%)",
-            boxShadow: "0 22px 46px rgba(7, 12, 24, 0.25)",
+              "linear-gradient(168deg, rgba(248, 245, 239, 0.98) 0%, rgba(243, 238, 229, 0.96) 100%)",
+            boxShadow: "0 12px 26px rgba(7, 12, 24, 0.16)",
             overflow: "visible",
             isolation: "isolate",
           }}
@@ -289,7 +295,7 @@ export default function BlogPost({
               position: "absolute",
               inset: 0,
               borderRadius: "inherit",
-              border: "1px solid rgba(255, 255, 255, 0.44)",
+              border: "1px solid rgba(255, 255, 255, 0.28)",
               pointerEvents: "none",
             }}
           />
@@ -367,14 +373,12 @@ export default function BlogPost({
               data-post-content
               style={{
                 width: "100%",
-                maxWidth: "none",
+                maxWidth: articleMaxWidth,
                 marginInline: "auto",
                 marginBlock: 0,
                 minWidth: 0,
                 lineHeight: 1.74,
-                fontSize: isMobile
-                  ? "0.98rem"
-                  : "clamp(1rem, 0.58vw + 0.91rem, 1.1rem)",
+                fontSize: articleFontSize,
                 color: "#2a344f",
                 position: "relative",
                 zIndex: 1,
