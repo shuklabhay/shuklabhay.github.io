@@ -125,7 +125,7 @@ code {
   color: #335ec2;
   text-decoration-line: underline;
   text-decoration-style: dashed;
-  text-decoration-thickness: 1px;
+  text-decoration-thickness: 1.25px;
   text-decoration-color: rgba(51, 94, 194, 0.28);
   text-underline-offset: 0.18em;
   font-weight: 600;
