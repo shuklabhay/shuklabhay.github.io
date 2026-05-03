@@ -60,6 +60,7 @@ export default function PostBackLink(): JSX.Element {
             alignItems: "center",
             justifyContent: "center",
             flex: "0 0 auto",
+            marginLeft: "-0.16em",
           }}
         >
           <TriangleIcon direction="left" size="100%" />
