@@ -113,11 +113,6 @@ export default function BlogPost({
     : "clamp(0.58rem, 0.92vw, 1rem) clamp(0.9rem, 1.4vw, 1.6rem) clamp(0.68rem, 1.06vw, 1.15rem)";
   const showSidebar = Boolean(sidebar) && !isMobile && !isSidebarDismissed;
   const hasDesktopSidebar = Boolean(sidebar) && !isMobile;
-  const articleFontSize = isMobile
-    ? "0.96rem"
-    : hasDesktopSidebar
-      ? "clamp(0.98rem, 0.5vw + 0.89rem, 1.06rem)"
-      : "clamp(0.92rem, 0.42vw + 0.84rem, 1rem)";
   const postContentFadeStyle: CSSProperties = isEntryReady
     ? {
         opacity: 1,
@@ -377,7 +372,7 @@ export default function BlogPost({
                 marginBlock: 0,
                 minWidth: 0,
                 lineHeight: 1.74,
-                fontSize: articleFontSize,
+                fontSize: "1.1rem",
                 color: "#2a344f",
                 position: "relative",
                 zIndex: 1,

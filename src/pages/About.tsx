@@ -146,7 +146,15 @@ export default function About(): JSX.Element {
               style={{ marginTop: 0, paddingLeft: "1.25rem", lineHeight: 1.5 }}
             >
               <li>
-                Understanding the <strong>incomplete and the unknown, </strong>
+                <Link
+                  to="/blog/rcbi"
+                  viewTransition
+                  state={{ fromBlog: true, fromPath: "/about" }}
+                  className="about-contact-link"
+                >
+                  <strong>Understanding</strong>
+                </Link>{" "}
+                the <strong>incomplete and the unknown, </strong>
                 regardless of field or form. Incessantly, I pursue the edges of
                 my understanding across biology, psychology, physics, history.
               </li>
