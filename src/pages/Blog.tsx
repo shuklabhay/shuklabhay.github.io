@@ -5,7 +5,6 @@ import BlogPostCard from "../components/BlogPostCard";
 import { allPosts } from "../posts";
 import { shouldSkipEntryAnimation, useEntryFade } from "../utils/useEntryFade";
 import { getLastPathname, isBlogPostPath } from "../utils/routeTransitions";
-import { formatPostDate } from "../utils/formatPostDate";
 import { preloadImage } from "../utils/imagePreload";
 import type {
   BlogSortDirection,
@@ -197,44 +196,17 @@ export default function Blog() {
           flexDirection: "column",
           width: "100%",
           maxWidth: "72rem",
-          marginTop: "1.7rem",
-          borderTop: "1px solid rgba(255, 255, 255, 0.28)",
+          gap: "0.18rem",
+          marginTop: "1.2rem",
           userSelect: "none",
           WebkitUserSelect: "none",
           WebkitTouchCallout: "none",
         }}
       >
-        <div
-          aria-hidden
-          style={{
-            display: "grid",
-            gridTemplateColumns: "minmax(0, 1fr) clamp(4rem, 10vw, 6.25rem)",
-            columnGap: "clamp(0.75rem, 2vw, 1.6rem)",
-            alignItems: "baseline",
-            width: "100%",
-            padding: "0.62rem 0 0.5rem",
-            borderBottom: "1px solid rgba(255, 255, 255, 0.28)",
-            color: "rgba(255, 255, 255, 0.86)",
-            fontSize: "clamp(1rem, 1.7vw, 1.36rem)",
-            fontWeight: 700,
-            lineHeight: 1.2,
-          }}
-        >
-          <span>Title</span>
-          <span
-            style={{
-              paddingLeft: "clamp(0.8rem, 2vw, 1.4rem)",
-              borderLeft: "1px solid rgba(255, 255, 255, 0.22)",
-            }}
-          >
-            Year
-          </span>
-        </div>
         {sortedPosts.map((post) => (
           <BlogPostCard
             key={post.slug}
             post={post}
-            formatPostDate={formatPostDate}
             shouldUseViewTransition={!prefersReducedMotion}
           />
         ))}
