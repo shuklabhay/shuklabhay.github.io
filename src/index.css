@@ -123,13 +123,21 @@ code {
 
 .post-content a {
   color: #335ec2;
-  text-decoration: none;
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  text-decoration-thickness: 1px;
+  text-decoration-color: rgba(51, 94, 194, 0.28);
+  text-underline-offset: 0.18em;
   font-weight: 600;
+  transition:
+    color 130ms ease,
+    text-decoration-color 130ms ease;
 }
 
 .post-content a:hover,
 .post-content a:focus-visible {
   color: #264a9b;
+  text-decoration-color: rgba(38, 74, 155, 0.52);
 }
 
 .post-content a:focus-visible {
