@@ -270,7 +270,7 @@ export default function BlogPost({
           ref={readingCardRef}
           data-post-reading-card
           style={{
-            width: isMobile ? "100%" : "95%",
+            width: isMobile ? "100%" : sidebar ? "95%" : "85.5%",
             marginInline: "auto",
             position: "relative",
             color: "#1f2740",
