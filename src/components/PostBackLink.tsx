@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import TriangleIcon from "./TriangleIcon";
 import type { RouteTransitionState } from "../utils/types";
 
-export default function PostBackLink() {
+export default function PostBackLink(): JSX.Element {
   const location = useLocation();
   const transitionState = location.state as RouteTransitionState | null;
   const backTargetPath = transitionState?.fromPath ?? "/blog";
@@ -47,6 +47,7 @@ export default function PostBackLink() {
           WebkitTapHighlightColor: "transparent",
           borderRadius: "0.2rem",
           padding: "0.2rem 0.3rem",
+          marginInline: "-0.3rem",
         }}
         className="post-back-link"
       >
