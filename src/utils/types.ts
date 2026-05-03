@@ -126,7 +126,7 @@ export type BlogPostProps = {
   title: string;
   byline?: string;
   buttons: PostButton[];
-  heroImage: string;
+  heroImage?: string;
   contentRef: RefObject<HTMLElement>;
   onContentClick?: MouseEventHandler<HTMLElement>;
   sidebar?: ReactNode;

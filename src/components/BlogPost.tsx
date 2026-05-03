@@ -7,7 +7,7 @@ const MOBILE_BREAKPOINT_PX = 860;
 const POST_ENTRY_FADE_MS = 375;
 const SIDEBAR_STAGGER_PX = 15;
 
-function getIsMobileViewport() {
+function getIsMobileViewport(): boolean {
   if (typeof window === "undefined") return false;
   return window.innerWidth <= MOBILE_BREAKPOINT_PX;
 }
@@ -22,7 +22,7 @@ export default function BlogPost({
   onContentClick,
   sidebar,
   children,
-}: BlogPostProps) {
+}: BlogPostProps): JSX.Element {
   const [isMobile, setIsMobile] = useState(getIsMobileViewport);
   const [isSidebarDismissed, setIsSidebarDismissed] = useState(false);
   const [sidebarTranslateYPx, setSidebarTranslateYPx] = useState(0);
@@ -38,7 +38,7 @@ export default function BlogPost({
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const onViewportResize = () => {
+    const onViewportResize = (): void => {
       setIsMobile(getIsMobileViewport());
     };
 
@@ -51,12 +51,12 @@ export default function BlogPost({
     if (typeof window === "undefined" || typeof document === "undefined")
       return;
 
-    const clearSourceHover = () => {
+    const clearSourceHover = (): void => {
       setHoveredButtonIndex(null);
       setIsSidebarToggleHovered(false);
     };
 
-    const onVisibilityChange = () => {
+    const onVisibilityChange = (): void => {
       if (document.hidden) clearSourceHover();
     };
 
@@ -77,7 +77,7 @@ export default function BlogPost({
       return;
     }
 
-    const updateSidebarOffset = () => {
+    const updateSidebarOffset = (): void => {
       const cardTop = readingCardRef.current?.getBoundingClientRect().top ?? 0;
       const nextOffset = Math.round(
         Math.min(Math.max(cardTop, 0), SIDEBAR_STAGGER_PX),
@@ -98,9 +98,16 @@ export default function BlogPost({
   }, [isMobile, sidebar]);
 
   const pageXPadding = isMobile ? "0.625rem" : "1.125rem";
+  const hasHeroImage = Boolean(heroImage);
   const heroOverlap = isMobile ? 108 : 132;
   const heroHeight = isMobile ? 300 : 470;
-  const titleMargin = isMobile ? "-1.9rem 0 0.94rem" : "-2.8rem 0 1.02rem";
+  const titleMargin = hasHeroImage
+    ? isMobile
+      ? "-1.9rem 0 0.94rem"
+      : "-2.8rem 0 1.02rem"
+    : isMobile
+      ? "1.15rem 0 0.94rem"
+      : "1.45rem 0 1.02rem";
   const contentPadding = isMobile
     ? "0.58rem 0.72rem 0.72rem"
     : "clamp(0.58rem, 0.92vw, 1rem) clamp(0.9rem, 1.4vw, 1.6rem) clamp(0.68rem, 1.06vw, 1.15rem)";
@@ -149,46 +156,48 @@ export default function BlogPost({
         position: "relative",
       }}
     >
-      <div
-        style={{
-          position: "relative",
-          width: `calc(100% + (${pageXPadding} * 2))`,
-          marginLeft: `calc(-1 * ${pageXPadding})`,
-          marginTop: `${-heroOverlap}px`,
-          marginBottom: isMobile ? "0.62rem" : "0.3rem",
-          height: `${heroHeight + heroOverlap}px`,
-          borderRadius: 0,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: isMobile ? "center 28px" : "center 44px",
-          backgroundColor: "#52668b",
-          overflow: "hidden",
-          isolation: "isolate",
-          pointerEvents: "none",
-          zIndex: 0,
-          backgroundImage: `url(${heroImage})`,
-        }}
-        aria-hidden
-      >
+      {heroImage ? (
         <div
           style={{
-            position: "absolute",
-            inset: 0,
+            position: "relative",
+            width: `calc(100% + (${pageXPadding} * 2))`,
+            marginLeft: `calc(-1 * ${pageXPadding})`,
+            marginTop: `${-heroOverlap}px`,
+            marginBottom: isMobile ? "0.62rem" : "0.3rem",
+            height: `${heroHeight + heroOverlap}px`,
+            borderRadius: 0,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            backgroundPosition: isMobile ? "center 28px" : "center 44px",
+            backgroundColor: "#52668b",
+            overflow: "hidden",
+            isolation: "isolate",
             pointerEvents: "none",
-            background:
-              "linear-gradient(to bottom, rgba(0, 0, 0, 0.84) 0%, rgba(0, 0, 0, 0.48) 40%, rgba(0, 0, 0, 0.14) 72%, rgba(0, 0, 0, 0) 100%)",
+            zIndex: 0,
+            backgroundImage: `url(${heroImage})`,
           }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            pointerEvents: "none",
-            background:
-              "linear-gradient(to bottom, rgba(82, 102, 139, 0) 0%, rgba(82, 102, 139, 0.03) 16%, rgba(82, 102, 139, 0.12) 34%, rgba(82, 102, 139, 0.32) 54%, rgba(82, 102, 139, 0.6) 72%, rgba(82, 102, 139, 0.84) 88%, rgba(82, 102, 139, 1) 100%), linear-gradient(to bottom, rgba(82, 102, 139, 0) 0%, rgba(82, 102, 139, 0.28) 100%)",
-          }}
-        />
-      </div>
+          aria-hidden
+        >
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              pointerEvents: "none",
+              background:
+                "linear-gradient(to bottom, rgba(0, 0, 0, 0.84) 0%, rgba(0, 0, 0, 0.48) 40%, rgba(0, 0, 0, 0.14) 72%, rgba(0, 0, 0, 0) 100%)",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              pointerEvents: "none",
+              background:
+                "linear-gradient(to bottom, rgba(82, 102, 139, 0) 0%, rgba(82, 102, 139, 0.03) 16%, rgba(82, 102, 139, 0.12) 34%, rgba(82, 102, 139, 0.32) 54%, rgba(82, 102, 139, 0.6) 72%, rgba(82, 102, 139, 0.84) 88%, rgba(82, 102, 139, 1) 100%), linear-gradient(to bottom, rgba(82, 102, 139, 0) 0%, rgba(82, 102, 139, 0.28) 100%)",
+            }}
+          />
+        </div>
+      ) : null}
       <div style={{ margin: titleMargin, position: "relative", zIndex: 1 }}>
         <h1
           style={{

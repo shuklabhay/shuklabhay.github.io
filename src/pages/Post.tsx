@@ -76,7 +76,7 @@ export default function Post() {
   const isDocumentReload = didDocumentReload();
   const postScrollStorageKey = getPostScrollStorageKey(location.pathname);
   const postSummary = getPostBySlug(slug);
-  const heroImage = postSummary?.cover ?? "/static/landing-1280.avif";
+  const heroImage = postSummary?.cover;
   const postContentRef = useRef<HTMLElement>(null);
   const [lightboxOpened, setLightboxOpened] = useState(false);
   const [postImages, setPostImages] = useState<RichImage[]>([]);
@@ -369,6 +369,7 @@ export default function Post() {
 
   useEffect(() => {
     if (!postSummary) return;
+    if (!heroImage) return;
     void preloadImage(heroImage);
   }, [heroImage, postSummary]);
 
