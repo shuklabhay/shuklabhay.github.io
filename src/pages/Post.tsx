@@ -35,7 +35,16 @@ type PostHeading = {
 };
 const ImageLightbox = lazy(() => import("../components/ImageLightbox"));
 
-function didDocumentReload() {
+function setPostContentLinksToNewTabs(contentEl: HTMLElement): void {
+  contentEl
+    .querySelectorAll<HTMLAnchorElement>("a[href]")
+    .forEach((linkEl: HTMLAnchorElement): void => {
+      linkEl.target = "_blank";
+      linkEl.rel = "noopener noreferrer";
+    });
+}
+
+function didDocumentReload(): boolean {
   if (typeof window === "undefined" || typeof performance === "undefined") {
     return false;
   }
@@ -190,6 +199,8 @@ export default function Post() {
       setActiveHeadingId(null);
       return;
     }
+
+    setPostContentLinksToNewTabs(contentEl);
 
     const imageElements = Array.from(contentEl.querySelectorAll("img"));
     const images: RichImage[] = imageElements.map((img) => ({
