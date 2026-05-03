@@ -102,6 +102,7 @@ export default function BlogPostCard({
           loading={prioritizeImage ? "eager" : "lazy"}
           decoding="async"
           fetchPriority={prioritizeImage ? "high" : "auto"}
+          draggable={false}
           style={{
             width: "100%",
             aspectRatio: "1 / 1",
@@ -110,7 +111,6 @@ export default function BlogPostCard({
             borderRadius: "8px",
             border: "1px solid rgba(255, 255, 255, 0.28)",
             display: "block",
-            WebkitUserDrag: "none",
           }}
         />
       ) : null}

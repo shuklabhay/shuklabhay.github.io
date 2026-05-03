@@ -124,21 +124,6 @@ export default function Post() {
     return Math.max(nextScrollTop, 0);
   }, []);
 
-  const alignHeadingToViewport = useCallback(
-    (headingId: string, behavior: ScrollBehavior) => {
-      if (typeof window === "undefined") return false;
-      const nextScrollTop = getHeadingTargetScrollTop(headingId);
-      if (nextScrollTop === null) return false;
-
-      window.scrollTo({
-        top: nextScrollTop,
-        behavior,
-      });
-      return true;
-    },
-    [getHeadingTargetScrollTop],
-  );
-
   const getImageHashToken = useCallback((imageSrc: string) => {
     if (typeof window === "undefined") return null;
 

@@ -63,6 +63,10 @@ function getRouteDocumentTitle(pathname: string): string {
     return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Blog`;
   }
 
+  if (normalizedPathname === "/contact") {
+    return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Contact`;
+  }
+
   if (normalizedPathname === "/resume") {
     return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Resume`;
   }
@@ -77,6 +81,10 @@ function getRouteDocumentTitle(pathname: string): string {
   }
 
   return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Page Not Found`;
+}
+
+function isHomeVisualRoute(pathname: string): boolean {
+  return pathname === "/" || pathname === "/contact";
 }
 
 function getHomeBackgroundCandidates(): string[] {
@@ -247,7 +255,7 @@ function RouteBackground({
   prefersReducedMotion: boolean;
 }): JSX.Element {
   const location = useLocation();
-  const isHome = location.pathname === "/";
+  const isHome = isHomeVisualRoute(location.pathname);
   const [homeBackgroundSrc, setHomeBackgroundSrc] = useState(
     () => HOME_BACKGROUND_IMMEDIATE_SRC,
   );
@@ -345,7 +353,7 @@ function AppShell(): JSX.Element {
   }, [location.pathname]);
 
   useLayoutEffect(() => {
-    const isHome = location.pathname === "/";
+    const isHome = isHomeVisualRoute(location.pathname);
     document.documentElement.classList.toggle("route-home", isHome);
     document.body.classList.toggle("route-home", isHome);
     setLastPathname(location.pathname);
@@ -375,6 +383,7 @@ function AppShell(): JSX.Element {
             <Route path="/about" element={<About />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<Post />} />
+            <Route path="/contact" element={<Home />} />
             <Route path="/resume" element={<Resume />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

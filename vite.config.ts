@@ -8,12 +8,38 @@ const VIRTUAL_POSTS_ID = "virtual:posts-manifest";
 const RESOLVED_VIRTUAL_POSTS_ID = `\0${VIRTUAL_POSTS_ID}`;
 const SITE_ORIGIN = "https://shuklabhay.github.io";
 const DEFAULT_SOCIAL_IMAGE_PATH = "/static/landing-1280.webp";
+const SOCIAL_IMAGE_ALT = "Abhay Shukla portfolio landing image";
 const POST_COVER_CANDIDATES = [
   "banner.png",
   "banner.jpg",
   "banner.jpeg",
   "banner.webp",
 ];
+const TOP_LEVEL_SOCIAL_PAGES = [
+  {
+    canonicalPath: "/about",
+    title: "Abhay Shukla · About",
+    description: "about",
+  },
+  { canonicalPath: "/blog", title: "Abhay Shukla · Blog", description: "blog" },
+  {
+    canonicalPath: "/contact",
+    title: "Abhay Shukla · Contact",
+    description: "contact",
+  },
+  {
+    canonicalPath: "/resume",
+    title: "Abhay Shukla · Resume",
+    description: "resume",
+  },
+];
+
+type SocialPageMeta = {
+  canonicalPath: string;
+  title: string;
+  description: string;
+  type: "article" | "website";
+};
 
 function rewriteWikiEmbedsToMarkdown(source: string): string {
   const importByPath = new Map<string, string>();
@@ -92,43 +118,6 @@ function escapeHtmlAttribute(value: string): string {
     .replace(/"/g, "&quot;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
-}
-
-function extractPostDescription(source: string, fallbackTitle: string): string {
-  const lines = source.split(/\r?\n/);
-  let hasSeenTitle = false;
-  const paragraphParts: string[] = [];
-
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (!trimmed) {
-      if (paragraphParts.length > 0) break;
-      continue;
-    }
-
-    if (trimmed.startsWith("import ")) continue;
-    if (trimmed.startsWith("#")) {
-      hasSeenTitle = true;
-      continue;
-    }
-    if (!hasSeenTitle) continue;
-    if (trimmed.startsWith(">")) continue;
-    if (trimmed.startsWith("<")) continue;
-    if (/^\d+\.\s/.test(trimmed)) continue;
-    if (/^[-*+]\s/.test(trimmed)) continue;
-
-    paragraphParts.push(trimmed);
-    if (paragraphParts.join(" ").length >= 220) break;
-  }
-
-  const normalized =
-    paragraphParts.join(" ").trim() || `${fallbackTitle} by Abhay Shukla.`;
-
-  return normalized
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1")
-    .replace(/[*_`]/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
 }
 
 type PostMetaFile = {
@@ -224,12 +213,69 @@ function readPostMeta(metaPath: string): ParsedPostMeta {
   }
 }
 
+function createSpaRedirectScript(): string {
+  return `<script type="text/javascript">
+      (function () {
+        var l = window.location;
+        if (l.search[1] === "/") return;
+        l.replace(
+          l.protocol +
+            "//" +
+            l.hostname +
+            (l.port ? ":" + l.port : "") +
+            "/?/" +
+            l.pathname.slice(1).replace(/&/g, "~and~") +
+            (l.search ? "&" + l.search.slice(1).replace(/&/g, "~and~") : "") +
+            l.hash,
+        );
+      })();
+    </script>`;
+}
+
+function createSocialHtml(meta: SocialPageMeta): string {
+  const canonicalUrl = `${SITE_ORIGIN}${meta.canonicalPath}`;
+  const socialImageUrl = `${SITE_ORIGIN}${DEFAULT_SOCIAL_IMAGE_PATH}`;
+  const escapedTitle = escapeHtmlAttribute(meta.title);
+  const escapedDescription = escapeHtmlAttribute(meta.description);
+  const escapedImageAlt = escapeHtmlAttribute(SOCIAL_IMAGE_ALT);
+
+  return `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>${escapedTitle}</title>
+    <meta name="description" content="${escapedDescription}" />
+    <meta property="og:type" content="${meta.type}" />
+    <meta property="og:title" content="${escapedTitle}" />
+    <meta property="og:description" content="${escapedDescription}" />
+    <meta property="og:url" content="${canonicalUrl}" />
+    <meta property="og:image" content="${socialImageUrl}" />
+    <meta property="og:image:alt" content="${escapedImageAlt}" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="${escapedTitle}" />
+    <meta name="twitter:description" content="${escapedDescription}" />
+    <meta name="twitter:image" content="${socialImageUrl}" />
+    <link rel="canonical" href="${canonicalUrl}" />
+    <meta name="robots" content="index,follow" />
+    ${createSpaRedirectScript()}
+  </head>
+  <body></body>
+</html>
+`;
+}
+
+function writeSocialHtml(distDir: string, meta: SocialPageMeta): void {
+  const routeDir = path.join(distDir, meta.canonicalPath.slice(1));
+  fs.mkdirSync(routeDir, { recursive: true });
+  fs.writeFileSync(path.join(routeDir, "index.html"), createSocialHtml(meta));
+}
+
 export default defineConfig({
   plugins: [
     {
       name: "rewrite-obsidian-image-embeds",
       enforce: "pre",
-      transform(code, id) {
+      transform(code: string, id: string): { code: string; map: null } | null {
         if (!id.endsWith(".mdx")) return null;
         if (!id.includes("/src/posts/")) return null;
 
@@ -246,10 +292,10 @@ export default defineConfig({
     react(),
     {
       name: "virtual-posts-manifest",
-      resolveId(id) {
+      resolveId(id: string): string | undefined {
         if (id === VIRTUAL_POSTS_ID) return RESOLVED_VIRTUAL_POSTS_ID;
       },
-      load(id) {
+      load(id: string): string | null {
         if (id !== RESOLVED_VIRTUAL_POSTS_ID) return null;
 
         const postsDir = path.resolve(process.cwd(), "src/posts");
@@ -291,13 +337,7 @@ export default defineConfig({
           const buttonsExpr = JSON.stringify(postMeta.buttons);
           const showInlineTocExpr = JSON.stringify(postMeta.showInlineToc);
 
-          const coverCandidates = [
-            "banner.png",
-            "banner.jpg",
-            "banner.jpeg",
-            "banner.webp",
-          ];
-          const coverFile = coverCandidates.find((fileName) =>
+          const coverFile = POST_COVER_CANDIDATES.find((fileName) =>
             fs.existsSync(path.join(postsDir, slug, fileName)),
           );
 
@@ -326,7 +366,7 @@ export default defineConfig({
     },
     {
       name: "copy-static-deps",
-      configureServer(server: ViteDevServer) {
+      configureServer(server: ViteDevServer): void {
         server.middlewares.use((req, res, next) => {
           const rawUrl = req.url?.split("?")[0] ?? "";
           const match = rawUrl.match(/^\/blog\/([^/]+)\/slideshow\.html$/);
@@ -358,7 +398,7 @@ export default defineConfig({
           }
         });
       },
-      closeBundle: () => {
+      closeBundle: (): void => {
         fs.copyFileSync("404.html", "dist/404.html");
 
         const distDir = path.resolve(process.cwd(), "dist");
@@ -376,69 +416,25 @@ export default defineConfig({
           if (!fs.existsSync(postPath)) continue;
 
           const source = fs.readFileSync(postPath, "utf8");
-          const title = extractPostTitle(source, slug);
-          const description = extractPostDescription(source, title);
+          const title =
+            readPostMeta(path.join(postsDir, slug, "meta.json")).title ??
+            extractPostTitle(source, slug);
           const distPostDir = path.join(distDir, "blog", slug);
           fs.mkdirSync(distPostDir, { recursive: true });
 
-          const coverFile = POST_COVER_CANDIDATES.find((fileName) =>
-            fs.existsSync(path.join(postsDir, slug, fileName)),
+          fs.writeFileSync(
+            path.join(distPostDir, "index.html"),
+            createSocialHtml({
+              canonicalPath: `/blog/${slug}`,
+              title,
+              description: title,
+              type: "article",
+            }),
           );
+        }
 
-          let socialImagePath = DEFAULT_SOCIAL_IMAGE_PATH;
-          if (coverFile) {
-            const srcCoverPath = path.join(postsDir, slug, coverFile);
-            const distCoverPath = path.join(distPostDir, coverFile);
-            fs.copyFileSync(srcCoverPath, distCoverPath);
-            socialImagePath = `/blog/${slug}/${coverFile}`;
-          }
-
-          const canonicalPath = `/blog/${slug}`;
-          const canonicalUrl = `${SITE_ORIGIN}${canonicalPath}`;
-          const socialImageUrl = `${SITE_ORIGIN}${socialImagePath}`;
-          const escapedTitle = escapeHtmlAttribute(title);
-          const escapedDescription = escapeHtmlAttribute(description);
-
-          const socialHtml = `<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>${escapedTitle}</title>
-    <meta name="description" content="${escapedDescription}" />
-    <meta property="og:type" content="article" />
-    <meta property="og:title" content="${escapedTitle}" />
-    <meta property="og:description" content="${escapedDescription}" />
-    <meta property="og:url" content="${canonicalUrl}" />
-    <meta property="og:image" content="${socialImageUrl}" />
-    <meta property="og:image:alt" content="${escapedTitle}" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="${escapedTitle}" />
-    <meta name="twitter:description" content="${escapedDescription}" />
-    <meta name="twitter:image" content="${socialImageUrl}" />
-    <link rel="canonical" href="${canonicalUrl}" />
-    <meta name="robots" content="index,follow" />
-    <script type="text/javascript">
-      (function () {
-        var l = window.location;
-        if (l.search[1] === "/") return;
-        l.replace(
-          l.protocol +
-            "//" +
-            l.hostname +
-            (l.port ? ":" + l.port : "") +
-            "/?/" +
-            l.pathname.slice(1).replace(/&/g, "~and~") +
-            (l.search ? "&" + l.search.slice(1).replace(/&/g, "~and~") : "") +
-            l.hash,
-        );
-      })();
-    </script>
-  </head>
-  <body></body>
-</html>
-`;
-
-          fs.writeFileSync(path.join(distPostDir, "index.html"), socialHtml);
+        for (const page of TOP_LEVEL_SOCIAL_PAGES) {
+          writeSocialHtml(distDir, { ...page, type: "website" });
         }
 
         for (const slug of slugs) {
