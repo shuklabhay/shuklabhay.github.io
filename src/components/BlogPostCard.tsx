@@ -24,7 +24,7 @@ function splitTitleForMiddleEllipsis(title: string): {
   }
 
   return {
-    prefix: `${words.slice(0, -2).join(" ")} `,
+    prefix: words.slice(0, -2).join(" "),
     suffix: words.slice(-2).join(" "),
   };
 }
@@ -99,6 +99,7 @@ export default function BlogPostCard({
           width: "100%",
           minWidth: 0,
           maxWidth: "100%",
+          columnGap: truncatedTitle.suffix ? "0.24em" : 0,
           whiteSpace: "nowrap",
           color: isHovered ? "#d7e4ff" : "white",
           fontSize: "clamp(1.08rem, 2vw, 1.82rem)",
@@ -109,6 +110,7 @@ export default function BlogPostCard({
       >
         <span
           style={{
+            flex: "1 1 auto",
             minWidth: 0,
             overflow: "hidden",
             textOverflow: "ellipsis",
