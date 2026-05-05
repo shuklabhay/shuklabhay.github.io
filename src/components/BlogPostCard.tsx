@@ -100,6 +100,7 @@ export default function BlogPostCard({
           minWidth: 0,
           maxWidth: "100%",
           columnGap: truncatedTitle.suffix ? "0.24em" : 0,
+          overflow: "hidden",
           whiteSpace: "nowrap",
           color: isHovered ? "#d7e4ff" : "white",
           fontSize: "clamp(1.08rem, 2vw, 1.82rem)",
@@ -110,7 +111,7 @@ export default function BlogPostCard({
       >
         <span
           style={{
-            flex: "1 1 auto",
+            flex: "0 1 auto",
             minWidth: 0,
             overflow: "hidden",
             textOverflow: "ellipsis",
