@@ -129,6 +129,7 @@ code {
   text-decoration-color: rgba(51, 94, 194, 0.28);
   text-underline-offset: 0.18em;
   font-weight: 600;
+  overflow-wrap: anywhere;
   transition:
     color 130ms ease,
     text-decoration-color 130ms ease;
