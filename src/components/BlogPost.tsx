@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import ArrowFromLineIcon from "./ArrowFromLineIcon";
 import type { BlogPostProps } from "../utils/types";
+import { isHydratingPrerenderedPage } from "../utils/prerender";
 
 const MOBILE_BREAKPOINT_PX = 860;
 const POST_ENTRY_FADE_MS = 375;
@@ -9,6 +10,7 @@ const SIDEBAR_STAGGER_PX = 15;
 
 function getIsMobileViewport(): boolean {
   if (typeof window === "undefined") return false;
+  if (isHydratingPrerenderedPage()) return false;
   return window.innerWidth <= MOBILE_BREAKPOINT_PX;
 }
 

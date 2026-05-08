@@ -11,7 +11,12 @@ import type { MouseEvent as ReactMouseEvent } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import BlogPost from "../components/BlogPost";
 import PostBackLink from "../components/PostBackLink";
-import { getPostBySlug, loadPostBySlug } from "../posts";
+import {
+  getLoadedPostBySlug,
+  getPostBySlug,
+  loadPostBySlug,
+  readPostBySlug,
+} from "../posts";
 import { preloadImage } from "../utils/imagePreload";
 import { formatPostDate } from "../utils/formatPostDate";
 import type {
@@ -33,7 +38,13 @@ type PostHeading = {
   text: string;
   level: number;
 };
+type PostProps = {
+  initialPostEntry?: PostEntry;
+  initialSlug?: string;
+};
 const ImageLightbox = lazy(() => import("../components/ImageLightbox"));
+const useIsomorphicLayoutEffect: typeof useEffect =
+  typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 function setPostContentLinksToNewTabs(contentEl: HTMLElement): void {
   contentEl
@@ -69,12 +80,16 @@ function didDocumentReload(): boolean {
   return legacyNavigation.type === legacyNavigation.TYPE_RELOAD;
 }
 
-function getPostScrollStorageKey(pathname: string) {
+function getPostScrollStorageKey(pathname: string): string {
   return `${POST_SCROLL_POSITION_PREFIX}${pathname}`;
 }
 
-export default function Post() {
-  const { slug = "" } = useParams();
+export default function Post({
+  initialPostEntry,
+  initialSlug,
+}: PostProps): JSX.Element {
+  const { slug: routeSlug = "" } = useParams();
+  const slug = initialSlug ?? routeSlug;
   const location = useLocation();
   const transitionState = location.state as RouteTransitionState | null;
   const prefersReducedMotion =
@@ -92,8 +107,25 @@ export default function Post() {
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [postHeadings, setPostHeadings] = useState<PostHeading[]>([]);
   const [activeHeadingId, setActiveHeadingId] = useState<string | null>(null);
-  const [postEntry, setPostEntry] = useState<PostEntry | null>(null);
-  const [isPostEntryReady, setIsPostEntryReady] = useState(false);
+  const loadedInitialPostEntry = initialPostEntry ?? getLoadedPostBySlug(slug);
+  const [postEntryState, setPostEntryState] = useState<{
+    slug: string;
+    entry: PostEntry;
+  } | null>(() =>
+    loadedInitialPostEntry
+      ? {
+          slug,
+          entry: loadedInitialPostEntry,
+        }
+      : null,
+  );
+  const postEntry =
+    postEntryState?.slug === slug
+      ? postEntryState.entry
+      : ((postSummary ? readPostBySlug(slug) : undefined) ?? null);
+  const [isPostEntryReady, setIsPostEntryReady] = useState(
+    !shouldAnimatePostEntry,
+  );
   const pendingHeadingJumpIdRef = useRef<string | null>(null);
   const pendingHeadingTargetScrollTopRef = useRef<number | null>(null);
   const pendingHeadingJumpReleaseTimeoutIdRef = useRef<number | null>(null);
@@ -164,15 +196,31 @@ export default function Post() {
 
   useEffect(() => {
     if (!postSummary) {
-      setPostEntry(null);
+      setPostEntryState(null);
+      return;
+    }
+
+    const loadedPostEntry = getLoadedPostBySlug(slug);
+    if (loadedPostEntry) {
+      setPostEntryState({
+        slug,
+        entry: loadedPostEntry,
+      });
       return;
     }
 
     let cancelled = false;
-    setPostEntry(null);
+    setPostEntryState(null);
     loadPostBySlug(slug).then((loadedPost) => {
       if (cancelled) return;
-      setPostEntry(loadedPost ?? null);
+      setPostEntryState(
+        loadedPost
+          ? {
+              slug,
+              entry: loadedPost,
+            }
+          : null,
+      );
     });
 
     return () => {
@@ -384,7 +432,7 @@ export default function Post() {
     void preloadImage(heroImage);
   }, [heroImage, postSummary]);
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!shouldAnimatePostEntry) {
       setIsPostEntryReady(true);
       return;

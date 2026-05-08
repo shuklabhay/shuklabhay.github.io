@@ -5,6 +5,7 @@ import type {
   PageTitleProps,
 } from "../utils/types";
 import TriangleIcon from "./TriangleIcon";
+import { isHydratingPrerenderedPage } from "../utils/prerender";
 
 export default function PageTitle({ title, subtitle }: PageTitleProps) {
   return (
@@ -28,6 +29,7 @@ function useCheckboxSubtitleInteraction() {
   const [hovered, setHovered] = useState<number | null>(null);
   const [canHover, setCanHover] = useState(() => {
     if (typeof window === "undefined") return false;
+    if (isHydratingPrerenderedPage()) return false;
     return window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   });
 

@@ -15,6 +15,8 @@ const MENU_ITEMS = [
   { label: "about", path: "/about" },
   { label: "blog", path: "/blog" },
 ];
+const useIsomorphicLayoutEffect: typeof useEffect =
+  typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 function preloadTopLevelRoute(path: string) {
   if (path === "/about") {
@@ -89,7 +91,7 @@ export default function NavMenu() {
     [],
   );
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const previousActiveKey = previousActiveKeyRef.current;
     const shouldAnimateUnderline =
       hasMeasuredUnderlineRef.current &&

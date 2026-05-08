@@ -10,6 +10,7 @@ import {
 import NavMenu from "./components/NavMenu.tsx";
 import Home from "./pages/Home.tsx";
 import { setLastPathname } from "./utils/routeTransitions";
+import { isHydratingPrerenderedPage } from "./utils/prerender";
 
 const MOBILE_BREAKPOINT_QUERY = "(max-width: 860px)";
 const PAGE_X_PADDING_DESKTOP = "1.125rem";
@@ -22,6 +23,8 @@ const Blog = lazy(() => import("./pages/Blog.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 const Post = lazy(() => import("./pages/Post.tsx"));
 const Resume = lazy(() => import("./pages/Resume.tsx"));
+const useIsomorphicLayoutEffect: typeof useEffect =
+  typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 function normalizePathname(pathname: string): string {
   if (pathname === "/") return pathname;
@@ -216,6 +219,7 @@ async function preloadFirstAvailableImage(
 function useIsMobileViewport(): boolean {
   const [isMobileViewport, setIsMobileViewport] = useState(() => {
     if (typeof window === "undefined") return false;
+    if (isHydratingPrerenderedPage()) return false;
     return window.matchMedia(MOBILE_BREAKPOINT_QUERY).matches;
   });
 
@@ -333,7 +337,7 @@ function RouteBackground({
   );
 }
 
-function AppShell(): JSX.Element {
+export function AppShell(): JSX.Element {
   const location = useLocation();
   const isMobileViewport = useIsMobileViewport();
   const prefersReducedMotion =
@@ -344,7 +348,7 @@ function AppShell(): JSX.Element {
     document.title = getRouteDocumentTitle(location.pathname);
   }, [location.pathname]);
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const isHome = isHomeVisualRoute(location.pathname);
     document.documentElement.classList.toggle("route-home", isHome);
     document.body.classList.toggle("route-home", isHome);

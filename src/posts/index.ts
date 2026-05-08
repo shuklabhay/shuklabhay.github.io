@@ -19,12 +19,16 @@ const postEntryPromiseBySlug = new Map<
   string,
   Promise<PostEntry | undefined>
 >();
+const postEntryBySlug = new Map<string, PostEntry>();
 
 export function getPostBySlug(slug: string): PostMeta | undefined {
   return postBySlug.get(slug);
 }
 
 export function loadPostBySlug(slug: string): Promise<PostEntry | undefined> {
+  const loadedPostEntry = postEntryBySlug.get(slug);
+  if (loadedPostEntry) return Promise.resolve(loadedPostEntry);
+
   const inFlightTask = postEntryPromiseBySlug.get(slug);
   if (inFlightTask) return inFlightTask;
 
@@ -36,10 +40,14 @@ export function loadPostBySlug(slug: string): Promise<PostEntry | undefined> {
   }
 
   const task = loadModule()
-    .then((module) => ({
-      ...postSummary,
-      Component: module.default,
-    }))
+    .then((module) => {
+      const postEntry: PostEntry = {
+        ...postSummary,
+        Component: module.default,
+      };
+      postEntryBySlug.set(slug, postEntry);
+      return postEntry;
+    })
     .catch((error: unknown) => {
       console.error(`Failed to load post module for slug "${slug}"`, error);
       return undefined;
@@ -47,4 +55,15 @@ export function loadPostBySlug(slug: string): Promise<PostEntry | undefined> {
 
   postEntryPromiseBySlug.set(slug, task);
   return task;
+}
+
+export function getLoadedPostBySlug(slug: string): PostEntry | undefined {
+  return postEntryBySlug.get(slug);
+}
+
+export function readPostBySlug(slug: string): PostEntry | undefined {
+  const loadedPostEntry = getLoadedPostBySlug(slug);
+  if (loadedPostEntry || !postBySlug.has(slug)) return loadedPostEntry;
+
+  throw loadPostBySlug(slug);
 }
