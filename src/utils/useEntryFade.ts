@@ -8,6 +8,17 @@ function queryBooleanMedia(query: string): boolean {
   return window.matchMedia(query).matches;
 }
 
+function isSafariBrowser(): boolean {
+  if (typeof navigator === "undefined") return false;
+
+  const userAgent = navigator.userAgent;
+  return (
+    navigator.vendor.includes("Apple") &&
+    userAgent.includes("Safari") &&
+    !/(Chrome|Chromium|CriOS|FxiOS|Edg|OPR|Android)/.test(userAgent)
+  );
+}
+
 export function shouldSkipEntryAnimation(): boolean {
   if (typeof window === "undefined") return false;
 
@@ -23,6 +34,10 @@ export function shouldSkipEntryAnimation(): boolean {
   if (isTouchDevice) return true;
 
   return window.innerWidth <= MOBILE_WIDTH_BREAKPOINT;
+}
+
+export function shouldSkipPostOpenAnimation(): boolean {
+  return shouldSkipEntryAnimation() || isSafariBrowser();
 }
 
 export function useEntryFade(

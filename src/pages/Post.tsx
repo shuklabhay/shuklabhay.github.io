@@ -19,7 +19,7 @@ import {
 } from "../posts";
 import { preloadImage } from "../utils/imagePreload";
 import { formatPostDate } from "../utils/formatPostDate";
-import { shouldSkipEntryAnimation } from "../utils/useEntryFade";
+import { shouldSkipPostOpenAnimation } from "../utils/useEntryFade";
 import type {
   PostEntry,
   RichImage,
@@ -99,7 +99,7 @@ export default function Post({
   const shouldAnimatePostEntry =
     transitionState?.fromBlog === true &&
     !prefersReducedMotion &&
-    !shouldSkipEntryAnimation();
+    !shouldSkipPostOpenAnimation();
   const isDocumentReload = didDocumentReload();
   const postScrollStorageKey = getPostScrollStorageKey(location.pathname);
   const postSummary = getPostBySlug(slug);
