@@ -26,7 +26,7 @@
       })(window.location);
 
       (function (l) {
-        if (l.pathname === "/") {
+        if (l.pathname === "/" || l.pathname === "/contact") {
           var criticalHomeStyle = document.createElement("style");
           criticalHomeStyle.id = "route-home-critical-style";
           criticalHomeStyle.textContent =
@@ -52,10 +52,7 @@
       type="image/webp"
       fetchpriority="high"
     />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="ㅤ" />
     <meta name="robots" content="index,follow" />
     <meta property="og:type" content="website" />
@@ -80,6 +77,14 @@
     <title>Abhay Shukla</title>
   </head>
   <body>
+    <script type="text/javascript">
+      if (
+        window.location.pathname === "/" ||
+        window.location.pathname === "/contact"
+      ) {
+        document.body.classList.add("route-home");
+      }
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/Main.tsx"></script>
   </body>

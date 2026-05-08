@@ -99,7 +99,7 @@ export default function BlogPost({
     };
   }, [isMobile, sidebar]);
 
-  const pageXPadding = isMobile ? "0.625rem" : "1.125rem";
+  const pageXPadding = "var(--page-x-padding)";
   const hasHeroImage = Boolean(heroImage);
   const heroOverlap = isMobile ? 108 : 132;
   const heroHeight = isMobile ? 300 : 470;
@@ -160,6 +160,7 @@ export default function BlogPost({
     >
       {heroImage ? (
         <div
+          className="post-hero"
           style={{
             position: "relative",
             width: `calc(100% + (${pageXPadding} * 2))`,
@@ -200,8 +201,12 @@ export default function BlogPost({
           />
         </div>
       ) : null}
-      <div style={{ margin: titleMargin, position: "relative", zIndex: 1 }}>
+      <div
+        className={`post-title-block ${hasHeroImage ? "has-hero" : "no-hero"}`}
+        style={{ margin: titleMargin, position: "relative", zIndex: 1 }}
+      >
         <h1
+          className="post-title-heading"
           style={{
             margin: 0,
             lineHeight: 1.16,
@@ -304,6 +309,7 @@ export default function BlogPost({
             />
           ) : null}
           <div
+            className="post-reading-grid"
             style={{
               width: "100%",
               maxWidth: "none",

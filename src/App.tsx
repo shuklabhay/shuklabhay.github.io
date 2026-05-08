@@ -10,11 +10,7 @@ import {
 import NavMenu from "./components/NavMenu.tsx";
 import Home from "./pages/Home.tsx";
 import { setLastPathname } from "./utils/routeTransitions";
-import { isHydratingPrerenderedPage } from "./utils/prerender";
 
-const MOBILE_BREAKPOINT_QUERY = "(max-width: 860px)";
-const PAGE_X_PADDING_DESKTOP = "1.125rem";
-const PAGE_X_PADDING_MOBILE = "0.625rem";
 const HOME_BACKGROUND_IMMEDIATE_SRC = "/static/landing-1280.webp";
 const SITE_TITLE = "Abhay Shukla";
 const SITE_TITLE_SEPARATOR = " · ";
@@ -216,53 +212,21 @@ async function preloadFirstAvailableImage(
   });
 }
 
-function useIsMobileViewport(): boolean {
-  const [isMobileViewport, setIsMobileViewport] = useState(() => {
-    if (typeof window === "undefined") return false;
-    if (isHydratingPrerenderedPage()) return false;
-    return window.matchMedia(MOBILE_BREAKPOINT_QUERY).matches;
-  });
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const mediaQuery = window.matchMedia(MOBILE_BREAKPOINT_QUERY);
-    const onChange = (event: MediaQueryListEvent) => {
-      setIsMobileViewport(event.matches);
-    };
-
-    setIsMobileViewport(mediaQuery.matches);
-    if (typeof mediaQuery.addEventListener === "function") {
-      mediaQuery.addEventListener("change", onChange);
-      return () => mediaQuery.removeEventListener("change", onChange);
-    }
-
-    mediaQuery.addListener(onChange);
-    return () => mediaQuery.removeListener(onChange);
-  }, []);
-
-  return isMobileViewport;
-}
-
-function RouteBackground({
-  isMobileViewport,
-  prefersReducedMotion,
-}: {
-  isMobileViewport: boolean;
-  prefersReducedMotion: boolean;
-}): JSX.Element {
+function RouteBackground(): null {
   const location = useLocation();
   const isHome = isHomeVisualRoute(location.pathname);
   const [homeBackgroundSrc, setHomeBackgroundSrc] = useState(
     () => HOME_BACKGROUND_IMMEDIATE_SRC,
   );
   const decodedHomeBackgroundSrcSetRef = useRef(new Set<string>());
-  const shouldShowHomeBackground = isHome;
-  const backgroundVeilTransition = shouldShowHomeBackground
-    ? prefersReducedMotion
-      ? "none"
-      : "none"
-    : "none";
-  const backgroundVeilOpacity = shouldShowHomeBackground ? 0 : 1;
+
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    document.documentElement.style.setProperty(
+      "--home-background-image",
+      `url("${homeBackgroundSrc}")`,
+    );
+  }, [homeBackgroundSrc]);
 
   useEffect(() => {
     const src = homeBackgroundSrc;
@@ -297,52 +261,12 @@ function RouteBackground({
     };
   }, [isHome]);
 
-  return (
-    <>
-      <div
-        className="route-background-image"
-        style={{
-          position: "fixed",
-          left: 0,
-          top: 0,
-          width: "100vw",
-          height: "100vh",
-          zIndex: 0,
-          pointerEvents: "none",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: isMobileViewport ? "70% center" : "center",
-          backgroundColor: "#52668b",
-          opacity: shouldShowHomeBackground ? 1 : 0,
-          backgroundImage: `url("${homeBackgroundSrc}")`,
-        }}
-      />
-      <div
-        className="route-background-base"
-        style={{
-          position: "fixed",
-          left: 0,
-          top: 0,
-          width: "100vw",
-          height: "100vh",
-          zIndex: 1,
-          pointerEvents: "none",
-          backgroundColor: "#52668b",
-          willChange: "opacity",
-          transition: backgroundVeilTransition,
-          opacity: backgroundVeilOpacity,
-        }}
-      />
-    </>
-  );
+  return null;
 }
 
 export function AppShell(): JSX.Element {
   const location = useLocation();
-  const isMobileViewport = useIsMobileViewport();
-  const prefersReducedMotion =
-    typeof window !== "undefined" &&
-    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
+  const isHome = isHomeVisualRoute(location.pathname);
 
   useEffect(() => {
     document.title = getRouteDocumentTitle(location.pathname);
@@ -357,17 +281,15 @@ export function AppShell(): JSX.Element {
 
   return (
     <>
-      <RouteBackground
-        isMobileViewport={isMobileViewport}
-        prefersReducedMotion={prefersReducedMotion}
-      />
+      <RouteBackground />
       <div
         style={{
           width: "100%",
+          maxWidth: "100%",
+          overflowX: "clip",
           margin: "0 auto",
-          paddingInline: isMobileViewport
-            ? PAGE_X_PADDING_MOBILE
-            : PAGE_X_PADDING_DESKTOP,
+          paddingBottom: isHome ? 0 : "var(--browser-bottom-clearance)",
+          paddingInline: "var(--page-x-padding)",
           position: "relative",
           zIndex: 1,
         }}

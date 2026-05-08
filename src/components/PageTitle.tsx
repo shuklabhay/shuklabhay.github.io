@@ -119,7 +119,9 @@ export function CheckboxSubtitleLink<T extends string = string>({
     <div
       style={{
         display: "flex",
+        flexWrap: "wrap",
         gap: "0.5rem",
+        maxWidth: "100%",
         marginTop,
         marginBottom,
         userSelect: "none",
@@ -289,7 +291,9 @@ export function CheckboxSubtitleToggle<T extends string = string>({
     <div
       style={{
         display: "flex",
+        flexWrap: "wrap",
         gap: "0.5rem",
+        maxWidth: "100%",
         marginTop,
         marginBottom,
         userSelect: "none",
