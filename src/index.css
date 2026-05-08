@@ -62,13 +62,9 @@ body {
 html.route-home,
 body.route-home {
   min-height: 100vh;
-  min-height: 100svh;
-  min-height: 100dvh;
+  min-height: 100lvh;
   height: 100vh;
-  height: 100svh;
-  height: 100dvh;
-  overflow: hidden;
-  overscroll-behavior: none;
+  height: 100lvh;
 }
 
 html.route-home {
@@ -80,12 +76,10 @@ html.route-home {
 }
 
 body.route-home {
-  background-color: var(--home-browser-chrome-color);
-  background-image: var(--home-background-image);
+  background-color: transparent;
+  background-image: none;
   background-attachment: scroll;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
+  overscroll-behavior-y: auto;
 }
 
 #root {
@@ -101,8 +95,10 @@ body.route-home {
 }
 
 body.route-home #root {
-  height: 100%;
-  min-height: 100%;
+  min-height: 100vh;
+  min-height: 100lvh;
+  height: 100vh;
+  height: 100lvh;
   overflow: hidden;
 }
 
@@ -112,14 +108,12 @@ body.route-home #root {
 }
 
 .app-shell-home {
-  height: 100%;
-  min-height: 100%;
+  min-height: 100vh;
+  min-height: 100lvh;
+  height: 100vh;
+  height: 100lvh;
   overflow: hidden;
-  background-color: var(--home-browser-chrome-color);
-  background-image: var(--home-background-image);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
+  background: transparent;
 }
 
 code {
@@ -496,7 +490,6 @@ code {
 
 @media (max-width: 860px) {
   :root {
-    --home-canvas-height-offset: -36px;
     --page-x-padding: 0.625rem;
     --browser-bottom-clearance: 5rem;
   }
@@ -509,11 +502,7 @@ code {
     padding: 0 0 0.55rem;
   }
 
-  .route-home {
-    background-position: var(--home-mobile-focal-x) center;
-  }
-
-  .app-shell-home {
+  html.route-home {
     background-position: var(--home-mobile-focal-x) center;
   }
 

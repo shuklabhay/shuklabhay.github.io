@@ -30,6 +30,12 @@
           var criticalHomeStyle = document.createElement("style");
           criticalHomeStyle.id = "route-home-critical-style";
           criticalHomeStyle.textContent =
+            "html.route-home,body.route-home {" +
+            "  min-height: 100vh;" +
+            "  min-height: 100lvh;" +
+            "  height: 100vh;" +
+            "  height: 100lvh;" +
+            "}" +
             "html.route-home {" +
             "  background-color: #5a6c99;" +
             "  background-repeat: no-repeat;" +
@@ -38,11 +44,14 @@
             '  background-image: url("/static/landing-1280.webp");' +
             "}" +
             "body.route-home {" +
-            "  background-color: #9d85b3;" +
-            "  background-repeat: no-repeat;" +
-            "  background-size: cover;" +
-            "  background-position: center;" +
-            '  background-image: url("/static/landing-1280.webp");' +
+            "  background-color: transparent;" +
+            "  background-image: none;" +
+            "  overscroll-behavior-y: auto;" +
+            "}" +
+            "@media (max-width: 860px) {" +
+            "  html.route-home {" +
+            "    background-position: 70% center;" +
+            "  }" +
             "}";
           document.head.appendChild(criticalHomeStyle);
           document.documentElement.classList.add("route-home");
@@ -59,7 +68,10 @@
       type="image/webp"
       fetchpriority="high"
     />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
     <meta name="description" content="ㅤ" />
     <meta name="robots" content="index,follow" />
     <meta property="og:type" content="website" />
