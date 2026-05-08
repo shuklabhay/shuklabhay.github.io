@@ -4,7 +4,7 @@ import type { MouseEvent as ReactMouseEvent } from "react";
 import { loadPostBySlug } from "../posts";
 import { preloadImage } from "../utils/imagePreload";
 import type { PostMeta } from "../utils/types";
-import { shouldSkipPostOpenAnimation } from "../utils/useEntryFade";
+import { shouldSkipEntryAnimation } from "../utils/useEntryFade";
 import { runWithRootViewTransition } from "../utils/viewTransitions";
 
 type BlogPostCardProps = {
@@ -56,7 +56,7 @@ export default function BlogPostCard({
     const navigateToPost = (): void => {
       navigate(postPath, { state: { fromBlog: true } });
     };
-    if (shouldUseViewTransition && !shouldSkipPostOpenAnimation()) {
+    if (shouldUseViewTransition && !shouldSkipEntryAnimation()) {
       runWithRootViewTransition(navigateToPost);
       return;
     }
