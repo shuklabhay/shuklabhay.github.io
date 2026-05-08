@@ -8,7 +8,7 @@ function queryBooleanMedia(query: string): boolean {
   return window.matchMedia(query).matches;
 }
 
-export function shouldSkipEntryAnimation() {
+export function shouldSkipEntryAnimation(): boolean {
   if (typeof window === "undefined") return false;
 
   if (queryBooleanMedia("(prefers-reduced-motion: reduce)")) return true;
