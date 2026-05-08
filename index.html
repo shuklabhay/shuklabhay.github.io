@@ -30,8 +30,15 @@
           var criticalHomeStyle = document.createElement("style");
           criticalHomeStyle.id = "route-home-critical-style";
           criticalHomeStyle.textContent =
-            ".route-home {" +
+            "html.route-home {" +
             "  background-color: #5a6c99;" +
+            "  background-repeat: no-repeat;" +
+            "  background-size: cover;" +
+            "  background-position: center;" +
+            '  background-image: url("/static/landing-1280.webp");' +
+            "}" +
+            "body.route-home {" +
+            "  background-color: #9d85b3;" +
             "  background-repeat: no-repeat;" +
             "  background-size: cover;" +
             "  background-position: center;" +

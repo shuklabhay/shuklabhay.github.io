@@ -3,6 +3,7 @@
   --home-mobile-focal-x: 70%;
   --page-background-color: #52668b;
   --home-background-color: #5a6c99;
+  --home-browser-chrome-color: #9d85b3;
   --home-background-image: url("/static/landing-1280.webp");
   --page-x-padding: 1.125rem;
   --browser-bottom-clearance: 0px;
@@ -70,8 +71,7 @@ body.route-home {
   overscroll-behavior: none;
 }
 
-html.route-home,
-body.route-home {
+html.route-home {
   background-color: var(--home-background-color);
   background-image: var(--home-background-image);
   background-repeat: no-repeat;
@@ -80,7 +80,12 @@ body.route-home {
 }
 
 body.route-home {
+  background-color: var(--home-browser-chrome-color);
+  background-image: var(--home-background-image);
   background-attachment: scroll;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
 
 #root {
