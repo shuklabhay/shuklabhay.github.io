@@ -111,6 +111,17 @@ body.route-home #root {
   display: none;
 }
 
+.app-shell-home {
+  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
+  background-color: var(--home-browser-chrome-color);
+  background-image: var(--home-background-image);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
 code {
   font-family:
     source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
@@ -499,6 +510,10 @@ code {
   }
 
   .route-home {
+    background-position: var(--home-mobile-focal-x) center;
+  }
+
+  .app-shell-home {
     background-position: var(--home-mobile-focal-x) center;
   }
 

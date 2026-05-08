@@ -283,6 +283,7 @@ export function AppShell(): JSX.Element {
     <>
       <RouteBackground />
       <div
+        className={isHome ? "app-shell app-shell-home" : "app-shell"}
         style={{
           width: "100%",
           maxWidth: "100%",
