@@ -6,7 +6,14 @@ import { isHydratingPrerenderedPage } from "../utils/prerender";
 
 const MOBILE_BREAKPOINT_PX = 860;
 const POST_ENTRY_FADE_MS = 375;
-const SIDEBAR_STAGGER_PX = 15;
+const POST_LAYOUT_TRANSITION = "220ms ease";
+const DESKTOP_READING_WIDTH = "76%";
+const DESKTOP_SIDEBAR_WIDTH = "clamp(11.5rem, 16vw, 14.5rem)";
+const DESKTOP_SIDEBAR_GAP = "clamp(1rem, 2vw, 1.8rem)";
+const DESKTOP_SIDEBAR_STICKY_TOP =
+  "calc(clamp(0.6rem, 1.5vh, 0.9rem) + env(safe-area-inset-top))";
+const DESKTOP_SIDEBAR_RAIL_HEIGHT =
+  "calc(100svh - env(safe-area-inset-top) - clamp(1.2rem, 3vh, 1.8rem))";
 
 function getIsMobileViewport(): boolean {
   if (typeof window === "undefined") return false;
@@ -27,11 +34,11 @@ export default function BlogPost({
 }: BlogPostProps): JSX.Element {
   const [isMobile, setIsMobile] = useState(getIsMobileViewport);
   const [isSidebarDismissed, setIsSidebarDismissed] = useState(false);
-  const [sidebarTranslateYPx, setSidebarTranslateYPx] = useState(0);
   const [hoveredButtonIndex, setHoveredButtonIndex] = useState<number | null>(
     null,
   );
   const [isSidebarToggleHovered, setIsSidebarToggleHovered] = useState(false);
+  const [shouldAnimateLayout, setShouldAnimateLayout] = useState(false);
   const readingCardRef = useRef<HTMLElement>(null);
   const prefersReducedMotion =
     typeof window !== "undefined" &&
@@ -47,6 +54,22 @@ export default function BlogPost({
     onViewportResize();
     window.addEventListener("resize", onViewportResize);
     return () => window.removeEventListener("resize", onViewportResize);
+  }, []);
+
+  useEffect((): (() => void) | void => {
+    if (typeof window === "undefined") return;
+
+    let secondFrameId = 0;
+    const firstFrameId = window.requestAnimationFrame((): void => {
+      secondFrameId = window.requestAnimationFrame((): void => {
+        setShouldAnimateLayout(true);
+      });
+    });
+
+    return (): void => {
+      window.cancelAnimationFrame(firstFrameId);
+      window.cancelAnimationFrame(secondFrameId);
+    };
   }, []);
 
   useEffect(() => {
@@ -73,32 +96,6 @@ export default function BlogPost({
     };
   }, []);
 
-  useEffect(() => {
-    if (typeof window === "undefined" || !sidebar || isMobile) {
-      setSidebarTranslateYPx(0);
-      return;
-    }
-
-    const updateSidebarOffset = (): void => {
-      const cardTop = readingCardRef.current?.getBoundingClientRect().top ?? 0;
-      const nextOffset = Math.round(
-        Math.min(Math.max(cardTop, 0), SIDEBAR_STAGGER_PX),
-      );
-      setSidebarTranslateYPx((current) =>
-        current === nextOffset ? current : nextOffset,
-      );
-    };
-
-    updateSidebarOffset();
-    window.addEventListener("scroll", updateSidebarOffset, { passive: true });
-    window.addEventListener("resize", updateSidebarOffset);
-
-    return () => {
-      window.removeEventListener("scroll", updateSidebarOffset);
-      window.removeEventListener("resize", updateSidebarOffset);
-    };
-  }, [isMobile, sidebar]);
-
   const pageXPadding = "var(--page-x-padding)";
   const hasHeroImage = Boolean(heroImage);
   const heroOverlap = isMobile ? 108 : 132;
@@ -124,8 +121,12 @@ export default function BlogPost({
         opacity: 0,
         pointerEvents: "none",
       };
+  const postLayoutTransition =
+    prefersReducedMotion || !shouldAnimateLayout
+      ? null
+      : POST_LAYOUT_TRANSITION;
   const sidebarMotionStyle: CSSProperties = {
-    transform: `translateY(${sidebarTranslateYPx}px)`,
+    minHeight: DESKTOP_SIDEBAR_RAIL_HEIGHT,
   };
   const getHeaderButtonStyle = (isHovered: boolean): CSSProperties => ({
     display: "inline-flex",
@@ -277,7 +278,11 @@ export default function BlogPost({
           ref={readingCardRef}
           data-post-reading-card
           style={{
-            width: isMobile ? "100%" : sidebar ? "95%" : "78%",
+            width: isMobile
+              ? "100%"
+              : showSidebar
+                ? `min(100%, calc(${DESKTOP_READING_WIDTH} + ${DESKTOP_SIDEBAR_WIDTH} + ${DESKTOP_SIDEBAR_GAP}))`
+                : DESKTOP_READING_WIDTH,
             marginInline: "auto",
             position: "relative",
             color: "#1f2740",
@@ -288,6 +293,9 @@ export default function BlogPost({
             boxShadow: "0 10px 22px rgba(7, 12, 24, 0.11)",
             overflow: "visible",
             isolation: "isolate",
+            transition: postLayoutTransition
+              ? `width ${postLayoutTransition}`
+              : "none",
           }}
         >
           <div
@@ -320,13 +328,13 @@ export default function BlogPost({
               padding: contentPadding,
               display: "grid",
               gridTemplateColumns: hasDesktopSidebar
-                ? `${showSidebar ? "clamp(11.5rem, 16vw, 14.5rem)" : "0px"} minmax(0, 1fr)`
+                ? `${showSidebar ? DESKTOP_SIDEBAR_WIDTH : "0px"} minmax(0, 1fr)`
                 : "minmax(0, 1fr)",
-              gap: showSidebar ? "clamp(1rem, 2vw, 1.8rem)" : 0,
+              gap: showSidebar ? DESKTOP_SIDEBAR_GAP : 0,
               alignItems: "start",
-              transition: prefersReducedMotion
-                ? "none"
-                : "grid-template-columns 220ms ease, gap 220ms ease",
+              transition: postLayoutTransition
+                ? `grid-template-columns ${postLayoutTransition}, gap ${postLayoutTransition}`
+                : "none",
             }}
           >
             {hasDesktopSidebar ? (
@@ -334,7 +342,7 @@ export default function BlogPost({
                 style={{
                   alignSelf: "start",
                   position: "sticky",
-                  top: "clamp(0.75rem, 2vh, 1.2rem)",
+                  top: DESKTOP_SIDEBAR_STICKY_TOP,
                   minWidth: 0,
                   overflow: "visible",
                 }}
@@ -345,7 +353,15 @@ export default function BlogPost({
                   }`}
                   style={sidebarMotionStyle}
                 >
-                  <div className="post-sidebar-shell">
+                  <div
+                    className="post-sidebar-shell"
+                    style={{
+                      minHeight: DESKTOP_SIDEBAR_RAIL_HEIGHT,
+                      transition: postLayoutTransition
+                        ? `opacity ${postLayoutTransition}, transform ${postLayoutTransition}`
+                        : "none",
+                    }}
+                  >
                     <div className="post-sidebar-header">
                       <p className="post-toc-eyebrow">Contents</p>
                       <button
