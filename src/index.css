@@ -148,19 +148,6 @@ code {
   margin-top: 0.12em;
 }
 
-.post-content > h1,
-.post-content > h2,
-.post-content > h3,
-.post-content > h4,
-.post-content > p,
-.post-content > ul,
-.post-content > ol,
-.post-content > blockquote {
-  max-width: 72ch;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 .post-content p,
 .post-content li {
   line-height: 1.7;
