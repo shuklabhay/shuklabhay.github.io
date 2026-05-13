@@ -204,11 +204,7 @@ export default function Blog() {
         }}
       >
         {sortedPosts.map((post) => (
-          <BlogPostCard
-            key={post.slug}
-            post={post}
-            shouldUseViewTransition={!prefersReducedMotion}
-          />
+          <BlogPostCard key={post.slug} post={post} />
         ))}
       </section>
     </main>

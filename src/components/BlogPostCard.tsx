@@ -1,15 +1,11 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import type { MouseEvent as ReactMouseEvent } from "react";
+import { Link } from "react-router-dom";
 import { loadPostBySlug } from "../posts";
 import { preloadImage } from "../utils/imagePreload";
 import type { PostMeta } from "../utils/types";
-import { shouldSkipEntryAnimation } from "../utils/useEntryFade";
-import { runWithRootViewTransition } from "../utils/viewTransitions";
 
 type BlogPostCardProps = {
   post: PostMeta;
-  shouldUseViewTransition?: boolean;
 };
 
 const DEFAULT_POST_HERO_IMAGE = "/static/landing-1280.avif";
@@ -30,11 +26,7 @@ function splitTitleForMiddleEllipsis(title: string): {
   };
 }
 
-export default function BlogPostCard({
-  post,
-  shouldUseViewTransition = true,
-}: BlogPostCardProps): JSX.Element {
-  const navigate = useNavigate();
+export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
   const postPath = `/blog/${post.slug}`;
   const heroSrc = post.cover ?? DEFAULT_POST_HERO_IMAGE;
   const [isHovered, setIsHovered] = useState(false);
@@ -46,29 +38,12 @@ export default function BlogPostCard({
     void import("../pages/Post.tsx");
   };
 
-  const onCardClick = (event: ReactMouseEvent<HTMLAnchorElement>): void => {
-    if (event.defaultPrevented) return;
-    if (event.button !== 0) return;
-    if (event.metaKey || event.altKey || event.ctrlKey || event.shiftKey)
-      return;
-
-    event.preventDefault();
-    const navigateToPost = (): void => {
-      navigate(postPath, { state: { fromBlog: true } });
-    };
-    if (shouldUseViewTransition && !shouldSkipEntryAnimation()) {
-      runWithRootViewTransition(navigateToPost);
-      return;
-    }
-    navigateToPost();
-  };
-
   return (
     <Link
       to={postPath}
       viewTransition={false}
-      state={{ fromBlog: true }}
-      onClick={onCardClick}
+      target="_blank"
+      rel="noopener noreferrer"
       style={{
         display: "block",
         width: "100%",

@@ -29,6 +29,8 @@ export default function PostBackLink(): JSX.Element {
         to={backTargetPath}
         viewTransition={!prefersReducedMotion}
         state={{ fromPost: true }}
+        target="_blank"
+        rel="noopener noreferrer"
         style={{
           color: "white",
           textDecoration: "none",
