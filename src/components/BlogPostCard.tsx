@@ -42,8 +42,7 @@ export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
     <Link
       to={postPath}
       viewTransition={false}
-      target="_blank"
-      rel="noopener noreferrer"
+      state={{ fromBlog: true, fromPath: "/blog" }}
       style={{
         display: "block",
         width: "100%",
