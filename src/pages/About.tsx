@@ -108,14 +108,7 @@ export default function About(): JSX.Element {
                   <strong>multimodal agents</strong>
                 </a>{" "}
                 to <strong>translate music</strong> while preserving musicality,{" "}
-                <a
-                  href="https://www.youtube.com/@translateanyaudio/shorts"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="about-contact-link"
-                >
-                  <strong>reaching 1M+ listeners</strong>
-                </a>
+                <strong>reaching 1M+ listeners</strong>
               </li>
               <li style={{ marginTop: "0.45rem" }}>
                 <strong>Simulated rat neurons</strong> at UCLA; trained{" "}
