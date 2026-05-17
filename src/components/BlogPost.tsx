@@ -16,10 +16,8 @@ const DESKTOP_SIDEBAR_RAIL_HEIGHT =
 const DESKTOP_SIDEBAR_CARD_INSET_PX = 12;
 
 type SidebarViewportState = {
-  contentOffset: number;
-  height: number;
   left: number;
-  mode: "fixed" | "inline";
+  mode: "bottom" | "fixed" | "inline";
   top: number;
   width: number;
 };
@@ -139,36 +137,31 @@ export default function BlogPost({
     prefersReducedMotion || !shouldAnimateLayout
       ? null
       : POST_LAYOUT_TRANSITION;
+  const sidebarViewportMode = sidebarViewportState?.mode ?? "inline";
+  const isSidebarBottomAnchored = sidebarViewportMode === "bottom";
+  const isSidebarFixed = sidebarViewportMode === "fixed";
+  const isSidebarPinned = isSidebarBottomAnchored || isSidebarFixed;
   const sidebarMotionStyle: CSSProperties = {
-    height:
-      sidebarViewportState?.mode === "fixed"
-        ? `${sidebarViewportState.height}px`
-        : undefined,
     left:
-      sidebarViewportState?.mode === "fixed"
+      isSidebarFixed && sidebarViewportState
         ? `${sidebarViewportState.left}px`
-        : undefined,
-    maxHeight:
-      sidebarViewportState?.mode === "fixed"
-        ? `${sidebarViewportState.height}px`
-        : DESKTOP_SIDEBAR_RAIL_HEIGHT,
-    position: sidebarViewportState?.mode === "fixed" ? "fixed" : "relative",
+        : isSidebarBottomAnchored
+          ? 0
+          : undefined,
+    position: isSidebarFixed
+      ? "fixed"
+      : isSidebarBottomAnchored
+        ? "absolute"
+        : "relative",
     top:
-      sidebarViewportState?.mode === "fixed"
+      isSidebarPinned && sidebarViewportState
         ? `${sidebarViewportState.top}px`
         : undefined,
     width:
-      sidebarViewportState?.mode === "fixed"
+      isSidebarPinned && sidebarViewportState
         ? `${sidebarViewportState.width}px`
         : undefined,
-    zIndex: sidebarViewportState?.mode === "fixed" ? 3 : 1,
-  };
-  const sidebarContentStyle: CSSProperties = {
-    transform:
-      sidebarViewportState?.mode === "fixed" &&
-      sidebarViewportState.contentOffset !== 0
-        ? `translateY(${sidebarViewportState.contentOffset}px)`
-        : undefined,
+    zIndex: isSidebarFixed ? 3 : 1,
   };
   const syncSidebarViewportState = useCallback((): void => {
     if (typeof window === "undefined") return;
@@ -195,33 +188,33 @@ export default function BlogPost({
       9.6,
       Math.min(window.innerHeight * 0.015, 14.4),
     );
-    const topBoundary = Math.max(
+    const fixedTop = Math.max(
       stickyTopPx,
       readingCardRect.top + DESKTOP_SIDEBAR_CARD_INSET_PX,
     );
-    const bottomBoundary = Math.min(
-      window.innerHeight - DESKTOP_SIDEBAR_CARD_INSET_PX,
-      readingCardRect.bottom - DESKTOP_SIDEBAR_CARD_INSET_PX,
-    );
-    const availableHeight = Math.max(0, bottomBoundary - topBoundary);
-    const contentHeight = sidebarContentEl.getBoundingClientRect().height;
-    const nextMode =
+    const bottomBoundary =
+      readingCardRect.bottom - DESKTOP_SIDEBAR_CARD_INSET_PX;
+    const panelHeight = sidebarContentEl.getBoundingClientRect().height;
+    const shouldPinSidebar =
       sidebarColumnRect.top <= stickyTopPx &&
-      availableHeight > DESKTOP_SIDEBAR_CARD_INSET_PX
-        ? "fixed"
-        : "inline";
-    const nextTop = nextMode === "fixed" ? topBoundary : 0;
-    const nextHeight = nextMode === "fixed" ? availableHeight : 0;
-    const nextContentOffset =
-      nextMode === "fixed"
-        ? Math.min(0, bottomBoundary - topBoundary - contentHeight)
-        : 0;
+      bottomBoundary > fixedTop + DESKTOP_SIDEBAR_CARD_INSET_PX;
+    const shouldAnchorToBottom =
+      shouldPinSidebar && fixedTop + panelHeight >= bottomBoundary;
+    const nextMode: SidebarViewportState["mode"] = shouldPinSidebar
+      ? shouldAnchorToBottom
+        ? "bottom"
+        : "fixed"
+      : "inline";
+    const nextTop =
+      nextMode === "bottom"
+        ? bottomBoundary - panelHeight - sidebarColumnRect.top
+        : nextMode === "fixed"
+          ? fixedTop
+          : 0;
 
     setSidebarViewportState((current) => {
       if (
         current?.mode === nextMode &&
-        current.contentOffset === nextContentOffset &&
-        current.height === nextHeight &&
         current.left === sidebarColumnRect.left &&
         current.top === nextTop &&
         current.width === sidebarColumnRect.width
@@ -230,8 +223,6 @@ export default function BlogPost({
       }
 
       return {
-        contentOffset: nextContentOffset,
-        height: nextHeight,
         left: sidebarColumnRect.left,
         mode: nextMode,
         top: nextTop,
@@ -512,18 +503,12 @@ export default function BlogPost({
                   <div
                     className="post-sidebar-shell"
                     style={{
-                      height:
-                        sidebarViewportState?.mode === "fixed"
-                          ? "100%"
-                          : undefined,
                       maxHeight:
-                        sidebarViewportState?.mode === "fixed"
-                          ? "100%"
+                        sidebarViewportMode === "bottom"
+                          ? undefined
                           : DESKTOP_SIDEBAR_RAIL_HEIGHT,
                       overflowY:
-                        sidebarViewportState?.mode === "fixed"
-                          ? "hidden"
-                          : "auto",
+                        sidebarViewportMode === "bottom" ? "visible" : "auto",
                       overscrollBehavior: "contain",
                       transition: postLayoutTransition
                         ? `opacity ${postLayoutTransition}, transform ${postLayoutTransition}`
@@ -533,7 +518,6 @@ export default function BlogPost({
                     <div
                       ref={sidebarContentRef}
                       className="post-sidebar-content"
-                      style={sidebarContentStyle}
                     >
                       <div className="post-sidebar-header">
                         <p className="post-toc-eyebrow">Contents</p>
