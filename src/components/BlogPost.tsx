@@ -18,6 +18,7 @@ const DESKTOP_SIDEBAR_RAIL_HEIGHT =
 type SidebarViewportState = {
   left: number;
   mode: "fixed" | "inline";
+  top: number;
   width: number;
 };
 
@@ -47,6 +48,7 @@ export default function BlogPost({
   const [shouldAnimateLayout, setShouldAnimateLayout] = useState(false);
   const readingCardRef = useRef<HTMLElement>(null);
   const sidebarColumnRef = useRef<HTMLElement>(null);
+  const sidebarPanelRef = useRef<HTMLDivElement>(null);
   const [sidebarViewportState, setSidebarViewportState] =
     useState<SidebarViewportState | null>(null);
   const prefersReducedMotion =
@@ -143,7 +145,7 @@ export default function BlogPost({
     position: sidebarViewportState?.mode === "fixed" ? "fixed" : "relative",
     top:
       sidebarViewportState?.mode === "fixed"
-        ? DESKTOP_SIDEBAR_STICKY_TOP
+        ? `${sidebarViewportState.top}px`
         : undefined,
     width:
       sidebarViewportState?.mode === "fixed"
@@ -160,21 +162,30 @@ export default function BlogPost({
 
     const readingCardEl = readingCardRef.current;
     const sidebarColumnEl = sidebarColumnRef.current;
-    if (!readingCardEl || !sidebarColumnEl) return;
+    const sidebarPanelEl = sidebarPanelRef.current;
+    if (!readingCardEl || !sidebarColumnEl || !sidebarPanelEl) return;
 
     const readingCardRect = readingCardEl.getBoundingClientRect();
     const sidebarColumnRect = sidebarColumnEl.getBoundingClientRect();
+    const stickyTopPx = Math.max(
+      9.6,
+      Math.min(window.innerHeight * 0.015, 14.4),
+    );
+    const fixedTop = Math.min(
+      stickyTopPx,
+      readingCardRect.bottom - sidebarPanelEl.getBoundingClientRect().height,
+    );
     const nextMode =
-      readingCardRect.top <=
-        Math.max(9.6, Math.min(window.innerHeight * 0.015, 14.4)) &&
-      readingCardRect.bottom > 0
+      readingCardRect.top <= stickyTopPx && readingCardRect.bottom > 0
         ? "fixed"
         : "inline";
+    const nextTop = nextMode === "fixed" ? fixedTop : 0;
 
     setSidebarViewportState((current) => {
       if (
         current?.mode === nextMode &&
         current.left === sidebarColumnRect.left &&
+        current.top === nextTop &&
         current.width === sidebarColumnRect.width
       ) {
         return current;
@@ -183,6 +194,7 @@ export default function BlogPost({
       return {
         left: sidebarColumnRect.left,
         mode: nextMode,
+        top: nextTop,
         width: sidebarColumnRect.width,
       };
     });
@@ -237,6 +249,8 @@ export default function BlogPost({
     if (readingCardRef.current) resizeObserver.observe(readingCardRef.current);
     if (sidebarColumnRef.current)
       resizeObserver.observe(sidebarColumnRef.current);
+    if (sidebarPanelRef.current)
+      resizeObserver.observe(sidebarPanelRef.current);
 
     return (): void => {
       if (frameId !== 0) {
@@ -447,6 +461,7 @@ export default function BlogPost({
                 }}
               >
                 <div
+                  ref={sidebarPanelRef}
                   className={`post-sidebar-panel${
                     showSidebar ? " is-open" : " is-closed"
                   }`}
