@@ -13,8 +13,11 @@ const DESKTOP_SIDEBAR_STICKY_TOP =
   "calc(clamp(0.6rem, 1.5vh, 0.9rem) + env(safe-area-inset-top))";
 const DESKTOP_SIDEBAR_RAIL_HEIGHT =
   "calc(100svh - env(safe-area-inset-top) - clamp(1.4rem, 3vh, 2rem))";
+const DESKTOP_SIDEBAR_CARD_INSET_PX = 12;
 
 type SidebarViewportState = {
+  contentOffset: number;
+  height: number;
   left: number;
   mode: "fixed" | "inline";
   top: number;
@@ -48,6 +51,7 @@ export default function BlogPost({
   const readingCardRef = useRef<HTMLElement>(null);
   const sidebarColumnRef = useRef<HTMLElement>(null);
   const sidebarPanelRef = useRef<HTMLDivElement>(null);
+  const sidebarContentRef = useRef<HTMLDivElement>(null);
   const [sidebarViewportState, setSidebarViewportState] =
     useState<SidebarViewportState | null>(null);
   const prefersReducedMotion =
@@ -136,11 +140,18 @@ export default function BlogPost({
       ? null
       : POST_LAYOUT_TRANSITION;
   const sidebarMotionStyle: CSSProperties = {
+    height:
+      sidebarViewportState?.mode === "fixed"
+        ? `${sidebarViewportState.height}px`
+        : undefined,
     left:
       sidebarViewportState?.mode === "fixed"
         ? `${sidebarViewportState.left}px`
         : undefined,
-    maxHeight: DESKTOP_SIDEBAR_RAIL_HEIGHT,
+    maxHeight:
+      sidebarViewportState?.mode === "fixed"
+        ? `${sidebarViewportState.height}px`
+        : DESKTOP_SIDEBAR_RAIL_HEIGHT,
     position: sidebarViewportState?.mode === "fixed" ? "fixed" : "relative",
     top:
       sidebarViewportState?.mode === "fixed"
@@ -152,6 +163,13 @@ export default function BlogPost({
         : undefined,
     zIndex: sidebarViewportState?.mode === "fixed" ? 3 : 1,
   };
+  const sidebarContentStyle: CSSProperties = {
+    transform:
+      sidebarViewportState?.mode === "fixed" &&
+      sidebarViewportState.contentOffset !== 0
+        ? `translateY(${sidebarViewportState.contentOffset}px)`
+        : undefined,
+  };
   const syncSidebarViewportState = useCallback((): void => {
     if (typeof window === "undefined") return;
     if (!showSidebar) {
@@ -162,7 +180,14 @@ export default function BlogPost({
     const readingCardEl = readingCardRef.current;
     const sidebarColumnEl = sidebarColumnRef.current;
     const sidebarPanelEl = sidebarPanelRef.current;
-    if (!readingCardEl || !sidebarColumnEl || !sidebarPanelEl) return;
+    const sidebarContentEl = sidebarContentRef.current;
+    if (
+      !readingCardEl ||
+      !sidebarColumnEl ||
+      !sidebarPanelEl ||
+      !sidebarContentEl
+    )
+      return;
 
     const readingCardRect = readingCardEl.getBoundingClientRect();
     const sidebarColumnRect = sidebarColumnEl.getBoundingClientRect();
@@ -170,19 +195,33 @@ export default function BlogPost({
       9.6,
       Math.min(window.innerHeight * 0.015, 14.4),
     );
-    const fixedTop = Math.min(
+    const topBoundary = Math.max(
       stickyTopPx,
-      readingCardRect.bottom - sidebarPanelEl.getBoundingClientRect().height,
+      readingCardRect.top + DESKTOP_SIDEBAR_CARD_INSET_PX,
     );
+    const bottomBoundary = Math.min(
+      window.innerHeight - DESKTOP_SIDEBAR_CARD_INSET_PX,
+      readingCardRect.bottom - DESKTOP_SIDEBAR_CARD_INSET_PX,
+    );
+    const availableHeight = Math.max(0, bottomBoundary - topBoundary);
+    const contentHeight = sidebarContentEl.getBoundingClientRect().height;
     const nextMode =
-      readingCardRect.top <= stickyTopPx && readingCardRect.bottom > 0
+      sidebarColumnRect.top <= stickyTopPx &&
+      availableHeight > DESKTOP_SIDEBAR_CARD_INSET_PX
         ? "fixed"
         : "inline";
-    const nextTop = nextMode === "fixed" ? fixedTop : 0;
+    const nextTop = nextMode === "fixed" ? topBoundary : 0;
+    const nextHeight = nextMode === "fixed" ? availableHeight : 0;
+    const nextContentOffset =
+      nextMode === "fixed"
+        ? Math.min(0, bottomBoundary - topBoundary - contentHeight)
+        : 0;
 
     setSidebarViewportState((current) => {
       if (
         current?.mode === nextMode &&
+        current.contentOffset === nextContentOffset &&
+        current.height === nextHeight &&
         current.left === sidebarColumnRect.left &&
         current.top === nextTop &&
         current.width === sidebarColumnRect.width
@@ -191,6 +230,8 @@ export default function BlogPost({
       }
 
       return {
+        contentOffset: nextContentOffset,
+        height: nextHeight,
         left: sidebarColumnRect.left,
         mode: nextMode,
         top: nextTop,
@@ -250,6 +291,8 @@ export default function BlogPost({
       resizeObserver.observe(sidebarColumnRef.current);
     if (sidebarPanelRef.current)
       resizeObserver.observe(sidebarPanelRef.current);
+    if (sidebarContentRef.current)
+      resizeObserver.observe(sidebarContentRef.current);
 
     return (): void => {
       if (frameId !== 0) {
@@ -469,33 +512,49 @@ export default function BlogPost({
                   <div
                     className="post-sidebar-shell"
                     style={{
-                      maxHeight: DESKTOP_SIDEBAR_RAIL_HEIGHT,
-                      overflowY: "auto",
+                      height:
+                        sidebarViewportState?.mode === "fixed"
+                          ? "100%"
+                          : undefined,
+                      maxHeight:
+                        sidebarViewportState?.mode === "fixed"
+                          ? "100%"
+                          : DESKTOP_SIDEBAR_RAIL_HEIGHT,
+                      overflowY:
+                        sidebarViewportState?.mode === "fixed"
+                          ? "hidden"
+                          : "auto",
                       overscrollBehavior: "contain",
                       transition: postLayoutTransition
                         ? `opacity ${postLayoutTransition}, transform ${postLayoutTransition}`
                         : "none",
                     }}
                   >
-                    <div className="post-sidebar-header">
-                      <p className="post-toc-eyebrow">Contents</p>
-                      <button
-                        type="button"
-                        onClick={() => setIsSidebarDismissed(true)}
-                        onMouseEnter={() => setIsSidebarToggleHovered(true)}
-                        onMouseLeave={() => setIsSidebarToggleHovered(false)}
-                        onFocus={() => setIsSidebarToggleHovered(true)}
-                        onBlur={() => setIsSidebarToggleHovered(false)}
-                        aria-label="Hide contents"
-                        className="post-sidebar-toggle"
-                        style={{
-                          opacity: isSidebarToggleHovered ? 1 : 0.86,
-                        }}
-                      >
-                        <ArrowFromLineIcon direction="left" />
-                      </button>
+                    <div
+                      ref={sidebarContentRef}
+                      className="post-sidebar-content"
+                      style={sidebarContentStyle}
+                    >
+                      <div className="post-sidebar-header">
+                        <p className="post-toc-eyebrow">Contents</p>
+                        <button
+                          type="button"
+                          onClick={() => setIsSidebarDismissed(true)}
+                          onMouseEnter={() => setIsSidebarToggleHovered(true)}
+                          onMouseLeave={() => setIsSidebarToggleHovered(false)}
+                          onFocus={() => setIsSidebarToggleHovered(true)}
+                          onBlur={() => setIsSidebarToggleHovered(false)}
+                          aria-label="Hide contents"
+                          className="post-sidebar-toggle"
+                          style={{
+                            opacity: isSidebarToggleHovered ? 1 : 0.86,
+                          }}
+                        >
+                          <ArrowFromLineIcon direction="left" />
+                        </button>
+                      </div>
+                      {sidebar}
                     </div>
-                    {sidebar}
                   </div>
                 </div>
               </aside>
