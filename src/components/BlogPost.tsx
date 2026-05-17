@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import ArrowFromLineIcon from "./ArrowFromLineIcon";
 import type { BlogPostProps } from "../utils/types";
@@ -14,6 +14,12 @@ const DESKTOP_SIDEBAR_STICKY_TOP =
   "calc(clamp(0.6rem, 1.5vh, 0.9rem) + env(safe-area-inset-top))";
 const DESKTOP_SIDEBAR_RAIL_HEIGHT =
   "calc(100svh - env(safe-area-inset-top) - clamp(1.4rem, 3vh, 2rem))";
+
+type SidebarViewportState = {
+  left: number;
+  mode: "fixed" | "inline";
+  width: number;
+};
 
 function getIsMobileViewport(): boolean {
   if (typeof window === "undefined") return false;
@@ -40,6 +46,9 @@ export default function BlogPost({
   const [isSidebarToggleHovered, setIsSidebarToggleHovered] = useState(false);
   const [shouldAnimateLayout, setShouldAnimateLayout] = useState(false);
   const readingCardRef = useRef<HTMLElement>(null);
+  const sidebarColumnRef = useRef<HTMLElement>(null);
+  const [sidebarViewportState, setSidebarViewportState] =
+    useState<SidebarViewportState | null>(null);
   const prefersReducedMotion =
     typeof window !== "undefined" &&
     window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
@@ -126,8 +135,58 @@ export default function BlogPost({
       ? null
       : POST_LAYOUT_TRANSITION;
   const sidebarMotionStyle: CSSProperties = {
+    left:
+      sidebarViewportState?.mode === "fixed"
+        ? `${sidebarViewportState.left}px`
+        : undefined,
     maxHeight: DESKTOP_SIDEBAR_RAIL_HEIGHT,
+    position: sidebarViewportState?.mode === "fixed" ? "fixed" : "relative",
+    top:
+      sidebarViewportState?.mode === "fixed"
+        ? DESKTOP_SIDEBAR_STICKY_TOP
+        : undefined,
+    width:
+      sidebarViewportState?.mode === "fixed"
+        ? `${sidebarViewportState.width}px`
+        : undefined,
+    zIndex: sidebarViewportState?.mode === "fixed" ? 3 : 1,
   };
+  const syncSidebarViewportState = useCallback((): void => {
+    if (typeof window === "undefined") return;
+    if (!showSidebar) {
+      setSidebarViewportState((current) => (current === null ? current : null));
+      return;
+    }
+
+    const readingCardEl = readingCardRef.current;
+    const sidebarColumnEl = sidebarColumnRef.current;
+    if (!readingCardEl || !sidebarColumnEl) return;
+
+    const readingCardRect = readingCardEl.getBoundingClientRect();
+    const sidebarColumnRect = sidebarColumnEl.getBoundingClientRect();
+    const nextMode =
+      readingCardRect.top <=
+        Math.max(9.6, Math.min(window.innerHeight * 0.015, 14.4)) &&
+      readingCardRect.bottom > 0
+        ? "fixed"
+        : "inline";
+
+    setSidebarViewportState((current) => {
+      if (
+        current?.mode === nextMode &&
+        current.left === sidebarColumnRect.left &&
+        current.width === sidebarColumnRect.width
+      ) {
+        return current;
+      }
+
+      return {
+        left: sidebarColumnRect.left,
+        mode: nextMode,
+        width: sidebarColumnRect.width,
+      };
+    });
+  }, [showSidebar]);
   const getHeaderButtonStyle = (isHovered: boolean): CSSProperties => ({
     display: "inline-flex",
     alignItems: "center",
@@ -149,6 +208,45 @@ export default function BlogPost({
     transition:
       "background-color 120ms ease, border-color 120ms ease, color 120ms ease",
   });
+
+  useEffect((): (() => void) | void => {
+    if (!hasDesktopSidebar) {
+      setSidebarViewportState((current) => (current === null ? current : null));
+      return;
+    }
+    if (typeof window === "undefined") return;
+
+    let frameId = 0;
+    const scheduleSyncSidebarViewportState = (): void => {
+      if (frameId !== 0) {
+        window.cancelAnimationFrame(frameId);
+      }
+
+      frameId = window.requestAnimationFrame((): void => {
+        frameId = 0;
+        syncSidebarViewportState();
+      });
+    };
+    const resizeObserver = new ResizeObserver(scheduleSyncSidebarViewportState);
+
+    syncSidebarViewportState();
+    window.addEventListener("scroll", scheduleSyncSidebarViewportState, {
+      passive: true,
+    });
+    window.addEventListener("resize", scheduleSyncSidebarViewportState);
+    if (readingCardRef.current) resizeObserver.observe(readingCardRef.current);
+    if (sidebarColumnRef.current)
+      resizeObserver.observe(sidebarColumnRef.current);
+
+    return (): void => {
+      if (frameId !== 0) {
+        window.cancelAnimationFrame(frameId);
+      }
+      window.removeEventListener("scroll", scheduleSyncSidebarViewportState);
+      window.removeEventListener("resize", scheduleSyncSidebarViewportState);
+      resizeObserver.disconnect();
+    };
+  }, [hasDesktopSidebar, syncSidebarViewportState]);
 
   return (
     <main
@@ -339,14 +437,13 @@ export default function BlogPost({
           >
             {hasDesktopSidebar ? (
               <aside
+                ref={sidebarColumnRef}
                 style={{
                   alignSelf: "start",
-                  position: "sticky",
-                  top: DESKTOP_SIDEBAR_STICKY_TOP,
                   maxHeight: DESKTOP_SIDEBAR_RAIL_HEIGHT,
                   minWidth: 0,
-                  height: "fit-content",
-                  overflow: "hidden",
+                  position: "relative",
+                  overflow: "visible",
                 }}
               >
                 <div
