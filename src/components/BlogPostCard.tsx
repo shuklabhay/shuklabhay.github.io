@@ -35,7 +35,6 @@ export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
   const warmPostResources = (): void => {
     void preloadImage(heroSrc);
     void loadPostBySlug(post.slug);
-    void import("../pages/Post.tsx");
   };
 
   return (

@@ -1,12 +1,14 @@
 import { postsManifest } from "virtual:posts-manifest";
 import type { PostEntry, PostMeta, PostModule } from "../utils/types";
 
-const moduleLoaders = import.meta.glob<PostModule>("./*/index.mdx");
+const postModules = import.meta.glob<PostModule>("./*/index.mdx", {
+  eager: true,
+});
 
-const moduleLoaderBySlug = new Map(
-  Object.entries(moduleLoaders).map(([filePath, loadModule]) => {
+const postModuleBySlug = new Map(
+  Object.entries(postModules).map(([filePath, postModule]) => {
     const slug = filePath.split("/").slice(-2, -1)[0];
-    return [slug, loadModule] as const;
+    return [slug, postModule] as const;
   }),
 );
 
@@ -15,46 +17,29 @@ export const allPosts: PostMeta[] = [...postsManifest].sort((a, b) =>
 );
 
 const postBySlug = new Map(allPosts.map((post) => [post.slug, post] as const));
-const postEntryPromiseBySlug = new Map<
-  string,
-  Promise<PostEntry | undefined>
->();
-const postEntryBySlug = new Map<string, PostEntry>();
+const postEntryBySlug = new Map(
+  allPosts.flatMap((post): Array<readonly [string, PostEntry]> => {
+    const postModule = postModuleBySlug.get(post.slug);
+    if (!postModule) return [];
+
+    return [
+      [
+        post.slug,
+        {
+          ...post,
+          Component: postModule.default,
+        },
+      ],
+    ];
+  }),
+);
 
 export function getPostBySlug(slug: string): PostMeta | undefined {
   return postBySlug.get(slug);
 }
 
 export function loadPostBySlug(slug: string): Promise<PostEntry | undefined> {
-  const loadedPostEntry = postEntryBySlug.get(slug);
-  if (loadedPostEntry) return Promise.resolve(loadedPostEntry);
-
-  const inFlightTask = postEntryPromiseBySlug.get(slug);
-  if (inFlightTask) return inFlightTask;
-
-  const postSummary = postBySlug.get(slug);
-  const loadModule = moduleLoaderBySlug.get(slug);
-
-  if (!postSummary || !loadModule) {
-    return Promise.resolve(undefined);
-  }
-
-  const task = loadModule()
-    .then((module) => {
-      const postEntry: PostEntry = {
-        ...postSummary,
-        Component: module.default,
-      };
-      postEntryBySlug.set(slug, postEntry);
-      return postEntry;
-    })
-    .catch((error: unknown) => {
-      console.error(`Failed to load post module for slug "${slug}"`, error);
-      return undefined;
-    });
-
-  postEntryPromiseBySlug.set(slug, task);
-  return task;
+  return Promise.resolve(postEntryBySlug.get(slug));
 }
 
 export function getLoadedPostBySlug(slug: string): PostEntry | undefined {
@@ -62,8 +47,5 @@ export function getLoadedPostBySlug(slug: string): PostEntry | undefined {
 }
 
 export function readPostBySlug(slug: string): PostEntry | undefined {
-  const loadedPostEntry = getLoadedPostBySlug(slug);
-  if (loadedPostEntry || !postBySlug.has(slug)) return loadedPostEntry;
-
-  throw loadPostBySlug(slug);
+  return postEntryBySlug.get(slug);
 }

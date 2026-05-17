@@ -1,6 +1,4 @@
 import {
-  Suspense,
-  lazy,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -11,6 +9,7 @@ import {
 import type { MouseEvent as ReactMouseEvent } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import BlogPost from "../components/BlogPost";
+import ImageLightbox from "../components/ImageLightbox";
 import PostBackLink from "../components/PostBackLink";
 import {
   getLoadedPostBySlug,
@@ -49,7 +48,6 @@ type PostProps = {
   initialPostEntry?: PostEntry;
   initialSlug?: string;
 };
-const ImageLightbox = lazy(() => import("../components/ImageLightbox"));
 const useIsomorphicLayoutEffect: typeof useEffect =
   typeof window === "undefined" ? useEffect : useLayoutEffect;
 
@@ -787,14 +785,12 @@ export default function Post({
         {Content ? <Content /> : null}
       </BlogPost>
       {lightboxOpened && postImages.length > 0 ? (
-        <Suspense fallback={null}>
-          <ImageLightbox
-            opened={lightboxOpened}
-            setOpened={setLightboxOpened}
-            images={postImages}
-            currentIndex={lightboxIndex}
-          />
-        </Suspense>
+        <ImageLightbox
+          opened={lightboxOpened}
+          setOpened={setLightboxOpened}
+          images={postImages}
+          currentIndex={lightboxIndex}
+        />
       ) : null}
     </>
   );

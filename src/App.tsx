@@ -1,24 +1,17 @@
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
-import {
-  Suspense,
-  lazy,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import NavMenu from "./components/NavMenu.tsx";
+import About from "./pages/About.tsx";
+import Blog from "./pages/Blog.tsx";
 import Home from "./pages/Home.tsx";
+import NotFound from "./pages/NotFound.tsx";
+import Post from "./pages/Post.tsx";
+import Resume from "./pages/Resume.tsx";
 import { setLastPathname } from "./utils/routeTransitions";
 
 const HOME_BACKGROUND_IMMEDIATE_SRC = "/static/landing-1280.webp";
 const SITE_TITLE = "Abhay Shukla";
 const SITE_TITLE_SEPARATOR = " · ";
-const About = lazy(() => import("./pages/About.tsx"));
-const Blog = lazy(() => import("./pages/Blog.tsx"));
-const NotFound = lazy(() => import("./pages/NotFound.tsx"));
-const Post = lazy(() => import("./pages/Post.tsx"));
-const Resume = lazy(() => import("./pages/Resume.tsx"));
 const useIsomorphicLayoutEffect: typeof useEffect =
   typeof window === "undefined" ? useEffect : useLayoutEffect;
 
@@ -296,17 +289,15 @@ export function AppShell(): JSX.Element {
         }}
       >
         <NavMenu />
-        <Suspense fallback={null}>
-          <Routes location={location}>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blog/:slug" element={<Post />} />
-            <Route path="/contact" element={<Home />} />
-            <Route path="/resume" element={<Resume />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
+        <Routes location={location}>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<Post />} />
+          <Route path="/contact" element={<Home />} />
+          <Route path="/resume" element={<Resume />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </div>
     </>
   );

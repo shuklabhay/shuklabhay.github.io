@@ -13,7 +13,7 @@ const DESKTOP_SIDEBAR_GAP = "clamp(1rem, 2vw, 1.8rem)";
 const DESKTOP_SIDEBAR_STICKY_TOP =
   "calc(clamp(0.6rem, 1.5vh, 0.9rem) + env(safe-area-inset-top))";
 const DESKTOP_SIDEBAR_RAIL_HEIGHT =
-  "calc(100svh - env(safe-area-inset-top) - clamp(1.2rem, 3vh, 1.8rem))";
+  "calc(100svh - env(safe-area-inset-top) - clamp(1.4rem, 3vh, 2rem))";
 
 function getIsMobileViewport(): boolean {
   if (typeof window === "undefined") return false;
@@ -126,7 +126,7 @@ export default function BlogPost({
       ? null
       : POST_LAYOUT_TRANSITION;
   const sidebarMotionStyle: CSSProperties = {
-    minHeight: DESKTOP_SIDEBAR_RAIL_HEIGHT,
+    maxHeight: DESKTOP_SIDEBAR_RAIL_HEIGHT,
   };
   const getHeaderButtonStyle = (isHovered: boolean): CSSProperties => ({
     display: "inline-flex",
@@ -343,8 +343,10 @@ export default function BlogPost({
                   alignSelf: "start",
                   position: "sticky",
                   top: DESKTOP_SIDEBAR_STICKY_TOP,
+                  maxHeight: DESKTOP_SIDEBAR_RAIL_HEIGHT,
                   minWidth: 0,
-                  overflow: "visible",
+                  height: "fit-content",
+                  overflow: "hidden",
                 }}
               >
                 <div
@@ -356,7 +358,9 @@ export default function BlogPost({
                   <div
                     className="post-sidebar-shell"
                     style={{
-                      minHeight: DESKTOP_SIDEBAR_RAIL_HEIGHT,
+                      maxHeight: DESKTOP_SIDEBAR_RAIL_HEIGHT,
+                      overflowY: "auto",
+                      overscrollBehavior: "contain",
                       transition: postLayoutTransition
                         ? `opacity ${postLayoutTransition}, transform ${postLayoutTransition}`
                         : "none",
