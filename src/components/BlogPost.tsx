@@ -9,7 +9,6 @@ const POST_ENTRY_FADE_MS = 375;
 const POST_LAYOUT_TRANSITION = "220ms ease";
 const DESKTOP_READING_WIDTH = "76%";
 const DESKTOP_SIDEBAR_WIDTH = "clamp(11.5rem, 16vw, 14.5rem)";
-const DESKTOP_SIDEBAR_GAP = "clamp(1rem, 2vw, 1.8rem)";
 const DESKTOP_SIDEBAR_STICKY_TOP =
   "calc(clamp(0.6rem, 1.5vh, 0.9rem) + env(safe-area-inset-top))";
 const DESKTOP_SIDEBAR_RAIL_HEIGHT =
@@ -393,7 +392,7 @@ export default function BlogPost({
             width: isMobile
               ? "100%"
               : showSidebar
-                ? `min(100%, calc(${DESKTOP_READING_WIDTH} + ${DESKTOP_SIDEBAR_WIDTH} + ${DESKTOP_SIDEBAR_GAP}))`
+                ? `min(100%, calc(${DESKTOP_READING_WIDTH} + ${DESKTOP_SIDEBAR_WIDTH}))`
                 : DESKTOP_READING_WIDTH,
             marginInline: "auto",
             position: "relative",
@@ -442,10 +441,10 @@ export default function BlogPost({
               gridTemplateColumns: hasDesktopSidebar
                 ? `${showSidebar ? DESKTOP_SIDEBAR_WIDTH : "0px"} minmax(0, 1fr)`
                 : "minmax(0, 1fr)",
-              gap: showSidebar ? DESKTOP_SIDEBAR_GAP : 0,
+              gap: 0,
               alignItems: "start",
               transition: postLayoutTransition
-                ? `grid-template-columns ${postLayoutTransition}, gap ${postLayoutTransition}`
+                ? `grid-template-columns ${postLayoutTransition}`
                 : "none",
             }}
           >
@@ -506,11 +505,19 @@ export default function BlogPost({
               className="post-content"
               data-post-content
               style={{
+                borderLeft:
+                  showSidebar && !isMobile
+                    ? "1px solid rgba(58, 77, 120, 0.18)"
+                    : undefined,
                 width: "100%",
                 maxWidth: "none",
                 marginInline: "auto",
                 marginBlock: 0,
                 minWidth: 0,
+                paddingLeft:
+                  showSidebar && !isMobile
+                    ? "clamp(1rem, 1.8vw, 1.6rem)"
+                    : undefined,
                 lineHeight: 1.74,
                 fontSize: "1.1rem",
                 color: "#2a344f",

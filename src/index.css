@@ -302,7 +302,6 @@ code {
 .post-sidebar-shell {
   position: relative;
   padding-right: 0.9rem;
-  border-right: 1px solid rgba(58, 77, 120, 0.18);
   -webkit-user-select: none;
   user-select: none;
   will-change: transform;
