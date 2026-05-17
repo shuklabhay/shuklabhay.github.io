@@ -4,6 +4,7 @@ import {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -39,6 +40,10 @@ type PostHeading = {
   id: string;
   text: string;
   level: number;
+};
+type MeasuredPostHeading = {
+  id: string;
+  top: number;
 };
 type PostProps = {
   initialPostEntry?: PostEntry;
@@ -86,6 +91,49 @@ function getPostScrollStorageKey(pathname: string): string {
   return `${POST_SCROLL_POSITION_PREFIX}${pathname}`;
 }
 
+function measurePostHeadings(
+  headings: PostHeading[],
+  headingElementById: ReadonlyMap<string, HTMLElement>,
+): MeasuredPostHeading[] {
+  if (typeof window === "undefined") return [];
+
+  return headings
+    .map((heading): MeasuredPostHeading | null => {
+      const headingEl = headingElementById.get(heading.id);
+      if (!headingEl) return null;
+
+      return {
+        id: heading.id,
+        top: window.scrollY + headingEl.getBoundingClientRect().top,
+      };
+    })
+    .filter((heading): heading is MeasuredPostHeading => heading !== null);
+}
+
+function findMeasuredHeadingIdAtScrollTop(
+  headings: MeasuredPostHeading[],
+  scrollTop: number,
+): string | null {
+  let low = 0;
+  let high = headings.length - 1;
+  let matchIndex = -1;
+
+  while (low <= high) {
+    const middle = Math.floor((low + high) / 2);
+    const heading = headings[middle];
+    if (!heading) break;
+
+    if (heading.top <= scrollTop) {
+      matchIndex = middle;
+      low = middle + 1;
+    } else {
+      high = middle - 1;
+    }
+  }
+
+  return matchIndex >= 0 ? (headings[matchIndex]?.id ?? null) : null;
+}
+
 export default function Post({
   initialPostEntry,
   initialSlug,
@@ -112,6 +160,8 @@ export default function Post({
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [postHeadings, setPostHeadings] = useState<PostHeading[]>([]);
   const [activeHeadingId, setActiveHeadingId] = useState<string | null>(null);
+  const headingElementByIdRef = useRef<Map<string, HTMLElement>>(new Map());
+  const measuredPostHeadingsRef = useRef<MeasuredPostHeading[]>([]);
   const loadedInitialPostEntry = initialPostEntry ?? getLoadedPostBySlug(slug);
   const [postEntryState, setPostEntryState] = useState<{
     slug: string;
@@ -184,6 +234,31 @@ export default function Post({
       return decodedFallbackName || null;
     }
   }, []);
+  const imageIndexByHashToken = useMemo(() => {
+    const indexByHashToken = new Map<string, number>();
+    if (typeof window === "undefined") return indexByHashToken;
+
+    postImages.forEach((image, index) => {
+      const hashToken = getImageHashToken(image.src);
+      if (!hashToken || indexByHashToken.has(hashToken)) return;
+      indexByHashToken.set(hashToken, index);
+    });
+
+    return indexByHashToken;
+  }, [getImageHashToken, postImages]);
+  const parentHeadingIdByHeadingId = useMemo(() => {
+    const parentHeadingIdById = new Map<string, string>();
+    let activeParentHeadingId: string | null = null;
+
+    for (const heading of postHeadings) {
+      if (heading.level === 2) activeParentHeadingId = heading.id;
+      if (activeParentHeadingId) {
+        parentHeadingIdById.set(heading.id, activeParentHeadingId);
+      }
+    }
+
+    return parentHeadingIdById;
+  }, [postHeadings]);
 
   const getCurrentHashImageIndex = useCallback(() => {
     if (typeof window === "undefined") return null;
@@ -194,10 +269,8 @@ export default function Post({
     if (!rawHash || !rawHash.includes(".")) return null;
 
     const hashToken = decodeURIComponent(rawHash);
-    return postImages.findIndex(
-      (image) => getImageHashToken(image.src) === hashToken,
-    );
-  }, [getImageHashToken, postImages]);
+    return imageIndexByHashToken.get(hashToken) ?? -1;
+  }, [imageIndexByHashToken]);
 
   useEffect(() => {
     if (!postSummary) {
@@ -236,6 +309,8 @@ export default function Post({
   useEffect(() => {
     if (!postEntry) {
       clearPendingHeadingJump();
+      headingElementByIdRef.current = new Map();
+      measuredPostHeadingsRef.current = [];
       setPostImages([]);
       setPostHeadings([]);
       setActiveHeadingId(null);
@@ -247,6 +322,8 @@ export default function Post({
     const contentEl = postContentRef.current;
     if (!contentEl) {
       clearPendingHeadingJump();
+      headingElementByIdRef.current = new Map();
+      measuredPostHeadingsRef.current = [];
       setPostImages([]);
       setPostHeadings([]);
       setActiveHeadingId(null);
@@ -271,6 +348,7 @@ export default function Post({
       contentEl.querySelectorAll("h2, h3, h4"),
     ) as HTMLHeadingElement[];
     const headingSlugCount = new Map<string, number>();
+    const headingElementById = new Map<string, HTMLElement>();
     const headings: PostHeading[] = headingElements
       .map((headingEl) => {
         const text = headingEl.textContent?.trim() ?? "";
@@ -294,6 +372,7 @@ export default function Post({
               ? `${normalizedBase}-${occurrence + 1}`
               : normalizedBase;
         }
+        headingElementById.set(headingEl.id, headingEl);
 
         return {
           id: headingEl.id,
@@ -303,6 +382,11 @@ export default function Post({
       })
       .filter((heading): heading is PostHeading => heading !== null);
 
+    headingElementByIdRef.current = headingElementById;
+    measuredPostHeadingsRef.current = measurePostHeadings(
+      headings,
+      headingElementById,
+    );
     setPostImages(images);
     setPostHeadings(headings);
     setActiveHeadingId(null);
@@ -317,7 +401,25 @@ export default function Post({
       return;
     }
 
-    const updateActiveHeading = () => {
+    let frameId = 0;
+    const refreshMeasuredHeadings = (): void => {
+      measuredPostHeadingsRef.current = measurePostHeadings(
+        postHeadings,
+        headingElementByIdRef.current,
+      );
+    };
+    const scheduleRefreshMeasuredHeadings = (): void => {
+      if (frameId !== 0) {
+        window.cancelAnimationFrame(frameId);
+      }
+
+      frameId = window.requestAnimationFrame((): void => {
+        frameId = 0;
+        refreshMeasuredHeadings();
+        updateActiveHeading();
+      });
+    };
+    const updateActiveHeading = (): void => {
       const pendingHeadingId = pendingHeadingJumpIdRef.current;
       if (pendingHeadingId) {
         const pendingHeadingEl = document.getElementById(pendingHeadingId);
@@ -360,32 +462,35 @@ export default function Post({
         clearPendingHeadingJump();
       }
 
-      let nextHeadingId: string | null = postHeadings[0]?.id ?? null;
-
-      for (const heading of postHeadings) {
-        const headingEl = document.getElementById(heading.id);
-        if (!headingEl) continue;
-        if (
-          headingEl.getBoundingClientRect().top <= ACTIVE_HEADING_THRESHOLD_PX
-        ) {
-          nextHeadingId = heading.id;
-        } else {
-          break;
-        }
-      }
+      const nextHeadingId =
+        findMeasuredHeadingIdAtScrollTop(
+          measuredPostHeadingsRef.current,
+          window.scrollY + ACTIVE_HEADING_THRESHOLD_PX,
+        ) ??
+        postHeadings[0]?.id ??
+        null;
 
       setActiveHeadingId((previous) =>
         previous === nextHeadingId ? previous : nextHeadingId,
       );
     };
 
+    refreshMeasuredHeadings();
     updateActiveHeading();
     window.addEventListener("scroll", updateActiveHeading, { passive: true });
-    window.addEventListener("resize", updateActiveHeading);
+    window.addEventListener("resize", scheduleRefreshMeasuredHeadings);
+    const resizeObserver = new ResizeObserver(scheduleRefreshMeasuredHeadings);
+    if (postContentRef.current) {
+      resizeObserver.observe(postContentRef.current);
+    }
 
     return () => {
+      if (frameId !== 0) {
+        window.cancelAnimationFrame(frameId);
+      }
       window.removeEventListener("scroll", updateActiveHeading);
-      window.removeEventListener("resize", updateActiveHeading);
+      window.removeEventListener("resize", scheduleRefreshMeasuredHeadings);
+      resizeObserver.disconnect();
     };
   }, [clearPendingHeadingJump, getHeadingTargetScrollTop, postHeadings]);
 
@@ -630,23 +735,11 @@ export default function Post({
     });
   };
 
-  const postSidebar = (() => {
-    const activeHeadingIndex = postHeadings.findIndex(
-      (heading) => heading.id === activeHeadingId,
-    );
-    let activeParentHeadingId: string | null = null;
-
-    if (activeHeadingIndex >= 0) {
-      for (let index = activeHeadingIndex; index >= 0; index -= 1) {
-        const heading = postHeadings[index];
-        if (heading?.level === 2) {
-          activeParentHeadingId = heading.id;
-          break;
-        }
-      }
-    }
-
-    return postSummary.showInlineToc && postHeadings.length > 0 ? (
+  const activeParentHeadingId = activeHeadingId
+    ? (parentHeadingIdByHeadingId.get(activeHeadingId) ?? null)
+    : null;
+  const postSidebar =
+    postSummary.showInlineToc && postHeadings.length > 0 ? (
       <nav aria-label="Post sections" className="post-toc">
         <ul className="post-toc-list">
           {postHeadings.map((heading) => {
@@ -676,7 +769,6 @@ export default function Post({
         </ul>
       </nav>
     ) : undefined;
-  })();
 
   return (
     <>

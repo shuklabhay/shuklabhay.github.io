@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import type { CSSProperties, Dispatch, SetStateAction } from "react";
 import type {
   CheckboxSubtitleLinkProps,
   CheckboxSubtitleToggleProps,
@@ -7,7 +8,16 @@ import type {
 import TriangleIcon from "./TriangleIcon";
 import { isHydratingPrerenderedPage } from "../utils/prerender";
 
-export default function PageTitle({ title, subtitle }: PageTitleProps) {
+type CheckboxSubtitleInteraction = {
+  hovered: number | null;
+  setHovered: Dispatch<SetStateAction<number | null>>;
+  canHover: boolean;
+};
+
+export default function PageTitle({
+  title,
+  subtitle,
+}: PageTitleProps): JSX.Element {
   return (
     <div style={{ marginTop: "0.5rem" }}>
       <h1
@@ -25,7 +35,7 @@ export default function PageTitle({ title, subtitle }: PageTitleProps) {
   );
 }
 
-function useCheckboxSubtitleInteraction() {
+function useCheckboxSubtitleInteraction(): CheckboxSubtitleInteraction {
   const [hovered, setHovered] = useState<number | null>(null);
   const [canHover, setCanHover] = useState(() => {
     if (typeof window === "undefined") return false;
@@ -80,7 +90,7 @@ function getCheckboxStyle({
   isOn: boolean;
   isHover: boolean;
   canHover: boolean;
-}) {
+}): CSSProperties {
   const bg = isOn || isHover ? "white" : "transparent";
   const fg = isOn || isHover ? "#5a6c99" : "white";
 
@@ -112,8 +122,12 @@ export function CheckboxSubtitleLink<T extends string = string>({
   hoverFill = true,
   marginTop = "0.5rem",
   marginBottom = "4rem",
-}: CheckboxSubtitleLinkProps<T>) {
+}: CheckboxSubtitleLinkProps<T>): JSX.Element {
   const { hovered, setHovered, canHover } = useCheckboxSubtitleInteraction();
+  const activeIndexSet = useMemo(
+    () => new Set(activeIndexes ?? []),
+    [activeIndexes],
+  );
 
   return (
     <div
@@ -129,7 +143,7 @@ export function CheckboxSubtitleLink<T extends string = string>({
       }}
     >
       {items.map((item, idx) => {
-        const isOn = activeIndexes?.includes(idx) ?? false;
+        const isOn = activeIndexSet.has(idx);
         const isHover = canHover && hoverFill && hovered === idx;
         const sharedStyle = getCheckboxStyle({ isOn, isHover, canHover });
 
@@ -235,8 +249,12 @@ export function CheckboxSubtitleToggle<T extends string = string>({
   setSelectedTags,
   marginTop = "0.5rem",
   marginBottom = "4rem",
-}: CheckboxSubtitleToggleProps<T>) {
+}: CheckboxSubtitleToggleProps<T>): JSX.Element {
   const { hovered, setHovered, canHover } = useCheckboxSubtitleInteraction();
+  const selectedTagSet = useMemo(
+    () => new Set(selectedTags ?? []),
+    [selectedTags],
+  );
 
   useEffect(() => {
     if (!storageKey || typeof window === "undefined") return;
@@ -274,7 +292,7 @@ export function CheckboxSubtitleToggle<T extends string = string>({
 
     if (!setSelectedTags) return;
     const label = item.label;
-    const wasSelected = selectedTags ? selectedTags.includes(label) : false;
+    const wasSelected = selectedTagSet.has(label);
 
     setSelectedTags((prev) =>
       prev.includes(label)
@@ -301,7 +319,7 @@ export function CheckboxSubtitleToggle<T extends string = string>({
       }}
     >
       {items.map((item, idx) => {
-        const isOn = selectedTags ? selectedTags.includes(item.label) : false;
+        const isOn = selectedTagSet.has(item.label);
         const isHover = canHover && hoverFill && hovered === idx;
         const sharedStyle = getCheckboxStyle({ isOn, isHover, canHover });
         const sharedStyleWithArrowGap = {

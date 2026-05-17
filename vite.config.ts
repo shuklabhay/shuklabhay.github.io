@@ -136,6 +136,17 @@ type ParsedPostMeta = {
   buttons: Array<{ title: string; link: string }>;
   showInlineToc: boolean;
 };
+type PostBuildData = {
+  slug: string;
+  sourcePostDir: string;
+  postPath: string;
+  metaPath: string;
+  meta: ParsedPostMeta;
+  title: string;
+  wordCount: number;
+  date: string;
+  coverFile?: string;
+};
 
 function asOptionalString(value: unknown): string | undefined {
   if (typeof value !== "string") return undefined;
@@ -211,6 +222,43 @@ function readPostMeta(metaPath: string): ParsedPostMeta {
     }
     throw new Error(`Failed to read post metadata: ${metaPath}`);
   }
+}
+
+function collectPostBuildData(postsDir: string): PostBuildData[] {
+  if (!fs.existsSync(postsDir)) return [];
+
+  return fs
+    .readdirSync(postsDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
+    .sort()
+    .flatMap((slug): PostBuildData[] => {
+      const sourcePostDir = path.join(postsDir, slug);
+      const postPath = path.join(sourcePostDir, "index.mdx");
+      if (!fs.existsSync(postPath)) return [];
+
+      const metaPath = path.join(sourcePostDir, "meta.json");
+      const source = fs.readFileSync(postPath, "utf8");
+      const stat = fs.statSync(postPath);
+      const meta = readPostMeta(metaPath);
+      const title = meta.title ?? extractPostTitle(source, slug);
+
+      return [
+        {
+          slug,
+          sourcePostDir,
+          postPath,
+          metaPath,
+          meta,
+          title,
+          wordCount: extractPostWordCount(source),
+          date: meta.date ?? stat.mtime.toISOString().slice(0, 10),
+          coverFile: POST_COVER_CANDIDATES.find((fileName) =>
+            fs.existsSync(path.join(sourcePostDir, fileName)),
+          ),
+        },
+      ];
+    });
 }
 
 function replaceRequiredHtml(
@@ -352,63 +400,42 @@ export default defineConfig({
         if (id !== RESOLVED_VIRTUAL_POSTS_ID) return null;
 
         const postsDir = path.resolve(process.cwd(), "src/posts");
-        if (!fs.existsSync(postsDir)) {
-          return "export const postsManifest = [];";
-        }
-
         const importLines: string[] = [];
         const itemLines: string[] = [];
         let coverImportIndex = 0;
+        let posts: PostBuildData[];
 
-        const dirs = fs
-          .readdirSync(postsDir, { withFileTypes: true })
-          .filter((entry) => entry.isDirectory())
-          .map((entry) => entry.name)
-          .sort();
+        try {
+          posts = collectPostBuildData(postsDir);
+        } catch (error) {
+          this.error(error instanceof Error ? error.message : String(error));
+          return null;
+        }
 
-        for (const slug of dirs) {
-          const postPath = path.join(postsDir, slug, "index.mdx");
-          if (!fs.existsSync(postPath)) continue;
-          const metaPath = path.join(postsDir, slug, "meta.json");
-
-          this.addWatchFile(postPath);
-          const source = fs.readFileSync(postPath, "utf8");
-          const stat = fs.statSync(postPath);
-          this.addWatchFile(metaPath);
-
-          let postMeta: ParsedPostMeta;
-          try {
-            postMeta = readPostMeta(metaPath);
-          } catch (error) {
-            this.error(error instanceof Error ? error.message : String(error));
-            continue;
-          }
-          const title = postMeta.title ?? extractPostTitle(source, slug);
-          const wordCount = extractPostWordCount(source);
-          const date = postMeta.date ?? stat.mtime.toISOString().slice(0, 10);
-          const authorExpr = JSON.stringify(postMeta.author ?? "");
-          const buttonsExpr = JSON.stringify(postMeta.buttons);
-          const showInlineTocExpr = JSON.stringify(postMeta.showInlineToc);
-
-          const coverFile = POST_COVER_CANDIDATES.find((fileName) =>
-            fs.existsSync(path.join(postsDir, slug, fileName)),
-          );
-
+        for (const post of posts) {
+          this.addWatchFile(post.postPath);
+          this.addWatchFile(post.metaPath);
           let coverExpr = "undefined";
-          if (coverFile) {
+          if (post.coverFile) {
             const importName = `cover${coverImportIndex++}`;
-            const coverPath = `/src/posts/${slug}/${coverFile}`;
+            const coverPath = `/src/posts/${post.slug}/${post.coverFile}`;
             importLines.push(
               `import ${importName} from ${JSON.stringify(coverPath)};`,
             );
             coverExpr = importName;
-            this.addWatchFile(path.join(postsDir, slug, coverFile));
+            this.addWatchFile(path.join(post.sourcePostDir, post.coverFile));
           }
 
           itemLines.push(
-            `{ slug: ${JSON.stringify(slug)}, title: ${JSON.stringify(
-              title,
-            )}, date: ${JSON.stringify(date)}, author: ${authorExpr}, buttons: ${buttonsExpr}, showInlineToc: ${showInlineTocExpr}, cover: ${coverExpr}, wordCount: ${wordCount} }`,
+            `{ slug: ${JSON.stringify(post.slug)}, title: ${JSON.stringify(
+              post.title,
+            )}, date: ${JSON.stringify(post.date)}, author: ${JSON.stringify(
+              post.meta.author ?? "",
+            )}, buttons: ${JSON.stringify(
+              post.meta.buttons,
+            )}, showInlineToc: ${JSON.stringify(
+              post.meta.showInlineToc,
+            )}, cover: ${coverExpr}, wordCount: ${post.wordCount} }`,
           );
         }
 
@@ -461,56 +488,43 @@ export default defineConfig({
           path.join(distDir, "index.html"),
           "utf8",
         );
+        const posts = collectPostBuildData(postsDir);
 
-        const slugs = fs
-          .readdirSync(postsDir, { withFileTypes: true })
-          .filter((entry) => entry.isDirectory())
-          .map((entry) => entry.name)
-          .sort();
-
-        for (const slug of slugs) {
-          const postPath = path.join(postsDir, slug, "index.mdx");
-          if (!fs.existsSync(postPath)) continue;
-
-          const source = fs.readFileSync(postPath, "utf8");
-          const title =
-            readPostMeta(path.join(postsDir, slug, "meta.json")).title ??
-            extractPostTitle(source, slug);
-          const distPostDir = path.join(distDir, "blog", slug);
+        for (const post of posts) {
+          const distPostDir = path.join(distDir, "blog", post.slug);
           fs.mkdirSync(distPostDir, { recursive: true });
-
           fs.writeFileSync(
             path.join(distPostDir, "index.html"),
             createSocialHtml(
               {
-                canonicalPath: `/blog/${slug}`,
-                title,
-                description: title,
+                canonicalPath: `/blog/${post.slug}`,
+                title: post.title,
+                description: post.title,
                 type: "article",
               },
               appShellHtml,
             ),
           );
+
+          const slideshowSrcPath = path.join(
+            post.sourcePostDir,
+            "slideshow.html",
+          );
+          if (!fs.existsSync(slideshowSrcPath)) continue;
+
+          fs.copyFileSync(
+            slideshowSrcPath,
+            path.join(distPostDir, "slideshow.html"),
+          );
+          fs.cpSync(
+            post.sourcePostDir,
+            path.join(distDir, "src", "posts", post.slug),
+            { recursive: true },
+          );
         }
 
         for (const page of TOP_LEVEL_SOCIAL_PAGES) {
           writeSocialHtml(distDir, { ...page, type: "website" }, appShellHtml);
-        }
-
-        for (const slug of slugs) {
-          const sourcePostDir = path.join(postsDir, slug);
-          const slideshowSrcPath = path.join(sourcePostDir, "slideshow.html");
-          if (!fs.existsSync(slideshowSrcPath)) continue;
-
-          const distSlideshowDir = path.join(distDir, "blog", slug);
-          fs.mkdirSync(distSlideshowDir, { recursive: true });
-          fs.copyFileSync(
-            slideshowSrcPath,
-            path.join(distSlideshowDir, "slideshow.html"),
-          );
-
-          const distSrcPostDir = path.join(distDir, "src", "posts", slug);
-          fs.cpSync(sourcePostDir, distSrcPostDir, { recursive: true });
         }
       },
     },
