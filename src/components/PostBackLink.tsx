@@ -6,9 +6,6 @@ export default function PostBackLink(): JSX.Element {
   const location = useLocation();
   const transitionState = location.state as RouteTransitionState | null;
   const backTargetPath = transitionState?.fromPath ?? "/blog";
-  const prefersReducedMotion =
-    typeof window !== "undefined" &&
-    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
   return (
     <div
       style={{
@@ -27,8 +24,7 @@ export default function PostBackLink(): JSX.Element {
     >
       <Link
         to={backTargetPath}
-        viewTransition={!prefersReducedMotion}
-        state={{ fromPost: true }}
+        viewTransition={false}
         style={{
           color: "white",
           textDecoration: "none",

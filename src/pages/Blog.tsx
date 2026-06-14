@@ -4,7 +4,6 @@ import { useLocation } from "react-router-dom";
 import BlogPostCard from "../components/BlogPostCard";
 import { allPosts } from "../posts";
 import { shouldSkipEntryAnimation, useEntryFade } from "../utils/useEntryFade";
-import { getLastPathname, isBlogPostPath } from "../utils/routeTransitions";
 import { preloadImage } from "../utils/imagePreload";
 import type {
   BlogSortDirection,
@@ -14,7 +13,7 @@ import type {
 } from "../utils/types";
 
 const BLOG_SORT_STORAGE_KEY = "blog-sort-state-v1";
-const BLOG_ENTRY_FADE_MS = 620;
+const BLOG_ENTRY_FADE_MS = 520;
 const DEFAULT_BLOG_SORT_STATE: BlogSortState = {
   sortField: "date",
   dateDirection: "desc",
@@ -65,13 +64,9 @@ export default function Blog() {
   } | null>(null);
 
   if (entryFadeDecisionByLocationKeyRef.current?.key !== location.key) {
-    const lastPathname = getLastPathname();
     entryFadeDecisionByLocationKeyRef.current = {
       key: location.key,
-      shouldAnimate:
-        blogTransitionState?.fromTopNav === true ||
-        blogTransitionState?.fromPost === true ||
-        (lastPathname ? isBlogPostPath(lastPathname) : false),
+      shouldAnimate: blogTransitionState?.fromTopNav === true,
     };
   }
 

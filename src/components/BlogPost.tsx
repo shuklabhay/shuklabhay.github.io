@@ -5,12 +5,10 @@ import type { BlogPostProps } from "../utils/types";
 import { isHydratingPrerenderedPage } from "../utils/prerender";
 
 const MOBILE_BREAKPOINT_PX = 860;
-const POST_ENTRY_FADE_MS = 375;
+const POST_ENTRY_FADE_MS = 320;
 const POST_LAYOUT_TRANSITION = "220ms ease";
 const DESKTOP_READING_WIDTH = "76%";
 const DESKTOP_SIDEBAR_WIDTH = "clamp(11.5rem, 16vw, 14.5rem)";
-const DESKTOP_SIDEBAR_STICKY_TOP =
-  "calc(clamp(0.6rem, 1.5vh, 0.9rem) + env(safe-area-inset-top))";
 const DESKTOP_SIDEBAR_RAIL_HEIGHT =
   "calc(100svh - env(safe-area-inset-top) - clamp(1.4rem, 3vh, 2rem))";
 const DESKTOP_SIDEBAR_CARD_INSET_PX = 12;

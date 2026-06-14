@@ -107,6 +107,12 @@ body.route-home #root {
   display: none;
 }
 
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 210ms;
+  animation-timing-function: ease;
+}
+
 .app-shell-home {
   min-height: 100vh;
   min-height: 100lvh;
@@ -220,7 +226,7 @@ code {
 }
 
 .about-subtitle {
-  max-width: 65%;
+  max-width: 62%;
 }
 
 .post-content code {

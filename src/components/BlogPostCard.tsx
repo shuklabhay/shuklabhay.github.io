@@ -30,6 +30,9 @@ export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
   const postPath = `/blog/${post.slug}`;
   const heroSrc = post.cover ?? DEFAULT_POST_HERO_IMAGE;
   const [isHovered, setIsHovered] = useState(false);
+  const prefersReducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
   const truncatedTitle = splitTitleForMiddleEllipsis(post.title);
 
   const warmPostResources = (): void => {
@@ -40,7 +43,7 @@ export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
   return (
     <Link
       to={postPath}
-      viewTransition={false}
+      viewTransition={!prefersReducedMotion}
       state={{ fromBlog: true, fromPath: "/blog" }}
       style={{
         display: "block",

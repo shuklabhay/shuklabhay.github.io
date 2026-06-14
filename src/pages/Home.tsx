@@ -32,7 +32,7 @@ export default function Home(): JSX.Element {
       typeof window !== "undefined" &&
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true
     );
-  const entryFadeStyle = useEntryFade(shouldAnimateEntry, 525);
+  const entryFadeStyle = useEntryFade(shouldAnimateEntry, 450);
 
   const rawEmail = getContactLink(contactData, "Email");
   const email = rawEmail ? `mailto:${rawEmail}` : undefined;

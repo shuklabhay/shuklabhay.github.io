@@ -32,7 +32,7 @@ export default function About(): JSX.Element {
       typeof window !== "undefined" &&
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true
     );
-  const entryFadeStyle = useEntryFade(shouldAnimateEntry, 525);
+  const entryFadeStyle = useEntryFade(shouldAnimateEntry, 450);
 
   const rawEmail = getContactLink(contactData, "Email");
   const email = rawEmail ? `mailto:${rawEmail}` : undefined;
@@ -60,42 +60,70 @@ export default function About(): JSX.Element {
             }}
           >
             <p style={{ marginTop: 0, marginBottom: "1rem" }}>
-              I've been <strong>manipulating computers</strong> since I was 9:
-              first making games, later (at 12){" "}
-              <strong>producing music,</strong> programming audio effects, and{" "}
-              building synthesizers, <strong>all self-taught</strong>. Nowadays,
-              as a <strong>senior @ Leland High School,</strong> I've been using{" "}
-              <strong>machine learning </strong> to do{" "}
-              <strong>interesting, imaginative things</strong>. For example,
-              I've:
+              I've been <strong>manipulating computers since I was 9:</strong>{" "}
+              first making games, later (from 12 to today){" "}
+              <strong>producing music,</strong> programming audio effects,
+              designing webapps, training neural networks, conducting research,{" "}
+              <Link
+                to="/blog/rcbi"
+                viewTransition
+                state={{ fromBlog: true, fromPath: "/about" }}
+                className="about-contact-link"
+              >
+                and much more
+              </Link>
+              , <strong>almost entirely self-taught!</strong> Currently I'm a
+              high school graduate &amp; <strong>founding mle @ </strong>
+              <a
+                href="https://condu.it/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="about-contact-link"
+              >
+                <strong>conduit</strong>
+              </a>{" "}
+              <strong>(in sf!!)</strong>.
+            </p>
+            <p style={{ marginTop: 0, marginBottom: "1rem" }}>
+              Nowadays, <strong>I'm drawn towards</strong> doing{" "}
+              <strong>interesting, imaginative things</strong> that have{" "}
+              <strong>never been done before</strong> and are{" "}
+              <strong>overwhelmingly worth doing.</strong> This ethos is{" "}
+              <strong>untethered to medium:</strong> it can mean training neural
+              networks, but also building physical things or{" "}
+              <strong>just being mischievous &gt;:)</strong>
+            </p>
+            <p style={{ marginTop: 0, marginBottom: "0.5rem" }}>
+              Previously I've:
             </p>
             <ul
               style={{ marginTop: 0, paddingLeft: "1.25rem", lineHeight: 1.5 }}
             >
               <li>
-                Combined ViTs & PDEs to{" "}
-                <strong>simulate biological tissue</strong> and generate{" "}
-                <strong>synthetic medical imagery</strong> at{" "}
+                Frankenstein-ed ViTs & PDEs to{" "}
+                <strong>simulate biological tissue</strong> (research @{" "}
                 <a
                   href="https://postdocs.stanford.edu/stanford-departments/medicine-biomedical-informatics-research"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="about-contact-link"
                 >
-                  <strong>Stanford</strong>
+                  Stanford
                 </a>
+                )
               </li>
               <li style={{ marginTop: "0.45rem" }}>
-                Worked with <strong>Prime Intellect,</strong> building{" "}
+                Designed{" "}
                 <a
                   href="https://app.primeintellect.ai/dashboard/environments"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="about-contact-link"
                 >
-                  <strong>RL Environments</strong>
+                  RL Environments
                 </a>{" "}
-                and fine-tuning small LLMs
+                (<strong>Prime Intellect</strong> RL Residency), fine-tuned
+                LLMs.
               </li>
               <li style={{ marginTop: "0.45rem" }}>
                 Built{" "}
@@ -105,31 +133,22 @@ export default function About(): JSX.Element {
                   rel="noopener noreferrer"
                   className="about-contact-link"
                 >
-                  <strong>multimodal agents</strong>
+                  multimodal agents
                 </a>{" "}
-                to <strong>translate music</strong> while preserving musicality,{" "}
-                <strong>reaching 1M+ listeners</strong>
+                for music translation, gtm agents to{" "}
+                <strong>reach 1M+ listeners.</strong>
               </li>
               <li style={{ marginTop: "0.45rem" }}>
-                <strong>Simulated rat neurons</strong> at UCLA; trained{" "}
-                <Link
-                  to="/blog/infinipaint"
-                  viewTransition
-                  state={{ fromBlog: true, fromPath: "/about" }}
-                  className="about-contact-link"
-                >
-                  <strong>world models</strong>
-                </Link>{" "}
-                &{" "}
+                Led software @ the <strong>5th-best HS robotics team;</strong>{" "}
+                taught elementary schoolers{" "}
                 <a
-                  href="https://github.com/shuklabhay/percgan"
+                  href="https://bayareastemacademy.org/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="about-contact-link"
                 >
-                  <strong>music generators</strong>
-                </a>{" "}
-                on my own
+                  vibecoding.
+                </a>
               </li>
             </ul>
             <p style={{ marginTop: "1.5rem", marginBottom: "0.5rem" }}>
@@ -139,46 +158,38 @@ export default function About(): JSX.Element {
               style={{ marginTop: 0, paddingLeft: "1.25rem", lineHeight: 1.5 }}
             >
               <li>
-                <Link
-                  to="/blog/rcbi"
-                  viewTransition
-                  state={{ fromBlog: true, fromPath: "/about" }}
-                  className="about-contact-link"
-                >
-                  <strong>Understanding</strong>
-                </Link>{" "}
-                the <strong>incomplete and the unknown, </strong>
-                regardless of field or form. Incessantly, I pursue the edges of
-                my understanding across biology, psychology, physics, history.
+                Analyzing systems,{" "}
+                <strong>understanding the incomplete/unknown</strong>, and doing
+                so <strong>regardless of field or form.</strong> I value finding{" "}
+                <strong>common threads</strong> across far-flung ideas and
+                building <strong>lasting, transferrable intuition.</strong>
               </li>
               <li style={{ marginTop: "0.45rem" }}>
-                <strong>Craft:</strong> I grew up learning to row,{" "}
+                Rowing, <strong>caring about each and every element</strong> of
+                each and every thing I work on, but also steering, zooming out
+                and adjusting when{" "}
+                <strong>pieces don't serve the whole.</strong>
+              </li>
+              <li style={{ marginTop: "0.45rem" }}>
+                The <strong>fundamentally new possibilities</strong> associated
+                with neural networks &amp; agents; the chance to{" "}
                 <strong>
-                  caring deeply about every element of every thing
+                  better understand ourselves, our world, and the nature of
+                  intelligence
                 </strong>{" "}
-                I work on, though more recently I've been learning to steer.
+                as we teach machines to perceive and interact with the world.
               </li>
               <li style={{ marginTop: "0.45rem" }}>
-                How we <strong>perceive, interpret, and understand</strong> the
-                world; the boundary between what we can feel and formalize.
+                <strong>Being human:</strong> living life, making
+                mistake/memories, <strong>facing fears,</strong> learning to{" "}
+                <strong>understand and appreciate oneself.</strong> I believe
+                it's incredibly important to{" "}
+                <strong>understand one's self</strong> &amp; goals, then{" "}
+                <strong>push past every superficial barrier.</strong>
               </li>
               <li style={{ marginTop: "0.45rem" }}>
-                <strong>Thinking</strong>, dreaming, imagining,{" "}
-                <strong>
-                  following intuition, listening to and telling stories.
-                </strong>
-              </li>
-              <li style={{ marginTop: "0.45rem" }}>
-                <strong>Technically:</strong> the new primitives machine
-                learning makes possible. <strong>Philosophically:</strong> what
-                we learn about ourselves, our world, and the nature of
-                intelligence when we teach machines to perceive &amp; interact
-                with the world.
-              </li>
-              <li style={{ marginTop: "0.45rem" }}>
-                <strong>Being human:</strong> living life, making mistakes,{" "}
-                <strong>making memories,</strong> learning to understand and
-                appreciate oneself.
+                <strong>Thinking</strong>, dreaming, listening, imagining;{" "}
+                <strong>understanding and telling stories.</strong>
               </li>
             </ul>
             <p
@@ -207,7 +218,7 @@ export default function About(): JSX.Element {
                 rel="noopener noreferrer"
                 className="about-contact-link"
               >
-                <strong>Twitter/X</strong>
+                <strong>Twitter</strong>
               </a>{" "}
               |{" "}
               <a
