@@ -122,8 +122,7 @@ export default function About(): JSX.Element {
                 >
                   RL Environments
                 </a>{" "}
-                (<strong>Prime Intellect</strong> RL Residency), fine-tuned
-                LLMs.
+                (<strong>Prime Intellect</strong> RL Residency), fine-tuned LLMs
               </li>
               <li style={{ marginTop: "0.45rem" }}>
                 Built{" "}
@@ -135,8 +134,8 @@ export default function About(): JSX.Element {
                 >
                   multimodal agents
                 </a>{" "}
-                for music translation, gtm agents to{" "}
-                <strong>reach 1M+ listeners.</strong>
+                for music translation, marketing agents to{" "}
+                <strong>reach 1M+ listeners</strong>
               </li>
               <li style={{ marginTop: "0.45rem" }}>
                 Led software @ the <strong>5th-best HS robotics team;</strong>{" "}
@@ -147,7 +146,7 @@ export default function About(): JSX.Element {
                   rel="noopener noreferrer"
                   className="about-contact-link"
                 >
-                  vibecoding.
+                  vibecoding
                 </a>
               </li>
             </ul>
