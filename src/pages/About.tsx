@@ -70,10 +70,10 @@ export default function About(): JSX.Element {
                 state={{ fromBlog: true, fromPath: "/about" }}
                 className="about-contact-link"
               >
-                and much more
-              </Link>
-              , <strong>almost entirely self-taught!</strong> Currently I'm a
-              high school graduate &amp; <strong>founding mle @ </strong>
+                and much more,
+              </Link>{" "}
+              <strong>almost entirely self-taught!</strong> Currently I'm a high
+              school graduate &amp; <strong>founding mle @ </strong>
               <a
                 href="https://condu.it/"
                 target="_blank"
