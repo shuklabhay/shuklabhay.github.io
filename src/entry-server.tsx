@@ -52,13 +52,6 @@ export function getPrerenderRoutes(): PrerenderRoute[] {
       title: `${SITE_TITLE} · Contact`,
       type: "website",
     },
-    {
-      canonicalPath: "/resume",
-      description: "resume",
-      path: "/resume",
-      title: `${SITE_TITLE} · Resume`,
-      type: "website",
-    },
     ...allPosts.map((post): PrerenderRoute => {
       const canonicalPath = withoutTrailingSlash(`/blog/${post.slug}`);
       return {

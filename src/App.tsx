@@ -6,7 +6,6 @@ import Blog from "./pages/Blog.tsx";
 import Home from "./pages/Home.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Post from "./pages/Post.tsx";
-import Resume from "./pages/Resume.tsx";
 import { setLastPathname } from "./utils/routeTransitions";
 
 const HOME_BACKGROUND_IMMEDIATE_SRC = "/static/landing-1280.webp";
@@ -49,10 +48,6 @@ function getRouteDocumentTitle(pathname: string): string {
 
   if (normalizedPathname === "/contact") {
     return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Contact`;
-  }
-
-  if (normalizedPathname === "/resume") {
-    return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Resume`;
   }
 
   if (/^\/blog\/[^/]+$/.test(normalizedPathname)) {
@@ -295,7 +290,6 @@ export function AppShell(): JSX.Element {
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<Post />} />
           <Route path="/contact" element={<Home />} />
-          <Route path="/resume" element={<Resume />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

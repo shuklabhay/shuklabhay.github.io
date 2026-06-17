@@ -2,10 +2,6 @@ import type { ContactInfo } from "./types";
 
 export const contactData: ReadonlyArray<ContactInfo> = [
   {
-    title: "Resume",
-    link: "https://docs.google.com/document/d/1AmxSqHyPKsZIAPha-v2eDTIGKNvpwcFVRLMoa6gTJuk/edit?tab=t.0",
-  },
-  {
     title: "Email",
     link: "01shuklabhay@gmail.com",
   },

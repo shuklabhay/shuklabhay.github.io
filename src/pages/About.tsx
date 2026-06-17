@@ -36,7 +36,6 @@ export default function About(): JSX.Element {
 
   const rawEmail = getContactLink(contactData, "Email");
   const email = rawEmail ? `mailto:${rawEmail}` : undefined;
-  const resume = getContactLink(contactData, "Resume");
   const twitter = getContactLink(contactData, "Twitter");
   const github = getContactLink(contactData, "GitHub");
 
@@ -198,15 +197,6 @@ export default function About(): JSX.Element {
                 paddingBottom: "0.3rem",
               }}
             >
-              <a
-                href={resume ?? "/resume"}
-                target={resume ? "_blank" : undefined}
-                rel={resume ? "noopener noreferrer" : undefined}
-                className="about-contact-link"
-              >
-                <strong>Resume</strong>
-              </a>{" "}
-              |{" "}
               <a href={email} className="about-contact-link">
                 <strong>Email</strong>
               </a>{" "}

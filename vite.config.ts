@@ -27,11 +27,6 @@ const TOP_LEVEL_SOCIAL_PAGES = [
     title: "Abhay Shukla · Contact",
     description: "contact",
   },
-  {
-    canonicalPath: "/resume",
-    title: "Abhay Shukla · Resume",
-    description: "resume",
-  },
 ];
 
 type SocialPageMeta = {
