@@ -63,16 +63,9 @@ export default function About(): JSX.Element {
               first making games, later (from 12 to today){" "}
               <strong>producing music,</strong> programming audio effects,
               designing webapps, training neural networks, conducting research,{" "}
-              <Link
-                to="/blog/rcbi"
-                viewTransition
-                state={{ fromBlog: true, fromPath: "/about" }}
-                className="about-contact-link"
-              >
-                and much more,
-              </Link>{" "}
-              <strong>almost entirely self-taught!</strong> Currently I'm a high
-              school graduate &amp; <strong>founding mle @ </strong>
+              and much more, <strong>almost entirely self-taught!</strong>{" "}
+              Currently I'm a high school graduate &amp;{" "}
+              <strong>founding mle @ </strong>
               <a
                 href="https://condu.it/"
                 target="_blank"
@@ -85,12 +78,17 @@ export default function About(): JSX.Element {
             </p>
             <p style={{ marginTop: 0, marginBottom: "1rem" }}>
               Nowadays, <strong>I'm drawn towards</strong> doing{" "}
-              <strong>interesting, imaginative things</strong> that have{" "}
-              <strong>never been done before</strong> and are{" "}
-              <strong>overwhelmingly worth doing.</strong> This ethos is{" "}
-              <strong>untethered to medium:</strong> it can mean training neural
-              networks, but also building physical things or{" "}
-              <strong>just being mischievous &gt;:)</strong>
+              <strong>interesting, imaginative things</strong> that have never
+              been done beforeand are{" "}
+              <strong>overwhelmingly worth doing,</strong>{" "}
+              <Link
+                to="/blog/rcbi"
+                viewTransition
+                state={{ fromBlog: true, fromPath: "/about" }}
+                className="about-contact-link"
+              >
+                regardless of form or function.
+              </Link>
             </p>
             <p style={{ marginTop: 0, marginBottom: "0.5rem" }}>
               Previously I've:
