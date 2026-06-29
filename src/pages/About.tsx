@@ -79,7 +79,7 @@ export default function About(): JSX.Element {
             <p style={{ marginTop: 0, marginBottom: "1rem" }}>
               Nowadays, <strong>I'm drawn towards</strong> doing{" "}
               <strong>interesting, imaginative things</strong> that have never
-              been done beforeand are{" "}
+              been done before and are{" "}
               <strong>overwhelmingly worth doing,</strong>{" "}
               <Link
                 to="/blog/rcbi"
