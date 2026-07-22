@@ -64,9 +64,13 @@ export default function About(): JSX.Element {
               <strong>producing copius amounts of music,</strong> programming
               audio effects, building circuts, training neural networks,
               designing webapps, and much more,{" "}
-              <strong>almost entirely self-taught!</strong> I'm drawn towards{" "}
-              <strong>interesting, imaginative things</strong> that have never
-              been done before yet are{" "}
+              <strong>almost entirely self-taught!</strong>
+            </p>
+
+            <p style={{ marginTop: 0, marginBottom: "1rem" }}>
+              I'm drawn towards{" "}
+              <strong>doing interesting, imaginative things</strong> that have
+              never been done before yet are{" "}
               <strong>overwhelmingly worth doing,</strong>{" "}
               <Link
                 to="/blog/rcbi"
