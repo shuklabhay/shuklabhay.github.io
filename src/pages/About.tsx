@@ -75,11 +75,7 @@ export default function About(): JSX.Element {
                 className="about-contact-link"
               >
                 regardless of form or function.
-              </Link>
-            </p>
-
-            <p style={{ marginTop: 0, marginBottom: "1rem" }}>
-              {" "}
+              </Link>{" "}
               Currently I'm a <strong>founding mle @ </strong>
               <a
                 href="https://condu.it/"
