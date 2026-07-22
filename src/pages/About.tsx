@@ -60,26 +60,13 @@ export default function About(): JSX.Element {
           >
             <p style={{ marginTop: 0, marginBottom: "1rem" }}>
               I've been <strong>manipulating computers since I was 9:</strong>{" "}
-              first making games, later (from 12 to today){" "}
-              <strong>producing music,</strong> programming audio effects,
-              designing webapps, training neural networks, conducting research,{" "}
-              and much more, <strong>almost entirely self-taught!</strong>{" "}
-              Currently I'm a high school graduate &amp;{" "}
-              <strong>founding mle @ </strong>
-              <a
-                href="https://condu.it/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="about-contact-link"
-              >
-                <strong>conduit</strong>
-              </a>{" "}
-              <strong>(in sf!!)</strong>.
-            </p>
-            <p style={{ marginTop: 0, marginBottom: "1rem" }}>
-              Nowadays, <strong>I'm drawn towards</strong> doing{" "}
+              making video games,{" "}
+              <strong>producing copius amounts of music,</strong> programming
+              audio effects, building circuts, training neural networks,
+              designing webapps, and much more,{" "}
+              <strong>almost entirely self-taught!</strong> I'm drawn towards{" "}
               <strong>interesting, imaginative things</strong> that have never
-              been done before and are{" "}
+              been done before yet are{" "}
               <strong>overwhelmingly worth doing,</strong>{" "}
               <Link
                 to="/blog/rcbi"
@@ -90,6 +77,21 @@ export default function About(): JSX.Element {
                 regardless of form or function.
               </Link>
             </p>
+
+            <p style={{ marginTop: 0, marginBottom: "1rem" }}>
+              {" "}
+              Currently I'm a <strong>founding mle @ </strong>
+              <a
+                href="https://condu.it/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="about-contact-link"
+              >
+                <strong>conduit</strong>
+              </a>{" "}
+              <strong>(in sf!!)</strong>.
+            </p>
+
             <p style={{ marginTop: 0, marginBottom: "0.5rem" }}>
               Previously I've:
             </p>
