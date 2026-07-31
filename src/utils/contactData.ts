@@ -18,6 +18,10 @@ export const contactData: ReadonlyArray<ContactInfo> = [
     link: "https://x.com/01shuklabhay",
   },
   {
+    title: "YouTube",
+    link: "https://www.youtube.com/@01shuklabhay",
+  },
+  {
     title: "Website",
     link: "https://shuklabhay.github.io",
   },
