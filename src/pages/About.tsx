@@ -37,6 +37,7 @@ export default function About(): JSX.Element {
   const rawEmail = getContactLink(contactData, "Email");
   const email = rawEmail ? `mailto:${rawEmail}` : undefined;
   const twitter = getContactLink(contactData, "Twitter");
+  const youtube = getContactLink(contactData, "YouTube");
   const github = getContactLink(contactData, "GitHub");
 
   return (
@@ -208,6 +209,15 @@ export default function About(): JSX.Element {
                 className="about-contact-link"
               >
                 <strong>Twitter</strong>
+              </a>{" "}
+              |{" "}
+              <a
+                href={youtube}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="about-contact-link"
+              >
+                <strong>YouTube</strong>
               </a>{" "}
               |{" "}
               <a
