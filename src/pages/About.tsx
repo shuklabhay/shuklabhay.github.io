@@ -100,9 +100,8 @@ export default function About(): JSX.Element {
               style={{ marginTop: 0, paddingLeft: "1.25rem", lineHeight: 1.5 }}
             >
               <li>
-                <strong>
-                  Simulated breast/lung tissue and cardiovascular dynamics{" "}
-                </strong>{" "}
+                Simulated{" "}
+                <strong>breast/lung tissue and vascular hemodynamics </strong>{" "}
                 using PDEs & neural networks
               </li>
 
@@ -121,12 +120,13 @@ export default function About(): JSX.Element {
               </li>
 
               <li>
-                (Rapid fire:) Simulated rodent neurons, post-trained language
-                models, built/sold RL envs
+                (Rapid fire:) <strong>Simulated rodent neurons,</strong>{" "}
+                post-trained language models, built/sold RL envs
               </li>
 
               <li style={{ marginTop: "0.45rem" }}>
-                Wrote code/apps on a FRC team; taught elementary schoolers{" "}
+                (In my youth:) Wrote code/apps for a <strong>FRC team;</strong>{" "}
+                taught elementary schoolers{" "}
                 <a
                   href="https://bayareastemacademy.org/"
                   target="_blank"
