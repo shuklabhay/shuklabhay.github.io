@@ -62,16 +62,16 @@ export default function About(): JSX.Element {
             <p style={{ marginTop: 0, marginBottom: "1rem" }}>
               I've been <strong>manipulating computers since I was 9:</strong>{" "}
               making video games,{" "}
-              <strong>producing copius amounts of music,</strong> programming
-              audio effects, building circuts, training neural networks,
-              designing webapps, and much more,{" "}
+              <strong>producing many musical genres,</strong> programming audio
+              effects, building circuts, training neural networks, designing
+              webapps, and much more,{" "}
               <strong>almost entirely self-taught!</strong>
             </p>
 
             <p style={{ marginTop: 0, marginBottom: "1rem" }}>
-              I'm drawn towards{" "}
-              <strong>doing interesting, imaginative things</strong> that have
-              never been done before yet are{" "}
+              I hope to spend my life doing{" "}
+              <strong>interesting, imaginative things</strong> that have never
+              been done before but are{" "}
               <strong>overwhelmingly worth doing,</strong>{" "}
               <Link
                 to="/blog/rcbi"
@@ -100,30 +100,12 @@ export default function About(): JSX.Element {
               style={{ marginTop: 0, paddingLeft: "1.25rem", lineHeight: 1.5 }}
             >
               <li>
-                Frankenstein-ed ViTs & PDEs to{" "}
-                <strong>simulate biological tissue</strong> (research @{" "}
-                <a
-                  href="https://postdocs.stanford.edu/stanford-departments/medicine-biomedical-informatics-research"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="about-contact-link"
-                >
-                  Stanford
-                </a>
-                )
+                <strong>
+                  Simulated breast/lung tissue and cardiovascular dynamics{" "}
+                </strong>{" "}
+                using PDEs & neural networks
               </li>
-              <li style={{ marginTop: "0.45rem" }}>
-                Designed{" "}
-                <a
-                  href="https://app.primeintellect.ai/dashboard/environments"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="about-contact-link"
-                >
-                  RL Environments
-                </a>{" "}
-                (<strong>Prime Intellect</strong> RL Residency), fine-tuned LLMs
-              </li>
+
               <li style={{ marginTop: "0.45rem" }}>
                 Built{" "}
                 <a
@@ -134,19 +116,24 @@ export default function About(): JSX.Element {
                 >
                   multimodal agents
                 </a>{" "}
-                for music translation, marketing agents to{" "}
-                <strong>reach 1M+ listeners</strong>
+                to translate songs, and marketing agents to reach a million
+                listeners
               </li>
+
+              <li>
+                (Rapid fire:) Simulated rodent neurons, post-trained language
+                models, built/sold RL envs
+              </li>
+
               <li style={{ marginTop: "0.45rem" }}>
-                Led software @ the <strong>5th-best HS robotics team;</strong>{" "}
-                taught elementary schoolers{" "}
+                Wrote code/apps on a FRC team; taught elementary schoolers{" "}
                 <a
                   href="https://bayareastemacademy.org/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="about-contact-link"
                 >
-                  vibecoding
+                  to vibecode
                 </a>
               </li>
             </ul>
