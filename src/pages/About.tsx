@@ -81,7 +81,7 @@ export default function About(): JSX.Element {
               >
                 regardless of form or function.
               </Link>{" "}
-              Currently I'm a <strong>founding mle @ </strong>
+              Currently I <strong>hang out @ </strong>
               <a
                 href="https://condu.it/"
                 target="_blank"
