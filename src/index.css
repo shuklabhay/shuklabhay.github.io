@@ -229,6 +229,10 @@ code {
   max-width: 65%;
 }
 
+.about-subtitle li + li {
+  margin-top: 0.45rem;
+}
+
 .post-content code {
   display: inline;
   padding: 0.22em 0.22em;
