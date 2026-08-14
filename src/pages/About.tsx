@@ -105,7 +105,7 @@ export default function About(): JSX.Element {
                 using PDEs & neural networks
               </li>
 
-              <li style={{ marginTop: "0.45rem" }}>
+              <li>
                 Built{" "}
                 <a
                   href="https://raw.githubusercontent.com/shuklabhay/shuklabhay.github.io/refs/heads/main/public/static/sitedata/vt_poster.png"
@@ -124,7 +124,7 @@ export default function About(): JSX.Element {
                 post-trained language models, built/sold RL envs
               </li>
 
-              <li style={{ marginTop: "0.45rem" }}>
+              <li>
                 (In my youth:) Wrote code/apps for a <strong>FRC team;</strong>{" "}
                 taught elementary schoolers{" "}
                 <a
@@ -150,13 +150,13 @@ export default function About(): JSX.Element {
                 <strong>common threads</strong> across far-flung ideas and
                 building <strong>lasting, transferrable intuition.</strong>
               </li>
-              <li style={{ marginTop: "0.45rem" }}>
+              <li>
                 Rowing, <strong>caring about each and every element</strong> of
                 each and every thing I work on, but also steering, zooming out
                 and adjusting when{" "}
                 <strong>pieces don't serve the whole.</strong>
               </li>
-              <li style={{ marginTop: "0.45rem" }}>
+              <li>
                 The <strong>fundamentally new possibilities</strong> associated
                 with neural networks &amp; agents; the chance to{" "}
                 <strong>
@@ -165,7 +165,7 @@ export default function About(): JSX.Element {
                 </strong>{" "}
                 as we teach machines to perceive and interact with the world.
               </li>
-              <li style={{ marginTop: "0.45rem" }}>
+              <li>
                 <strong>Being human:</strong> living life, making
                 mistake/memories, <strong>facing fears,</strong> learning to{" "}
                 <strong>understand and appreciate oneself.</strong> I believe
