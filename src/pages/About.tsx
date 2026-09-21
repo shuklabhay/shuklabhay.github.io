@@ -90,6 +90,18 @@ export default function About(): JSX.Element {
               style={{ marginTop: 0, paddingLeft: "1.25rem", lineHeight: 1.5 }}
             >
               <li>
+                Worked on <strong>decoding neural motor intent </strong> at
+                <a
+                  href="https://condu.it/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="about-contact-link"
+                >
+                  Conduit
+                </a>
+              </li>
+
+              <li>
                 Simulated{" "}
                 <strong>breast/lung tissue and vascular hemodynamics </strong>{" "}
                 using PDEs & neural networks
