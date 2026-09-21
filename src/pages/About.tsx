@@ -63,7 +63,7 @@ export default function About(): JSX.Element {
               I've been <strong>manipulating computers since I was 9:</strong>{" "}
               making video games,{" "}
               <strong>producing many musical genres,</strong> programming audio
-              effects, building circuts, training neural networks, designing
+              effects, building circuits, training neural networks, designing
               webapps, and much more,{" "}
               <strong>almost entirely self-taught!</strong>
             </p>
