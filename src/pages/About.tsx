@@ -90,15 +90,16 @@ export default function About(): JSX.Element {
               style={{ marginTop: 0, paddingLeft: "1.25rem", lineHeight: 1.5 }}
             >
               <li>
-                Worked on controlling computers, robotic arms, etc using{" "}
+                Trained models for{" "}
                 <a
                   href="https://condu.it/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="about-contact-link"
                 >
-                  brainwaves
-                </a>
+                  thought/motor intent {"-->"} action
+                </a>{" "}
+                (control computers, robotic arms, etc)
               </li>
 
               <li>
