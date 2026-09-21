@@ -90,7 +90,7 @@ export default function About(): JSX.Element {
               style={{ marginTop: 0, paddingLeft: "1.25rem", lineHeight: 1.5 }}
             >
               <li>
-                Worked on controlling computers, robotic arms, etc using
+                Worked on controlling computers, robotic arms, etc using{" "}
                 <a
                   href="https://condu.it/"
                   target="_blank"
