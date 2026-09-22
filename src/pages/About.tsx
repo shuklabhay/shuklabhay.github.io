@@ -90,7 +90,7 @@ export default function About(): JSX.Element {
               style={{ marginTop: 0, paddingLeft: "1.25rem", lineHeight: 1.5 }}
             >
               <li>
-                Trained models for{" "}
+                Trained{" "}
                 <a
                   href="https://condu.it/"
                   target="_blank"
@@ -99,7 +99,7 @@ export default function About(): JSX.Element {
                 >
                   thought/motor intent {"-->"} action
                 </a>{" "}
-                (control computers, robotic arms, etc)
+                models (mind control computers, robotic arms, etc)
               </li>
 
               <li>
