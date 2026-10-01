@@ -40,6 +40,7 @@ export type PostMeta = {
   author: string;
   buttons: PostButton[];
   showInlineToc: boolean;
+  hidden: boolean;
   cover?: string;
   wordCount?: number;
 };

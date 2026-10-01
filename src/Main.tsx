@@ -10,11 +10,17 @@ const app = (
   </React.StrictMode>
 );
 
-if (rootElement.hasChildNodes()) {
+const currentPath = window.location.pathname.replace(/\/+$/, "") || "/";
+
+if (
+  rootElement.hasChildNodes() &&
+  rootElement.dataset.prerenderedPath === currentPath
+) {
   hydrateRoot(rootElement, app);
   window.setTimeout(() => {
     delete rootElement.dataset.prerendered;
   }, 5000);
 } else {
+  delete rootElement.dataset.prerendered;
   createRoot(rootElement).render(app);
 }
