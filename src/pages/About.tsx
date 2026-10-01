@@ -97,14 +97,14 @@ export default function About(): JSX.Element {
                   rel="noopener noreferrer"
                   className="about-contact-link"
                 >
-                  thought/motor intent {"-->"} action
+                  neural activity {"-->"} action
                 </a>{" "}
                 models (mind control computers, robotic arms, etc)
               </li>
 
               <li>
                 Simulated{" "}
-                <strong>breast/lung tissue and vascular hemodynamics </strong>{" "}
+                <strong>breast/lung tissue and blood cell dynamics </strong>{" "}
                 using PDEs & neural networks
               </li>
 
