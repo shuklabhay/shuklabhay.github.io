@@ -167,7 +167,7 @@ function createPrerenderedHtml(
   html = replaceRequiredHtml(
     html,
     /<div id="root"><\/div>/,
-    `<div id="root" data-prerendered="true">${appHtml}</div>`,
+    `<div id="root" data-prerendered="true" data-prerendered-path="${escapeHtmlAttribute(route.canonicalPath)}">${appHtml}</div>`,
     "root element",
   );
 

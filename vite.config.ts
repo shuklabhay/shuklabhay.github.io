@@ -122,6 +122,7 @@ type PostMetaFile = {
   dateCreated?: unknown;
   buttons?: unknown;
   show_inline_toc?: unknown;
+  hidden?: unknown;
 };
 
 type ParsedPostMeta = {
@@ -130,6 +131,7 @@ type ParsedPostMeta = {
   date?: string;
   buttons: Array<{ title: string; link: string }>;
   showInlineToc: boolean;
+  hidden: boolean;
 };
 type PostBuildData = {
   slug: string;
@@ -210,6 +212,7 @@ function readPostMeta(metaPath: string): ParsedPostMeta {
       date,
       buttons,
       showInlineToc,
+      hidden: asOptionalBoolean(parsed.hidden) ?? false,
     };
   } catch (error) {
     if (error instanceof Error) {
@@ -430,7 +433,7 @@ export default defineConfig({
               post.meta.buttons,
             )}, showInlineToc: ${JSON.stringify(
               post.meta.showInlineToc,
-            )}, cover: ${coverExpr}, wordCount: ${post.wordCount} }`,
+            )}, hidden: ${JSON.stringify(post.meta.hidden)}, cover: ${coverExpr}, wordCount: ${post.wordCount} }`,
           );
         }
 

@@ -79,12 +79,18 @@ export default function Blog() {
     BLOG_ENTRY_FADE_MS,
   );
   const [sortState, setSortState] = useState<BlogSortState>(
-    readBlogSortStateFromStorage,
+    DEFAULT_BLOG_SORT_STATE,
   );
+  const [hasLoadedSortState, setHasLoadedSortState] = useState(false);
   const { sortField, dateDirection, alphaDirection } = sortState;
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    setSortState(readBlogSortStateFromStorage());
+    setHasLoadedSortState(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hasLoadedSortState) return;
     window.localStorage.setItem(
       BLOG_SORT_STORAGE_KEY,
       JSON.stringify({
@@ -93,7 +99,7 @@ export default function Blog() {
         alphaDirection,
       } satisfies BlogSortState),
     );
-  }, [sortField, dateDirection, alphaDirection]);
+  }, [sortField, dateDirection, alphaDirection, hasLoadedSortState]);
 
   const onDateSortClick = () => {
     setSortState((prev) =>
@@ -124,7 +130,7 @@ export default function Blog() {
   };
 
   const sortedPosts = useMemo(() => {
-    const sorted = [...allPosts];
+    const sorted = allPosts.filter((post) => !post.hidden);
     sorted.sort((a, b) => {
       if (sortField === "date") {
         const dateCompare =
