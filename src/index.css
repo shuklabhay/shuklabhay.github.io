@@ -71,7 +71,6 @@ body {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background-color: var(--home-background-color);
   background-image: var(--home-background-image);
   background-repeat: no-repeat;
   background-size: cover;
@@ -80,7 +79,7 @@ body {
 }
 
 html.route-home .route-sky {
-  clip-path: inset(0 0 0 0);
+  display: none;
 }
 
 html.route-post .route-sky {
@@ -785,12 +784,6 @@ code {
     height: var(--mobile-band-height);
     clip-path: none;
     background-position: var(--home-mobile-focal-x) center;
-  }
-
-  html.route-home .route-sky {
-    position: fixed;
-    bottom: 0;
-    height: auto;
   }
 
   :root {
