@@ -1,5 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties } from "react";
+import { useLocation } from "react-router-dom";
+import { getLastPathname, isBlogPostPath } from "./routeTransitions";
+import type { RouteTransitionState } from "./types";
 
 const MOBILE_WIDTH_BREAKPOINT = 860;
 
@@ -57,4 +60,25 @@ export function useEntryFade(
     }),
     [durationMs, isVisible, effectiveShouldAnimate],
   );
+}
+
+export function useRouteEntryFade(durationMs: number): CSSProperties {
+  const location = useLocation();
+  const transitionState = location.state as RouteTransitionState | null;
+  const decisionRef = useRef<{ key: string; shouldAnimate: boolean } | null>(
+    null,
+  );
+
+  if (decisionRef.current?.key !== location.key) {
+    const lastPathname = getLastPathname();
+    decisionRef.current = {
+      key: location.key,
+      shouldAnimate:
+        transitionState?.fromTopNav === true ||
+        transitionState?.fromPost === true ||
+        (lastPathname ? isBlogPostPath(lastPathname) : false),
+    };
+  }
+
+  return useEntryFade(decisionRef.current.shouldAnimate, durationMs);
 }
