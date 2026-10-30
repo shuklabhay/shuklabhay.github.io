@@ -143,5 +143,3 @@ export type ViewTransitionDocument = Document & {
     ready: Promise<void>;
   };
 };
-
-export type RouteTransitionKind = "dissolve" | "stack";

@@ -318,58 +318,11 @@ body.route-home #root {
   display: none;
 }
 
-::view-transition-old(root),
-::view-transition-new(root) {
+::view-transition-group(*),
+::view-transition-old(*),
+::view-transition-new(*) {
   animation-duration: 100ms;
   animation-timing-function: linear;
-}
-
-html[data-route-transition="dissolve"]::view-transition-old(page-about),
-html[data-route-transition="dissolve"]::view-transition-old(page-gallery),
-html[data-route-transition="dissolve"]::view-transition-old(page-post),
-html[data-route-transition="dissolve"]::view-transition-old(page-missing),
-html[data-route-transition="dissolve"]::view-transition-new(page-about),
-html[data-route-transition="dissolve"]::view-transition-new(page-gallery),
-html[data-route-transition="dissolve"]::view-transition-new(page-post),
-html[data-route-transition="dissolve"]::view-transition-new(page-missing) {
-  animation-duration: 100ms;
-  animation-timing-function: linear;
-}
-
-html[data-route-transition="stack"] {
-  --route-stack-offset: 8px;
-}
-
-html[data-route-transition="stack"][data-route-direction="back"] {
-  --route-stack-offset: -8px;
-}
-
-html[data-route-transition="stack"]::view-transition-old(page-about),
-html[data-route-transition="stack"]::view-transition-old(page-gallery),
-html[data-route-transition="stack"]::view-transition-old(page-post),
-html[data-route-transition="stack"]::view-transition-old(page-missing) {
-  animation: route-stack-out 160ms linear both;
-}
-
-html[data-route-transition="stack"]::view-transition-new(page-about),
-html[data-route-transition="stack"]::view-transition-new(page-gallery),
-html[data-route-transition="stack"]::view-transition-new(page-post),
-html[data-route-transition="stack"]::view-transition-new(page-missing) {
-  animation: route-stack-in 160ms linear both;
-}
-
-@keyframes route-stack-out {
-  to {
-    opacity: 0;
-    transform: translateY(calc(var(--route-stack-offset) * -1));
-  }
-}
-
-@keyframes route-stack-in {
-  from {
-    opacity: 0;
-    transform: translateY(var(--route-stack-offset));
-  }
 }
 
 .app-shell-home {

@@ -26,7 +26,7 @@ export default function TransitionLink({
 
     event.preventDefault();
     if (location.pathname === to) return;
-    navigateWithRouteTransition(navigate, location.pathname, to, {
+    navigateWithRouteTransition(navigate, to, {
       state,
       replace,
     });
