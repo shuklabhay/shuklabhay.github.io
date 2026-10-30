@@ -41,15 +41,18 @@ export function navigateWithRouteTransition(
   const kind: RouteTransitionKind =
     fromDepth === 0 || toDepth === 0 ? "dissolve" : "stack";
   const root = document.documentElement;
-  const prefersReducedMotion =
-    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
+  const shouldSkipTransition = [
+    "(prefers-reduced-motion: reduce)",
+    "(pointer: coarse)",
+    "(hover: none)",
+  ].some((query) => window.matchMedia?.(query).matches === true);
 
   const update = () => {
     flushSync(() => navigate(to, options));
     window.scrollTo(0, 0);
   };
 
-  if (prefersReducedMotion) {
+  if (shouldSkipTransition) {
     update();
     return;
   }
