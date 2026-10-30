@@ -234,9 +234,9 @@ export default function BlogPost({
     padding: "0.38rem 0.74rem",
     borderRadius: "0.38rem",
     border: isHovered
-      ? "1px solid rgba(31, 40, 64, 0.75)"
-      : "1px solid rgba(31, 40, 64, 0.32)",
-    backgroundColor: isHovered ? "rgba(31, 40, 64, 0.06)" : "transparent",
+      ? "1px solid var(--ink)"
+      : "1px solid rgba(17, 17, 17, 0.3)",
+    backgroundColor: "transparent",
     color: "var(--ink)",
     textDecoration: "none",
     fontWeight: 600,
@@ -292,7 +292,7 @@ export default function BlogPost({
 
   return (
     <main
-      className="route-page"
+      className="route-page-post"
       style={{
         width: "100%",
         color: "var(--ink)",
@@ -350,7 +350,7 @@ export default function BlogPost({
             <p
               style={{
                 margin: "0.3rem 0 0",
-                color: "rgba(31, 40, 64, 0.62)",
+                color: "var(--ink-muted)",
                 fontSize: "clamp(0.94rem, 1vw, 1.03rem)",
                 letterSpacing: "0.01em",
               }}
@@ -505,7 +505,7 @@ export default function BlogPost({
                 style={{
                   borderLeft:
                     showSidebar && !isMobile
-                      ? "1px solid rgba(58, 77, 120, 0.18)"
+                      ? "1px solid rgba(17, 17, 17, 0.12)"
                       : undefined,
                   width: "100%",
                   minWidth: 0,

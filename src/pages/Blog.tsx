@@ -163,7 +163,7 @@ export default function Blog() {
 
   return (
     <main
-      className="route-page"
+      className="route-page-gallery"
       style={{
         ...blogEntryFadeStyle,
         width: "100%",

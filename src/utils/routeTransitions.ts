@@ -28,6 +28,8 @@ export function getRouteDepth(pathname: string): number {
   return 1;
 }
 
+let activeRouteTransitionId = 0;
+
 export function navigateWithRouteTransition(
   navigate: NavigateFunction,
   fromPathname: string,
@@ -52,10 +54,12 @@ export function navigateWithRouteTransition(
     return;
   }
 
+  const transitionId = ++activeRouteTransitionId;
   root.dataset.routeTransition = kind;
   root.dataset.routeDirection = toDepth >= fromDepth ? "forward" : "back";
   const finished = runWithRootViewTransition(update);
   const clear = () => {
+    if (transitionId !== activeRouteTransitionId) return;
     delete root.dataset.routeTransition;
     delete root.dataset.routeDirection;
   };

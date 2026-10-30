@@ -675,7 +675,7 @@ export default function Post({
       <>
         <main
           key={slug}
-          className="route-page"
+          className="route-page-post"
           style={{
             width: "100%",
             color: "var(--ink)",

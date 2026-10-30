@@ -13,7 +13,7 @@ export default function About(): JSX.Element {
   const github = getContactLink(contactData, "GitHub");
 
   return (
-    <main className="about-page route-page" style={entryFadeStyle}>
+    <main className="about-page route-page-about" style={entryFadeStyle}>
       <PageTitle
         title="Hi, I'm Abhay"
         subtitle={
