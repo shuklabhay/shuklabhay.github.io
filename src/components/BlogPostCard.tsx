@@ -80,7 +80,7 @@ export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
           textDecorationThickness: "1.5px",
           textUnderlineOffset: "0.14em",
           fontSize: "1.15rem",
-          fontWeight: 500,
+          fontWeight: 490,
           lineHeight: 1.4,
           transition: "color 140ms ease",
         }}

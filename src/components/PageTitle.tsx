@@ -100,7 +100,7 @@ function getCheckboxStyle({
     backgroundColor: "transparent",
     color: fg,
     fontSize: "1rem",
-    fontWeight: 500,
+    fontWeight: 490,
     cursor: "pointer",
     userSelect: "none" as const,
     WebkitUserSelect: "none" as const,
