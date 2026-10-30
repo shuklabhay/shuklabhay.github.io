@@ -21,7 +21,11 @@ const TOP_LEVEL_SOCIAL_PAGES = [
     title: "Abhay Shukla · About",
     description: "about",
   },
-  { canonicalPath: "/blog", title: "Abhay Shukla · Blog", description: "blog" },
+  {
+    canonicalPath: "/gallery",
+    title: "Abhay Shukla · Gallery",
+    description: "gallery",
+  },
   {
     canonicalPath: "/contact",
     title: "Abhay Shukla · Contact",
@@ -447,7 +451,9 @@ export default defineConfig({
       configureServer(server: ViteDevServer): void {
         server.middlewares.use((req, res, next) => {
           const rawUrl = req.url?.split("?")[0] ?? "";
-          const match = rawUrl.match(/^\/blog\/([^/]+)\/slideshow\.html$/);
+          const match = rawUrl.match(
+            /^\/(?:gallery|blog)\/([^/]+)\/slideshow\.html$/,
+          );
           if (!match) {
             next();
             return;
@@ -489,13 +495,13 @@ export default defineConfig({
         const posts = collectPostBuildData(postsDir);
 
         for (const post of posts) {
-          const distPostDir = path.join(distDir, "blog", post.slug);
+          const distPostDir = path.join(distDir, "gallery", post.slug);
           fs.mkdirSync(distPostDir, { recursive: true });
           fs.writeFileSync(
             path.join(distPostDir, "index.html"),
             createSocialHtml(
               {
-                canonicalPath: `/blog/${post.slug}`,
+                canonicalPath: `/gallery/${post.slug}`,
                 title: post.title,
                 description: post.title,
                 type: "article",

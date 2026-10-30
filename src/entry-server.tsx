@@ -39,10 +39,10 @@ export function getPrerenderRoutes(): PrerenderRoute[] {
       type: "website",
     },
     {
-      canonicalPath: "/blog",
-      description: "blog",
-      path: "/blog",
-      title: `${SITE_TITLE} · Blog`,
+      canonicalPath: "/gallery",
+      description: "gallery",
+      path: "/gallery",
+      title: `${SITE_TITLE} · Gallery`,
       type: "website",
     },
     {
@@ -53,7 +53,7 @@ export function getPrerenderRoutes(): PrerenderRoute[] {
       type: "website",
     },
     ...allPosts.map((post): PrerenderRoute => {
-      const canonicalPath = withoutTrailingSlash(`/blog/${post.slug}`);
+      const canonicalPath = withoutTrailingSlash(`/gallery/${post.slug}`);
       return {
         canonicalPath,
         description: post.title,

@@ -1,4 +1,10 @@
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import NavMenu from "./components/NavMenu.tsx";
 import About from "./pages/About.tsx";
@@ -42,19 +48,20 @@ function getRouteDocumentTitle(pathname: string): string {
     return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}About`;
   }
 
-  if (normalizedPathname === "/blog") {
-    return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Blog`;
+  if (normalizedPathname === "/gallery") {
+    return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Gallery`;
   }
 
   if (normalizedPathname === "/contact") {
     return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Contact`;
   }
 
-  if (/^\/blog\/[^/]+$/.test(normalizedPathname)) {
-    const slug = normalizedPathname.slice("/blog/".length).split("/")[0] ?? "";
+  if (/^\/gallery\/[^/]+$/.test(normalizedPathname)) {
+    const slug =
+      normalizedPathname.slice("/gallery/".length).split("/")[0] ?? "";
     const postTitle = humanizeRouteSegment(slug);
     if (!postTitle) {
-      return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Blog`;
+      return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Gallery`;
     }
     return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}${postTitle}`;
   }
@@ -200,6 +207,18 @@ async function preloadFirstAvailableImage(
   });
 }
 
+function LegacyBlogRedirect(): JSX.Element {
+  const location = useLocation();
+  const pathname = location.pathname.replace(/^\/blog(?=\/|$)/, "/gallery");
+  return (
+    <Navigate
+      replace
+      to={`${pathname}${location.search}${location.hash}`}
+      state={location.state}
+    />
+  );
+}
+
 function RouteBackground(): null {
   const location = useLocation();
   const isHome = isHomeVisualRoute(location.pathname);
@@ -287,8 +306,9 @@ export function AppShell(): JSX.Element {
         <Routes location={location}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:slug" element={<Post />} />
+          <Route path="/gallery" element={<Blog />} />
+          <Route path="/gallery/:slug" element={<Post />} />
+          <Route path="/blog/*" element={<LegacyBlogRedirect />} />
           <Route path="/contact" element={<Home />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
