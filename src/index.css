@@ -13,6 +13,7 @@
   --browser-bottom-clearance: 0px;
   --sidebar-width: clamp(9.5rem, 21vw, 16rem);
   --content-gutter: clamp(1.5rem, 4vw, 3.5rem);
+  --content-left-margin: 2.25rem;
   --mobile-band-height: 7.5rem;
 }
 
@@ -153,7 +154,7 @@ html.route-post.post-expanded .side-nav {
   overflow-x: clip;
   font-weight: 490;
   padding: 1.1rem var(--content-gutter) var(--browser-bottom-clearance)
-    calc(var(--sidebar-width) + var(--content-gutter));
+    calc(var(--sidebar-width) + var(--content-left-margin));
   color: var(--ink);
 }
 
