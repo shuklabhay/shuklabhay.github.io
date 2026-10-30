@@ -500,6 +500,21 @@ export default function Post({
     };
   }, [clearPendingHeadingJump]);
 
+  useEffect(() => {
+    if (!activeHeadingId) return;
+    const sidebarEl = document.querySelector(".post-sidebar");
+    const activeLinkEl = sidebarEl?.querySelector(".post-toc-link.is-active");
+    if (!sidebarEl || !activeLinkEl) return;
+
+    const sidebarRect = sidebarEl.getBoundingClientRect();
+    const linkRect = activeLinkEl.getBoundingClientRect();
+    if (linkRect.top < sidebarRect.top) {
+      sidebarEl.scrollTop -= sidebarRect.top - linkRect.top + 8;
+    } else if (linkRect.bottom > sidebarRect.bottom) {
+      sidebarEl.scrollTop += linkRect.bottom - sidebarRect.bottom + 8;
+    }
+  }, [activeHeadingId]);
+
   useIsomorphicLayoutEffect(() => {
     document.documentElement.classList.toggle("post-expanded", isExpanded);
   }, [isExpanded]);

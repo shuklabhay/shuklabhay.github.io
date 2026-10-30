@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { CSSProperties } from "react";
 import ArrowFromLineIcon from "./ArrowFromLineIcon";
 import type { BlogPostProps } from "../utils/types";
@@ -6,21 +6,9 @@ import { isHydratingPrerenderedPage } from "../utils/prerender";
 
 const MOBILE_BREAKPOINT_PX = 860;
 const POST_ENTRY_FADE_MS = 320;
-const POST_LAYOUT_TRANSITION = "220ms ease";
 const DESKTOP_READING_WIDTH = "46rem";
 const DESKTOP_SIDEBAR_WIDTH = "clamp(11.5rem, 16vw, 14.5rem)";
-const DESKTOP_SIDEBAR_RAIL_HEIGHT =
-  "calc(100svh - env(safe-area-inset-top) - clamp(1.4rem, 3vh, 2rem))";
-const DESKTOP_SIDEBAR_CARD_INSET_PX = 12;
-
-type SidebarViewportState = {
-  left: number;
-  mode: "bottom" | "fixed" | "inline";
-  top: number;
-  width: number;
-};
-
-function getIsMobileViewport(): boolean {
+function getInitialIsMobile(): boolean {
   if (typeof window === "undefined") return false;
   if (isHydratingPrerenderedPage()) return false;
   return window.innerWidth <= MOBILE_BREAKPOINT_PX;
@@ -38,19 +26,11 @@ export default function BlogPost({
   header,
   children,
 }: BlogPostProps): JSX.Element {
-  const [isMobile, setIsMobile] = useState(getIsMobileViewport);
+  const [isMobile, setIsMobile] = useState(getInitialIsMobile);
   const [isSidebarDismissed, setIsSidebarDismissed] = useState(false);
   const [hoveredButtonIndex, setHoveredButtonIndex] = useState<number | null>(
     null,
   );
-  const [isSidebarToggleHovered, setIsSidebarToggleHovered] = useState(false);
-  const [shouldAnimateLayout, setShouldAnimateLayout] = useState(false);
-  const readingCardRef = useRef<HTMLElement>(null);
-  const sidebarColumnRef = useRef<HTMLElement>(null);
-  const sidebarPanelRef = useRef<HTMLDivElement>(null);
-  const sidebarContentRef = useRef<HTMLDivElement>(null);
-  const [sidebarViewportState, setSidebarViewportState] =
-    useState<SidebarViewportState | null>(null);
   const prefersReducedMotion =
     typeof window !== "undefined" &&
     window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
@@ -59,28 +39,12 @@ export default function BlogPost({
     if (typeof window === "undefined") return;
 
     const onViewportResize = (): void => {
-      setIsMobile(getIsMobileViewport());
+      setIsMobile(window.innerWidth <= MOBILE_BREAKPOINT_PX);
     };
 
     onViewportResize();
     window.addEventListener("resize", onViewportResize);
     return () => window.removeEventListener("resize", onViewportResize);
-  }, []);
-
-  useEffect((): (() => void) | void => {
-    if (typeof window === "undefined") return;
-
-    let secondFrameId = 0;
-    const firstFrameId = window.requestAnimationFrame((): void => {
-      secondFrameId = window.requestAnimationFrame((): void => {
-        setShouldAnimateLayout(true);
-      });
-    });
-
-    return (): void => {
-      window.cancelAnimationFrame(firstFrameId);
-      window.cancelAnimationFrame(secondFrameId);
-    };
   }, []);
 
   useEffect(() => {
@@ -89,7 +53,6 @@ export default function BlogPost({
 
     const clearSourceHover = (): void => {
       setHoveredButtonIndex(null);
-      setIsSidebarToggleHovered(false);
     };
 
     const onVisibilityChange = (): void => {
@@ -130,103 +93,6 @@ export default function BlogPost({
         opacity: 0,
         pointerEvents: "none",
       };
-  const postLayoutTransition =
-    prefersReducedMotion || !shouldAnimateLayout
-      ? null
-      : POST_LAYOUT_TRANSITION;
-  const sidebarViewportMode = sidebarViewportState?.mode ?? "inline";
-  const isSidebarBottomAnchored = sidebarViewportMode === "bottom";
-  const isSidebarFixed = sidebarViewportMode === "fixed";
-  const isSidebarPinned = isSidebarBottomAnchored || isSidebarFixed;
-  const sidebarMotionStyle: CSSProperties = {
-    left:
-      isSidebarFixed && sidebarViewportState
-        ? `${sidebarViewportState.left}px`
-        : isSidebarBottomAnchored
-          ? 0
-          : undefined,
-    position: isSidebarFixed
-      ? "fixed"
-      : isSidebarBottomAnchored
-        ? "absolute"
-        : "relative",
-    top:
-      isSidebarPinned && sidebarViewportState
-        ? `${sidebarViewportState.top}px`
-        : undefined,
-    width:
-      isSidebarPinned && sidebarViewportState
-        ? `${sidebarViewportState.width}px`
-        : undefined,
-    zIndex: isSidebarFixed ? 3 : 1,
-  };
-  const syncSidebarViewportState = useCallback((): void => {
-    if (typeof window === "undefined") return;
-    if (!showSidebar) {
-      setSidebarViewportState((current) => (current === null ? current : null));
-      return;
-    }
-
-    const readingCardEl = readingCardRef.current;
-    const sidebarColumnEl = sidebarColumnRef.current;
-    const sidebarPanelEl = sidebarPanelRef.current;
-    const sidebarContentEl = sidebarContentRef.current;
-    if (
-      !readingCardEl ||
-      !sidebarColumnEl ||
-      !sidebarPanelEl ||
-      !sidebarContentEl
-    )
-      return;
-
-    const readingCardRect = readingCardEl.getBoundingClientRect();
-    const sidebarColumnRect = sidebarColumnEl.getBoundingClientRect();
-    const stickyTopPx = Math.max(
-      9.6,
-      Math.min(window.innerHeight * 0.015, 14.4),
-    );
-    const fixedTop = Math.max(
-      stickyTopPx,
-      readingCardRect.top + DESKTOP_SIDEBAR_CARD_INSET_PX,
-    );
-    const bottomBoundary =
-      readingCardRect.bottom - DESKTOP_SIDEBAR_CARD_INSET_PX;
-    const panelHeight = sidebarContentEl.getBoundingClientRect().height;
-    const shouldPinSidebar =
-      sidebarColumnRect.top <= stickyTopPx &&
-      bottomBoundary > fixedTop + DESKTOP_SIDEBAR_CARD_INSET_PX;
-    const shouldAnchorToBottom =
-      shouldPinSidebar && fixedTop + panelHeight >= bottomBoundary;
-    const nextMode: SidebarViewportState["mode"] = shouldPinSidebar
-      ? shouldAnchorToBottom
-        ? "bottom"
-        : "fixed"
-      : "inline";
-    const nextTop =
-      nextMode === "bottom"
-        ? bottomBoundary - panelHeight - sidebarColumnRect.top
-        : nextMode === "fixed"
-          ? fixedTop
-          : 0;
-
-    setSidebarViewportState((current) => {
-      if (
-        current?.mode === nextMode &&
-        current.left === sidebarColumnRect.left &&
-        current.top === nextTop &&
-        current.width === sidebarColumnRect.width
-      ) {
-        return current;
-      }
-
-      return {
-        left: sidebarColumnRect.left,
-        mode: nextMode,
-        top: nextTop,
-        width: sidebarColumnRect.width,
-      };
-    });
-  }, [showSidebar]);
   const getHeaderButtonStyle = (isHovered: boolean): CSSProperties => ({
     display: "inline-flex",
     alignItems: "center",
@@ -247,49 +113,6 @@ export default function BlogPost({
       "background-color 120ms ease, border-color 120ms ease, color 120ms ease",
   });
 
-  useEffect((): (() => void) | void => {
-    if (!hasDesktopSidebar) {
-      setSidebarViewportState((current) => (current === null ? current : null));
-      return;
-    }
-    if (typeof window === "undefined") return;
-
-    let frameId = 0;
-    const scheduleSyncSidebarViewportState = (): void => {
-      if (frameId !== 0) {
-        window.cancelAnimationFrame(frameId);
-      }
-
-      frameId = window.requestAnimationFrame((): void => {
-        frameId = 0;
-        syncSidebarViewportState();
-      });
-    };
-    const resizeObserver = new ResizeObserver(scheduleSyncSidebarViewportState);
-
-    syncSidebarViewportState();
-    window.addEventListener("scroll", scheduleSyncSidebarViewportState, {
-      passive: true,
-    });
-    window.addEventListener("resize", scheduleSyncSidebarViewportState);
-    if (readingCardRef.current) resizeObserver.observe(readingCardRef.current);
-    if (sidebarColumnRef.current)
-      resizeObserver.observe(sidebarColumnRef.current);
-    if (sidebarPanelRef.current)
-      resizeObserver.observe(sidebarPanelRef.current);
-    if (sidebarContentRef.current)
-      resizeObserver.observe(sidebarContentRef.current);
-
-    return (): void => {
-      if (frameId !== 0) {
-        window.cancelAnimationFrame(frameId);
-      }
-      window.removeEventListener("scroll", scheduleSyncSidebarViewportState);
-      window.removeEventListener("resize", scheduleSyncSidebarViewportState);
-      resizeObserver.disconnect();
-    };
-  }, [hasDesktopSidebar, syncSidebarViewportState]);
-
   return (
     <main
       className="route-page-post"
@@ -305,9 +128,6 @@ export default function BlogPost({
           width: postColumnWidth,
           maxWidth: "100%",
           marginInline: "auto",
-          transition: postLayoutTransition
-            ? `width ${postLayoutTransition}`
-            : "none",
         }}
       >
         {header}
@@ -387,23 +207,25 @@ export default function BlogPost({
           }}
         >
           <section
-            ref={readingCardRef}
             data-post-reading-card
             style={{
               width: "100%",
               position: "relative",
               color: "var(--ink)",
-              overflow: "visible",
               isolation: "isolate",
             }}
           >
             {hasDesktopSidebar && !showSidebar ? (
-              <button
-                type="button"
-                onClick={() => setIsSidebarDismissed(false)}
-                aria-label="Show contents"
-                className="post-reading-card-open-zone"
-              />
+              <div className="post-toc-reopen">
+                <button
+                  type="button"
+                  onClick={() => setIsSidebarDismissed(false)}
+                  aria-label="Show contents"
+                  className="post-sidebar-toggle"
+                >
+                  <ArrowFromLineIcon direction="right" />
+                </button>
+              </div>
             ) : null}
             <div
               className="post-reading-grid"
@@ -413,77 +235,27 @@ export default function BlogPost({
                 zIndex: 1,
                 padding: contentPadding,
                 display: "grid",
-                gridTemplateColumns: hasDesktopSidebar
-                  ? `${showSidebar ? DESKTOP_SIDEBAR_WIDTH : "0px"} minmax(0, 1fr)`
+                gridTemplateColumns: showSidebar
+                  ? `${DESKTOP_SIDEBAR_WIDTH} minmax(0, 1fr)`
                   : "minmax(0, 1fr)",
                 gap: 0,
                 alignItems: "start",
-                transition: postLayoutTransition
-                  ? `grid-template-columns ${postLayoutTransition}`
-                  : "none",
               }}
             >
-              {hasDesktopSidebar ? (
-                <aside
-                  ref={sidebarColumnRef}
-                  style={{
-                    alignSelf: "start",
-                    maxHeight: DESKTOP_SIDEBAR_RAIL_HEIGHT,
-                    minWidth: 0,
-                    position: "relative",
-                    overflow: "visible",
-                  }}
-                >
-                  <div
-                    ref={sidebarPanelRef}
-                    className={`post-sidebar-panel${
-                      showSidebar ? " is-open" : " is-closed"
-                    }`}
-                    style={sidebarMotionStyle}
-                  >
-                    <div
-                      className="post-sidebar-shell"
-                      style={{
-                        maxHeight:
-                          sidebarViewportMode === "bottom"
-                            ? undefined
-                            : DESKTOP_SIDEBAR_RAIL_HEIGHT,
-                        overflowY:
-                          sidebarViewportMode === "bottom" ? "visible" : "auto",
-                        overscrollBehavior: "contain",
-                        transition: postLayoutTransition
-                          ? `opacity ${postLayoutTransition}, transform ${postLayoutTransition}`
-                          : "none",
-                      }}
+              {showSidebar ? (
+                <aside className="post-sidebar">
+                  <div className="post-sidebar-header">
+                    <p className="post-toc-eyebrow">Contents</p>
+                    <button
+                      type="button"
+                      onClick={() => setIsSidebarDismissed(true)}
+                      aria-label="Hide contents"
+                      className="post-sidebar-toggle"
                     >
-                      <div
-                        ref={sidebarContentRef}
-                        className="post-sidebar-content"
-                      >
-                        <div className="post-sidebar-header">
-                          <p className="post-toc-eyebrow">Contents</p>
-                          <button
-                            type="button"
-                            onClick={() => setIsSidebarDismissed(true)}
-                            onMouseEnter={() => setIsSidebarToggleHovered(true)}
-                            onMouseLeave={() =>
-                              setIsSidebarToggleHovered(false)
-                            }
-                            onFocus={() => setIsSidebarToggleHovered(true)}
-                            onBlur={() => setIsSidebarToggleHovered(false)}
-                            aria-label="Hide contents"
-                            className="post-sidebar-toggle"
-                            style={{
-                              opacity: isSidebarToggleHovered ? 1 : 0.86,
-                            }}
-                          >
-                            <ArrowFromLineIcon direction="left" />
-                          </button>
-                        </div>
-                        {sidebar}
-                      </div>
-                    </div>
+                      <ArrowFromLineIcon direction="left" />
+                    </button>
                   </div>
+                  {sidebar}
                 </aside>
               ) : null}
               <article
