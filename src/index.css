@@ -320,7 +320,7 @@ body.route-home #root {
 
 ::view-transition-old(root),
 ::view-transition-new(root) {
-  animation-duration: 200ms;
+  animation-duration: 100ms;
   animation-timing-function: linear;
 }
 
@@ -332,7 +332,7 @@ html[data-route-transition="dissolve"]::view-transition-new(page-about),
 html[data-route-transition="dissolve"]::view-transition-new(page-gallery),
 html[data-route-transition="dissolve"]::view-transition-new(page-post),
 html[data-route-transition="dissolve"]::view-transition-new(page-missing) {
-  animation-duration: 200ms;
+  animation-duration: 100ms;
   animation-timing-function: linear;
 }
 
