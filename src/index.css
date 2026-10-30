@@ -128,12 +128,21 @@ html.route-post.post-expanded .side-nav {
 .side-nav-label {
   display: inline-block;
   padding-bottom: 4px;
-  background: linear-gradient(white, white) 0 100% / 0 2px no-repeat;
-  transition: background-size 180ms linear;
 }
 
-.side-nav-link.is-active .side-nav-label {
-  background-size: 100% 2px;
+.side-nav-link {
+  opacity: 0.62;
+  transition: opacity 140ms linear;
+}
+
+.side-nav-link.is-active {
+  opacity: 1;
+}
+
+@media (hover: hover) {
+  .side-nav-link:hover {
+    opacity: 1;
+  }
 }
 
 .app-shell {
