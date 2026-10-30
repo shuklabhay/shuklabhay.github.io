@@ -11,7 +11,7 @@
   --home-background-image: url("/static/landing-1280.webp");
   --page-x-padding: 1.125rem;
   --browser-bottom-clearance: 0px;
-  --sidebar-width: clamp(9.5rem, 21vw, 16rem);
+  --sidebar-width: max(clamp(9.5rem, 21vw, 16rem), calc(100vw - 64rem));
   --content-gutter: clamp(1.5rem, 4vw, 3.5rem);
   --content-left-margin: 2.25rem;
   --mobile-band-height: 7.5rem;
