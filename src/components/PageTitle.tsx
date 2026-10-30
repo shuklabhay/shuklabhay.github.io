@@ -20,17 +20,7 @@ export default function PageTitle({
 }: PageTitleProps): JSX.Element {
   return (
     <div style={{ marginTop: "0.5rem" }}>
-      <h1
-        style={{
-          fontSize: "2.25rem",
-          fontWeight: "700",
-          letterSpacing: "-0.01em",
-          color: "var(--ink)",
-          margin: 0,
-        }}
-      >
-        {title}
-      </h1>
+      <h1 className="page-heading">{title}</h1>
       {subtitle ? subtitle : null}
     </div>
   );
@@ -99,7 +89,7 @@ function getCheckboxStyle({
     border: 0,
     backgroundColor: "transparent",
     color: fg,
-    fontSize: "1rem",
+    fontSize: "1.1rem",
     fontWeight: 490,
     cursor: "pointer",
     userSelect: "none" as const,
