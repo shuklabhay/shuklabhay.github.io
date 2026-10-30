@@ -12,8 +12,6 @@ Portfolio website and data repository
 
 - [Install](https://nodejs.org/en/download) Node.js 18 or higher
   - Confirm installation by running `node --version` in the command line
-- [Install](https://docs.oracle.com/en/java/javase/20/install/overview-jdk-installation.html) Java JDK 11 or higher
-  - Confirm installation by running `java --version` in the command line
 - In the repo run `npm run setup`
 - Run `npm run dev` to start the development application
 
@@ -29,4 +27,4 @@ Portfolio website and data repository
 - Run `npm run setup` to install dependencies
 - Run `npm run dev` to start dev server
 - Run `npm run lint` to format code and fix lint issues
-- Run `npm run update-gh-data` to update JSON data from Gitub API
+- Run `npm run update-gh-data` to update JSON data from GitHub API

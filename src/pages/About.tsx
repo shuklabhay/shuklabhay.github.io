@@ -1,38 +1,10 @@
-import { useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import PageTitle from "../components/PageTitle";
 import { contactData, getContactLink } from "../utils/contactData";
-import { shouldSkipEntryAnimation, useEntryFade } from "../utils/useEntryFade";
-import { getLastPathname, isBlogPostPath } from "../utils/routeTransitions";
-import type { RouteTransitionState } from "../utils/types";
+import { useRouteEntryFade } from "../utils/useEntryFade";
 
 export default function About(): JSX.Element {
-  const location = useLocation();
-  const transitionState = location.state as RouteTransitionState | null;
-  const entryFadeDecisionByLocationKeyRef = useRef<{
-    key: string;
-    shouldAnimate: boolean;
-  } | null>(null);
-
-  if (entryFadeDecisionByLocationKeyRef.current?.key !== location.key) {
-    const lastPathname = getLastPathname();
-    entryFadeDecisionByLocationKeyRef.current = {
-      key: location.key,
-      shouldAnimate:
-        transitionState?.fromTopNav === true ||
-        transitionState?.fromPost === true ||
-        (lastPathname ? isBlogPostPath(lastPathname) : false),
-    };
-  }
-
-  const shouldAnimateEntry =
-    (entryFadeDecisionByLocationKeyRef.current?.shouldAnimate ?? false) &&
-    !shouldSkipEntryAnimation() &&
-    !(
-      typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true
-    );
-  const entryFadeStyle = useEntryFade(shouldAnimateEntry, 450);
+  const entryFadeStyle = useRouteEntryFade(450);
 
   const rawEmail = getContactLink(contactData, "Email");
   const email = rawEmail ? `mailto:${rawEmail}` : undefined;
@@ -41,25 +13,12 @@ export default function About(): JSX.Element {
   const github = getContactLink(contactData, "GitHub");
 
   return (
-    <main
-      style={{
-        ...entryFadeStyle,
-        paddingBottom: "max(1.25rem, env(safe-area-inset-bottom))",
-      }}
-    >
+    <main className="about-page" style={entryFadeStyle}>
       <PageTitle
         title="Hi, I'm Abhay"
         subtitle={
-          <div
-            className="about-subtitle"
-            style={{
-              color: "#f7f8fb",
-              lineHeight: 1.6,
-              marginTop: "0.5rem",
-              fontSize: "1.1rem",
-            }}
-          >
-            <p style={{ marginTop: 0, marginBottom: "1rem" }}>
+          <div className="about-subtitle">
+            <p>
               I've been <strong>manipulating computers since I was 9:</strong>{" "}
               making video games,{" "}
               <strong>producing many musical genres,</strong> programming audio
@@ -68,7 +27,7 @@ export default function About(): JSX.Element {
               <strong>almost entirely self-taught!</strong>
             </p>
 
-            <p style={{ marginTop: 0, marginBottom: "1rem" }}>
+            <p>
               I hope to spend my life doing{" "}
               <strong>interesting, imaginative things</strong> that have never
               been done before but are{" "}
@@ -83,12 +42,8 @@ export default function About(): JSX.Element {
               </Link>{" "}
             </p>
 
-            <p style={{ marginTop: 0, marginBottom: "0.5rem" }}>
-              Previously I've:
-            </p>
-            <ul
-              style={{ marginTop: 0, paddingLeft: "1.25rem", lineHeight: 1.5 }}
-            >
+            <p className="about-list-intro">Previously I've:</p>
+            <ul>
               <li>
                 Trained{" "}
                 <a
@@ -111,7 +66,7 @@ export default function About(): JSX.Element {
               <li>
                 Built{" "}
                 <a
-                  href="https://raw.githubusercontent.com/shuklabhay/shuklabhay.github.io/refs/heads/main/public/static/sitedata/vt_poster.png"
+                  href="/static/sitedata/vt_poster.png"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="about-contact-link"
@@ -140,12 +95,10 @@ export default function About(): JSX.Element {
                 </a>
               </li>
             </ul>
-            <p style={{ marginTop: "1.5rem", marginBottom: "0.5rem" }}>
+            <p className="about-list-intro about-section-start">
               I'm primarily <strong>motivated by/curious about:</strong>
             </p>
-            <ul
-              style={{ marginTop: 0, paddingLeft: "1.25rem", lineHeight: 1.5 }}
-            >
+            <ul>
               <li>
                 Analyzing systems,{" "}
                 <strong>understanding the incomplete/unknown</strong>, and doing
@@ -176,18 +129,12 @@ export default function About(): JSX.Element {
                 <strong>understand one's self</strong> &amp; goals, then{" "}
                 <strong>push past every superficial barrier.</strong>
               </li>
-              <li style={{ marginTop: "0.45rem" }}>
+              <li>
                 <strong>Thinking</strong>, dreaming, listening, imagining;{" "}
                 <strong>understanding and telling stories.</strong>
               </li>
             </ul>
-            <p
-              style={{
-                marginTop: "1.5rem",
-                marginBottom: 0,
-                paddingBottom: "0.3rem",
-              }}
-            >
+            <p className="about-links about-section-start">
               <a href={email} className="about-contact-link">
                 <strong>Email</strong>
               </a>{" "}

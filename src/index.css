@@ -225,12 +225,43 @@ code {
   outline-offset: 2px;
 }
 
+.about-page {
+  padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+}
+
 .about-subtitle {
   max-width: 65%;
+  margin-top: 0.5rem;
+  color: #f7f8fb;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.about-subtitle p {
+  margin: 0 0 1rem;
+}
+
+.about-subtitle ul {
+  margin-top: 0;
+  padding-left: 1.25rem;
+  line-height: 1.5;
 }
 
 .about-subtitle li + li {
   margin-top: 0.45rem;
+}
+
+.about-subtitle .about-list-intro {
+  margin-bottom: 0.5rem;
+}
+
+.about-subtitle .about-section-start {
+  margin-top: 1.5rem;
+}
+
+.about-subtitle .about-links {
+  margin-bottom: 0;
+  padding-bottom: 0.3rem;
 }
 
 .post-content code {
