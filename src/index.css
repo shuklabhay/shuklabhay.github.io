@@ -793,8 +793,14 @@ code {
     height: auto;
   }
 
+  :root {
+    --mobile-band-height: 3.5rem;
+  }
+
   .side-nav {
     position: absolute;
+    flex-direction: row;
+    gap: 1.25rem;
   }
 
   html.route-home .side-nav {
