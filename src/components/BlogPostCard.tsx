@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import TransitionLink from "./TransitionLink";
 import { loadPostBySlug } from "../posts";
 import { preloadImage } from "../utils/imagePreload";
 import type { PostMeta } from "../utils/types";
@@ -30,9 +30,6 @@ export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
   const postPath = `/gallery/${post.slug}`;
   const heroSrc = post.cover ?? DEFAULT_POST_HERO_IMAGE;
   const [isHovered, setIsHovered] = useState(false);
-  const prefersReducedMotion =
-    typeof window !== "undefined" &&
-    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
   const truncatedTitle = splitTitleForMiddleEllipsis(post.title);
 
   const warmPostResources = (): void => {
@@ -41,14 +38,13 @@ export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
   };
 
   return (
-    <Link
+    <TransitionLink
       to={postPath}
-      viewTransition={!prefersReducedMotion}
       state={{ fromBlog: true, fromPath: "/gallery" }}
       style={{
         display: "block",
         width: "100%",
-        color: "white",
+        color: "var(--ink)",
         padding: "0.18rem 0",
         textDecoration: "none",
         userSelect: "none",
@@ -79,10 +75,13 @@ export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
           columnGap: truncatedTitle.suffix ? "0.24em" : 0,
           overflow: "hidden",
           whiteSpace: "nowrap",
-          color: isHovered ? "#d7e4ff" : "white",
-          fontSize: "clamp(1.08rem, 2vw, 1.82rem)",
-          fontWeight: 700,
-          lineHeight: 1.24,
+          color: "var(--ink)",
+          textDecorationLine: isHovered ? "underline" : "none",
+          textDecorationThickness: "1.5px",
+          textUnderlineOffset: "0.14em",
+          fontSize: "1.15rem",
+          fontWeight: 490,
+          lineHeight: 1.4,
           transition: "color 140ms ease",
         }}
       >
@@ -108,6 +107,6 @@ export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
           </span>
         ) : null}
       </span>
-    </Link>
+    </TransitionLink>
   );
 }

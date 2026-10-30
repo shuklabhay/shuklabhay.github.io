@@ -163,10 +163,11 @@ export default function Blog() {
 
   return (
     <main
+      className="route-page-gallery"
       style={{
         ...blogEntryFadeStyle,
         width: "100%",
-        color: "white",
+        color: "var(--ink)",
         paddingBottom: "calc(2rem + env(safe-area-inset-bottom))",
       }}
     >

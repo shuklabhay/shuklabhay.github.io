@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import { useLocation } from "react-router-dom";
 import { getLastPathname, isBlogPostPath } from "./routeTransitions";
+import { canRunRootViewTransition } from "./viewTransitions";
 import type { RouteTransitionState } from "./types";
 
 const MOBILE_WIDTH_BREAKPOINT = 860;
@@ -80,5 +81,8 @@ export function useRouteEntryFade(durationMs: number): CSSProperties {
     };
   }
 
-  return useEntryFade(decisionRef.current.shouldAnimate, durationMs);
+  return useEntryFade(
+    decisionRef.current.shouldAnimate && !canRunRootViewTransition(),
+    durationMs,
+  );
 }

@@ -7,7 +7,7 @@ import { isHydratingPrerenderedPage } from "../utils/prerender";
 const MOBILE_BREAKPOINT_PX = 860;
 const POST_ENTRY_FADE_MS = 320;
 const POST_LAYOUT_TRANSITION = "220ms ease";
-const DESKTOP_READING_WIDTH = "76%";
+const DESKTOP_READING_WIDTH = "46rem";
 const DESKTOP_SIDEBAR_WIDTH = "clamp(11.5rem, 16vw, 14.5rem)";
 const DESKTOP_SIDEBAR_RAIL_HEIGHT =
   "calc(100svh - env(safe-area-inset-top) - clamp(1.4rem, 3vh, 2rem))";
@@ -35,6 +35,7 @@ export default function BlogPost({
   contentRef,
   onContentClick,
   sidebar,
+  header,
   children,
 }: BlogPostProps): JSX.Element {
   const [isMobile, setIsMobile] = useState(getIsMobileViewport);
@@ -106,21 +107,19 @@ export default function BlogPost({
     };
   }, []);
 
-  const pageXPadding = "var(--page-x-padding)";
   const hasHeroImage = Boolean(heroImage);
-  const heroOverlap = isMobile ? 108 : 132;
-  const heroHeight = isMobile ? 300 : 470;
   const titleMargin = hasHeroImage
-    ? isMobile
-      ? "-1.9rem 0 0.94rem"
-      : "-2.8rem 0 1.02rem"
+    ? "0 0 1.1rem"
     : isMobile
-      ? "1.15rem 0 0.94rem"
-      : "1.45rem 0 1.02rem";
-  const contentPadding = isMobile
-    ? "0.58rem 0.72rem 0.72rem"
-    : "clamp(0.58rem, 0.92vw, 1rem) clamp(0.9rem, 1.4vw, 1.6rem) clamp(0.68rem, 1.06vw, 1.15rem)";
+      ? "0.9rem 0 1rem"
+      : "1.1rem 0 1.2rem";
+  const contentPadding = "0.4rem 0 0";
   const showSidebar = Boolean(sidebar) && !isMobile && !isSidebarDismissed;
+  const postColumnWidth = isMobile
+    ? "100%"
+    : showSidebar
+      ? `calc(${DESKTOP_READING_WIDTH} + ${DESKTOP_SIDEBAR_WIDTH})`
+      : DESKTOP_READING_WIDTH;
   const hasDesktopSidebar = Boolean(sidebar) && !isMobile;
   const postContentFadeStyle: CSSProperties = isEntryReady
     ? {
@@ -235,12 +234,10 @@ export default function BlogPost({
     padding: "0.38rem 0.74rem",
     borderRadius: "0.38rem",
     border: isHovered
-      ? "1px solid rgba(255, 255, 255, 0.9)"
-      : "1px solid rgba(255, 255, 255, 0.5)",
-    backgroundColor: isHovered
-      ? "rgba(255, 255, 255, 0.16)"
-      : "rgba(255, 255, 255, 0.12)",
-    color: isHovered ? "rgba(255, 255, 255, 1)" : "rgba(255, 255, 255, 0.98)",
+      ? "1px solid var(--ink)"
+      : "1px solid rgba(17, 17, 17, 0.3)",
+    backgroundColor: "transparent",
+    color: "var(--ink)",
     textDecoration: "none",
     fontWeight: 600,
     fontSize: "0.84rem",
@@ -295,282 +292,240 @@ export default function BlogPost({
 
   return (
     <main
+      className="route-page-post"
       style={{
         width: "100%",
-        color: "white",
+        color: "var(--ink)",
         paddingBottom: "calc(3rem + env(safe-area-inset-bottom))",
         position: "relative",
       }}
     >
-      {heroImage ? (
-        <div
-          className="post-hero"
-          style={{
-            position: "relative",
-            width: `calc(100% + (${pageXPadding} * 2))`,
-            marginLeft: `calc(-1 * ${pageXPadding})`,
-            marginTop: `${-heroOverlap}px`,
-            marginBottom: isMobile ? "0.62rem" : "0.3rem",
-            height: `${heroHeight + heroOverlap}px`,
-            borderRadius: 0,
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-            backgroundPosition: isMobile ? "center 28px" : "center 44px",
-            backgroundColor: "#52668b",
-            overflow: "hidden",
-            isolation: "isolate",
-            pointerEvents: "none",
-            zIndex: 0,
-            backgroundImage: `url(${heroImage})`,
-          }}
-          aria-hidden
-        >
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              pointerEvents: "none",
-              background:
-                "linear-gradient(to bottom, rgba(0, 0, 0, 0.84) 0%, rgba(0, 0, 0, 0.48) 40%, rgba(0, 0, 0, 0.14) 72%, rgba(0, 0, 0, 0) 100%)",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              pointerEvents: "none",
-              background:
-                "linear-gradient(to bottom, rgba(82, 102, 139, 0) 0%, rgba(82, 102, 139, 0.03) 16%, rgba(82, 102, 139, 0.12) 34%, rgba(82, 102, 139, 0.32) 54%, rgba(82, 102, 139, 0.6) 72%, rgba(82, 102, 139, 0.84) 88%, rgba(82, 102, 139, 1) 100%), linear-gradient(to bottom, rgba(82, 102, 139, 0) 0%, rgba(82, 102, 139, 0.28) 100%)",
-            }}
-          />
-        </div>
-      ) : null}
-      <div
-        className={`post-title-block ${hasHeroImage ? "has-hero" : "no-hero"}`}
-        style={{ margin: titleMargin, position: "relative", zIndex: 1 }}
-      >
-        <h1
-          className="post-title-heading"
-          style={{
-            margin: 0,
-            lineHeight: 1.16,
-            fontSize: isMobile
-              ? "clamp(1.6rem, 8vw, 2.3rem)"
-              : "clamp(2rem, 4.5vw, 4rem)",
-          }}
-        >
-          {title}
-        </h1>
-        {byline ? (
-          <p
-            style={{
-              margin: "0.22rem 0 0",
-              opacity: 0.92,
-              fontSize: "clamp(0.94rem, 1vw, 1.03rem)",
-              letterSpacing: "0.01em",
-              position: "relative",
-              zIndex: 1,
-            }}
-          >
-            {byline}
-          </p>
-        ) : null}
-        {buttons.length ? (
-          <div
-            style={{
-              marginTop: "0.55rem",
-              display: "flex",
-              gap: "0.5rem",
-              flexWrap: "wrap",
-            }}
-          >
-            {buttons.map((button, index) => {
-              const isHovered = hoveredButtonIndex === index;
-              return (
-                <a
-                  key={`${button.link}-${index}`}
-                  href={button.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={button.title}
-                  onMouseEnter={() => setHoveredButtonIndex(index)}
-                  onMouseLeave={() => setHoveredButtonIndex(null)}
-                  onFocus={() => setHoveredButtonIndex(index)}
-                  onBlur={() => setHoveredButtonIndex(null)}
-                  style={getHeaderButtonStyle(isHovered)}
-                >
-                  {button.title}
-                </a>
-              );
-            })}
-          </div>
-        ) : null}
-      </div>
       <div
         style={{
-          ...postContentFadeStyle,
-          transition: prefersReducedMotion
-            ? "none"
-            : `opacity ${POST_ENTRY_FADE_MS}ms ease`,
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
+          width: postColumnWidth,
+          maxWidth: "100%",
+          marginInline: "auto",
+          transition: postLayoutTransition
+            ? `width ${postLayoutTransition}`
+            : "none",
         }}
       >
-        <section
-          ref={readingCardRef}
-          data-post-reading-card
-          style={{
-            width: isMobile
-              ? "100%"
-              : showSidebar
-                ? `min(100%, calc(${DESKTOP_READING_WIDTH} + ${DESKTOP_SIDEBAR_WIDTH}))`
-                : DESKTOP_READING_WIDTH,
-            marginInline: "auto",
-            position: "relative",
-            color: "#1f2740",
-            borderRadius: isMobile ? "10px" : "14px",
-            border: "1px solid rgba(224, 216, 202, 0.58)",
-            background:
-              "linear-gradient(168deg, rgba(248, 245, 239, 0.98) 0%, rgba(243, 238, 229, 0.96) 100%)",
-            boxShadow: "0 10px 22px rgba(7, 12, 24, 0.11)",
-            overflow: "visible",
-            isolation: "isolate",
-            transition: postLayoutTransition
-              ? `width ${postLayoutTransition}`
-              : "none",
-          }}
-        >
+        {header}
+        {heroImage ? (
           <div
-            aria-hidden
-            style={{
-              position: "absolute",
-              inset: 0,
-              borderRadius: "inherit",
-              border: "1px solid rgba(255, 255, 255, 0.18)",
-              pointerEvents: "none",
-            }}
-          />
-          {hasDesktopSidebar && !showSidebar ? (
-            <button
-              type="button"
-              onClick={() => setIsSidebarDismissed(false)}
-              aria-label="Show contents"
-              className="post-reading-card-open-zone"
-            />
-          ) : null}
-          <div
-            className="post-reading-grid"
+            className="post-hero"
             style={{
               width: "100%",
-              maxWidth: "none",
-              marginInline: "auto",
-              marginBlock: 0,
-              position: "relative",
-              zIndex: 1,
-              padding: contentPadding,
-              display: "grid",
-              gridTemplateColumns: hasDesktopSidebar
-                ? `${showSidebar ? DESKTOP_SIDEBAR_WIDTH : "0px"} minmax(0, 1fr)`
-                : "minmax(0, 1fr)",
-              gap: 0,
-              alignItems: "start",
-              transition: postLayoutTransition
-                ? `grid-template-columns ${postLayoutTransition}`
-                : "none",
+              height: isMobile ? "12.5rem" : "clamp(14rem, 26vw, 21rem)",
+              margin: isMobile ? "0.75rem 0 1rem" : "1rem 0 1.25rem",
+              borderRadius: isMobile ? "10px" : "12px",
+              backgroundColor: "#e9e4d8",
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundImage: `url(${heroImage})`,
+              pointerEvents: "none",
+            }}
+            aria-hidden
+          />
+        ) : null}
+        <div
+          className={`post-title-block ${hasHeroImage ? "has-hero" : "no-hero"}`}
+          style={{ margin: titleMargin, position: "relative", zIndex: 1 }}
+        >
+          <h1
+            className="post-title-heading"
+            style={{
+              margin: 0,
+              lineHeight: 1.16,
+              color: "var(--ink)",
+              fontWeight: 700,
+              letterSpacing: "-0.01em",
+              fontSize: isMobile ? "1.75rem" : "2.25rem",
             }}
           >
-            {hasDesktopSidebar ? (
-              <aside
-                ref={sidebarColumnRef}
-                style={{
-                  alignSelf: "start",
-                  maxHeight: DESKTOP_SIDEBAR_RAIL_HEIGHT,
-                  minWidth: 0,
-                  position: "relative",
-                  overflow: "visible",
-                }}
-              >
-                <div
-                  ref={sidebarPanelRef}
-                  className={`post-sidebar-panel${
-                    showSidebar ? " is-open" : " is-closed"
-                  }`}
-                  style={sidebarMotionStyle}
-                >
-                  <div
-                    className="post-sidebar-shell"
-                    style={{
-                      maxHeight:
-                        sidebarViewportMode === "bottom"
-                          ? undefined
-                          : DESKTOP_SIDEBAR_RAIL_HEIGHT,
-                      overflowY:
-                        sidebarViewportMode === "bottom" ? "visible" : "auto",
-                      overscrollBehavior: "contain",
-                      transition: postLayoutTransition
-                        ? `opacity ${postLayoutTransition}, transform ${postLayoutTransition}`
-                        : "none",
-                    }}
-                  >
-                    <div
-                      ref={sidebarContentRef}
-                      className="post-sidebar-content"
-                    >
-                      <div className="post-sidebar-header">
-                        <p className="post-toc-eyebrow">Contents</p>
-                        <button
-                          type="button"
-                          onClick={() => setIsSidebarDismissed(true)}
-                          onMouseEnter={() => setIsSidebarToggleHovered(true)}
-                          onMouseLeave={() => setIsSidebarToggleHovered(false)}
-                          onFocus={() => setIsSidebarToggleHovered(true)}
-                          onBlur={() => setIsSidebarToggleHovered(false)}
-                          aria-label="Hide contents"
-                          className="post-sidebar-toggle"
-                          style={{
-                            opacity: isSidebarToggleHovered ? 1 : 0.86,
-                          }}
-                        >
-                          <ArrowFromLineIcon direction="left" />
-                        </button>
-                      </div>
-                      {sidebar}
-                    </div>
-                  </div>
-                </div>
-              </aside>
-            ) : null}
-            <article
-              ref={contentRef}
-              className="post-content"
-              data-post-content
+            {title}
+          </h1>
+          {byline ? (
+            <p
               style={{
-                borderLeft:
-                  showSidebar && !isMobile
-                    ? "1px solid rgba(58, 77, 120, 0.18)"
-                    : undefined,
+                margin: "0.3rem 0 0",
+                color: "var(--ink-muted)",
+                fontSize: "clamp(0.94rem, 1vw, 1.03rem)",
+                letterSpacing: "0.01em",
+              }}
+            >
+              {byline}
+            </p>
+          ) : null}
+          {buttons.length ? (
+            <div
+              style={{
+                marginTop: "0.7rem",
+                display: "flex",
+                gap: "0.5rem",
+                flexWrap: "wrap",
+              }}
+            >
+              {buttons.map((button, index) => {
+                const isHovered = hoveredButtonIndex === index;
+                return (
+                  <a
+                    key={`${button.link}-${index}`}
+                    href={button.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={button.title}
+                    onMouseEnter={() => setHoveredButtonIndex(index)}
+                    onMouseLeave={() => setHoveredButtonIndex(null)}
+                    onFocus={() => setHoveredButtonIndex(index)}
+                    onBlur={() => setHoveredButtonIndex(null)}
+                    style={getHeaderButtonStyle(isHovered)}
+                  >
+                    {button.title}
+                  </a>
+                );
+              })}
+            </div>
+          ) : null}
+        </div>
+        <div
+          style={{
+            ...postContentFadeStyle,
+            transition: prefersReducedMotion
+              ? "none"
+              : `opacity ${POST_ENTRY_FADE_MS}ms ease`,
+            width: "100%",
+          }}
+        >
+          <section
+            ref={readingCardRef}
+            data-post-reading-card
+            style={{
+              width: "100%",
+              position: "relative",
+              color: "var(--ink)",
+              overflow: "visible",
+              isolation: "isolate",
+            }}
+          >
+            {hasDesktopSidebar && !showSidebar ? (
+              <button
+                type="button"
+                onClick={() => setIsSidebarDismissed(false)}
+                aria-label="Show contents"
+                className="post-reading-card-open-zone"
+              />
+            ) : null}
+            <div
+              className="post-reading-grid"
+              style={{
                 width: "100%",
-                maxWidth: "none",
-                marginInline: "auto",
-                marginBlock: 0,
-                minWidth: 0,
-                paddingLeft:
-                  showSidebar && !isMobile
-                    ? "clamp(1rem, 1.8vw, 1.6rem)"
-                    : undefined,
-                lineHeight: 1.74,
-                fontSize: "1.1rem",
-                color: "#2a344f",
                 position: "relative",
                 zIndex: 1,
+                padding: contentPadding,
+                display: "grid",
+                gridTemplateColumns: hasDesktopSidebar
+                  ? `${showSidebar ? DESKTOP_SIDEBAR_WIDTH : "0px"} minmax(0, 1fr)`
+                  : "minmax(0, 1fr)",
+                gap: 0,
+                alignItems: "start",
+                transition: postLayoutTransition
+                  ? `grid-template-columns ${postLayoutTransition}`
+                  : "none",
               }}
-              onClick={onContentClick}
             >
-              {children}
-            </article>
-          </div>
-        </section>
+              {hasDesktopSidebar ? (
+                <aside
+                  ref={sidebarColumnRef}
+                  style={{
+                    alignSelf: "start",
+                    maxHeight: DESKTOP_SIDEBAR_RAIL_HEIGHT,
+                    minWidth: 0,
+                    position: "relative",
+                    overflow: "visible",
+                  }}
+                >
+                  <div
+                    ref={sidebarPanelRef}
+                    className={`post-sidebar-panel${
+                      showSidebar ? " is-open" : " is-closed"
+                    }`}
+                    style={sidebarMotionStyle}
+                  >
+                    <div
+                      className="post-sidebar-shell"
+                      style={{
+                        maxHeight:
+                          sidebarViewportMode === "bottom"
+                            ? undefined
+                            : DESKTOP_SIDEBAR_RAIL_HEIGHT,
+                        overflowY:
+                          sidebarViewportMode === "bottom" ? "visible" : "auto",
+                        overscrollBehavior: "contain",
+                        transition: postLayoutTransition
+                          ? `opacity ${postLayoutTransition}, transform ${postLayoutTransition}`
+                          : "none",
+                      }}
+                    >
+                      <div
+                        ref={sidebarContentRef}
+                        className="post-sidebar-content"
+                      >
+                        <div className="post-sidebar-header">
+                          <p className="post-toc-eyebrow">Contents</p>
+                          <button
+                            type="button"
+                            onClick={() => setIsSidebarDismissed(true)}
+                            onMouseEnter={() => setIsSidebarToggleHovered(true)}
+                            onMouseLeave={() =>
+                              setIsSidebarToggleHovered(false)
+                            }
+                            onFocus={() => setIsSidebarToggleHovered(true)}
+                            onBlur={() => setIsSidebarToggleHovered(false)}
+                            aria-label="Hide contents"
+                            className="post-sidebar-toggle"
+                            style={{
+                              opacity: isSidebarToggleHovered ? 1 : 0.86,
+                            }}
+                          >
+                            <ArrowFromLineIcon direction="left" />
+                          </button>
+                        </div>
+                        {sidebar}
+                      </div>
+                    </div>
+                  </div>
+                </aside>
+              ) : null}
+              <article
+                ref={contentRef}
+                className="post-content"
+                data-post-content
+                style={{
+                  borderLeft:
+                    showSidebar && !isMobile
+                      ? "1px solid rgba(17, 17, 17, 0.12)"
+                      : undefined,
+                  width: "100%",
+                  minWidth: 0,
+                  paddingLeft:
+                    showSidebar && !isMobile
+                      ? "clamp(1rem, 1.8vw, 1.6rem)"
+                      : undefined,
+                  lineHeight: 1.74,
+                  fontSize: "1.1rem",
+                  color: "var(--ink-soft)",
+                  position: "relative",
+                  zIndex: 1,
+                }}
+                onClick={onContentClick}
+              >
+                {children}
+              </article>
+            </div>
+          </section>
+        </div>
       </div>
     </main>
   );

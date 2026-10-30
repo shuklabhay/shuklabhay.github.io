@@ -115,13 +115,6 @@ export type UnderlineStyle = {
   mode: UnderlineMode;
 };
 
-export type NavUnderlineState = {
-  left: number;
-  width: number;
-  visible: boolean;
-  animate: boolean;
-};
-
 export type BlogPostProps = {
   isEntryReady: boolean;
   title: string;
@@ -131,6 +124,7 @@ export type BlogPostProps = {
   contentRef: RefObject<HTMLElement>;
   onContentClick?: MouseEventHandler<HTMLElement>;
   sidebar?: ReactNode;
+  header?: ReactNode;
   children: ReactNode;
 };
 
@@ -144,5 +138,10 @@ export type BlogSortState = {
 };
 
 export type ViewTransitionDocument = Document & {
-  startViewTransition?: (update: () => void | Promise<void>) => unknown;
+  startViewTransition?: (update: () => void | Promise<void>) => {
+    finished: Promise<void>;
+    ready: Promise<void>;
+  };
 };
+
+export type RouteTransitionKind = "dissolve" | "stack";
