@@ -685,7 +685,9 @@ export default function Post({
           }}
         >
           <PostBackLink />
-          <h1 style={{ marginTop: "0.75rem" }}>Post not found</h1>
+          <h1 className="page-heading" style={{ marginTop: "0.75rem" }}>
+            Post not found
+          </h1>
         </main>
       </>
     );

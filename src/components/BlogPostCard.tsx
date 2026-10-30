@@ -45,7 +45,7 @@ export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
         display: "block",
         width: "100%",
         color: "var(--ink)",
-        padding: "0.18rem 0",
+        padding: 0,
         textDecoration: "none",
         userSelect: "none",
         WebkitUserSelect: "none",
@@ -79,9 +79,9 @@ export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
           textDecorationLine: isHovered ? "underline" : "none",
           textDecorationThickness: "1.5px",
           textUnderlineOffset: "0.14em",
-          fontSize: "1.15rem",
+          fontSize: "1.1rem",
           fontWeight: 490,
-          lineHeight: 1.4,
+          lineHeight: 1.7,
           transition: "color 140ms ease",
         }}
       >

@@ -239,7 +239,7 @@ export default function BlogPost({
     backgroundColor: "transparent",
     color: "var(--ink)",
     textDecoration: "none",
-    fontWeight: 600,
+    fontWeight: 490,
     fontSize: "0.84rem",
     letterSpacing: "0.01em",
     lineHeight: 1,
@@ -333,19 +333,7 @@ export default function BlogPost({
           className={`post-title-block ${hasHeroImage ? "has-hero" : "no-hero"}`}
           style={{ margin: titleMargin, position: "relative", zIndex: 1 }}
         >
-          <h1
-            className="post-title-heading"
-            style={{
-              margin: 0,
-              lineHeight: 1.16,
-              color: "var(--ink)",
-              fontWeight: 700,
-              letterSpacing: "-0.01em",
-              fontSize: isMobile ? "1.75rem" : "2.25rem",
-            }}
-          >
-            {title}
-          </h1>
+          <h1 className="page-heading">{title}</h1>
           {byline ? (
             <p
               style={{
@@ -513,7 +501,7 @@ export default function BlogPost({
                     showSidebar && !isMobile
                       ? "clamp(1rem, 1.8vw, 1.6rem)"
                       : undefined,
-                  lineHeight: 1.74,
+                  lineHeight: 1.7,
                   fontSize: "1.1rem",
                   color: "var(--ink-soft)",
                   position: "relative",
