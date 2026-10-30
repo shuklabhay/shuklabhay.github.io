@@ -19,19 +19,15 @@ export default function About(): JSX.Element {
         subtitle={
           <div className="about-subtitle">
             <p>
-              I've been <strong>manipulating computers since I was 9:</strong>{" "}
-              making video games,{" "}
-              <strong>producing many musical genres,</strong> programming audio
-              effects, building circuits, training neural networks, designing
-              webapps, and much more,{" "}
-              <strong>almost entirely self-taught!</strong>
+              I've been manipulating computers since I was 9: making video
+              games, producing many musical genres, programming audio effects,
+              building circuits, training neural networks, designing webapps,
+              and much more, almost entirely self-taught!
             </p>
 
             <p>
-              I hope to spend my life doing{" "}
-              <strong>interesting, imaginative things</strong> that have never
-              been done before but are{" "}
-              <strong>overwhelmingly worth doing,</strong>{" "}
+              I hope to spend my life doing interesting, imaginative things that
+              have never been done before but are overwhelmingly worth doing,{" "}
               <TransitionLink
                 to="/gallery/rcbi"
                 state={{ fromBlog: true, fromPath: "/about" }}
@@ -57,9 +53,8 @@ export default function About(): JSX.Element {
               </li>
 
               <li>
-                Simulated{" "}
-                <strong>breast/lung tissue and blood cell dynamics </strong>{" "}
-                using PDEs & neural networks
+                Simulated breast/lung tissue and blood cell dynamics using PDEs
+                & neural networks
               </li>
 
               <li>
@@ -77,13 +72,13 @@ export default function About(): JSX.Element {
               </li>
 
               <li>
-                (Rapid fire:) <strong>Simulated rodent neurons,</strong>{" "}
-                post-trained language models, built/sold RL envs
+                (Rapid fire:) Simulated rodent neurons, post-trained language
+                models, built/sold RL envs
               </li>
 
               <li>
-                (In my youth:) Wrote code/apps for a <strong>FRC team;</strong>{" "}
-                taught elementary schoolers{" "}
+                (In my youth:) Wrote code/apps for a FRC team; taught elementary
+                schoolers{" "}
                 <a
                   href="https://bayareastemacademy.org/"
                   target="_blank"
@@ -95,47 +90,40 @@ export default function About(): JSX.Element {
               </li>
             </ul>
             <p className="about-list-intro about-section-start">
-              I'm primarily <strong>motivated by/curious about:</strong>
+              I'm primarily motivated by/curious about:
             </p>
             <ul>
               <li>
-                Analyzing systems,{" "}
-                <strong>understanding the incomplete/unknown</strong>, and doing
-                so <strong>regardless of field or form.</strong> I value finding{" "}
-                <strong>common threads</strong> across far-flung ideas and
-                building <strong>lasting, transferrable intuition.</strong>
+                Analyzing systems, understanding the incomplete/unknown, and
+                doing so regardless of field or form. I value finding common
+                threads across far-flung ideas and building lasting,
+                transferrable intuition.
               </li>
               <li>
-                Rowing, <strong>caring about each and every element</strong> of
-                each and every thing I work on, but also steering, zooming out
-                and adjusting when{" "}
-                <strong>pieces don't serve the whole.</strong>
+                Rowing, caring about each and every element of each and every
+                thing I work on, but also steering, zooming out and adjusting
+                when pieces don't serve the whole.
               </li>
               <li>
-                The <strong>fundamentally new possibilities</strong> associated
-                with neural networks &amp; agents; the chance to{" "}
-                <strong>
-                  better understand ourselves, our world, and the nature of
-                  intelligence
-                </strong>{" "}
-                as we teach machines to perceive and interact with the world.
+                The fundamentally new possibilities associated with neural
+                networks &amp; agents; the chance to better understand
+                ourselves, our world, and the nature of intelligence as we teach
+                machines to perceive and interact with the world.
               </li>
               <li>
-                <strong>Being human:</strong> living life, making
-                mistake/memories, <strong>facing fears,</strong> learning to{" "}
-                <strong>understand and appreciate oneself.</strong> I believe
-                it's incredibly important to{" "}
-                <strong>understand one's self</strong> &amp; goals, then{" "}
-                <strong>push past every superficial barrier.</strong>
+                Being human: living life, making mistake/memories, facing fears,
+                learning to understand and appreciate oneself. I believe it's
+                incredibly important to understand one's self &amp; goals, then{" "}
+                push past every superficial barrier.
               </li>
               <li>
-                <strong>Thinking</strong>, dreaming, listening, imagining;{" "}
-                <strong>understanding and telling stories.</strong>
+                Thinking, dreaming, listening, imagining; understanding and
+                telling stories.
               </li>
             </ul>
             <p className="about-links about-section-start">
               <a href={email} className="about-contact-link">
-                <strong>Email</strong>
+                Email
               </a>{" "}
               |{" "}
               <a
@@ -144,7 +132,7 @@ export default function About(): JSX.Element {
                 rel="noopener noreferrer"
                 className="about-contact-link"
               >
-                <strong>Twitter</strong>
+                Twitter
               </a>{" "}
               |{" "}
               <a
@@ -153,7 +141,7 @@ export default function About(): JSX.Element {
                 rel="noopener noreferrer"
                 className="about-contact-link"
               >
-                <strong>YouTube</strong>
+                YouTube
               </a>{" "}
               |{" "}
               <a
@@ -162,7 +150,7 @@ export default function About(): JSX.Element {
                 rel="noopener noreferrer"
                 className="about-contact-link"
               >
-                <strong>GitHub</strong>
+                GitHub
               </a>
             </p>
           </div>
