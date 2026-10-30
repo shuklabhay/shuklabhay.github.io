@@ -179,6 +179,51 @@ function createPrerenderedHtml(
   return html;
 }
 
+function createRedirectHtml(targetPath: string): string {
+  const targetUrl = escapeHtmlAttribute(`${SITE_ORIGIN}${targetPath}`);
+  return [
+    "<!doctype html>",
+    '<html lang="en">',
+    "  <head>",
+    '    <meta charset="utf-8" />',
+    "    <title>Redirecting…</title>",
+    '    <meta name="robots" content="noindex" />',
+    `    <link rel="canonical" href="${targetUrl}" />`,
+    `    <meta http-equiv="refresh" content="0; url=${escapeHtmlAttribute(targetPath)}" />`,
+    `    <script>location.replace(${JSON.stringify(targetPath)} + location.search + location.hash);</script>`,
+    "  </head>",
+    "  <body></body>",
+    "</html>",
+    "",
+  ].join("\n");
+}
+
+async function writeLegacyBlogRedirects(
+  routes: PrerenderRoute[],
+): Promise<void> {
+  const redirects: Array<[string, string]> = [["/blog/index.html", "/gallery"]];
+
+  for (const route of routes) {
+    if (!route.canonicalPath.startsWith("/gallery/")) continue;
+    const slugPath = route.canonicalPath.slice("/gallery".length);
+    redirects.push([`/blog${slugPath}/index.html`, route.canonicalPath]);
+
+    const slideshowPath = `${route.canonicalPath}/slideshow.html`;
+    try {
+      await fs.access(path.join(DIST_DIR, slideshowPath));
+      redirects.push([`/blog${slugPath}/slideshow.html`, slideshowPath]);
+    } catch {
+      continue;
+    }
+  }
+
+  for (const [legacyPath, targetPath] of redirects) {
+    const outputPath = path.join(DIST_DIR, legacyPath);
+    await fs.mkdir(path.dirname(outputPath), { recursive: true });
+    await fs.writeFile(outputPath, createRedirectHtml(targetPath));
+  }
+}
+
 async function findServerEntryPath(): Promise<string> {
   const candidates = ["entry-server.js", "entry-server.mjs"].map(
     (fileName: string): string => path.join(DIST_SSR_DIR, fileName),
@@ -216,6 +261,8 @@ async function main(): Promise<void> {
       createPrerenderedHtml(appShellHtml, route, appHtml),
     );
   }
+
+  await writeLegacyBlogRedirects(routes);
 
   const canonicalPaths = [
     ...new Set(routes.map((route) => route.canonicalPath)),

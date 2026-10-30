@@ -1,7 +1,7 @@
 const LAST_PATHNAME_KEY = "route-last-pathname";
 
 export function isBlogPostPath(pathname: string) {
-  return pathname.startsWith("/blog/") && pathname !== "/blog";
+  return pathname.startsWith("/gallery/") && pathname !== "/gallery";
 }
 
 export function getLastPathname() {

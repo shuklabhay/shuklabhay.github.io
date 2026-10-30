@@ -27,7 +27,7 @@ function splitTitleForMiddleEllipsis(title: string): {
 }
 
 export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
-  const postPath = `/blog/${post.slug}`;
+  const postPath = `/gallery/${post.slug}`;
   const heroSrc = post.cover ?? DEFAULT_POST_HERO_IMAGE;
   const [isHovered, setIsHovered] = useState(false);
   const prefersReducedMotion =
@@ -44,7 +44,7 @@ export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
     <Link
       to={postPath}
       viewTransition={!prefersReducedMotion}
-      state={{ fromBlog: true, fromPath: "/blog" }}
+      state={{ fromBlog: true, fromPath: "/gallery" }}
       style={{
         display: "block",
         width: "100%",

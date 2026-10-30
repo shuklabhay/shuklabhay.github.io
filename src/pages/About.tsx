@@ -33,7 +33,7 @@ export default function About(): JSX.Element {
               been done before but are{" "}
               <strong>overwhelmingly worth doing,</strong>{" "}
               <Link
-                to="/blog/rcbi"
+                to="/gallery/rcbi"
                 viewTransition
                 state={{ fromBlog: true, fromPath: "/about" }}
                 className="about-contact-link"

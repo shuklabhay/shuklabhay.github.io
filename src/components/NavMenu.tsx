@@ -13,7 +13,7 @@ import type { NavUnderlineState, RouteTransitionState } from "../utils/types";
 const MENU_ITEMS = [
   { label: "home", path: "/" },
   { label: "about", path: "/about" },
-  { label: "blog", path: "/blog" },
+  { label: "gallery", path: "/gallery" },
 ];
 const useIsomorphicLayoutEffect: typeof useEffect =
   typeof window === "undefined" ? useEffect : useLayoutEffect;
@@ -35,9 +35,10 @@ export default function NavMenu() {
     animate: false,
   });
   const isPostRoute =
-    location.pathname.startsWith("/blog/") && location.pathname !== "/blog";
+    location.pathname.startsWith("/gallery/") &&
+    location.pathname !== "/gallery";
   const activeKey = isPostRoute
-    ? "blog"
+    ? "gallery"
     : (location.pathname.split("/").filter(Boolean)[0]?.toLowerCase() ??
       "home");
 
