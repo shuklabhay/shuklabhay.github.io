@@ -16,8 +16,6 @@ type ReactReadableStream = ReadableStream<Uint8Array> & {
 };
 
 const SITE_TITLE = "Abhay Shukla";
-const SITE_DESCRIPTION =
-  "Abhay Shukla trains neural networks, builds agents and simulations, makes music, and writes about it.";
 
 function withoutTrailingSlash(pathname: string): string {
   if (pathname === "/") return pathname;
@@ -28,28 +26,28 @@ export function getPrerenderRoutes(): PrerenderRoute[] {
   return [
     {
       canonicalPath: "/",
-      description: SITE_DESCRIPTION,
+      description: "ㅤ",
       path: "/",
       title: SITE_TITLE,
       type: "website",
     },
     {
       canonicalPath: "/about",
-      description: SITE_DESCRIPTION,
+      description: "about",
       path: "/about",
       title: `${SITE_TITLE} · About`,
       type: "website",
     },
     {
       canonicalPath: "/blog",
-      description: SITE_DESCRIPTION,
+      description: "blog",
       path: "/blog",
       title: `${SITE_TITLE} · Blog`,
       type: "website",
     },
     {
       canonicalPath: "/contact",
-      description: SITE_DESCRIPTION,
+      description: "contact",
       path: "/contact",
       title: `${SITE_TITLE} · Contact`,
       type: "website",
