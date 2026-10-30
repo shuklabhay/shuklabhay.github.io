@@ -23,8 +23,8 @@ export default function PostExpandToggle({
           </>
         ) : (
           <>
-            <path d="M16 3H21V8" />
-            <path d="M3 16V21H8" />
+            <path d="M15 4H20V9" />
+            <path d="M4 15V20H9" />
           </>
         )}
       </svg>
