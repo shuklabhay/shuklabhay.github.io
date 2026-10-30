@@ -23,7 +23,7 @@ export default function PageTitle({
       <h1
         style={{
           fontSize: "2.25rem",
-          fontWeight: "600",
+          fontWeight: "700",
           letterSpacing: "-0.01em",
           color: "var(--ink)",
           margin: 0,
@@ -100,7 +100,7 @@ function getCheckboxStyle({
     backgroundColor: "transparent",
     color: fg,
     fontSize: "1rem",
-    fontWeight: 400,
+    fontWeight: 500,
     cursor: "pointer",
     userSelect: "none" as const,
     WebkitUserSelect: "none" as const,
@@ -109,7 +109,7 @@ function getCheckboxStyle({
     gap: 0,
     transition: canHover ? "color 120ms linear" : "none",
     textDecorationLine: isOn ? "underline" : "none",
-    textDecorationThickness: "1px",
+    textDecorationThickness: "1.5px",
     textUnderlineOffset: "0.25em",
     WebkitTextFillColor: fg,
   };

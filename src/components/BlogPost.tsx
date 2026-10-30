@@ -339,7 +339,7 @@ export default function BlogPost({
               margin: 0,
               lineHeight: 1.16,
               color: "var(--ink)",
-              fontWeight: 600,
+              fontWeight: 700,
               letterSpacing: "-0.01em",
               fontSize: isMobile ? "1.75rem" : "2.25rem",
             }}
