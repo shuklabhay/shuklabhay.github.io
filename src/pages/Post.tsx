@@ -11,6 +11,7 @@ import { useLocation, useParams } from "react-router-dom";
 import BlogPost from "../components/BlogPost";
 import ImageLightbox from "../components/ImageLightbox";
 import PostBackLink from "../components/PostBackLink";
+import PostExpandToggle from "../components/PostExpandToggle";
 import {
   getLoadedPostBySlug,
   getPostBySlug,
@@ -179,6 +180,7 @@ export default function Post({
   const [isPostEntryReady, setIsPostEntryReady] = useState(
     !shouldAnimatePostEntry,
   );
+  const [isExpanded, setIsExpanded] = useState(false);
   const pendingHeadingJumpIdRef = useRef<string | null>(null);
   const pendingHeadingTargetScrollTopRef = useRef<number | null>(null);
   const pendingHeadingJumpReleaseTimeoutIdRef = useRef<number | null>(null);
@@ -498,6 +500,20 @@ export default function Post({
     };
   }, [clearPendingHeadingJump]);
 
+  useIsomorphicLayoutEffect(() => {
+    document.documentElement.classList.toggle("post-expanded", isExpanded);
+  }, [isExpanded]);
+
+  useEffect(() => {
+    return () => {
+      document.documentElement.classList.remove("post-expanded");
+    };
+  }, []);
+
+  useEffect(() => {
+    setIsExpanded(false);
+  }, [slug]);
+
   useEffect(() => {
     if (typeof window === "undefined" || postImages.length === 0) return;
 
@@ -657,17 +673,18 @@ export default function Post({
   if (!postSummary) {
     return (
       <>
-        <PostBackLink />
         <main
           key={slug}
+          className="route-page"
           style={{
             width: "100%",
-            color: "white",
+            color: "var(--ink)",
             paddingBottom: "calc(3rem + env(safe-area-inset-bottom))",
             position: "relative",
             opacity: 1,
           }}
         >
+          <PostBackLink />
           <h1 style={{ marginTop: "0.75rem" }}>Post not found</h1>
         </main>
       </>
@@ -770,9 +787,18 @@ export default function Post({
 
   return (
     <>
-      <PostBackLink />
       <BlogPost
         key={slug}
+        header={
+          <PostBackLink
+            trailing={
+              <PostExpandToggle
+                expanded={isExpanded}
+                onToggle={() => setIsExpanded((current) => !current)}
+              />
+            }
+          />
+        }
         isEntryReady={isPostEntryReady}
         title={postSummary.title}
         byline={bylineParts.length ? bylineParts.join(" · ") : undefined}

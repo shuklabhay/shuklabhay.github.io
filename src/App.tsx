@@ -12,7 +12,7 @@ import Blog from "./pages/Blog.tsx";
 import Home from "./pages/Home.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Post from "./pages/Post.tsx";
-import { setLastPathname } from "./utils/routeTransitions";
+import { isBlogPostPath, setLastPathname } from "./utils/routeTransitions";
 
 const HOME_BACKGROUND_IMMEDIATE_SRC = "/static/landing-1280.webp";
 const SITE_TITLE = "Abhay Shukla";
@@ -283,26 +283,19 @@ export function AppShell(): JSX.Element {
     const isHome = isHomeVisualRoute(location.pathname);
     document.documentElement.classList.toggle("route-home", isHome);
     document.body.classList.toggle("route-home", isHome);
+    document.documentElement.classList.toggle(
+      "route-post",
+      isBlogPostPath(normalizePathname(location.pathname)),
+    );
     setLastPathname(location.pathname);
   }, [location.pathname]);
 
   return (
     <>
       <RouteBackground />
-      <div
-        className={isHome ? "app-shell app-shell-home" : "app-shell"}
-        style={{
-          width: "100%",
-          maxWidth: "100%",
-          overflowX: "clip",
-          margin: "0 auto",
-          paddingBottom: isHome ? 0 : "var(--browser-bottom-clearance)",
-          paddingInline: "var(--page-x-padding)",
-          position: "relative",
-          zIndex: 1,
-        }}
-      >
-        <NavMenu />
+      <div className="route-sky" aria-hidden />
+      <NavMenu />
+      <div className={isHome ? "app-shell app-shell-home" : "app-shell"}>
         <Routes location={location}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import TransitionLink from "../components/TransitionLink";
 import PageTitle from "../components/PageTitle";
 import { contactData, getContactLink } from "../utils/contactData";
 import { useRouteEntryFade } from "../utils/useEntryFade";
@@ -13,7 +13,7 @@ export default function About(): JSX.Element {
   const github = getContactLink(contactData, "GitHub");
 
   return (
-    <main className="about-page" style={entryFadeStyle}>
+    <main className="about-page route-page" style={entryFadeStyle}>
       <PageTitle
         title="Hi, I'm Abhay"
         subtitle={
@@ -32,14 +32,13 @@ export default function About(): JSX.Element {
               <strong>interesting, imaginative things</strong> that have never
               been done before but are{" "}
               <strong>overwhelmingly worth doing,</strong>{" "}
-              <Link
+              <TransitionLink
                 to="/gallery/rcbi"
-                viewTransition
                 state={{ fromBlog: true, fromPath: "/about" }}
                 className="about-contact-link"
               >
                 regardless of form or function.
-              </Link>{" "}
+              </TransitionLink>{" "}
             </p>
 
             <p className="about-list-intro">Previously I've:</p>

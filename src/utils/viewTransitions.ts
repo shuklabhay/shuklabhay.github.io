@@ -8,11 +8,15 @@ export function canRunRootViewTransition(): boolean {
   );
 }
 
-export function runWithRootViewTransition(update: () => void): void {
+export function runWithRootViewTransition(
+  update: () => void,
+): Promise<void> | null {
   const doc = document as ViewTransitionDocument;
-  if (canRunRootViewTransition()) {
-    doc.startViewTransition(update);
-    return;
+  if (canRunRootViewTransition() && doc.startViewTransition) {
+    const transition = doc.startViewTransition(update);
+    transition.ready.catch(() => undefined);
+    return transition.finished;
   }
   update();
+  return null;
 }

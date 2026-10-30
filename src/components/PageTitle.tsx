@@ -24,7 +24,7 @@ export default function PageTitle({
         style={{
           fontSize: "3rem",
           fontWeight: "700",
-          color: "white",
+          color: "var(--ink)",
           margin: 0,
         }}
       >
@@ -91,13 +91,13 @@ function getCheckboxStyle({
   isHover: boolean;
   canHover: boolean;
 }): CSSProperties {
-  const bg = isOn || isHover ? "white" : "transparent";
-  const fg = isOn || isHover ? "#5a6c99" : "white";
+  const bg = isOn || isHover ? "var(--ink)" : "transparent";
+  const fg = isOn || isHover ? "var(--paper)" : "var(--ink)";
 
   return {
     padding: "0.25rem 0.5rem",
     borderRadius: "6px",
-    border: "2px solid white",
+    border: "2px solid var(--ink)",
     backgroundColor: bg,
     color: fg,
     fontSize: "1rem",
