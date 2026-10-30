@@ -22,8 +22,9 @@ export default function PageTitle({
     <div style={{ marginTop: "0.5rem" }}>
       <h1
         style={{
-          fontSize: "3rem",
-          fontWeight: "700",
+          fontSize: "2.25rem",
+          fontWeight: "600",
+          letterSpacing: "-0.01em",
           color: "var(--ink)",
           margin: 0,
         }}
@@ -91,27 +92,25 @@ function getCheckboxStyle({
   isHover: boolean;
   canHover: boolean;
 }): CSSProperties {
-  const bg = isOn || isHover ? "var(--ink)" : "transparent";
-  const fg = isOn || isHover ? "var(--paper)" : "var(--ink)";
+  const fg = isOn || isHover ? "var(--ink)" : "var(--ink-muted)";
 
   return {
-    padding: "0.25rem 0.5rem",
-    borderRadius: "6px",
-    border: "2px solid var(--ink)",
-    backgroundColor: bg,
+    padding: 0,
+    border: 0,
+    backgroundColor: "transparent",
     color: fg,
     fontSize: "1rem",
-    fontWeight: 600,
+    fontWeight: 400,
     cursor: "pointer",
     userSelect: "none" as const,
     WebkitUserSelect: "none" as const,
     display: "inline-flex",
     alignItems: "center",
     gap: 0,
-    transition: canHover
-      ? "background-color 150ms ease, color 150ms ease"
-      : "none",
-    textDecoration: "none",
+    transition: canHover ? "color 120ms linear" : "none",
+    textDecorationLine: isOn ? "underline" : "none",
+    textDecorationThickness: "1px",
+    textUnderlineOffset: "0.25em",
     WebkitTextFillColor: fg,
   };
 }
@@ -134,7 +133,7 @@ export function CheckboxSubtitleLink<T extends string = string>({
       style={{
         display: "flex",
         flexWrap: "wrap",
-        gap: "0.5rem",
+        gap: "1rem",
         maxWidth: "100%",
         marginTop,
         marginBottom,
@@ -310,7 +309,7 @@ export function CheckboxSubtitleToggle<T extends string = string>({
       style={{
         display: "flex",
         flexWrap: "wrap",
-        gap: "0.5rem",
+        gap: "1rem",
         maxWidth: "100%",
         marginTop,
         marginBottom,

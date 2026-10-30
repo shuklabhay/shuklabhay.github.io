@@ -77,11 +77,11 @@ export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
           whiteSpace: "nowrap",
           color: "var(--ink)",
           textDecorationLine: isHovered ? "underline" : "none",
-          textDecorationThickness: "2px",
+          textDecorationThickness: "1px",
           textUnderlineOffset: "0.14em",
-          fontSize: "clamp(1.08rem, 2vw, 1.82rem)",
-          fontWeight: 700,
-          lineHeight: 1.24,
+          fontSize: "1.15rem",
+          fontWeight: 400,
+          lineHeight: 1.4,
           transition: "color 140ms ease",
         }}
       >

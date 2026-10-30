@@ -76,10 +76,6 @@ function isHomeVisualRoute(pathname: string): boolean {
 function getHomeBackgroundCandidates(): string[] {
   if (typeof window === "undefined") return [HOME_BACKGROUND_IMMEDIATE_SRC];
 
-  const viewportWidth = Math.max(
-    window.innerWidth,
-    document.documentElement?.clientWidth ?? 0,
-  );
   const prefersReducedData =
     window.matchMedia?.("(prefers-reduced-data: reduce)").matches ?? false;
   const isMobileViewport =
@@ -102,36 +98,10 @@ function getHomeBackgroundCandidates(): string[] {
     isCoarsePointer;
 
   if (shouldPreferSmallerAsset) {
-    return [HOME_BACKGROUND_IMMEDIATE_SRC, "/static/landing-1280.avif"];
+    return [HOME_BACKGROUND_IMMEDIATE_SRC];
   }
 
-  if (viewportWidth >= 2200) {
-    return [
-      "/static/landing-1920.avif",
-      "/static/landing-1920.webp",
-      HOME_BACKGROUND_IMMEDIATE_SRC,
-      "/static/landing-1280.avif",
-      "/static/landing.webp",
-    ];
-  }
-
-  if (viewportWidth >= 1600) {
-    return [
-      "/static/landing-1920.avif",
-      "/static/landing-1920.webp",
-      HOME_BACKGROUND_IMMEDIATE_SRC,
-      "/static/landing-1280.avif",
-      "/static/landing.webp",
-    ];
-  }
-
-  return [
-    HOME_BACKGROUND_IMMEDIATE_SRC,
-    "/static/landing-1280.avif",
-    "/static/landing-1920.avif",
-    "/static/landing-1920.webp",
-    "/static/landing.webp",
-  ];
+  return ["/static/landing-1920.webp"];
 }
 
 function preloadDecodedImage(src: string): Promise<boolean> {

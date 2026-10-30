@@ -339,9 +339,9 @@ export default function BlogPost({
               margin: 0,
               lineHeight: 1.16,
               color: "var(--ink)",
-              fontSize: isMobile
-                ? "clamp(1.6rem, 8vw, 2.3rem)"
-                : "clamp(2rem, 3.6vw, 3.2rem)",
+              fontWeight: 600,
+              letterSpacing: "-0.01em",
+              fontSize: isMobile ? "1.75rem" : "2.25rem",
             }}
           >
             {title}
