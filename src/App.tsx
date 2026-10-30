@@ -6,7 +6,6 @@ import Blog from "./pages/Blog.tsx";
 import Home from "./pages/Home.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Post from "./pages/Post.tsx";
-import { getPostBySlug } from "./posts";
 import { setLastPathname } from "./utils/routeTransitions";
 
 const HOME_BACKGROUND_IMMEDIATE_SRC = "/static/landing-1280.webp";
@@ -53,8 +52,6 @@ function getRouteDocumentTitle(pathname: string): string {
 
   if (/^\/blog\/[^/]+$/.test(normalizedPathname)) {
     const slug = normalizedPathname.slice("/blog/".length).split("/")[0] ?? "";
-    const post = getPostBySlug(decodeSegment(slug));
-    if (post) return post.title;
     const postTitle = humanizeRouteSegment(slug);
     if (!postTitle) {
       return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Blog`;
