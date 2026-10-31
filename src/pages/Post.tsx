@@ -41,6 +41,18 @@ const HEADING_JUMP_WATCH_TIMEOUT_MS = 8000;
 const HEADING_JUMP_SETTLED_TICKS = 4;
 const POST_EXPAND_ANIMATION_MS = 150;
 const CONTENTS_BOTTOM_MARGIN_PX = 16;
+const HEADING_JUMP_SCROLL_MS = 180;
+
+function scrollLinearlyTo(top: number): () => void {
+  const startTop = window.scrollY;
+  const startedAt = performance.now();
+  let frameId = window.requestAnimationFrame(function step(now: number): void {
+    const progress = Math.min((now - startedAt) / HEADING_JUMP_SCROLL_MS, 1);
+    window.scrollTo(0, startTop + (top - startTop) * progress);
+    if (progress < 1) frameId = window.requestAnimationFrame(step);
+  });
+  return () => window.cancelAnimationFrame(frameId);
+}
 
 type PostHeading = {
   id: string;
@@ -67,22 +79,20 @@ function setPostContentLinksToNewTabs(contentEl: HTMLElement): void {
     });
 }
 
-function fitContentsToViewport(tocEl: HTMLElement): void {
-  const listEl = tocEl.querySelector("ul");
+function fitContentsToViewport(tocEl: HTMLElement, animate: boolean): void {
   const rowEls = Array.from(tocEl.querySelectorAll("li"));
-  rowEls.forEach((rowEl) => {
-    rowEl.style.display = "";
-  });
-  if (!listEl || tocEl.getClientRects().length === 0) return;
+  tocEl.classList.toggle("is-animating", animate);
+  if (rowEls.length === 0 || tocEl.getClientRects().length === 0) return;
 
   const available =
     window.innerHeight -
     tocEl.getBoundingClientRect().top -
     CONTENTS_BOTTOM_MARGIN_PX;
-  const gap = parseFloat(getComputedStyle(listEl).rowGap) || 0;
-  const heights = rowEls.map((rowEl) => rowEl.getBoundingClientRect().height);
+  const heights = rowEls.map(
+    (rowEl) => rowEl.querySelector(".post-toc-link")?.scrollHeight ?? 0,
+  );
   const heightOf = (indexes: number[]): number =>
-    indexes.reduce((sum, index) => sum + (heights[index] ?? 0) + gap, -gap);
+    indexes.reduce((sum, index) => sum + (heights[index] ?? 0), 0);
   const isTopLevel = (rowEl: HTMLLIElement): boolean =>
     rowEl.querySelector(".is-top-level") !== null;
 
@@ -132,7 +142,7 @@ function fitContentsToViewport(tocEl: HTMLElement): void {
 
   const visibleSet = new Set(visible);
   rowEls.forEach((rowEl, index) => {
-    rowEl.style.display = visibleSet.has(index) ? "" : "none";
+    rowEl.classList.toggle("is-fit-hidden", !visibleSet.has(index));
   });
 }
 
@@ -262,6 +272,7 @@ export default function Post({
   const pendingHeadingJumpReleaseTimeoutIdRef = useRef<number | null>(null);
   const stopHeadingJumpWatchRef = useRef<(() => void) | null>(null);
   const expandAnimationTimeoutIdRef = useRef(0);
+  const previousFittedHeadingIdRef = useRef<string | null>(null);
 
   const clearPendingHeadingJump = useCallback(() => {
     pendingHeadingJumpIdRef.current = null;
@@ -584,14 +595,16 @@ export default function Post({
   }, []);
 
   useIsomorphicLayoutEffect(() => {
-    const fitContents = (): void => {
+    const fitContents = (animate: boolean): void => {
       const tocEl = document.querySelector<HTMLElement>(".post-toc");
-      if (tocEl) fitContentsToViewport(tocEl);
+      if (tocEl) fitContentsToViewport(tocEl, animate);
     };
+    const onResize = (): void => fitContents(false);
 
-    fitContents();
-    window.addEventListener("resize", fitContents);
-    return () => window.removeEventListener("resize", fitContents);
+    fitContents(previousFittedHeadingIdRef.current !== null);
+    previousFittedHeadingIdRef.current = activeHeadingId;
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, [activeHeadingId, contentsSlot, postHeadings]);
 
   useIsomorphicLayoutEffect(() => {
@@ -855,8 +868,16 @@ export default function Post({
       return;
     }
 
-    const behavior: ScrollBehavior = prefersReducedMotion ? "auto" : "smooth";
-    window.scrollTo({ top: initialTargetScrollTop, behavior });
+    let cancelScroll = (): void => undefined;
+    const scrollToTarget = (top: number): void => {
+      cancelScroll();
+      if (prefersReducedMotion) {
+        window.scrollTo(0, top);
+        return;
+      }
+      cancelScroll = scrollLinearlyTo(top);
+    };
+    scrollToTarget(initialTargetScrollTop);
 
     const startedAt = Date.now();
     let lastScrollTop = window.scrollY;
@@ -887,10 +908,11 @@ export default function Post({
       }
 
       settledTicks = 0;
-      if (isIdle) window.scrollTo({ top: reachableTarget, behavior });
+      if (isIdle) scrollToTarget(reachableTarget);
     }, HEADING_JUMP_WATCH_INTERVAL_MS);
 
     const stopWatching = (): void => {
+      cancelScroll();
       window.clearInterval(intervalId);
       window.removeEventListener("wheel", stopWatching);
       window.removeEventListener("touchstart", stopWatching);
