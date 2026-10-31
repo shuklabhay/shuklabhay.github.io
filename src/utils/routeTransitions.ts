@@ -6,6 +6,8 @@ export function isBlogPostPath(pathname: string) {
   return pathname.startsWith("/gallery/") && pathname !== "/gallery";
 }
 
+let activeTransitionId = 0;
+
 export function navigateWithRouteTransition(
   navigate: NavigateFunction,
   to: string,
@@ -27,5 +29,19 @@ export function navigateWithRouteTransition(
     return;
   }
 
-  runWithRootViewTransition(update);
+  const rootEl = document.documentElement;
+  const isHomeTransition =
+    rootEl.classList.contains("route-home") || to === "/" || to === "/contact";
+  rootEl.classList.toggle("home-transition", isHomeTransition);
+
+  const transitionId = ++activeTransitionId;
+  const clearHomeTransition = (): void => {
+    if (transitionId === activeTransitionId) {
+      rootEl.classList.remove("home-transition");
+    }
+  };
+  runWithRootViewTransition(update)?.then(
+    clearHomeTransition,
+    clearHomeTransition,
+  );
 }

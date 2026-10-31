@@ -20,6 +20,7 @@
   --reading-width: 50rem;
   --mobile-band-height: 7.5rem;
   --motion-page: 100ms;
+  --motion-home: 160ms;
   --motion-hover: 100ms;
   --motion-layout: 120ms;
 }
@@ -346,6 +347,12 @@ body.route-home #root {
 ::view-transition-new(*) {
   animation-duration: var(--motion-page);
   animation-timing-function: linear;
+}
+
+html.home-transition::view-transition-group(*),
+html.home-transition::view-transition-old(*),
+html.home-transition::view-transition-new(*) {
+  animation-duration: var(--motion-home);
 }
 
 .app-shell-home {
