@@ -20,7 +20,7 @@
   --reading-width: 50rem;
   --mobile-band-height: 7.5rem;
   --motion-page: 100ms;
-  --motion-home: 160ms;
+  --motion-home: 120ms;
   --motion-hover: 100ms;
   --motion-layout: 120ms;
 }
@@ -349,10 +349,47 @@ body.route-home #root {
   animation-timing-function: linear;
 }
 
-html.home-transition::view-transition-group(*),
-html.home-transition::view-transition-old(*),
-html.home-transition::view-transition-new(*) {
+html.home-transition::view-transition-group(*) {
   animation-duration: var(--motion-home);
+}
+
+html.home-transition::view-transition-image-pair(root) {
+  isolation: auto;
+}
+
+html.home-transition::view-transition-old(root) {
+  animation: none;
+  opacity: 1;
+  mix-blend-mode: normal;
+}
+
+html.home-transition::view-transition-new(root),
+html.home-transition::view-transition-new(page-about),
+html.home-transition::view-transition-new(page-gallery),
+html.home-transition::view-transition-new(page-post),
+html.home-transition::view-transition-new(page-missing) {
+  animation: home-fade-in var(--motion-home) linear both;
+  mix-blend-mode: normal;
+}
+
+html.home-transition::view-transition-old(page-about),
+html.home-transition::view-transition-old(page-gallery),
+html.home-transition::view-transition-old(page-post),
+html.home-transition::view-transition-old(page-missing) {
+  animation: home-fade-out var(--motion-home) linear both;
+  mix-blend-mode: normal;
+}
+
+@keyframes home-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes home-fade-out {
+  to {
+    opacity: 0;
+  }
 }
 
 .app-shell-home {
