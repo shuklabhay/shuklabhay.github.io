@@ -11,7 +11,10 @@
   --home-background-image: url("/static/landing-1280.webp");
   --page-x-padding: 1.125rem;
   --browser-bottom-clearance: 0px;
-  --sidebar-width: max(clamp(9.5rem, 21vw, 16rem), calc(100vw - 64rem));
+  --sidebar-width: max(
+    clamp(9.5rem, 21vw, 16rem),
+    calc(100vw - var(--reading-width) - var(--content-left-margin) * 2)
+  );
   --content-gutter: clamp(1.5rem, 4vw, 3.5rem);
   --content-left-margin: 2.25rem;
   --reading-width: 50rem;
@@ -85,7 +88,7 @@ html.route-home .route-sky {
 }
 
 html.post-expand-animating .route-sky {
-  transition: clip-path 240ms linear;
+  transition: clip-path 120ms linear;
 }
 
 html.route-post.post-expanded .route-sky {
@@ -107,7 +110,7 @@ html.route-post.post-expanded .route-sky {
 }
 
 html.post-expand-animating .side-nav {
-  transition: opacity 150ms linear;
+  transition: opacity 75ms linear;
 }
 
 html.route-post.post-expanded .side-nav {
@@ -154,13 +157,13 @@ html.route-post.post-expanded .side-nav {
   max-width: 100%;
   overflow-x: clip;
   font-weight: 490;
-  padding: 1.1rem var(--content-gutter) var(--browser-bottom-clearance)
+  padding: 1.1rem var(--content-left-margin) var(--browser-bottom-clearance)
     calc(var(--sidebar-width) + var(--content-left-margin));
   color: var(--ink);
 }
 
 html.post-expand-animating .app-shell {
-  transition: padding-left 240ms linear;
+  transition: padding-left 120ms linear;
 }
 
 html.route-post.post-expanded .app-shell {
@@ -210,7 +213,7 @@ html.route-post.post-expanded .app-shell {
 }
 
 html.post-expand-animating .post-column {
-  transition: margin-left 240ms linear;
+  transition: margin-left 120ms linear;
 }
 
 html.route-post.post-expanded .post-column {
