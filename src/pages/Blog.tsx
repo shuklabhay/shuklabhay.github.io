@@ -197,7 +197,7 @@ export default function Blog() {
           display: "flex",
           flexDirection: "column",
           width: "100%",
-          maxWidth: "72rem",
+          maxWidth: "var(--reading-width)",
           gap: "0.18rem",
           marginTop: "1.2rem",
           userSelect: "none",
