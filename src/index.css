@@ -84,7 +84,7 @@ html.route-home .route-sky {
   display: none;
 }
 
-html.route-post .route-sky {
+html.post-expand-animating .route-sky {
   transition: clip-path 240ms linear;
 }
 
@@ -106,7 +106,7 @@ html.route-post.post-expanded .route-sky {
   -webkit-touch-callout: none;
 }
 
-html.route-post .side-nav {
+html.post-expand-animating .side-nav {
   transition: opacity 150ms linear;
 }
 
@@ -159,7 +159,7 @@ html.route-post.post-expanded .side-nav {
   color: var(--ink);
 }
 
-html.route-post .app-shell {
+html.post-expand-animating .app-shell {
   transition: padding-left 240ms linear;
 }
 
@@ -209,7 +209,7 @@ html.route-post.post-expanded .app-shell {
   max-width: 100%;
 }
 
-html.route-post .post-column {
+html.post-expand-animating .post-column {
   transition: margin-left 240ms linear;
 }
 
@@ -539,10 +539,8 @@ code {
 .post-toc {
   width: calc(var(--sidebar-width) - var(--page-x-padding) * 2);
   max-width: 18rem;
-  max-height: calc(100vh - 11rem);
   margin-top: 2.5rem;
-  overflow-y: auto;
-  overscroll-behavior: contain;
+  overflow: hidden;
 }
 
 .post-toc-list {

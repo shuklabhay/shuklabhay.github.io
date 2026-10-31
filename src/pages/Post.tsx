@@ -39,6 +39,8 @@ const CARD_TOP_CLAMP_DISTANCE_PX = HEADING_SCROLL_OFFSET_PX + 40;
 const HEADING_JUMP_WATCH_INTERVAL_MS = 150;
 const HEADING_JUMP_WATCH_TIMEOUT_MS = 8000;
 const HEADING_JUMP_SETTLED_TICKS = 4;
+const POST_EXPAND_ANIMATION_MS = 300;
+const CONTENTS_BOTTOM_MARGIN_PX = 16;
 
 type PostHeading = {
   id: string;
@@ -63,6 +65,75 @@ function setPostContentLinksToNewTabs(contentEl: HTMLElement): void {
       linkEl.target = "_blank";
       linkEl.rel = "noopener noreferrer";
     });
+}
+
+function fitContentsToViewport(tocEl: HTMLElement): void {
+  const listEl = tocEl.querySelector("ul");
+  const rowEls = Array.from(tocEl.querySelectorAll("li"));
+  rowEls.forEach((rowEl) => {
+    rowEl.style.display = "";
+  });
+  if (!listEl || tocEl.getClientRects().length === 0) return;
+
+  const available =
+    window.innerHeight -
+    tocEl.getBoundingClientRect().top -
+    CONTENTS_BOTTOM_MARGIN_PX;
+  const gap = parseFloat(getComputedStyle(listEl).rowGap) || 0;
+  const heights = rowEls.map((rowEl) => rowEl.getBoundingClientRect().height);
+  const heightOf = (indexes: number[]): number =>
+    indexes.reduce((sum, index) => sum + (heights[index] ?? 0) + gap, -gap);
+  const isTopLevel = (rowEl: HTMLLIElement): boolean =>
+    rowEl.querySelector(".is-top-level") !== null;
+
+  const activeIndex = Math.max(
+    rowEls.findIndex((rowEl) => rowEl.querySelector(".is-active")),
+    0,
+  );
+  let visible = rowEls.map((_, index) => index);
+
+  if (heightOf(visible) > available) {
+    let groupStart = activeIndex;
+    while (groupStart > 0 && !isTopLevel(rowEls[groupStart])) groupStart -= 1;
+    let groupEnd = activeIndex + 1;
+    while (groupEnd < rowEls.length && !isTopLevel(rowEls[groupEnd])) {
+      groupEnd += 1;
+    }
+    visible = visible.filter(
+      (index) =>
+        isTopLevel(rowEls[index]) || (index >= groupStart && index < groupEnd),
+    );
+  }
+
+  if (heightOf(visible) > available) {
+    const center = visible.indexOf(activeIndex);
+    let start = center;
+    let end = center;
+    let grew = true;
+    while (grew) {
+      grew = false;
+      if (
+        end + 1 < visible.length &&
+        heightOf(visible.slice(start, end + 2)) <= available
+      ) {
+        end += 1;
+        grew = true;
+      }
+      if (
+        start > 0 &&
+        heightOf(visible.slice(start - 1, end + 1)) <= available
+      ) {
+        start -= 1;
+        grew = true;
+      }
+    }
+    visible = visible.slice(start, end + 1);
+  }
+
+  const visibleSet = new Set(visible);
+  rowEls.forEach((rowEl, index) => {
+    rowEl.style.display = visibleSet.has(index) ? "" : "none";
+  });
 }
 
 function didDocumentReload(): boolean {
@@ -190,6 +261,7 @@ export default function Post({
   const pendingHeadingTargetScrollTopRef = useRef<number | null>(null);
   const pendingHeadingJumpReleaseTimeoutIdRef = useRef<number | null>(null);
   const stopHeadingJumpWatchRef = useRef<(() => void) | null>(null);
+  const expandAnimationTimeoutIdRef = useRef(0);
 
   const clearPendingHeadingJump = useCallback(() => {
     pendingHeadingJumpIdRef.current = null;
@@ -511,20 +583,16 @@ export default function Post({
     setContentsSlot(document.getElementById("side-nav-contents"));
   }, []);
 
-  useEffect(() => {
-    if (!activeHeadingId) return;
-    const sidebarEl = document.querySelector(".post-toc");
-    const activeLinkEl = sidebarEl?.querySelector(".post-toc-link.is-active");
-    if (!sidebarEl || !activeLinkEl) return;
+  useIsomorphicLayoutEffect(() => {
+    const fitContents = (): void => {
+      const tocEl = document.querySelector<HTMLElement>(".post-toc");
+      if (tocEl) fitContentsToViewport(tocEl);
+    };
 
-    const sidebarRect = sidebarEl.getBoundingClientRect();
-    const linkRect = activeLinkEl.getBoundingClientRect();
-    if (linkRect.top < sidebarRect.top) {
-      sidebarEl.scrollTop -= sidebarRect.top - linkRect.top + 8;
-    } else if (linkRect.bottom > sidebarRect.bottom) {
-      sidebarEl.scrollTop += linkRect.bottom - sidebarRect.bottom + 8;
-    }
-  }, [activeHeadingId]);
+    fitContents();
+    window.addEventListener("resize", fitContents);
+    return () => window.removeEventListener("resize", fitContents);
+  }, [activeHeadingId, contentsSlot, postHeadings]);
 
   useIsomorphicLayoutEffect(() => {
     document.documentElement.classList.toggle("post-expanded", isExpanded);
@@ -532,9 +600,23 @@ export default function Post({
 
   useEffect(() => {
     return () => {
-      document.documentElement.classList.remove("post-expanded");
+      document.documentElement.classList.remove(
+        "post-expanded",
+        "post-expand-animating",
+      );
+      window.clearTimeout(expandAnimationTimeoutIdRef.current);
     };
   }, []);
+
+  const onToggleExpanded = (): void => {
+    const rootEl = document.documentElement;
+    rootEl.classList.add("post-expand-animating");
+    window.clearTimeout(expandAnimationTimeoutIdRef.current);
+    expandAnimationTimeoutIdRef.current = window.setTimeout(() => {
+      rootEl.classList.remove("post-expand-animating");
+    }, POST_EXPAND_ANIMATION_MS);
+    setIsExpanded((current) => !current);
+  };
 
   useEffect(() => {
     setIsExpanded(false);
@@ -868,7 +950,7 @@ export default function Post({
             trailing={
               <PostExpandToggle
                 expanded={isExpanded}
-                onToggle={() => setIsExpanded((current) => !current)}
+                onToggle={onToggleExpanded}
               />
             }
           />
