@@ -117,6 +117,14 @@ html.post-expand-animating .side-nav-link {
   transition: opacity var(--motion-layout) linear;
 }
 
+html.route-post.post-expanded .side-nav {
+  pointer-events: none;
+}
+
+html.route-post.post-expanded .post-toc {
+  pointer-events: auto;
+}
+
 html.route-post.post-expanded .side-nav-link {
   opacity: 0;
   pointer-events: none;
