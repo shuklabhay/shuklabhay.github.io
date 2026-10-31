@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 import type { CSSProperties } from "react";
-import ArrowFromLineIcon from "./ArrowFromLineIcon";
 import type { BlogPostProps } from "../utils/types";
 import { isHydratingPrerenderedPage } from "../utils/prerender";
 
 const MOBILE_BREAKPOINT_PX = 860;
 const POST_ENTRY_FADE_MS = 320;
-const DESKTOP_READING_WIDTH = "46rem";
-const DESKTOP_SIDEBAR_WIDTH = "clamp(11.5rem, 16vw, 14.5rem)";
 function getInitialIsMobile(): boolean {
   if (typeof window === "undefined") return false;
   if (isHydratingPrerenderedPage()) return false;
@@ -22,12 +19,10 @@ export default function BlogPost({
   heroImage,
   contentRef,
   onContentClick,
-  sidebar,
   header,
   children,
 }: BlogPostProps): JSX.Element {
   const [isMobile, setIsMobile] = useState(getInitialIsMobile);
-  const [isSidebarDismissed, setIsSidebarDismissed] = useState(false);
   const [hoveredButtonIndex, setHoveredButtonIndex] = useState<number | null>(
     null,
   );
@@ -76,14 +71,6 @@ export default function BlogPost({
     : isMobile
       ? "0.9rem 0 1rem"
       : "1.1rem 0 1.2rem";
-  const contentPadding = "0.4rem 0 0";
-  const showSidebar = Boolean(sidebar) && !isMobile && !isSidebarDismissed;
-  const postColumnWidth = isMobile
-    ? "100%"
-    : showSidebar
-      ? `calc(${DESKTOP_READING_WIDTH} + ${DESKTOP_SIDEBAR_WIDTH})`
-      : DESKTOP_READING_WIDTH;
-  const hasDesktopSidebar = Boolean(sidebar) && !isMobile;
   const postContentFadeStyle: CSSProperties = isEntryReady
     ? {
         opacity: 1,
@@ -123,13 +110,7 @@ export default function BlogPost({
         position: "relative",
       }}
     >
-      <div
-        style={{
-          width: postColumnWidth,
-          maxWidth: "100%",
-          marginInline: "auto",
-        }}
-      >
+      <div className="post-column">
         {header}
         {heroImage ? (
           <div
@@ -206,85 +187,22 @@ export default function BlogPost({
             width: "100%",
           }}
         >
-          <section
-            data-post-reading-card
+          <article
+            ref={contentRef}
+            className="post-content"
+            data-post-content
             style={{
               width: "100%",
-              position: "relative",
-              color: "var(--ink)",
-              isolation: "isolate",
+              minWidth: 0,
+              paddingTop: "0.4rem",
+              lineHeight: 1.7,
+              fontSize: "1.1rem",
+              color: "var(--ink-soft)",
             }}
+            onClick={onContentClick}
           >
-            {hasDesktopSidebar && !showSidebar ? (
-              <div className="post-toc-reopen">
-                <button
-                  type="button"
-                  onClick={() => setIsSidebarDismissed(false)}
-                  aria-label="Show contents"
-                  className="post-sidebar-toggle"
-                >
-                  <ArrowFromLineIcon direction="right" />
-                </button>
-              </div>
-            ) : null}
-            <div
-              className="post-reading-grid"
-              style={{
-                width: "100%",
-                position: "relative",
-                zIndex: 1,
-                padding: contentPadding,
-                display: "grid",
-                gridTemplateColumns: showSidebar
-                  ? `${DESKTOP_SIDEBAR_WIDTH} minmax(0, 1fr)`
-                  : "minmax(0, 1fr)",
-                gap: 0,
-                alignItems: "start",
-              }}
-            >
-              {showSidebar ? (
-                <aside className="post-sidebar">
-                  <div className="post-sidebar-header">
-                    <p className="post-toc-eyebrow">Contents</p>
-                    <button
-                      type="button"
-                      onClick={() => setIsSidebarDismissed(true)}
-                      aria-label="Hide contents"
-                      className="post-sidebar-toggle"
-                    >
-                      <ArrowFromLineIcon direction="left" />
-                    </button>
-                  </div>
-                  {sidebar}
-                </aside>
-              ) : null}
-              <article
-                ref={contentRef}
-                className="post-content"
-                data-post-content
-                style={{
-                  borderLeft:
-                    showSidebar && !isMobile
-                      ? "1px solid rgba(17, 17, 17, 0.12)"
-                      : undefined,
-                  width: "100%",
-                  minWidth: 0,
-                  paddingLeft:
-                    showSidebar && !isMobile
-                      ? "clamp(1rem, 1.8vw, 1.6rem)"
-                      : undefined,
-                  lineHeight: 1.7,
-                  fontSize: "1.1rem",
-                  color: "var(--ink-soft)",
-                  position: "relative",
-                  zIndex: 1,
-                }}
-                onClick={onContentClick}
-              >
-                {children}
-              </article>
-            </div>
-          </section>
+            {children}
+          </article>
         </div>
       </div>
     </main>
