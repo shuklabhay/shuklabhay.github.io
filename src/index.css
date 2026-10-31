@@ -19,6 +19,10 @@
   --content-left-margin: 3.5rem;
   --reading-width: 50rem;
   --mobile-band-height: 7.5rem;
+  --motion-page: 100ms;
+  --motion-home: 120ms;
+  --motion-hover: 100ms;
+  --motion-layout: 120ms;
 }
 
 html {
@@ -88,7 +92,7 @@ html.route-home .route-sky {
 }
 
 html.post-expand-animating .route-sky {
-  transition: clip-path 120ms linear;
+  transition: clip-path var(--motion-layout) linear;
 }
 
 html.route-post.post-expanded .route-sky {
@@ -110,7 +114,7 @@ html.route-post.post-expanded .route-sky {
 }
 
 html.post-expand-animating .side-nav-link {
-  transition: opacity 75ms linear;
+  transition: opacity var(--motion-layout) linear;
 }
 
 html.route-post.post-expanded .side-nav-link {
@@ -137,7 +141,7 @@ html.route-post.post-expanded .side-nav-link {
 
 .side-nav-link {
   opacity: 0.62;
-  transition: opacity 140ms linear;
+  transition: opacity var(--motion-hover) linear;
 }
 
 .side-nav-link.is-active {
@@ -163,7 +167,7 @@ html.route-post.post-expanded .side-nav-link {
 }
 
 html.post-expand-animating .app-shell {
-  transition: padding-left 120ms linear;
+  transition: padding-left var(--motion-layout) linear;
 }
 
 html.route-post.post-expanded .app-shell {
@@ -213,7 +217,7 @@ html.route-post.post-expanded .app-shell {
 }
 
 html.post-expand-animating .post-column {
-  transition: margin-left 120ms linear;
+  transition: margin-left var(--motion-layout) linear;
 }
 
 html.route-post.post-expanded .post-column {
@@ -235,7 +239,7 @@ html.route-post.post-expanded .post-column {
 .post-back-link,
 .post-expand-toggle {
   color: var(--ink);
-  transition: opacity 120ms linear;
+  transition: opacity var(--motion-hover) linear;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -341,8 +345,51 @@ body.route-home #root {
 ::view-transition-group(*),
 ::view-transition-old(*),
 ::view-transition-new(*) {
-  animation-duration: 100ms;
+  animation-duration: var(--motion-page);
   animation-timing-function: linear;
+}
+
+html.home-transition::view-transition-group(*) {
+  animation-duration: var(--motion-home);
+}
+
+html.home-transition::view-transition-image-pair(root) {
+  isolation: auto;
+}
+
+html.home-transition::view-transition-old(root) {
+  animation: none;
+  opacity: 1;
+  mix-blend-mode: normal;
+}
+
+html.home-transition::view-transition-new(root),
+html.home-transition::view-transition-new(page-about),
+html.home-transition::view-transition-new(page-gallery),
+html.home-transition::view-transition-new(page-post),
+html.home-transition::view-transition-new(page-missing) {
+  animation: home-fade-in var(--motion-home) linear both;
+  mix-blend-mode: normal;
+}
+
+html.home-transition::view-transition-old(page-about),
+html.home-transition::view-transition-old(page-gallery),
+html.home-transition::view-transition-old(page-post),
+html.home-transition::view-transition-old(page-missing) {
+  animation: home-fade-out var(--motion-home) linear both;
+  mix-blend-mode: normal;
+}
+
+@keyframes home-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes home-fade-out {
+  to {
+    opacity: 0;
+  }
 }
 
 .app-shell-home {
@@ -419,7 +466,7 @@ code {
   text-decoration-color: rgba(17, 17, 17, 0.4);
   text-underline-offset: 0.18em;
   overflow-wrap: anywhere;
-  transition: text-decoration-color 120ms linear;
+  transition: text-decoration-color var(--motion-hover) linear;
 }
 
 .post-content a:hover,
@@ -636,9 +683,9 @@ html.post-expanded .post-toc.is-ticks.is-open {
 
 .post-toc.is-animating li {
   transition:
-    grid-template-rows 100ms linear,
-    opacity 100ms linear,
-    visibility 100ms linear;
+    grid-template-rows var(--motion-page) linear,
+    opacity var(--motion-page) linear,
+    visibility var(--motion-page) linear;
 }
 
 .post-toc-link {
@@ -657,7 +704,7 @@ html.post-expanded .post-toc.is-ticks.is-open {
   line-height: 1.35;
   text-decoration: none;
   opacity: 0.45;
-  transition: opacity 120ms linear;
+  transition: opacity var(--motion-hover) linear;
 }
 
 .post-toc-label {

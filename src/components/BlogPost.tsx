@@ -4,7 +4,6 @@ import type { BlogPostProps } from "../utils/types";
 import { isHydratingPrerenderedPage } from "../utils/prerender";
 
 const MOBILE_BREAKPOINT_PX = 860;
-const POST_ENTRY_FADE_MS = 320;
 function getInitialIsMobile(): boolean {
   if (typeof window === "undefined") return false;
   if (isHydratingPrerenderedPage()) return false;
@@ -12,7 +11,6 @@ function getInitialIsMobile(): boolean {
 }
 
 export default function BlogPost({
-  isEntryReady,
   title,
   byline,
   buttons,
@@ -26,9 +24,6 @@ export default function BlogPost({
   const [hoveredButtonIndex, setHoveredButtonIndex] = useState<number | null>(
     null,
   );
-  const prefersReducedMotion =
-    typeof window !== "undefined" &&
-    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -71,15 +66,6 @@ export default function BlogPost({
     : isMobile
       ? "0.9rem 0 1rem"
       : "1.1rem 0 1.2rem";
-  const postContentFadeStyle: CSSProperties = isEntryReady
-    ? {
-        opacity: 1,
-        pointerEvents: "auto",
-      }
-    : {
-        opacity: 0,
-        pointerEvents: "none",
-      };
   const getHeaderButtonStyle = (isHovered: boolean): CSSProperties => ({
     display: "inline-flex",
     alignItems: "center",
@@ -97,7 +83,7 @@ export default function BlogPost({
     letterSpacing: "0.01em",
     lineHeight: 1,
     transition:
-      "background-color 120ms ease, border-color 120ms ease, color 120ms ease",
+      "background-color var(--motion-hover) linear, border-color var(--motion-hover) linear, color var(--motion-hover) linear",
   });
 
   return (
@@ -178,32 +164,22 @@ export default function BlogPost({
             </div>
           ) : null}
         </div>
-        <div
+        <article
+          ref={contentRef}
+          className="post-content"
+          data-post-content
           style={{
-            ...postContentFadeStyle,
-            transition: prefersReducedMotion
-              ? "none"
-              : `opacity ${POST_ENTRY_FADE_MS}ms ease`,
             width: "100%",
+            minWidth: 0,
+            paddingTop: "0.4rem",
+            lineHeight: 1.7,
+            fontSize: "1.1rem",
+            color: "var(--ink-soft)",
           }}
+          onClick={onContentClick}
         >
-          <article
-            ref={contentRef}
-            className="post-content"
-            data-post-content
-            style={{
-              width: "100%",
-              minWidth: 0,
-              paddingTop: "0.4rem",
-              lineHeight: 1.7,
-              fontSize: "1.1rem",
-              color: "var(--ink-soft)",
-            }}
-            onClick={onContentClick}
-          >
-            {children}
-          </article>
-        </div>
+          {children}
+        </article>
       </div>
     </main>
   );

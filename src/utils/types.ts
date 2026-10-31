@@ -10,9 +10,6 @@ export type GitHubRestReturn = unknown;
 export type GitHubRepo = { full_name: string };
 
 export type RouteTransitionState = {
-  fromPost?: boolean;
-  fromBlog?: boolean;
-  fromTopNav?: boolean;
   fromPath?: string;
 };
 
@@ -116,7 +113,6 @@ export type UnderlineStyle = {
 };
 
 export type BlogPostProps = {
-  isEntryReady: boolean;
   title: string;
   byline?: string;
   buttons: PostButton[];

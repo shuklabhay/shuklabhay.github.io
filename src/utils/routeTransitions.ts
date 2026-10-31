@@ -2,21 +2,11 @@ import { flushSync } from "react-dom";
 import type { NavigateFunction, NavigateOptions } from "react-router-dom";
 import { runWithRootViewTransition } from "./viewTransitions";
 
-const LAST_PATHNAME_KEY = "route-last-pathname";
-
 export function isBlogPostPath(pathname: string) {
   return pathname.startsWith("/gallery/") && pathname !== "/gallery";
 }
 
-export function getLastPathname() {
-  if (typeof window === "undefined") return null;
-  return window.sessionStorage.getItem(LAST_PATHNAME_KEY);
-}
-
-export function setLastPathname(pathname: string) {
-  if (typeof window === "undefined") return;
-  window.sessionStorage.setItem(LAST_PATHNAME_KEY, pathname);
-}
+let activeTransitionId = 0;
 
 export function navigateWithRouteTransition(
   navigate: NavigateFunction,
@@ -39,5 +29,19 @@ export function navigateWithRouteTransition(
     return;
   }
 
-  runWithRootViewTransition(update);
+  const rootEl = document.documentElement;
+  const isHomeTransition =
+    rootEl.classList.contains("route-home") || to === "/" || to === "/contact";
+  rootEl.classList.toggle("home-transition", isHomeTransition);
+
+  const transitionId = ++activeTransitionId;
+  const clearHomeTransition = (): void => {
+    if (transitionId === activeTransitionId) {
+      rootEl.classList.remove("home-transition");
+    }
+  };
+  runWithRootViewTransition(update)?.then(
+    clearHomeTransition,
+    clearHomeTransition,
+  );
 }

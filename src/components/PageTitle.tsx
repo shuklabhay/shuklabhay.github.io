@@ -97,7 +97,7 @@ function getCheckboxStyle({
     display: "inline-flex",
     alignItems: "center",
     gap: 0,
-    transition: canHover ? "color 120ms linear" : "none",
+    transition: canHover ? "color var(--motion-hover) linear" : "none",
     textDecorationLine: isOn ? "underline" : "none",
     textDecorationThickness: "1.5px",
     textUnderlineOffset: "0.25em",

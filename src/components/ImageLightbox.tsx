@@ -184,7 +184,7 @@ export default function ImageLightbox({
           from: { opacity: 0 },
           enter: { opacity: 1 },
           leave: { opacity: 0 },
-          config: { duration: 170 },
+          config: { duration: 100 },
         }}
       />
     </div>
