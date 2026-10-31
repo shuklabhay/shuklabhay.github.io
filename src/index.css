@@ -14,7 +14,7 @@
   --sidebar-width: max(clamp(9.5rem, 21vw, 16rem), calc(100vw - 64rem));
   --content-gutter: clamp(1.5rem, 4vw, 3.5rem);
   --content-left-margin: 2.25rem;
-  --reading-width: 46rem;
+  --reading-width: 50rem;
   --mobile-band-height: 7.5rem;
 }
 
@@ -437,7 +437,7 @@ code {
 }
 
 .about-subtitle {
-  max-width: 50rem;
+  max-width: var(--reading-width);
   margin-top: 0.5rem;
   color: var(--ink-soft);
   font-size: 1.1rem;
@@ -560,7 +560,7 @@ code {
   background: transparent;
   color: white;
   cursor: pointer;
-  font-size: 0.84rem;
+  font-size: 1rem;
   font-weight: 490;
   line-height: 1.35;
   text-decoration: none;
@@ -573,7 +573,7 @@ code {
 }
 
 .post-toc-link.is-top-level {
-  font-size: 0.92rem;
+  font-size: 1.1rem;
   opacity: 0.62;
 }
 
