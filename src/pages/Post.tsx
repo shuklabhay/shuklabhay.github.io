@@ -41,6 +41,7 @@ const HEADING_JUMP_WATCH_TIMEOUT_MS = 8000;
 const HEADING_JUMP_SETTLED_TICKS = 4;
 const POST_EXPAND_ANIMATION_MS = 150;
 const CONTENTS_BOTTOM_MARGIN_PX = 16;
+const CONTENTS_MIN_LIST_WIDTH_PX = 190;
 const HEADING_JUMP_SCROLL_MS = 180;
 
 function scrollLinearlyTo(top: number): () => void {
@@ -83,6 +84,21 @@ function fitContentsToViewport(tocEl: HTMLElement, animate: boolean): void {
   const rowEls = Array.from(tocEl.querySelectorAll("li"));
   tocEl.classList.toggle("is-animating", animate);
   if (rowEls.length === 0 || tocEl.getClientRects().length === 0) return;
+
+  const columnEl = document.querySelector<HTMLElement>(".post-column");
+  const room = document.documentElement.classList.contains("post-expanded")
+    ? (window.innerWidth - (columnEl?.offsetWidth ?? 0)) / 2 - 32
+    : (tocEl.parentElement?.clientWidth ?? 0);
+  const isTicks = room < CONTENTS_MIN_LIST_WIDTH_PX;
+  const isOpen =
+    isTicks &&
+    (tocEl.matches(":hover") || tocEl.querySelector(":focus-visible") !== null);
+  tocEl.classList.toggle("is-ticks", isTicks);
+  tocEl.classList.toggle("is-open", isOpen);
+  if (isTicks && !isOpen) {
+    rowEls.forEach((rowEl) => rowEl.classList.remove("is-fit-hidden"));
+    return;
+  }
 
   const available =
     window.innerHeight -
@@ -595,6 +611,10 @@ export default function Post({
   }, []);
 
   useIsomorphicLayoutEffect(() => {
+    document.documentElement.classList.toggle("post-expanded", isExpanded);
+  }, [isExpanded]);
+
+  useIsomorphicLayoutEffect(() => {
     const fitContents = (animate: boolean): void => {
       const tocEl = document.querySelector<HTMLElement>(".post-toc");
       if (tocEl) fitContentsToViewport(tocEl, animate);
@@ -604,12 +624,19 @@ export default function Post({
     fitContents(previousFittedHeadingIdRef.current !== null);
     previousFittedHeadingIdRef.current = activeHeadingId;
     window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, [activeHeadingId, contentsSlot, postHeadings]);
-
-  useIsomorphicLayoutEffect(() => {
-    document.documentElement.classList.toggle("post-expanded", isExpanded);
-  }, [isExpanded]);
+    const tocEl = document.querySelector<HTMLElement>(".post-toc");
+    tocEl?.addEventListener("pointerenter", onResize);
+    tocEl?.addEventListener("pointerleave", onResize);
+    tocEl?.addEventListener("focusin", onResize);
+    tocEl?.addEventListener("focusout", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      tocEl?.removeEventListener("pointerenter", onResize);
+      tocEl?.removeEventListener("pointerleave", onResize);
+      tocEl?.removeEventListener("focusin", onResize);
+      tocEl?.removeEventListener("focusout", onResize);
+    };
+  }, [activeHeadingId, contentsSlot, isExpanded, postHeadings]);
 
   useEffect(() => {
     return () => {

@@ -109,11 +109,11 @@ html.route-post.post-expanded .route-sky {
   -webkit-touch-callout: none;
 }
 
-html.post-expand-animating .side-nav {
+html.post-expand-animating .side-nav-link {
   transition: opacity 75ms linear;
 }
 
-html.route-post.post-expanded .side-nav {
+html.route-post.post-expanded .side-nav-link {
   opacity: 0;
   pointer-events: none;
 }
@@ -539,11 +539,82 @@ code {
   box-shadow: none;
 }
 
-.post-toc {
+#side-nav-contents {
   width: calc(var(--sidebar-width) - var(--page-x-padding) * 2);
+}
+
+.post-toc {
+  width: 100%;
   max-width: 18rem;
   margin-top: 2.5rem;
   overflow: hidden;
+  color: white;
+}
+
+html.post-expanded .post-toc {
+  position: fixed;
+  top: 1.1rem;
+  left: 1rem;
+  width: calc((100vw - var(--reading-width)) / 2 - 2rem);
+  margin-top: 0;
+  color: var(--ink);
+}
+
+.post-toc.is-ticks {
+  width: 1.25rem;
+}
+
+html.post-expanded .post-toc.is-ticks:not(.is-open) {
+  width: 1.25rem;
+}
+
+.post-toc.is-ticks .post-toc-link::before {
+  content: "";
+  display: block;
+  width: 0.875rem;
+  height: 2px;
+  margin: 6px 0;
+  background: currentColor;
+}
+
+.post-toc.is-ticks .post-toc-link:not(.is-top-level)::before {
+  width: 0.5rem;
+}
+
+.post-toc.is-ticks .post-toc-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.post-toc.is-ticks.is-open {
+  position: absolute;
+  z-index: 2;
+  width: 16rem;
+  max-width: 16rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid rgba(17, 17, 17, 0.14);
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+html.post-expanded .post-toc.is-ticks.is-open {
+  position: fixed;
+}
+
+.post-toc.is-ticks.is-open .post-toc-link::before {
+  display: none;
+}
+
+.post-toc.is-ticks.is-open .post-toc-label {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip: auto;
 }
 
 .post-toc-list {
@@ -579,7 +650,7 @@ code {
   border: none;
   padding: 0;
   background: transparent;
-  color: white;
+  color: inherit;
   cursor: pointer;
   font-size: 1rem;
   font-weight: 490;
@@ -610,7 +681,7 @@ code {
 }
 
 .post-toc-link:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.9);
+  outline: 2px solid currentColor;
   outline-offset: 2px;
 }
 
