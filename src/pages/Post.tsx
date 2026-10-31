@@ -7,6 +7,7 @@ import {
   useState,
 } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
+import { createPortal } from "react-dom";
 import { useLocation, useParams } from "react-router-dom";
 import BlogPost from "../components/BlogPost";
 import ImageLightbox from "../components/ImageLightbox";
@@ -181,6 +182,7 @@ export default function Post({
     !shouldAnimatePostEntry,
   );
   const [isExpanded, setIsExpanded] = useState(false);
+  const [contentsSlot, setContentsSlot] = useState<HTMLElement | null>(null);
   const pendingHeadingJumpIdRef = useRef<string | null>(null);
   const pendingHeadingTargetScrollTopRef = useRef<number | null>(null);
   const pendingHeadingJumpReleaseTimeoutIdRef = useRef<number | null>(null);
@@ -199,7 +201,7 @@ export default function Post({
     if (typeof window === "undefined") return null;
     const headingEl = document.getElementById(headingId);
     if (!(headingEl instanceof HTMLElement)) return null;
-    const readingCardEl = document.querySelector("[data-post-reading-card]");
+    const readingCardEl = document.querySelector("[data-post-content]");
     const headingDocumentTop =
       window.scrollY + headingEl.getBoundingClientRect().top;
     let nextScrollTop = headingDocumentTop - HEADING_SCROLL_OFFSET_PX;
@@ -501,8 +503,12 @@ export default function Post({
   }, [clearPendingHeadingJump]);
 
   useEffect(() => {
+    setContentsSlot(document.getElementById("side-nav-contents"));
+  }, []);
+
+  useEffect(() => {
     if (!activeHeadingId) return;
-    const sidebarEl = document.querySelector(".post-sidebar");
+    const sidebarEl = document.querySelector(".post-toc");
     const activeLinkEl = sidebarEl?.querySelector(".post-toc-link.is-active");
     if (!sidebarEl || !activeLinkEl) return;
 
@@ -804,6 +810,9 @@ export default function Post({
 
   return (
     <>
+      {contentsSlot && postSidebar
+        ? createPortal(postSidebar, contentsSlot)
+        : null}
       <BlogPost
         key={slug}
         header={
@@ -823,7 +832,6 @@ export default function Post({
         heroImage={heroImage}
         contentRef={postContentRef}
         onContentClick={onPostContentClick}
-        sidebar={postSidebar}
       >
         {Content ? <Content /> : null}
       </BlogPost>

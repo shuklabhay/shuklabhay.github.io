@@ -14,6 +14,7 @@
   --sidebar-width: max(clamp(9.5rem, 21vw, 16rem), calc(100vw - 64rem));
   --content-gutter: clamp(1.5rem, 4vw, 3.5rem);
   --content-left-margin: 2.25rem;
+  --reading-width: 46rem;
   --mobile-band-height: 7.5rem;
 }
 
@@ -201,6 +202,22 @@ html.route-post.post-expanded .app-shell {
   clip: rect(0 0 0 0);
   white-space: nowrap;
   border: 0;
+}
+
+.post-column {
+  width: var(--reading-width);
+  max-width: 100%;
+}
+
+html.route-post .post-column {
+  transition: margin-left 240ms linear;
+}
+
+html.route-post.post-expanded .post-column {
+  margin-left: max(
+    0px,
+    calc((100vw - var(--content-gutter) * 2 - var(--reading-width)) / 2)
+  );
 }
 
 .post-header-row {
@@ -519,77 +536,13 @@ code {
   box-shadow: none;
 }
 
-.post-sidebar {
-  position: sticky;
-  top: 1rem;
-  max-height: calc(100vh - 2rem);
+.post-toc {
+  width: calc(var(--sidebar-width) - var(--page-x-padding) * 2);
+  max-width: 18rem;
+  max-height: calc(100vh - 11rem);
+  margin-top: 2.5rem;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding-right: 0.9rem;
-  min-width: 0;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.post-sidebar-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.6rem;
-  margin-bottom: 0.4rem;
-}
-
-.post-sidebar-header .post-toc-eyebrow {
-  margin: 0;
-}
-
-.post-sidebar-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.08rem 0;
-  border: 0;
-  background: transparent;
-  color: var(--ink-muted);
-  line-height: 1;
-  cursor: pointer;
-  transition: color 120ms linear;
-}
-
-.post-sidebar-toggle:hover,
-.post-sidebar-toggle:focus-visible {
-  color: var(--ink);
-}
-
-.post-sidebar-toggle:focus-visible {
-  outline: 2px solid rgba(17, 17, 17, 0.35);
-  outline-offset: 2px;
-}
-
-.post-toc-reopen {
-  position: sticky;
-  top: 1rem;
-  z-index: 2;
-  height: 0;
-}
-
-.post-toc-reopen .post-sidebar-toggle {
-  position: absolute;
-  top: 0.5rem;
-  left: -1.5rem;
-}
-
-.post-toc {
-  padding: 0.08rem 0 0.18rem 0;
-}
-
-.post-toc-eyebrow {
-  margin: 0 0 0.6rem;
-  font-size: 0.73rem;
-  font-weight: 490;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-muted);
 }
 
 .post-toc-list {
@@ -607,13 +560,14 @@ code {
   border: none;
   padding: 0.16rem 0;
   background: transparent;
-  color: var(--ink-muted);
+  color: white;
   cursor: pointer;
-  font-size: 0.92rem;
+  font-size: 0.84rem;
   font-weight: 490;
   line-height: 1.35;
   text-decoration: none;
-  transition: color 120ms linear;
+  opacity: 0.45;
+  transition: opacity 120ms linear;
 }
 
 .post-toc-label {
@@ -621,48 +575,23 @@ code {
 }
 
 .post-toc-link.is-top-level {
-  font-weight: 700;
-  color: var(--ink);
-  opacity: 1;
-}
-
-.post-toc-link.is-parent-active {
-  color: var(--ink);
-  opacity: 1;
+  font-size: 0.92rem;
+  opacity: 0.62;
 }
 
 .post-toc-link.is-active {
-  color: var(--ink);
   opacity: 1;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.2em;
 }
 
-.post-toc-link.is-active:hover,
-.post-toc-link.is-active:focus-visible {
-  color: var(--ink);
-}
-
-.post-toc-link.is-parent-active:hover,
-.post-toc-link.is-parent-active:focus-visible {
-  color: var(--ink);
-}
-
-.post-toc-link:hover,
-.post-toc-link:focus-visible {
-  color: var(--ink);
-}
-
-.post-toc-link:focus-visible {
-  outline: 2px solid rgba(17, 17, 17, 0.35);
-  outline-offset: 2px;
-}
-
-@media (min-width: 861px) {
-  body {
-    overflow-y: visible;
+@media (hover: hover) {
+  .post-toc-link:hover {
+    opacity: 1;
   }
+}
+
+.post-toc-link:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.9);
+  outline-offset: 2px;
 }
 
 @media (max-width: 860px) {
@@ -679,16 +608,12 @@ code {
     font-size: 1.75rem;
   }
 
-  .post-toc {
-    padding: 0 0 0.55rem;
+  #side-nav-contents {
+    display: none;
   }
 
   html.route-home {
     background-position: var(--home-mobile-focal-x) center;
-  }
-
-  [data-post-reading-card] {
-    width: 100% !important;
   }
 
   .route-sky {
@@ -724,12 +649,6 @@ code {
 
   .post-expand-toggle {
     display: none;
-  }
-
-  .post-reading-grid {
-    padding: 0.4rem 0 0 !important;
-    grid-template-columns: minmax(0, 1fr) !important;
-    gap: 0 !important;
   }
 }
 

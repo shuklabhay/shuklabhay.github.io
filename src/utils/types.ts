@@ -123,7 +123,6 @@ export type BlogPostProps = {
   heroImage?: string;
   contentRef: RefObject<HTMLElement>;
   onContentClick?: MouseEventHandler<HTMLElement>;
-  sidebar?: ReactNode;
   header?: ReactNode;
   children: ReactNode;
 };
