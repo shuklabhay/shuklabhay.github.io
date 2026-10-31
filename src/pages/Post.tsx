@@ -21,13 +21,7 @@ import {
 } from "../posts";
 import { preloadImage } from "../utils/imagePreload";
 import { formatPostDate } from "../utils/formatPostDate";
-import { shouldSkipEntryAnimation } from "../utils/useEntryFade";
-import { canRunRootViewTransition } from "../utils/viewTransitions";
-import type {
-  PostEntry,
-  RichImage,
-  RouteTransitionState,
-} from "../utils/types";
+import type { PostEntry, RichImage } from "../utils/types";
 
 const POST_SCROLL_POSITION_PREFIX = "post-scroll-position:";
 const HEADING_SCROLL_OFFSET_PX = 80;
@@ -241,15 +235,9 @@ export default function Post({
   const { slug: routeSlug = "" } = useParams();
   const slug = initialSlug ?? routeSlug;
   const location = useLocation();
-  const transitionState = location.state as RouteTransitionState | null;
   const prefersReducedMotion =
     typeof window !== "undefined" &&
     window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
-  const shouldAnimatePostEntry =
-    transitionState?.fromBlog === true &&
-    !prefersReducedMotion &&
-    !shouldSkipEntryAnimation() &&
-    !canRunRootViewTransition();
   const isDocumentReload = didDocumentReload();
   const postScrollStorageKey = getPostScrollStorageKey(location.pathname);
   const postSummary = getPostBySlug(slug);
@@ -278,9 +266,6 @@ export default function Post({
     postEntryState?.slug === slug
       ? postEntryState.entry
       : ((postSummary ? readPostBySlug(slug) : undefined) ?? null);
-  const [isPostEntryReady, setIsPostEntryReady] = useState(
-    !shouldAnimatePostEntry,
-  );
   const [isExpanded, setIsExpanded] = useState(false);
   const [contentsSlot, setContentsSlot] = useState<HTMLElement | null>(null);
   const pendingHeadingJumpIdRef = useRef<string | null>(null);
@@ -704,31 +689,6 @@ export default function Post({
     void preloadImage(heroImage);
   }, [heroImage, postSummary]);
 
-  useIsomorphicLayoutEffect(() => {
-    if (!shouldAnimatePostEntry) {
-      setIsPostEntryReady(true);
-      return;
-    }
-
-    setIsPostEntryReady(false);
-    let cancelled = false;
-    let frame = 0;
-    let timeoutId = 0;
-
-    frame = window.requestAnimationFrame(() => {
-      timeoutId = window.setTimeout(() => {
-        if (cancelled) return;
-        setIsPostEntryReady(true);
-      }, 40);
-    });
-
-    return () => {
-      cancelled = true;
-      window.cancelAnimationFrame(frame);
-      window.clearTimeout(timeoutId);
-    };
-  }, [shouldAnimatePostEntry, slug]);
-
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -1004,7 +964,6 @@ export default function Post({
             }
           />
         }
-        isEntryReady={isPostEntryReady}
         title={postSummary.title}
         byline={bylineParts.length ? bylineParts.join(" · ") : undefined}
         buttons={postSummary.buttons}

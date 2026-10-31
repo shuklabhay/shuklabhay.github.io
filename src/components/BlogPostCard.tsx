@@ -40,7 +40,7 @@ export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
   return (
     <TransitionLink
       to={postPath}
-      state={{ fromBlog: true, fromPath: "/gallery" }}
+      state={{ fromPath: "/gallery" }}
       style={{
         display: "block",
         width: "100%",
@@ -50,7 +50,6 @@ export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
         userSelect: "none",
         WebkitUserSelect: "none",
         WebkitTouchCallout: "none",
-        transition: "color 140ms ease, opacity 140ms ease",
       }}
       onMouseEnter={() => {
         warmPostResources();
@@ -82,7 +81,6 @@ export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
           fontSize: "1.1rem",
           fontWeight: 490,
           lineHeight: 1.7,
-          transition: "color 140ms ease",
         }}
       >
         <span

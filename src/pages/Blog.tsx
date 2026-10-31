@@ -1,19 +1,15 @@
 import PageTitle, { CheckboxSubtitleLink } from "../components/PageTitle";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
 import BlogPostCard from "../components/BlogPostCard";
 import { allPosts } from "../posts";
-import { shouldSkipEntryAnimation, useEntryFade } from "../utils/useEntryFade";
 import { preloadImage } from "../utils/imagePreload";
 import type {
   BlogSortDirection,
   BlogSortField,
   BlogSortState,
-  RouteTransitionState,
 } from "../utils/types";
 
 const BLOG_SORT_STORAGE_KEY = "blog-sort-state-v1";
-const BLOG_ENTRY_FADE_MS = 520;
 const DEFAULT_BLOG_SORT_STATE: BlogSortState = {
   sortField: "date",
   dateDirection: "desc",
@@ -53,31 +49,6 @@ function readBlogSortStateFromStorage(): BlogSortState {
 }
 
 export default function Blog() {
-  const location = useLocation();
-  const blogTransitionState = location.state as RouteTransitionState | null;
-  const prefersReducedMotion =
-    typeof window !== "undefined" &&
-    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
-  const entryFadeDecisionByLocationKeyRef = useRef<{
-    key: string;
-    shouldAnimate: boolean;
-  } | null>(null);
-
-  if (entryFadeDecisionByLocationKeyRef.current?.key !== location.key) {
-    entryFadeDecisionByLocationKeyRef.current = {
-      key: location.key,
-      shouldAnimate: blogTransitionState?.fromTopNav === true,
-    };
-  }
-
-  const shouldAnimateBlogEntry =
-    (entryFadeDecisionByLocationKeyRef.current?.shouldAnimate ?? false) &&
-    !prefersReducedMotion &&
-    !shouldSkipEntryAnimation();
-  const blogEntryFadeStyle = useEntryFade(
-    shouldAnimateBlogEntry,
-    BLOG_ENTRY_FADE_MS,
-  );
   const [sortState, setSortState] = useState<BlogSortState>(
     DEFAULT_BLOG_SORT_STATE,
   );
@@ -165,7 +136,6 @@ export default function Blog() {
     <main
       className="route-page-gallery"
       style={{
-        ...blogEntryFadeStyle,
         width: "100%",
         color: "var(--ink)",
         paddingBottom: "calc(2rem + env(safe-area-inset-bottom))",

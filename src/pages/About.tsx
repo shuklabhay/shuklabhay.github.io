@@ -1,11 +1,8 @@
 import TransitionLink from "../components/TransitionLink";
 import PageTitle from "../components/PageTitle";
 import { contactData, getContactLink } from "../utils/contactData";
-import { useRouteEntryFade } from "../utils/useEntryFade";
 
 export default function About(): JSX.Element {
-  const entryFadeStyle = useRouteEntryFade(450);
-
   const rawEmail = getContactLink(contactData, "Email");
   const email = rawEmail ? `mailto:${rawEmail}` : undefined;
   const twitter = getContactLink(contactData, "Twitter");
@@ -13,7 +10,7 @@ export default function About(): JSX.Element {
   const github = getContactLink(contactData, "GitHub");
 
   return (
-    <main className="about-page route-page-about" style={entryFadeStyle}>
+    <main className="about-page route-page-about">
       <PageTitle
         title="Hi, I'm Abhay"
         subtitle={
@@ -30,7 +27,7 @@ export default function About(): JSX.Element {
               have never been done before but are overwhelmingly worth doing,{" "}
               <TransitionLink
                 to="/gallery/rcbi"
-                state={{ fromBlog: true, fromPath: "/about" }}
+                state={{ fromPath: "/about" }}
                 className="about-contact-link"
               >
                 regardless of form or function.

@@ -12,7 +12,7 @@ import Blog from "./pages/Blog.tsx";
 import Home from "./pages/Home.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Post from "./pages/Post.tsx";
-import { isBlogPostPath, setLastPathname } from "./utils/routeTransitions";
+import { isBlogPostPath } from "./utils/routeTransitions";
 
 const HOME_BACKGROUND_IMMEDIATE_SRC = "/static/landing-1280.webp";
 const SITE_TITLE = "Abhay Shukla";
@@ -257,7 +257,6 @@ export function AppShell(): JSX.Element {
       "route-post",
       isBlogPostPath(normalizePathname(location.pathname)),
     );
-    setLastPathname(location.pathname);
   }, [location.pathname]);
 
   return (
