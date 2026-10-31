@@ -36,6 +36,9 @@ const HEADING_JUMP_SETTLE_TOLERANCE_PX = 12;
 const HEADING_JUMP_RELEASE_DELAY_MS = 140;
 const CARD_TOP_CLAMP_MARGIN_PX = 12;
 const CARD_TOP_CLAMP_DISTANCE_PX = HEADING_SCROLL_OFFSET_PX + 40;
+const HEADING_JUMP_WATCH_INTERVAL_MS = 150;
+const HEADING_JUMP_WATCH_TIMEOUT_MS = 8000;
+const HEADING_JUMP_SETTLED_TICKS = 4;
 
 type PostHeading = {
   id: string;
@@ -186,6 +189,7 @@ export default function Post({
   const pendingHeadingJumpIdRef = useRef<string | null>(null);
   const pendingHeadingTargetScrollTopRef = useRef<number | null>(null);
   const pendingHeadingJumpReleaseTimeoutIdRef = useRef<number | null>(null);
+  const stopHeadingJumpWatchRef = useRef<(() => void) | null>(null);
 
   const clearPendingHeadingJump = useCallback(() => {
     pendingHeadingJumpIdRef.current = null;
@@ -499,6 +503,7 @@ export default function Post({
   useEffect(() => {
     return () => {
       clearPendingHeadingJump();
+      stopHeadingJumpWatchRef.current?.();
     };
   }, [clearPendingHeadingJump]);
 
@@ -750,6 +755,7 @@ export default function Post({
   const onHeadingJump = (headingId: string) => {
     if (typeof window === "undefined") return;
     clearPendingHeadingJump();
+    stopHeadingJumpWatchRef.current?.();
     const initialTargetScrollTop = getHeadingTargetScrollTop(headingId);
     if (initialTargetScrollTop === null) {
       return;
@@ -767,10 +773,52 @@ export default function Post({
       return;
     }
 
-    window.scrollTo({
-      top: initialTargetScrollTop,
-      behavior: prefersReducedMotion ? "auto" : "smooth",
-    });
+    const behavior: ScrollBehavior = prefersReducedMotion ? "auto" : "smooth";
+    window.scrollTo({ top: initialTargetScrollTop, behavior });
+
+    const startedAt = Date.now();
+    let lastScrollTop = window.scrollY;
+    let settledTicks = 0;
+    const intervalId = window.setInterval(() => {
+      const targetScrollTop = getHeadingTargetScrollTop(headingId);
+      if (
+        targetScrollTop === null ||
+        Date.now() - startedAt > HEADING_JUMP_WATCH_TIMEOUT_MS
+      ) {
+        stopWatching();
+        return;
+      }
+
+      const maxScrollTop =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const reachableTarget = Math.min(targetScrollTop, maxScrollTop);
+      const isOnTarget =
+        Math.abs(window.scrollY - reachableTarget) <=
+        HEADING_JUMP_SETTLE_TOLERANCE_PX;
+      const isIdle = window.scrollY === lastScrollTop;
+      lastScrollTop = window.scrollY;
+
+      if (isOnTarget) {
+        settledTicks += 1;
+        if (settledTicks >= HEADING_JUMP_SETTLED_TICKS) stopWatching();
+        return;
+      }
+
+      settledTicks = 0;
+      if (isIdle) window.scrollTo({ top: reachableTarget, behavior });
+    }, HEADING_JUMP_WATCH_INTERVAL_MS);
+
+    const stopWatching = (): void => {
+      window.clearInterval(intervalId);
+      window.removeEventListener("wheel", stopWatching);
+      window.removeEventListener("touchstart", stopWatching);
+      window.removeEventListener("keydown", stopWatching);
+      stopHeadingJumpWatchRef.current = null;
+    };
+    window.addEventListener("wheel", stopWatching, { passive: true });
+    window.addEventListener("touchstart", stopWatching, { passive: true });
+    window.addEventListener("keydown", stopWatching);
+    stopHeadingJumpWatchRef.current = stopWatching;
   };
 
   const activeParentHeadingId = activeHeadingId
