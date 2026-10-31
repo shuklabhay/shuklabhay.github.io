@@ -16,7 +16,7 @@
     calc(100vw - var(--reading-width) - var(--content-left-margin) * 2)
   );
   --content-gutter: clamp(1.5rem, 4vw, 3.5rem);
-  --content-left-margin: 2.25rem;
+  --content-left-margin: 3.5rem;
   --reading-width: 50rem;
   --mobile-band-height: 7.5rem;
 }
