@@ -6,6 +6,9 @@
     <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex, notranslate" />
     <title>Projects draft</title>
     <style>
+      html {
+        zoom: 0.8;
+      }
       :root {
         --paper: #fbf9f4;
         --ink: #111;
@@ -167,7 +170,7 @@
         inset: 0;
         z-index: 50;
         background: rgba(8, 10, 18, 0.78);
-        padding: clamp(0.9rem, 2.4vw, 1.8rem);
+        padding: clamp(0.9rem, 3vw, 1.8rem);
         box-sizing: border-box;
         display: flex;
         align-items: center;
@@ -308,7 +311,7 @@
       .list.three .row .t {
         max-width: none;
       }
-      @media (max-width: 860px) {
+      @media (max-width: 1075px) {
         .list.three {
           grid-template-columns: minmax(0, 1fr);
         }
@@ -318,7 +321,7 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
         column-gap: 2rem;
       }
-      @media (max-width: 860px) {
+      @media (max-width: 1075px) {
         .list.two {
           grid-template-columns: minmax(0, 1fr);
         }
@@ -338,7 +341,7 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
         column-gap: 2rem;
       }
-      @media (max-width: 860px) {
+      @media (max-width: 1075px) {
         .more.cols {
           grid-template-columns: minmax(0, 1fr);
         }
@@ -363,7 +366,7 @@
       .mrow .row .t {
         max-width: none;
       }
-      @media (max-width: 860px) {
+      @media (max-width: 1075px) {
         .mrow {
           grid-template-columns: minmax(0, 1fr);
           row-gap: 1rem;
@@ -382,7 +385,7 @@
         border: 0;
         background: #000;
       }
-      @media (max-width: 860px) {
+      @media (max-width: 1075px) {
         .more.yt {
           grid-template-columns: minmax(0, 1fr);
         }
@@ -426,7 +429,7 @@
       .more a {
         color: inherit;
       }
-      @media (max-width: 860px) {
+      @media (max-width: 1075px) {
         .sky {
           position: static;
           width: 100%;
@@ -606,7 +609,7 @@
       .proj,
       .list,
       .mrow {
-        width: min(80rem, calc(100vw - var(--sky-w) - 7rem));
+        width: min(80rem, calc(125vw - var(--sky-w) - 7rem));
       }
       .proj {
         display: grid;
@@ -682,7 +685,7 @@
       .note a {
         color: inherit;
       }
-      @media (max-width: 860px) {
+      @media (max-width: 1075px) {
         .list,
         .mrow {
           width: auto;
@@ -1015,7 +1018,7 @@
     </main>
     <script>
       const balance = () => {
-        const narrow = matchMedia("(max-width: 860px)").matches;
+        const narrow = matchMedia("(max-width: 1075px)").matches;
         for (const p of document.querySelectorAll(".proj")) {
           if (narrow) {
             p.style.gridTemplateColumns = "";
@@ -1168,9 +1171,13 @@
           media.style.transform = `translate(${tx}px, ${ty}px) scale(${z})`;
         };
         const fit = (w, h) => {
-          const pad = Math.min(28.8, Math.max(14.4, innerWidth * 0.024));
-          const aw = Math.max(0, innerWidth - pad * 2),
-            ah = Math.max(0, innerHeight - pad * 2 - 50);
+          const Z =
+            parseFloat(getComputedStyle(document.documentElement).zoom) || 1;
+          const vw = innerWidth / Z,
+            vh = innerHeight / Z;
+          const pad = Math.min(28.8, Math.max(14.4, vw * 0.024));
+          const aw = Math.max(0, vw - pad * 2),
+            ah = Math.max(0, vh - pad * 2 - 50);
           const k = Math.min(aw / w, ah / h);
           media.style.width = Math.max(1, Math.round(w * k)) + "px";
           media.style.height = Math.max(1, Math.round(h * k)) + "px";
