@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /portfolio-*/
 
 Sitemap: https://shuklabhay.github.io/sitemap.xml
