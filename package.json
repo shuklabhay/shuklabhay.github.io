@@ -6,7 +6,7 @@
   "scripts": {
     "setup": "npm ci",
     "dev": "vite --host",
-    "build": "vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && vite build --ssr scripts/prerender.ts --outDir dist-prerender && node dist-prerender/prerender.js",
+    "build": "vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && vite build --ssr scripts/prerender.ts --outDir dist-prerender && node dist-prerender/prerender.js && cp -R one-off-portfolios/. dist/",
     "preview": "vite preview",
     "lint": "prettier ./ --write",
     "format-check": "prettier ./ --check",
