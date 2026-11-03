@@ -603,7 +603,8 @@
         gap: 1rem;
       }
       .proj,
-      .list {
+      .list,
+      .mrow {
         width: min(80rem, calc(100vw - var(--sky-w) - 7rem));
       }
       .proj {
@@ -681,7 +682,8 @@
         color: inherit;
       }
       @media (max-width: 860px) {
-        .list {
+        .list,
+        .mrow {
           width: auto;
         }
         .proj {
@@ -1106,6 +1108,45 @@
       </div>
 
       <h2 id="also">Also</h2>
+      <div class="mrow">
+        <div class="item row static">
+          <span class="t"
+            ><a
+              class="n"
+              href="https://www.youtube.com/@01shuklabhay"
+              target="_blank"
+              rel="noopener"
+              >Electronic music production</a
+            >
+            <span class="y">2019-now</span
+            ><span class="d"
+              >At 12 I taught myself how to produce electronic music and built
+              an audience, totaling around 200,000+ streams (before getting
+              banned by my music distribution platform for being underage). I
+              haven't since released any music but still produce, and
+              occasionally post on my YouTube. When I was 10 I also tried to
+              become a YouTuber, though it never really took off, learning how
+              to make videos has been extremely useful:)</span
+            ></span
+          >
+        </div>
+        <div class="more yt">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/7Us7SD6txMA"
+            title="mv"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allow="encrypted-media; picture-in-picture; fullscreen"
+            allowfullscreen
+          ></iframe>
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/Qd6vHV9Xg98"
+            title="process"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allow="encrypted-media; picture-in-picture; fullscreen"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
       <div class="list two">
         <div class="row plain">
           <span class="t"
@@ -1145,47 +1186,7 @@
           >
         </div>
       </div>
-      <div class="list">
-        <div class="mrow">
-          <div class="item row static">
-            <span class="t"
-              ><a
-                class="n"
-                href="https://www.youtube.com/@01shuklabhay"
-                target="_blank"
-                rel="noopener"
-                >Electronic music production</a
-              >
-              <span class="y">2019-now</span
-              ><span class="d"
-                >At 12 I taught myself how to produce electronic music and built
-                an audience, totaling around 200,000+ streams (before getting
-                banned by my music distribution platform for being underage). I
-                haven't since released any music but still produce, and
-                occasionally post on my YouTube. When I was 10 I also tried to
-                become a YouTuber, though it never really took off, learning how
-                to make videos has been extremely useful:)</span
-              ></span
-            >
-          </div>
-          <div class="more yt">
-            <iframe
-              src="https://www.youtube-nocookie.com/embed/7Us7SD6txMA"
-              title="mv"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allow="encrypted-media; picture-in-picture; fullscreen"
-              allowfullscreen
-            ></iframe>
-            <iframe
-              src="https://www.youtube-nocookie.com/embed/Qd6vHV9Xg98"
-              title="process"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allow="encrypted-media; picture-in-picture; fullscreen"
-              allowfullscreen
-            ></iframe>
-          </div>
-        </div>
-      </div>
+      <div class="list"></div>
     </main>
     <script>
       const balance = () => {
