@@ -79,7 +79,7 @@ export default function BlogPost({
     color: "var(--ink)",
     textDecoration: "none",
     fontWeight: 490,
-    fontSize: "0.84rem",
+    fontSize: "0.78rem",
     letterSpacing: "0.01em",
     lineHeight: 1,
     transition:
@@ -126,7 +126,7 @@ export default function BlogPost({
               style={{
                 margin: "0.3rem 0 0",
                 color: "var(--ink-muted)",
-                fontSize: "clamp(0.94rem, 1vw, 1.03rem)",
+                fontSize: "clamp(0.86rem, 0.92vw, 0.95rem)",
                 letterSpacing: "0.01em",
               }}
             >
@@ -173,7 +173,7 @@ export default function BlogPost({
             minWidth: 0,
             paddingTop: "0.4rem",
             lineHeight: 1.7,
-            fontSize: "1.1rem",
+            fontSize: "1rem",
             color: "var(--ink-soft)",
           }}
           onClick={onContentClick}
