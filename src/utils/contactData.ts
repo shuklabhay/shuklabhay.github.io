@@ -3,7 +3,7 @@ import type { ContactInfo } from "./types";
 export const contactData: ReadonlyArray<ContactInfo> = [
   {
     title: "Email",
-    link: "01shuklabhay@gmail.com",
+    link: "shuklabhay.inbound@gmail.com",
   },
   {
     title: "Linkedin",
