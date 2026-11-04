@@ -128,8 +128,8 @@ export default function BlogPost({
               style={{
                 margin: "6px 0 0",
                 color: "var(--ink-muted)",
-                fontSize: "12px",
-                lineHeight: "18px",
+                fontSize: "var(--text)",
+                lineHeight: "var(--lh)",
                 letterSpacing: "0.01em",
               }}
             >
@@ -175,8 +175,8 @@ export default function BlogPost({
             width: "100%",
             minWidth: 0,
             paddingTop: 0,
-            lineHeight: "18px",
-            fontSize: "12px",
+            lineHeight: "var(--lh)",
+            fontSize: "var(--text)",
             color: "var(--ink-soft)",
           }}
           onClick={onContentClick}

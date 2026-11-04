@@ -10,6 +10,8 @@
   --home-browser-chrome-color: #9d85b3;
   --home-background-image: url("/static/landing-1280.webp");
   --page-x-padding: 24px;
+  --text: 15px;
+  --lh: 24px;
   --browser-bottom-clearance: 0px;
   --sidebar-width: round(
     down,
@@ -20,7 +22,7 @@
     12px
   );
   --content-gutter: round(clamp(24px, 4vw, 60px), 12px);
-  --content-left-margin: 60px;
+  --content-left-margin: 48px;
   --reading-width: 792px;
   --mobile-band-height: 120px;
   --motion-page: 100ms;
@@ -52,8 +54,8 @@ body {
   font-family:
     -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Roboto, Helvetica,
     Arial, sans-serif;
-  font-size: 12px;
-  line-height: 18px;
+  font-size: var(--text);
+  line-height: var(--lh);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   width: 100%;
@@ -245,8 +247,8 @@ html.route-post.post-expanded .post-column {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  font-size: 12px;
-  line-height: 18px;
+  font-size: var(--text);
+  line-height: var(--lh);
   color: var(--ink);
 }
 
@@ -441,7 +443,7 @@ code {
 .post-content h3,
 .post-content h4 {
   scroll-margin-top: 72px;
-  margin-top: 36px;
+  margin-top: 24px;
   margin-bottom: 6px;
   color: var(--ink);
 }
@@ -458,8 +460,8 @@ code {
 
 .post-content h3,
 .post-content h4 {
-  font-size: 12px;
-  line-height: 18px;
+  font-size: var(--text);
+  line-height: var(--lh);
 }
 
 .post-content > h2:first-child,
@@ -480,13 +482,13 @@ code {
 
 .post-content p,
 .post-content li {
-  line-height: 18px;
+  line-height: var(--lh);
   color: var(--ink);
 }
 
 .post-content li + li,
 .about-subtitle li + li {
-  margin-top: 6px;
+  margin-top: 0;
 }
 
 .post-content ul,
@@ -528,8 +530,8 @@ code {
   max-width: var(--reading-width);
   margin-top: 6px;
   color: var(--ink-soft);
-  font-size: 12px;
-  line-height: 18px;
+  font-size: var(--text);
+  line-height: var(--lh);
 }
 
 .about-subtitle p {
@@ -539,15 +541,15 @@ code {
 .about-subtitle ul {
   margin: 0 0 12px;
   padding-left: 24px;
-  line-height: 18px;
+  line-height: var(--lh);
 }
 
 .about-subtitle .about-list-intro {
-  margin-bottom: 6px;
+  margin-bottom: 0;
 }
 
 .about-subtitle .about-section-start {
-  margin-top: 24px;
+  margin-top: 12px;
 }
 
 .about-subtitle .about-links {
@@ -562,7 +564,7 @@ code {
   border: 0;
   background: rgba(17, 17, 17, 0.05);
   color: var(--ink);
-  font-size: 12px;
+  font-size: 0.9em;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 }
@@ -737,9 +739,9 @@ html.post-expanded .post-toc.is-ticks.is-open {
   background: transparent;
   color: inherit;
   cursor: pointer;
-  font-size: 12px;
+  font-size: var(--text);
   font-weight: 490;
-  line-height: 18px;
+  line-height: var(--lh);
   text-decoration: none;
   opacity: 0.45;
   transition: opacity var(--motion-hover) linear;
@@ -751,7 +753,7 @@ html.post-expanded .post-toc.is-ticks.is-open {
 }
 
 .post-toc-link.is-top-level {
-  font-size: 12px;
+  font-size: var(--text);
   opacity: 0.62;
 }
 
