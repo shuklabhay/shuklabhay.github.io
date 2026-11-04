@@ -78,9 +78,9 @@ export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
           textDecorationLine: isHovered ? "underline" : "none",
           textDecorationThickness: "1.5px",
           textUnderlineOffset: "0.14em",
-          fontSize: "1rem",
+          fontSize: "12px",
           fontWeight: 490,
-          lineHeight: 1.7,
+          lineHeight: "18px",
         }}
       >
         <span

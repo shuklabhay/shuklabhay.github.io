@@ -19,7 +19,7 @@ export default function PageTitle({
   subtitle,
 }: PageTitleProps): JSX.Element {
   return (
-    <div style={{ marginTop: "0.5rem" }}>
+    <div style={{ marginTop: 0 }}>
       <h1 className="page-heading">{title}</h1>
       {subtitle ? subtitle : null}
     </div>
@@ -89,7 +89,8 @@ function getCheckboxStyle({
     border: 0,
     backgroundColor: "transparent",
     color: fg,
-    fontSize: "1rem",
+    fontSize: "12px",
+    lineHeight: "18px",
     fontWeight: 490,
     cursor: "pointer",
     userSelect: "none" as const,
@@ -109,8 +110,8 @@ export function CheckboxSubtitleLink<T extends string = string>({
   items,
   activeIndexes,
   hoverFill = true,
-  marginTop = "0.5rem",
-  marginBottom = "4rem",
+  marginTop = "6px",
+  marginBottom = "48px",
 }: CheckboxSubtitleLinkProps<T>): JSX.Element {
   const { hovered, setHovered, canHover } = useCheckboxSubtitleInteraction();
   const activeIndexSet = useMemo(
@@ -123,7 +124,7 @@ export function CheckboxSubtitleLink<T extends string = string>({
       style={{
         display: "flex",
         flexWrap: "wrap",
-        gap: "1rem",
+        gap: "24px",
         maxWidth: "100%",
         marginTop,
         marginBottom,
@@ -138,7 +139,7 @@ export function CheckboxSubtitleLink<T extends string = string>({
 
         const sharedStyleWithArrowGap = {
           ...sharedStyle,
-          gap: item.arrowDirection ? "0.33rem" : 0,
+          gap: 0,
         };
 
         const onMouseEnter = () => {
@@ -179,7 +180,7 @@ export function CheckboxSubtitleLink<T extends string = string>({
                     display: "inline-flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    width: "0.6rem",
+                    width: "12px",
                     visibility:
                       item.arrowVisible === undefined || item.arrowVisible
                         ? "visible"
@@ -213,7 +214,7 @@ export function CheckboxSubtitleLink<T extends string = string>({
                   display: "inline-flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  width: "0.6rem",
+                  width: "12px",
                   visibility:
                     item.arrowVisible === undefined || item.arrowVisible
                       ? "visible"
@@ -236,8 +237,8 @@ export function CheckboxSubtitleToggle<T extends string = string>({
   hoverFill = true,
   selectedTags,
   setSelectedTags,
-  marginTop = "0.5rem",
-  marginBottom = "4rem",
+  marginTop = "6px",
+  marginBottom = "48px",
 }: CheckboxSubtitleToggleProps<T>): JSX.Element {
   const { hovered, setHovered, canHover } = useCheckboxSubtitleInteraction();
   const selectedTagSet = useMemo(
@@ -299,7 +300,7 @@ export function CheckboxSubtitleToggle<T extends string = string>({
       style={{
         display: "flex",
         flexWrap: "wrap",
-        gap: "1rem",
+        gap: "24px",
         maxWidth: "100%",
         marginTop,
         marginBottom,
@@ -313,7 +314,7 @@ export function CheckboxSubtitleToggle<T extends string = string>({
         const sharedStyle = getCheckboxStyle({ isOn, isHover, canHover });
         const sharedStyleWithArrowGap = {
           ...sharedStyle,
-          gap: item.arrowDirection ? "0.33rem" : 0,
+          gap: 0,
         };
 
         const onMouseEnter = () => {
@@ -344,7 +345,7 @@ export function CheckboxSubtitleToggle<T extends string = string>({
                   display: "inline-flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  width: "0.6rem",
+                  width: "12px",
                   visibility:
                     item.arrowVisible === undefined || item.arrowVisible
                       ? "visible"

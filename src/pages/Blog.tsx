@@ -138,7 +138,7 @@ export default function Blog() {
       style={{
         width: "100%",
         color: "var(--ink)",
-        paddingBottom: "calc(2rem + env(safe-area-inset-bottom))",
+        paddingBottom: "calc(24px + env(safe-area-inset-bottom))",
       }}
     >
       <div style={{ position: "relative" }}>
@@ -148,7 +148,7 @@ export default function Blog() {
         <CheckboxSubtitleLink
           hoverFill
           activeIndexes={[sortField === "date" ? 0 : 1]}
-          marginBottom="0.8rem"
+          marginBottom="12px"
           items={[
             {
               label: "date",
@@ -168,8 +168,8 @@ export default function Blog() {
           flexDirection: "column",
           width: "100%",
           maxWidth: "var(--reading-width)",
-          gap: "0.18rem",
-          marginTop: "1.2rem",
+          gap: "6px",
+          marginTop: "12px",
           userSelect: "none",
           WebkitUserSelect: "none",
           WebkitTouchCallout: "none",

@@ -62,16 +62,16 @@ export default function BlogPost({
 
   const hasHeroImage = Boolean(heroImage);
   const titleMargin = hasHeroImage
-    ? "0 0 1.1rem"
+    ? "0 0 24px"
     : isMobile
-      ? "0.9rem 0 1rem"
-      : "1.1rem 0 1.2rem";
+      ? "12px 0 24px"
+      : "24px 0 24px";
   const getHeaderButtonStyle = (isHovered: boolean): CSSProperties => ({
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
-    padding: "0.38rem 0.74rem",
-    borderRadius: "0.38rem",
+    padding: "0 11px",
+    borderRadius: 0,
     border: isHovered
       ? "1px solid var(--ink)"
       : "1px solid rgba(17, 17, 17, 0.3)",
@@ -79,9 +79,9 @@ export default function BlogPost({
     color: "var(--ink)",
     textDecoration: "none",
     fontWeight: 490,
-    fontSize: "0.78rem",
+    fontSize: "12px",
     letterSpacing: "0.01em",
-    lineHeight: 1,
+    lineHeight: "22px",
     transition:
       "background-color var(--motion-hover) linear, border-color var(--motion-hover) linear, color var(--motion-hover) linear",
   });
@@ -92,7 +92,7 @@ export default function BlogPost({
       style={{
         width: "100%",
         color: "var(--ink)",
-        paddingBottom: "calc(3rem + env(safe-area-inset-bottom))",
+        paddingBottom: "calc(48px + env(safe-area-inset-bottom))",
         position: "relative",
       }}
     >
@@ -103,9 +103,11 @@ export default function BlogPost({
             className="post-hero"
             style={{
               width: "100%",
-              height: isMobile ? "12.5rem" : "clamp(14rem, 26vw, 21rem)",
-              margin: isMobile ? "0.75rem 0 1rem" : "1rem 0 1.25rem",
-              borderRadius: isMobile ? "10px" : "12px",
+              height: isMobile
+                ? "192px"
+                : "round(clamp(216px, 26vw, 336px), 12px)",
+              margin: isMobile ? "12px 0 24px" : "24px 0 24px",
+              borderRadius: "6px",
               backgroundColor: "#e9e4d8",
               backgroundRepeat: "no-repeat",
               backgroundSize: "cover",
@@ -124,9 +126,10 @@ export default function BlogPost({
           {byline ? (
             <p
               style={{
-                margin: "0.3rem 0 0",
+                margin: "6px 0 0",
                 color: "var(--ink-muted)",
-                fontSize: "clamp(0.86rem, 0.92vw, 0.95rem)",
+                fontSize: "12px",
+                lineHeight: "18px",
                 letterSpacing: "0.01em",
               }}
             >
@@ -136,9 +139,9 @@ export default function BlogPost({
           {buttons.length ? (
             <div
               style={{
-                marginTop: "0.7rem",
+                marginTop: "12px",
                 display: "flex",
-                gap: "0.5rem",
+                gap: "12px",
                 flexWrap: "wrap",
               }}
             >
@@ -171,9 +174,9 @@ export default function BlogPost({
           style={{
             width: "100%",
             minWidth: 0,
-            paddingTop: "0.4rem",
-            lineHeight: 1.7,
-            fontSize: "1rem",
+            paddingTop: 0,
+            lineHeight: "18px",
+            fontSize: "12px",
             color: "var(--ink-soft)",
           }}
           onClick={onContentClick}

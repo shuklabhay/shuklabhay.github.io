@@ -9,16 +9,20 @@
   --home-background-color: #5a6c99;
   --home-browser-chrome-color: #9d85b3;
   --home-background-image: url("/static/landing-1280.webp");
-  --page-x-padding: 1.125rem;
+  --page-x-padding: 24px;
   --browser-bottom-clearance: 0px;
-  --sidebar-width: max(
-    clamp(9.5rem, 21vw, 16rem),
-    calc(100vw - var(--reading-width) - var(--content-left-margin) * 2)
+  --sidebar-width: round(
+    down,
+    max(
+      clamp(156px, 21vw, 252px),
+      calc(100vw - var(--reading-width) - var(--content-left-margin) * 2)
+    ),
+    12px
   );
-  --content-gutter: clamp(1.5rem, 4vw, 3.5rem);
-  --content-left-margin: 3.5rem;
-  --reading-width: 50rem;
-  --mobile-band-height: 7.5rem;
+  --content-gutter: round(clamp(24px, 4vw, 60px), 12px);
+  --content-left-margin: 60px;
+  --reading-width: 792px;
+  --mobile-band-height: 120px;
   --motion-page: 100ms;
   --motion-home: 120ms;
   --motion-hover: 100ms;
@@ -48,7 +52,8 @@ body {
   font-family:
     -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Roboto, Helvetica,
     Arial, sans-serif;
-  font-size: 0.92rem;
+  font-size: 12px;
+  line-height: 18px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   width: 100%;
@@ -102,13 +107,13 @@ html.route-post.post-expanded .route-sky {
 
 .side-nav {
   position: fixed;
-  top: 1rem;
+  top: 24px;
   left: var(--page-x-padding);
   z-index: 10;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.3rem;
+  gap: 0;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
@@ -135,17 +140,17 @@ html.route-post.post-expanded .side-nav-link {
   font-weight: 500;
   color: white;
   text-decoration: none;
-  font-size: 1.15rem;
-  line-height: 1.1;
-  padding: 0.2rem 0.3rem;
-  margin: -0.2rem -0.3rem;
-  border-radius: 0.2rem;
+  font-size: 18px;
+  line-height: 24px;
+  padding: 0 6px;
+  margin: 0 -6px;
+  border-radius: 0;
   -webkit-tap-highlight-color: transparent;
 }
 
 .side-nav-label {
   display: inline-block;
-  padding-bottom: 4px;
+  padding-bottom: 0;
 }
 
 .side-nav-link {
@@ -170,7 +175,7 @@ html.route-post.post-expanded .side-nav-link {
   max-width: 100%;
   overflow-x: clip;
   font-weight: 490;
-  padding: 1.1rem var(--content-left-margin) var(--browser-bottom-clearance)
+  padding: 24px var(--content-left-margin) var(--browser-bottom-clearance)
     calc(var(--sidebar-width) + var(--content-left-margin));
   color: var(--ink);
 }
@@ -202,10 +207,10 @@ html.route-post.post-expanded .app-shell {
 .page-heading {
   margin: 0;
   color: var(--ink);
-  font-size: 2.05rem;
+  font-size: 36px;
   font-weight: 700;
   letter-spacing: -0.01em;
-  line-height: 1.16;
+  line-height: 42px;
 }
 
 .visually-hidden {
@@ -240,8 +245,8 @@ html.route-post.post-expanded .post-column {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  font-size: 1rem;
-  line-height: 1;
+  font-size: 12px;
+  line-height: 18px;
   color: var(--ink);
 }
 
@@ -259,14 +264,14 @@ html.route-post.post-expanded .post-column {
 
 .post-back-link {
   text-decoration: none;
-  border-radius: 0.2rem;
+  border-radius: 0;
 }
 
 .post-back-icon {
   display: inline-block;
-  width: 0.6em;
-  height: 0.6em;
-  margin-right: 0.26em;
+  width: 6px;
+  height: 6px;
+  margin-right: 6px;
 }
 
 .post-back-icon svg {
@@ -276,8 +281,8 @@ html.route-post.post-expanded .post-column {
 .post-expand-toggle {
   appearance: none;
   display: inline-block;
-  margin: -0.4rem;
-  padding: 0.4rem;
+  margin: -6px;
+  padding: 6px;
   border: 0;
   background: none;
   font: inherit;
@@ -287,8 +292,8 @@ html.route-post.post-expanded .post-column {
 
 .post-expand-toggle svg {
   display: inline-block;
-  width: 0.74em;
-  height: 0.74em;
+  width: 12px;
+  height: 12px;
   vertical-align: baseline;
   overflow: visible;
   fill: none;
@@ -435,36 +440,60 @@ code {
 .post-content h2,
 .post-content h3,
 .post-content h4 {
-  line-height: 1.25;
-  scroll-margin-top: 5rem;
-  margin-top: 1.25em;
-  margin-bottom: 0.5em;
+  scroll-margin-top: 72px;
+  margin-top: 36px;
+  margin-bottom: 6px;
   color: var(--ink);
+}
+
+.post-content h1 {
+  font-size: 36px;
+  line-height: 42px;
+}
+
+.post-content h2 {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.post-content h3,
+.post-content h4 {
+  font-size: 12px;
+  line-height: 18px;
 }
 
 .post-content > h2:first-child,
 .post-content > h3:first-child,
 .post-content > h4:first-child {
-  margin-top: 0.12em;
+  margin-top: 0;
 }
 
 .post-content > h1:first-child + h2,
 .post-content > h1:first-child + h3,
 .post-content > h1:first-child + h4 {
-  margin-top: 0.12em;
+  margin-top: 0;
+}
+
+.post-content p {
+  margin: 0 0 12px;
 }
 
 .post-content p,
 .post-content li {
-  line-height: 1.7;
+  line-height: 18px;
   color: var(--ink);
+}
+
+.post-content li + li,
+.about-subtitle li + li {
+  margin-top: 6px;
 }
 
 .post-content ul,
 .post-content ol {
-  margin-top: 0.42rem;
-  margin-bottom: 1rem;
-  padding-left: 1.2rem;
+  margin-top: 0;
+  margin-bottom: 12px;
+  padding-left: 24px;
 }
 
 .post-content a,
@@ -492,48 +521,48 @@ code {
 }
 
 .about-page {
-  padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+  padding-bottom: max(24px, env(safe-area-inset-bottom));
 }
 
 .about-subtitle {
   max-width: var(--reading-width);
-  margin-top: 0.5rem;
+  margin-top: 6px;
   color: var(--ink-soft);
-  font-size: 1rem;
-  line-height: 1.7;
+  font-size: 12px;
+  line-height: 18px;
 }
 
 .about-subtitle p {
-  margin: 0 0 1rem;
+  margin: 0 0 12px;
 }
 
 .about-subtitle ul {
-  margin-top: 0;
-  padding-left: 1.25rem;
-  line-height: 1.7;
+  margin: 0 0 12px;
+  padding-left: 24px;
+  line-height: 18px;
 }
 
 .about-subtitle .about-list-intro {
-  margin-bottom: 0.5rem;
+  margin-bottom: 6px;
 }
 
 .about-subtitle .about-section-start {
-  margin-top: 1.5rem;
+  margin-top: 24px;
 }
 
 .about-subtitle .about-links {
   margin-bottom: 0;
-  padding-bottom: 0.3rem;
+  padding-bottom: 0;
 }
 
 .post-content code {
   display: inline;
-  padding: 0.22em 0.22em;
-  border-radius: 6px;
-  border: 1px solid rgba(17, 17, 17, 0.1);
+  padding: 0;
+  border-radius: 0;
+  border: 0;
   background: rgba(17, 17, 17, 0.05);
   color: var(--ink);
-  font-size: 0.9em;
+  font-size: 12px;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 }
@@ -552,10 +581,10 @@ code {
   display: block;
   max-width: 100%;
   height: auto;
-  border-radius: 8px;
+  border-radius: 6px;
   border: 1px solid rgba(17, 17, 17, 0.1);
-  margin: 0.72rem 0;
-  box-shadow: 0 6px 18px rgba(17, 17, 17, 0.08);
+  margin: 24px 0;
+  box-shadow: 0 12px 24px rgba(17, 17, 17, 0.08);
   cursor: zoom-in;
   user-select: none;
   -webkit-user-select: none;
@@ -574,10 +603,10 @@ code {
 }
 
 .post-content blockquote {
-  margin: 1rem 0;
-  padding: 0.76rem 0.95rem 0.4rem;
+  margin: 24px 0;
+  padding: 12px 24px;
   border-left: 3px solid rgba(17, 17, 17, 0.25);
-  border-radius: 0 12px 12px 0;
+  border-radius: 0 6px 6px 0;
   background: rgba(17, 17, 17, 0.04);
 }
 
@@ -586,11 +615,11 @@ code {
 }
 
 .post-content blockquote p + p {
-  margin-top: 0.35rem;
+  margin-top: 12px;
 }
 
 .post-content blockquote img {
-  margin: 0 0 0.28rem;
+  margin: 0 0 12px;
   max-width: 100%;
   box-shadow: none;
 }
@@ -601,40 +630,40 @@ code {
 
 .post-toc {
   width: 100%;
-  max-width: 18rem;
-  margin-top: 2.5rem;
+  max-width: 288px;
+  margin-top: 48px;
   overflow: hidden;
   color: white;
 }
 
 html.post-expanded .post-toc {
   position: fixed;
-  top: 1.1rem;
-  left: 1rem;
-  width: calc((100vw - var(--reading-width)) / 2 - 2rem);
+  top: 24px;
+  left: 24px;
+  width: calc((100vw - var(--reading-width)) / 2 - 48px);
   margin-top: 0;
   color: var(--ink);
 }
 
 .post-toc.is-ticks {
-  width: 1.25rem;
+  width: 24px;
 }
 
 html.post-expanded .post-toc.is-ticks:not(.is-open) {
-  width: 1.25rem;
+  width: 24px;
 }
 
 .post-toc.is-ticks .post-toc-link::before {
   content: "";
   display: block;
-  width: 0.875rem;
+  width: 24px;
   height: 2px;
-  margin: 6px 0;
+  margin: 8px 0;
   background: currentColor;
 }
 
 .post-toc.is-ticks .post-toc-link:not(.is-top-level)::before {
-  width: 0.5rem;
+  width: 12px;
 }
 
 .post-toc.is-ticks .post-toc-label {
@@ -648,11 +677,11 @@ html.post-expanded .post-toc.is-ticks:not(.is-open) {
 .post-toc.is-ticks.is-open {
   position: absolute;
   z-index: 2;
-  width: 16rem;
-  max-width: 16rem;
-  padding: 0.5rem 0.75rem;
+  width: 252px;
+  max-width: 252px;
+  padding: 12px;
   border: 1px solid rgba(17, 17, 17, 0.14);
-  border-radius: 8px;
+  border-radius: 0;
   background: var(--paper);
   color: var(--ink);
 }
@@ -708,9 +737,9 @@ html.post-expanded .post-toc.is-ticks.is-open {
   background: transparent;
   color: inherit;
   cursor: pointer;
-  font-size: 0.92rem;
+  font-size: 12px;
   font-weight: 490;
-  line-height: 1.35;
+  line-height: 18px;
   text-decoration: none;
   opacity: 0.45;
   transition: opacity var(--motion-hover) linear;
@@ -718,11 +747,11 @@ html.post-expanded .post-toc.is-ticks.is-open {
 
 .post-toc-label {
   display: block;
-  padding: 0.25rem 0;
+  padding: 0;
 }
 
 .post-toc-link.is-top-level {
-  font-size: 1rem;
+  font-size: 12px;
   opacity: 0.62;
 }
 
@@ -743,8 +772,8 @@ html.post-expanded .post-toc.is-ticks.is-open {
 
 @media (max-width: 860px) {
   :root {
-    --page-x-padding: 0.625rem;
-    --browser-bottom-clearance: 5rem;
+    --page-x-padding: 12px;
+    --browser-bottom-clearance: 72px;
   }
 
   .about-subtitle {
@@ -752,7 +781,8 @@ html.post-expanded .post-toc.is-ticks.is-open {
   }
 
   .page-heading {
-    font-size: 1.6rem;
+    font-size: 24px;
+    line-height: 30px;
   }
 
   #side-nav-contents {
@@ -772,13 +802,14 @@ html.post-expanded .post-toc.is-ticks.is-open {
   }
 
   :root {
-    --mobile-band-height: 3.5rem;
+    --mobile-band-height: 60px;
   }
 
   .side-nav {
     position: absolute;
+    top: 18px;
     flex-direction: row;
-    gap: 1.25rem;
+    gap: 24px;
   }
 
   html.route-home .side-nav {
@@ -786,7 +817,7 @@ html.post-expanded .post-toc.is-ticks.is-open {
   }
 
   .app-shell {
-    padding: calc(var(--mobile-band-height) + 1.25rem) var(--page-x-padding)
+    padding: calc(var(--mobile-band-height) + 24px) var(--page-x-padding)
       var(--browser-bottom-clearance);
   }
 
@@ -803,8 +834,8 @@ html.post-expanded .post-toc.is-ticks.is-open {
   @media (max-width: 860px) {
     :root {
       --browser-bottom-clearance: max(
-        7.5rem,
-        calc(env(safe-area-inset-bottom) + 5.5rem)
+        120px,
+        calc(env(safe-area-inset-bottom) + 84px)
       );
     }
   }
