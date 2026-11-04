@@ -51,7 +51,7 @@ export default function ImageLightbox({
     setOpened(false);
   };
 
-  const lightboxPadding = "clamp(0.9rem, 2.4vw, 1.8rem)";
+  const lightboxPadding = "round(clamp(12px, 2.4vw, 36px), 12px)";
   const [viewportSize, setViewportSize] = useState(getViewportSize);
 
   useEffect(() => {
@@ -139,8 +139,8 @@ export default function ImageLightbox({
           <div
             style={{
               position: "absolute",
-              top: "0.9rem",
-              right: "1rem",
+              top: "12px",
+              right: "12px",
               pointerEvents: "auto",
               zIndex: 100,
             }}

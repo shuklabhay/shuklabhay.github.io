@@ -28,7 +28,7 @@ Generative AI has long focused on training models to create images or videos, bu
 >   decoding="async"
 >   src={genie3Gif}
 >   alt=""
->   style={{ width: "min(100%, 760px)" }}
+>   style={{ width: "min(100%, 756px)" }}
 > />
 > Google Deepmind's [Genie 3 World
 > Model](https://deepmind.google/blog/genie-3-a-new-frontier-for-world-models/)
@@ -41,7 +41,7 @@ More formally, a world model is a neural network that, given a current state and
 >   decoding="async"
 >   src={csgoGif}
 >   alt=""
->   style={{ width: "min(100%, 760px)" }}
+>   style={{ width: "min(100%, 756px)" }}
 > />
 > Alonso et al.'s [DIAMOND](https://arxiv.org/abs/2405.12399) world model
 > generating frames of CS:GO.
@@ -51,7 +51,7 @@ More formally, a world model is a neural network that, given a current state and
 >   decoding="async"
 >   src={waymoWmGif}
 >   alt=""
->   style={{ width: "min(100%, 760px)" }}
+>   style={{ width: "min(100%, 756px)" }}
 > />
 > Waymo's [Waymo World
 > Model](https://waymo.com/blog/2026/02/the-waymo-world-model-a-new-frontier-for-autonomous-driving-simulation)
@@ -169,7 +169,7 @@ To understand what our LatentCNN will need to learn, we can analyze the differen
 >   decoding="async"
 >   src={latentDiffPng}
 >   alt=""
->   style={{ width: "min(100%, 980px)" }}
+>   style={{ width: "min(100%, 984px)" }}
 > />
 > Latent diffs for a canvas stroke (left) versus a UI interaction (right). Top
 > row: frame pairs, pixel diff, latent magnitude, significance mask. Bottom
@@ -203,7 +203,7 @@ Raw mouse events are too dense for real-time inference, so fixed-interval thrott
 >   decoding="async"
 >   src={viewerGif}
 >   alt=""
->   style={{ width: "min(100%, 820px)" }}
+>   style={{ width: "min(100%, 816px)" }}
 > />
 > The Infinipaint world model's interactive viewer running the combined world
 > model pipeline on a 2020 M1 Macbook Air's Integrated GPU.
@@ -223,7 +223,7 @@ Across evaluation, the world model captures Minipaint's core dynamics on fresh r
 >   decoding="async"
 >   src={rolloutPng}
 >   alt=""
->   style={{ width: "min(100%, 980px)" }}
+>   style={{ width: "min(100%, 984px)" }}
 > />
 > An example autoregressive rollout of the combined VAE-LatentCNN pipeline.
 
@@ -236,7 +236,7 @@ Two metrics are used to track rollout fidelity: SSIM (structural similarity; 0.9
 >   decoding="async"
 >   src={degradationCurvesPng}
 >   alt=""
->   style={{ width: "min(100%, 980px)" }}
+>   style={{ width: "min(100%, 984px)" }}
 > />
 > Autoregressive rollout degradation across 20 held-out episodes. Solid lines
 > show mean SSIM and PSNR between ground-truth frames and VAE-decoded
@@ -263,7 +263,7 @@ Functionality persists beyond visual degradation. Discrete UI behaviors degrade 
 >   decoding="async"
 >   src={toolbarCanvasProgressionGif}
 >   alt=""
->   style={{ width: "min(100%, 820px)" }}
+>   style={{ width: "min(100%, 816px)" }}
 > />
 > Autoregressive rollouts across 8 held-out episodes: at first UI elements
 > degrade less extremely than the canvas.

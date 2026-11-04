@@ -787,13 +787,13 @@ export default function Post({
           style={{
             width: "100%",
             color: "var(--ink)",
-            paddingBottom: "calc(3rem + env(safe-area-inset-bottom))",
+            paddingBottom: "calc(48px + env(safe-area-inset-bottom))",
             position: "relative",
             opacity: 1,
           }}
         >
           <PostBackLink />
-          <h1 className="page-heading" style={{ marginTop: "0.75rem" }}>
+          <h1 className="page-heading" style={{ marginTop: "12px" }}>
             Post not found
           </h1>
         </main>
@@ -935,7 +935,7 @@ export default function Post({
                     isActiveParent ? " is-parent-active" : ""
                   }`}
                   style={{
-                    paddingLeft: `${(heading.level - 2) * 0.72}rem`,
+                    paddingLeft: `${(heading.level - 2) * 12}px`,
                   }}
                 >
                   <span className="post-toc-label">{heading.text}</span>

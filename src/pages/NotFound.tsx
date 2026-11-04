@@ -4,7 +4,7 @@ export default function NotFound() {
   return (
     <main
       className="route-page-missing"
-      style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}
+      style={{ paddingBottom: "max(12px, env(safe-area-inset-bottom))" }}
     >
       <PageTitle title="Page not found" />
     </main>
