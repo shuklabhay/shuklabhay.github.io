@@ -9,7 +9,7 @@
   --home-background-color: #5a6c99;
   --home-browser-chrome-color: #9d85b3;
   --home-background-image: url("/static/landing-1280.webp");
-  --page-x-padding: 24px;
+  --page-x-padding: 12px;
   --text: 15px;
   --lh: 24px;
   --browser-bottom-clearance: 0px;
@@ -22,7 +22,7 @@
     12px
   );
   --content-gutter: round(clamp(24px, 4vw, 60px), 12px);
-  --content-left-margin: 48px;
+  --content-left-margin: 24px;
   --reading-width: 792px;
   --mobile-band-height: 120px;
   --motion-page: 100ms;
@@ -109,7 +109,7 @@ html.route-post.post-expanded .route-sky {
 
 .side-nav {
   position: fixed;
-  top: 24px;
+  top: 12px;
   left: var(--page-x-padding);
   z-index: 10;
   display: flex;
@@ -177,7 +177,7 @@ html.route-post.post-expanded .side-nav-link {
   max-width: 100%;
   overflow-x: clip;
   font-weight: 490;
-  padding: 24px var(--content-left-margin) var(--browser-bottom-clearance)
+  padding: 12px var(--content-left-margin) var(--browser-bottom-clearance)
     calc(var(--sidebar-width) + var(--content-left-margin));
   color: var(--ink);
 }
@@ -640,8 +640,8 @@ code {
 
 html.post-expanded .post-toc {
   position: fixed;
-  top: 24px;
-  left: 24px;
+  top: 12px;
+  left: 12px;
   width: calc((100vw - var(--reading-width)) / 2 - 48px);
   margin-top: 0;
   color: var(--ink);
@@ -819,7 +819,7 @@ html.post-expanded .post-toc.is-ticks.is-open {
   }
 
   .app-shell {
-    padding: calc(var(--mobile-band-height) + 24px) var(--page-x-padding)
+    padding: calc(var(--mobile-band-height) + 12px) var(--page-x-padding)
       var(--browser-bottom-clearance);
   }
 
