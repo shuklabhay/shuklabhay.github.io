@@ -91,7 +91,7 @@ function getCheckboxStyle({
     color: fg,
     fontSize: "var(--text)",
     lineHeight: "var(--lh)",
-    fontWeight: 490,
+    fontWeight: 400,
     cursor: "pointer",
     userSelect: "none" as const,
     WebkitUserSelect: "none" as const,
