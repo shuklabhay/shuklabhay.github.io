@@ -10,7 +10,7 @@
   --home-browser-chrome-color: #9d85b3;
   --home-background-image: url("/static/landing-1280.webp");
   --page-x-padding: 12px;
-  --text: 15px;
+  --text: 14px;
   --lh: 24px;
   --browser-bottom-clearance: 0px;
   --sidebar-width: round(
@@ -142,7 +142,7 @@ html.route-post.post-expanded .side-nav-link {
   font-weight: 500;
   color: white;
   text-decoration: none;
-  font-size: 18px;
+  font-size: 15px;
   line-height: 24px;
   padding: 0 6px;
   margin: 0 -6px;
@@ -209,10 +209,10 @@ html.route-post.post-expanded .app-shell {
 .page-heading {
   margin: 0;
   color: var(--ink);
-  font-size: 36px;
+  font-size: 30px;
   font-weight: 700;
   letter-spacing: -0.01em;
-  line-height: 42px;
+  line-height: 36px;
 }
 
 .visually-hidden {
@@ -631,9 +631,10 @@ code {
 }
 
 .post-toc {
-  width: 100%;
-  max-width: 288px;
-  margin-top: 48px;
+  width: calc(100% + var(--page-x-padding));
+  max-width: 300px;
+  margin: 48px 0 0 calc(var(--page-x-padding) * -1);
+  padding-left: var(--page-x-padding);
   overflow: hidden;
   color: white;
 }
@@ -641,67 +642,15 @@ code {
 html.post-expanded .post-toc {
   position: fixed;
   top: 12px;
-  left: 12px;
-  width: calc((100vw - var(--reading-width)) / 2 - 48px);
-  margin-top: 0;
+  left: 0;
+  width: calc((100vw - var(--reading-width)) / 2 - 36px);
+  margin: 0;
+  padding-left: 12px;
   color: var(--ink);
 }
 
-.post-toc.is-ticks {
-  width: 24px;
-}
-
-html.post-expanded .post-toc.is-ticks:not(.is-open) {
-  width: 24px;
-}
-
-.post-toc.is-ticks .post-toc-link::before {
-  content: "";
-  display: block;
-  width: 24px;
-  height: 2px;
-  margin: 8px 0;
-  background: currentColor;
-}
-
-.post-toc.is-ticks .post-toc-link:not(.is-top-level)::before {
-  width: 12px;
-}
-
-.post-toc.is-ticks .post-toc-label {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-}
-
-.post-toc.is-ticks.is-open {
-  position: absolute;
-  z-index: 2;
-  width: 252px;
-  max-width: 252px;
-  padding: 12px;
-  border: 1px solid rgba(17, 17, 17, 0.14);
-  border-radius: 0;
-  background: var(--paper);
-  color: var(--ink);
-}
-
-html.post-expanded .post-toc.is-ticks.is-open {
-  position: fixed;
-}
-
-.post-toc.is-ticks.is-open .post-toc-link::before {
-  display: none;
-}
-
-.post-toc.is-ticks.is-open .post-toc-label {
-  position: static;
-  width: auto;
-  height: auto;
-  overflow: visible;
-  clip: auto;
+.post-toc.is-too-narrow {
+  visibility: hidden;
 }
 
 .post-toc-list {
@@ -711,6 +660,7 @@ html.post-expanded .post-toc.is-ticks.is-open {
 }
 
 .post-toc-list li {
+  position: relative;
   display: grid;
   grid-template-rows: 1fr;
 }
@@ -729,36 +679,68 @@ html.post-expanded .post-toc.is-ticks.is-open {
 }
 
 .post-toc-link {
+  position: relative;
   width: 100%;
-  display: block;
+  display: flex;
+  align-items: baseline;
   min-height: 0;
   overflow: hidden;
   text-align: left;
+  white-space: nowrap;
   border: none;
   padding: 0;
   background: transparent;
   color: inherit;
   cursor: pointer;
-  font-size: var(--text);
+  font-size: 12px;
   font-weight: 490;
-  line-height: var(--lh);
+  line-height: 24px;
   text-decoration: none;
-  opacity: 0.45;
+  opacity: 0.42;
   transition: opacity var(--motion-hover) linear;
+}
+
+.post-toc-link.is-read {
+  opacity: 0.66;
+}
+
+.post-toc-link.is-active,
+.post-toc-link.is-parent-active {
+  opacity: 1;
+}
+
+.post-toc-list li:has(.is-active)::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: calc(var(--page-x-padding) * -1);
+  width: 2px;
+  height: 18px;
+  background: currentColor;
+}
+
+html.post-expanded .post-toc-list li:has(.is-active)::before {
+  left: -12px;
+}
+
+.post-toc-num {
+  flex: none;
+  width: 36px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
 }
 
 .post-toc-label {
   display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
   padding: 0;
 }
 
-.post-toc-link.is-top-level {
+.post-toc-link.is-top-level .post-toc-label {
   font-size: var(--text);
-  opacity: 0.62;
-}
-
-.post-toc-link.is-active {
-  opacity: 1;
 }
 
 @media (hover: hover) {
@@ -769,7 +751,7 @@ html.post-expanded .post-toc.is-ticks.is-open {
 
 .post-toc-link:focus-visible {
   outline: 2px solid currentColor;
-  outline-offset: 2px;
+  outline-offset: -2px;
 }
 
 @media (max-width: 860px) {

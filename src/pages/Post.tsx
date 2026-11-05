@@ -83,13 +83,9 @@ function fitContentsToViewport(tocEl: HTMLElement, animate: boolean): void {
   const room = document.documentElement.classList.contains("post-expanded")
     ? (window.innerWidth - (columnEl?.offsetWidth ?? 0)) / 2 - 32
     : (tocEl.parentElement?.clientWidth ?? 0);
-  const isTicks = room < CONTENTS_MIN_LIST_WIDTH_PX;
-  const isOpen =
-    isTicks &&
-    (tocEl.matches(":hover") || tocEl.querySelector(":focus-visible") !== null);
-  tocEl.classList.toggle("is-ticks", isTicks);
-  tocEl.classList.toggle("is-open", isOpen);
-  if (isTicks && !isOpen) {
+  const isTooNarrow = room < CONTENTS_MIN_LIST_WIDTH_PX;
+  tocEl.classList.toggle("is-too-narrow", isTooNarrow);
+  if (isTooNarrow) {
     rowEls.forEach((rowEl) => rowEl.classList.remove("is-fit-hidden"));
     return;
   }
@@ -348,6 +344,24 @@ export default function Post({
     }
 
     return parentHeadingIdById;
+  }, [postHeadings]);
+  const headingNumberById = useMemo(() => {
+    const numberById = new Map<string, string>();
+    let topCount = 0;
+    let subCount = 0;
+
+    for (const heading of postHeadings) {
+      if (heading.level === 2) {
+        topCount += 1;
+        subCount = 0;
+        numberById.set(heading.id, String(topCount).padStart(2, "0"));
+      } else {
+        subCount += 1;
+        numberById.set(heading.id, `${topCount}.${subCount}`);
+      }
+    }
+
+    return numberById;
   }, [postHeadings]);
 
   const getCurrentHashImageIndex = useCallback(() => {
@@ -609,17 +623,8 @@ export default function Post({
     fitContents(previousFittedHeadingIdRef.current !== null);
     previousFittedHeadingIdRef.current = activeHeadingId;
     window.addEventListener("resize", onResize);
-    const tocEl = document.querySelector<HTMLElement>(".post-toc");
-    tocEl?.addEventListener("pointerenter", onResize);
-    tocEl?.addEventListener("pointerleave", onResize);
-    tocEl?.addEventListener("focusin", onResize);
-    tocEl?.addEventListener("focusout", onResize);
     return () => {
       window.removeEventListener("resize", onResize);
-      tocEl?.removeEventListener("pointerenter", onResize);
-      tocEl?.removeEventListener("pointerleave", onResize);
-      tocEl?.removeEventListener("focusin", onResize);
-      tocEl?.removeEventListener("focusout", onResize);
     };
   }, [activeHeadingId, contentsSlot, isExpanded, postHeadings]);
 
@@ -915,14 +920,26 @@ export default function Post({
   const activeParentHeadingId = activeHeadingId
     ? (parentHeadingIdByHeadingId.get(activeHeadingId) ?? null)
     : null;
+  const activeHeadingIndex = activeHeadingId
+    ? postHeadings.findIndex((heading) => heading.id === activeHeadingId)
+    : -1;
+  const visibleContentsHeadings = postHeadings.filter(
+    (heading) =>
+      heading.level === 2 ||
+      (activeParentHeadingId !== null &&
+        parentHeadingIdByHeadingId.get(heading.id) === activeParentHeadingId),
+  );
   const postSidebar =
     postSummary.showInlineToc && postHeadings.length > 0 ? (
       <nav aria-label="Post sections" className="post-toc">
         <ul className="post-toc-list">
-          {postHeadings.map((heading) => {
+          {visibleContentsHeadings.map((heading) => {
             const isActive = activeHeadingId === heading.id;
             const isActiveParent =
               !isActive && activeParentHeadingId === heading.id;
+            const isRead =
+              postHeadings.indexOf(heading) < activeHeadingIndex &&
+              !isActiveParent;
 
             return (
               <li key={heading.id}>
@@ -933,11 +950,11 @@ export default function Post({
                     heading.level === 2 ? " is-top-level" : ""
                   }${isActive ? " is-active" : ""}${
                     isActiveParent ? " is-parent-active" : ""
-                  }`}
-                  style={{
-                    paddingLeft: `${(heading.level - 2) * 12}px`,
-                  }}
+                  }${isRead ? " is-read" : ""}`}
                 >
+                  <span className="post-toc-num" aria-hidden>
+                    {headingNumberById.get(heading.id)}
+                  </span>
                   <span className="post-toc-label">{heading.text}</span>
                 </button>
               </li>
