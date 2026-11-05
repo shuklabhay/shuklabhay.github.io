@@ -83,13 +83,9 @@ function fitContentsToViewport(tocEl: HTMLElement, animate: boolean): void {
   const room = document.documentElement.classList.contains("post-expanded")
     ? (window.innerWidth - (columnEl?.offsetWidth ?? 0)) / 2 - 32
     : (tocEl.parentElement?.clientWidth ?? 0);
-  const isTicks = room < CONTENTS_MIN_LIST_WIDTH_PX;
-  const isOpen =
-    isTicks &&
-    (tocEl.matches(":hover") || tocEl.querySelector(":focus-visible") !== null);
-  tocEl.classList.toggle("is-ticks", isTicks);
-  tocEl.classList.toggle("is-open", isOpen);
-  if (isTicks && !isOpen) {
+  const isTooNarrow = room < CONTENTS_MIN_LIST_WIDTH_PX;
+  tocEl.classList.toggle("is-too-narrow", isTooNarrow);
+  if (isTooNarrow) {
     rowEls.forEach((rowEl) => rowEl.classList.remove("is-fit-hidden"));
     return;
   }
@@ -627,17 +623,8 @@ export default function Post({
     fitContents(previousFittedHeadingIdRef.current !== null);
     previousFittedHeadingIdRef.current = activeHeadingId;
     window.addEventListener("resize", onResize);
-    const tocEl = document.querySelector<HTMLElement>(".post-toc");
-    tocEl?.addEventListener("pointerenter", onResize);
-    tocEl?.addEventListener("pointerleave", onResize);
-    tocEl?.addEventListener("focusin", onResize);
-    tocEl?.addEventListener("focusout", onResize);
     return () => {
       window.removeEventListener("resize", onResize);
-      tocEl?.removeEventListener("pointerenter", onResize);
-      tocEl?.removeEventListener("pointerleave", onResize);
-      tocEl?.removeEventListener("focusin", onResize);
-      tocEl?.removeEventListener("focusout", onResize);
     };
   }, [activeHeadingId, contentsSlot, isExpanded, postHeadings]);
 

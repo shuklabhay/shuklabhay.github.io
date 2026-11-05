@@ -10,7 +10,7 @@
   --home-browser-chrome-color: #9d85b3;
   --home-background-image: url("/static/landing-1280.webp");
   --page-x-padding: 12px;
-  --text: 15px;
+  --text: 14px;
   --lh: 24px;
   --browser-bottom-clearance: 0px;
   --sidebar-width: round(
@@ -142,7 +142,7 @@ html.route-post.post-expanded .side-nav-link {
   font-weight: 500;
   color: white;
   text-decoration: none;
-  font-size: 18px;
+  font-size: 15px;
   line-height: 24px;
   padding: 0 6px;
   margin: 0 -6px;
@@ -209,10 +209,10 @@ html.route-post.post-expanded .app-shell {
 .page-heading {
   margin: 0;
   color: var(--ink);
-  font-size: 36px;
+  font-size: 30px;
   font-weight: 700;
   letter-spacing: -0.01em;
-  line-height: 42px;
+  line-height: 36px;
 }
 
 .visually-hidden {
@@ -649,50 +649,8 @@ html.post-expanded .post-toc {
   color: var(--ink);
 }
 
-.post-toc.is-ticks,
-html.post-expanded .post-toc.is-ticks {
-  width: calc(36px + var(--page-x-padding));
-}
-
-.post-toc.is-ticks .post-toc-label {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-}
-
-.post-toc.is-ticks.is-open {
-  position: absolute;
-  z-index: 2;
-  width: max-content;
-  min-width: calc(var(--sidebar-width) + 120px);
-  max-width: none;
-  margin-top: 36px;
-  padding: 12px 36px 12px var(--page-x-padding);
-  background: var(--home-background-color) var(--home-background-image) center /
-    cover fixed;
-}
-
-html.post-expanded .post-toc.is-ticks.is-open {
-  position: fixed;
-  top: 0;
-  width: max-content;
-  min-width: 0;
-  margin: 0;
-  padding: 12px 36px 12px 12px;
-  background: var(--paper);
-  box-shadow:
-    1px 0 0 rgba(17, 17, 17, 0.14),
-    0 1px 0 rgba(17, 17, 17, 0.14);
-}
-
-.post-toc.is-ticks.is-open .post-toc-label {
-  position: static;
-  width: auto;
-  height: auto;
-  overflow: visible;
-  clip: auto;
+.post-toc.is-too-narrow {
+  visibility: hidden;
 }
 
 .post-toc-list {
