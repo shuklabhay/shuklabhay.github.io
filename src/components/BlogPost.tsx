@@ -71,14 +71,14 @@ export default function BlogPost({
     alignItems: "center",
     justifyContent: "center",
     padding: "0 11px",
-    borderRadius: 0,
+    borderRadius: "6px",
     border: isHovered
       ? "1px solid var(--ink)"
       : "1px solid rgba(17, 17, 17, 0.3)",
     backgroundColor: "transparent",
     color: "var(--ink)",
     textDecoration: "none",
-    fontWeight: 490,
+    fontWeight: 400,
     fontSize: "12px",
     letterSpacing: "0.01em",
     lineHeight: "22px",
@@ -128,8 +128,8 @@ export default function BlogPost({
               style={{
                 margin: "6px 0 0",
                 color: "var(--ink-muted)",
-                fontSize: "var(--text)",
-                lineHeight: "var(--lh)",
+                fontSize: "0.75rem",
+                lineHeight: "18px",
                 letterSpacing: "0.01em",
               }}
             >
