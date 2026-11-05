@@ -349,6 +349,24 @@ export default function Post({
 
     return parentHeadingIdById;
   }, [postHeadings]);
+  const headingNumberById = useMemo(() => {
+    const numberById = new Map<string, string>();
+    let topCount = 0;
+    let subCount = 0;
+
+    for (const heading of postHeadings) {
+      if (heading.level === 2) {
+        topCount += 1;
+        subCount = 0;
+        numberById.set(heading.id, String(topCount).padStart(2, "0"));
+      } else {
+        subCount += 1;
+        numberById.set(heading.id, `${topCount}.${subCount}`);
+      }
+    }
+
+    return numberById;
+  }, [postHeadings]);
 
   const getCurrentHashImageIndex = useCallback(() => {
     if (typeof window === "undefined") return null;
@@ -915,14 +933,26 @@ export default function Post({
   const activeParentHeadingId = activeHeadingId
     ? (parentHeadingIdByHeadingId.get(activeHeadingId) ?? null)
     : null;
+  const activeHeadingIndex = activeHeadingId
+    ? postHeadings.findIndex((heading) => heading.id === activeHeadingId)
+    : -1;
+  const visibleContentsHeadings = postHeadings.filter(
+    (heading) =>
+      heading.level === 2 ||
+      (activeParentHeadingId !== null &&
+        parentHeadingIdByHeadingId.get(heading.id) === activeParentHeadingId),
+  );
   const postSidebar =
     postSummary.showInlineToc && postHeadings.length > 0 ? (
       <nav aria-label="Post sections" className="post-toc">
         <ul className="post-toc-list">
-          {postHeadings.map((heading) => {
+          {visibleContentsHeadings.map((heading) => {
             const isActive = activeHeadingId === heading.id;
             const isActiveParent =
               !isActive && activeParentHeadingId === heading.id;
+            const isRead =
+              postHeadings.indexOf(heading) < activeHeadingIndex &&
+              !isActiveParent;
 
             return (
               <li key={heading.id}>
@@ -933,11 +963,11 @@ export default function Post({
                     heading.level === 2 ? " is-top-level" : ""
                   }${isActive ? " is-active" : ""}${
                     isActiveParent ? " is-parent-active" : ""
-                  }`}
-                  style={{
-                    paddingLeft: `${(heading.level - 2) * 12}px`,
-                  }}
+                  }${isRead ? " is-read" : ""}`}
                 >
+                  <span className="post-toc-num" aria-hidden>
+                    {headingNumberById.get(heading.id)}
+                  </span>
                   <span className="post-toc-label">{heading.text}</span>
                 </button>
               </li>
