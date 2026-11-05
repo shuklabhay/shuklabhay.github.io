@@ -268,15 +268,18 @@ html.route-post.post-expanded .post-column {
 }
 
 .post-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   text-decoration: none;
   border-radius: 0;
 }
 
 .post-back-icon {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  margin-right: 6px;
+  display: block;
+  flex: none;
+  width: 12px;
+  height: 12px;
 }
 
 .post-back-icon svg {
