@@ -33,6 +33,7 @@ export type PostButton = {
 export type PostMeta = {
   slug: string;
   title: string;
+  description: string;
   date: string;
   author: string;
   buttons: PostButton[];
@@ -42,12 +43,16 @@ export type PostMeta = {
   wordCount?: number;
 };
 
+export type MDXContentComponent = ComponentType<{
+  components?: Record<string, ComponentType>;
+}>;
+
 export type PostEntry = PostMeta & {
-  Component: ComponentType;
+  Component: MDXContentComponent;
 };
 
 export type PostModule = {
-  default: ComponentType;
+  default: MDXContentComponent;
 };
 
 export type BlogPostCardProps = {

@@ -2,6 +2,7 @@ import Lightbox from "react-spring-lightbox";
 import type { ImageLightboxProps } from "../utils/types";
 import {
   useEffect,
+  useRef,
   useState,
   type CSSProperties,
   type MouseEvent as ReactMouseEvent,
@@ -50,6 +51,32 @@ export default function ImageLightbox({
   const handleClose = () => {
     setOpened(false);
   };
+
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const opener =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+    const focusFrame = window.requestAnimationFrame(() => {
+      closeButtonRef.current?.focus({ preventScroll: true });
+    });
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Tab") return;
+      event.preventDefault();
+      closeButtonRef.current?.focus({ preventScroll: true });
+    };
+    document.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      window.cancelAnimationFrame(focusFrame);
+      document.removeEventListener("keydown", onKeyDown);
+      opener?.focus({ preventScroll: true });
+    };
+  }, []);
 
   const lightboxPadding = "round(clamp(12px, 2.4vw, 36px), 12px)";
   const [viewportSize, setViewportSize] = useState(getViewportSize);
@@ -130,7 +157,12 @@ export default function ImageLightbox({
   };
 
   return (
-    <div onClick={handleTintClick}>
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={activeImage?.alt || "Image"}
+      onClick={handleTintClick}
+    >
       <Lightbox
         isOpen={opened}
         onPrev={() => null}
@@ -139,15 +171,17 @@ export default function ImageLightbox({
           <div
             style={{
               position: "absolute",
-              top: "12px",
-              right: "12px",
+              top: 0,
+              right: 0,
               pointerEvents: "auto",
               zIndex: 100,
             }}
           >
             <button
+              ref={closeButtonRef}
               type="button"
               aria-label="Close image"
+              className="lightbox-close"
               onClick={handleClose}
               style={{
                 display: "inline-flex",
@@ -157,7 +191,7 @@ export default function ImageLightbox({
                 backgroundColor: "transparent",
                 color: "white",
                 cursor: "pointer",
-                padding: 0,
+                padding: "12px",
                 lineHeight: 1,
               }}
             >

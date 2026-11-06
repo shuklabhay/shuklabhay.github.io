@@ -8,7 +8,7 @@ import {
 } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
 import { createPortal } from "react-dom";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigationType, useParams } from "react-router-dom";
 import BlogPost from "../components/BlogPost";
 import ImageLightbox from "../components/ImageLightbox";
 import PostBackLink from "../components/PostBackLink";
@@ -234,7 +234,10 @@ export default function Post({
   const prefersReducedMotion =
     typeof window !== "undefined" &&
     window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
-  const isDocumentReload = didDocumentReload();
+  const navigationType = useNavigationType();
+  const shouldRestoreScroll =
+    didDocumentReload() ||
+    (navigationType === "POP" && location.key !== "default");
   const postScrollStorageKey = getPostScrollStorageKey(location.pathname);
   const postSummary = getPostBySlug(slug);
   const heroImage = postSummary?.cover;
@@ -306,32 +309,6 @@ export default function Post({
     return Math.max(nextScrollTop, 0);
   }, []);
 
-  const getImageHashToken = useCallback((imageSrc: string) => {
-    if (typeof window === "undefined") return null;
-
-    try {
-      const imageUrl = new URL(imageSrc, window.location.href);
-      const fileName = imageUrl.pathname.split("/").pop() ?? "";
-      const decodedFileName = decodeURIComponent(fileName).trim();
-      return decodedFileName || null;
-    } catch {
-      const fallbackName = imageSrc.split("?")[0]?.split("/").pop() ?? "";
-      const decodedFallbackName = decodeURIComponent(fallbackName).trim();
-      return decodedFallbackName || null;
-    }
-  }, []);
-  const imageIndexByHashToken = useMemo(() => {
-    const indexByHashToken = new Map<string, number>();
-    if (typeof window === "undefined") return indexByHashToken;
-
-    postImages.forEach((image, index) => {
-      const hashToken = getImageHashToken(image.src);
-      if (!hashToken || indexByHashToken.has(hashToken)) return;
-      indexByHashToken.set(hashToken, index);
-    });
-
-    return indexByHashToken;
-  }, [getImageHashToken, postImages]);
   const parentHeadingIdByHeadingId = useMemo(() => {
     const parentHeadingIdById = new Map<string, string>();
     let activeParentHeadingId: string | null = null;
@@ -345,18 +322,6 @@ export default function Post({
 
     return parentHeadingIdById;
   }, [postHeadings]);
-
-  const getCurrentHashImageIndex = useCallback(() => {
-    if (typeof window === "undefined") return null;
-
-    const rawHash = window.location.hash.startsWith("#")
-      ? window.location.hash.slice(1)
-      : window.location.hash;
-    if (!rawHash || !rawHash.includes(".")) return null;
-
-    const hashToken = decodeURIComponent(rawHash);
-    return imageIndexByHashToken.get(hashToken) ?? -1;
-  }, [imageIndexByHashToken]);
 
   useEffect(() => {
     if (!postSummary) {
@@ -428,7 +393,23 @@ export default function Post({
 
     imageElements.forEach((img, index) => {
       img.dataset.lightboxIndex = String(index);
+      img.tabIndex = 0;
+      img.setAttribute("role", "button");
+      img.setAttribute(
+        "aria-label",
+        img.alt ? `Open image: ${img.alt}` : "Open image",
+      );
     });
+
+    const onImageKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      const target = event.target;
+      if (!(target instanceof HTMLImageElement)) return;
+      if (target.dataset.lightboxIndex === undefined) return;
+      event.preventDefault();
+      target.click();
+    };
+    contentEl.addEventListener("keydown", onImageKeyDown);
 
     const headingElements = Array.from(
       contentEl.querySelectorAll("h2, h3, h4"),
@@ -478,6 +459,10 @@ export default function Post({
     setActiveHeadingId(null);
     setLightboxIndex(0);
     setLightboxOpened(false);
+
+    return () => {
+      contentEl.removeEventListener("keydown", onImageKeyDown);
+    };
   }, [clearPendingHeadingJump, slug, postEntry]);
 
   useEffect(() => {
@@ -635,42 +620,6 @@ export default function Post({
   }, [slug]);
 
   useEffect(() => {
-    if (typeof window === "undefined" || postImages.length === 0) return;
-
-    const hashIndex = getCurrentHashImageIndex();
-    if (hashIndex === null) return;
-    if (hashIndex < 0) return;
-
-    setLightboxIndex(hashIndex);
-    setLightboxOpened(true);
-  }, [getCurrentHashImageIndex, postImages]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (!lightboxOpened) return;
-    if (lightboxIndex < 0 || lightboxIndex >= postImages.length) return;
-
-    const activeImage = postImages[lightboxIndex];
-    const hashToken = activeImage ? getImageHashToken(activeImage.src) : null;
-    if (!hashToken) return;
-
-    const nextHash = `#${encodeURIComponent(hashToken)}`;
-    if (window.location.hash === nextHash) return;
-    window.history.replaceState(window.history.state, "", nextHash);
-  }, [getImageHashToken, lightboxIndex, lightboxOpened, postImages]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (lightboxOpened) return;
-
-    const hashIndex = getCurrentHashImageIndex();
-    if (hashIndex === null) return;
-
-    const nextUrl = `${window.location.pathname}${window.location.search}`;
-    window.history.replaceState(window.history.state, "", nextUrl);
-  }, [getCurrentHashImageIndex, lightboxOpened]);
-
-  useEffect(() => {
     if (!postSummary) return;
     if (!heroImage) return;
     void preloadImage(heroImage);
@@ -680,6 +629,12 @@ export default function Post({
     if (typeof window === "undefined") return;
 
     const saveScrollPosition = () => {
+      if (
+        getPostScrollStorageKey(window.location.pathname) !==
+        postScrollStorageKey
+      ) {
+        return;
+      }
       window.sessionStorage.setItem(
         postScrollStorageKey,
         String(window.scrollY),
@@ -691,12 +646,23 @@ export default function Post({
       saveScrollPosition();
     };
 
+    let saveFrame = 0;
+    const onScroll = () => {
+      if (saveFrame) return;
+      saveFrame = window.requestAnimationFrame(() => {
+        saveFrame = 0;
+        saveScrollPosition();
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("beforeunload", saveScrollPosition);
     window.addEventListener("pagehide", saveScrollPosition);
     document.addEventListener("visibilitychange", onVisibilityChange);
 
     return () => {
-      saveScrollPosition();
+      window.cancelAnimationFrame(saveFrame);
+      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("beforeunload", saveScrollPosition);
       window.removeEventListener("pagehide", saveScrollPosition);
       document.removeEventListener("visibilitychange", onVisibilityChange);
@@ -704,7 +670,7 @@ export default function Post({
   }, [postScrollStorageKey]);
 
   useEffect(() => {
-    if (typeof window === "undefined" || !isDocumentReload) return;
+    if (typeof window === "undefined" || !shouldRestoreScroll) return;
 
     const raw = window.sessionStorage.getItem(postScrollStorageKey);
     const savedY = Number(raw);
@@ -763,7 +729,7 @@ export default function Post({
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("load", onLoad);
     };
-  }, [isDocumentReload, postScrollStorageKey]);
+  }, [shouldRestoreScroll, postScrollStorageKey]);
 
   if (!postSummary) {
     return (
@@ -961,7 +927,7 @@ export default function Post({
         contentRef={postContentRef}
         onContentClick={onPostContentClick}
       >
-        {Content ? <Content /> : null}
+        {Content ? <Content components={{ h1: () => null }} /> : null}
       </BlogPost>
       {lightboxOpened && postImages.length > 0 ? (
         <ImageLightbox

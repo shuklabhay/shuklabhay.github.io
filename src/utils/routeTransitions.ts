@@ -31,7 +31,7 @@ export function navigateWithRouteTransition(
 
   const rootEl = document.documentElement;
   const isHomeTransition =
-    rootEl.classList.contains("route-home") || to === "/" || to === "/contact";
+    rootEl.classList.contains("route-home") || to === "/";
   rootEl.classList.toggle("home-transition", isHomeTransition);
 
   const transitionId = ++activeTransitionId;

@@ -6,6 +6,7 @@ type PrerenderRoute = {
   canonicalPath: string;
   description: string;
   path: string;
+  socialTitle: string;
   title: string;
   type: "article" | "website";
 };
@@ -80,9 +81,10 @@ function createPrerenderedHtml(
   const canonicalUrl = `${SITE_ORIGIN}${route.canonicalPath}`;
   const socialImageUrl = `${SITE_ORIGIN}${DEFAULT_SOCIAL_IMAGE_PATH}`;
   const escapedTitle = escapeHtmlAttribute(route.title);
+  const escapedSocialTitle = escapeHtmlAttribute(route.socialTitle);
   const escapedDescription = escapeHtmlAttribute(route.description);
   const escapedImageAlt = escapeHtmlAttribute(SOCIAL_IMAGE_ALT);
-  const isHomeVisualRoute = route.path === "/" || route.path === "/contact";
+  const isHomeVisualRoute = route.path === "/";
   let html = appShellHtml;
 
   if (!isHomeVisualRoute) {
@@ -113,7 +115,7 @@ function createPrerenderedHtml(
   html = replaceRequiredHtml(
     html,
     /<meta\s+property="og:title"\s+content="[^"]*"\s*\/>/,
-    `<meta property="og:title" content="${escapedTitle}" />`,
+    `<meta property="og:title" content="${escapedSocialTitle}" />`,
     "Open Graph title meta",
   );
   html = replaceRequiredHtml(
@@ -143,7 +145,7 @@ function createPrerenderedHtml(
   html = replaceRequiredHtml(
     html,
     /<meta\s+name="twitter:title"\s+content="[^"]*"\s*\/>/,
-    `<meta name="twitter:title" content="${escapedTitle}" />`,
+    `<meta name="twitter:title" content="${escapedSocialTitle}" />`,
     "Twitter title meta",
   );
   html = replaceRequiredHtml(

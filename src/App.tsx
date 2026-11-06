@@ -12,6 +12,7 @@ import Blog from "./pages/Blog.tsx";
 import Home from "./pages/Home.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Post from "./pages/Post.tsx";
+import { getPostBySlug } from "./posts";
 import { isBlogPostPath } from "./utils/routeTransitions";
 
 const HOME_BACKGROUND_IMMEDIATE_SRC = "/static/landing-1280.webp";
@@ -37,8 +38,9 @@ function humanizeRouteSegment(segment: string): string {
   return decodeSegment(segment).replace(/[-_]+/g, " ").trim();
 }
 
-function getRouteDocumentTitle(pathname: string): string {
-  const normalizedPathname = normalizePathname(pathname);
+export function getRouteDocumentTitle(pathname: string): string {
+  const exactPathname = normalizePathname(pathname);
+  const normalizedPathname = exactPathname.toLowerCase();
 
   if (normalizedPathname === "/") {
     return SITE_TITLE;
@@ -52,25 +54,19 @@ function getRouteDocumentTitle(pathname: string): string {
     return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Gallery`;
   }
 
-  if (normalizedPathname === "/contact") {
-    return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Contact`;
-  }
-
   if (/^\/gallery\/[^/]+$/.test(normalizedPathname)) {
-    const slug =
-      normalizedPathname.slice("/gallery/".length).split("/")[0] ?? "";
-    const postTitle = humanizeRouteSegment(slug);
-    if (!postTitle) {
-      return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Gallery`;
+    const slug = exactPathname.slice("/gallery/".length).split("/")[0] ?? "";
+    const post = getPostBySlug(decodeSegment(slug));
+    if (post) {
+      return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}${humanizeRouteSegment(post.slug)}`;
     }
-    return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}${postTitle}`;
   }
 
   return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Page Not Found`;
 }
 
 function isHomeVisualRoute(pathname: string): boolean {
-  return pathname === "/" || pathname === "/contact";
+  return pathname === "/";
 }
 
 function getHomeBackgroundCandidates(): string[] {
@@ -262,16 +258,29 @@ export function AppShell(): JSX.Element {
   return (
     <>
       <RouteBackground />
+      <a
+        className="skip-link"
+        href="#content"
+        onClick={(event) => {
+          event.preventDefault();
+          document.getElementById("content")?.focus();
+        }}
+      >
+        Skip to content
+      </a>
       <div className="route-sky" aria-hidden />
       <NavMenu />
-      <div className={isHome ? "app-shell app-shell-home" : "app-shell"}>
+      <div
+        id="content"
+        tabIndex={-1}
+        className={isHome ? "app-shell app-shell-home" : "app-shell"}
+      >
         <Routes location={location}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/gallery" element={<Blog />} />
           <Route path="/gallery/:slug" element={<Post />} />
           <Route path="/blog/*" element={<LegacyBlogRedirect />} />
-          <Route path="/contact" element={<Home />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

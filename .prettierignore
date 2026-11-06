@@ -2,3 +2,4 @@ dist
 node_modules
 **/assets/**
 one-off-portfolios
+pnpm-lock.yaml
