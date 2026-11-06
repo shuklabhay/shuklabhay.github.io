@@ -800,6 +800,44 @@ html.post-expanded .post-toc {
   }
 }
 
+@media (max-width: 860px) {
+  html.route-post body {
+    overflow-y: visible;
+  }
+
+  html.route-post .route-sky,
+  html.route-post .side-nav {
+    position: fixed;
+    transition: transform var(--motion-layout) linear;
+  }
+
+  html.route-post .route-sky {
+    z-index: 9;
+  }
+
+  html.route-post .post-header-row {
+    position: sticky;
+    top: var(--mobile-band-height);
+    z-index: 5;
+    margin: -6px calc(var(--page-x-padding) * -1) 0;
+    padding: 6px var(--page-x-padding);
+    background: var(--page-background-color);
+    transition: transform var(--motion-layout) linear;
+  }
+
+  html.route-post.mobile-header-hidden .route-sky {
+    transform: translateY(-100%);
+  }
+
+  html.route-post.mobile-header-hidden .side-nav {
+    transform: translateY(calc(var(--mobile-band-height) * -1));
+  }
+
+  html.route-post.mobile-header-hidden .post-header-row {
+    transform: translateY(calc(var(--mobile-band-height) * -1 - 100%));
+  }
+}
+
 @media (pointer: coarse) {
   .side-nav-link,
   .post-back-link,
