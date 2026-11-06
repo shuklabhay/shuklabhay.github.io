@@ -14,7 +14,9 @@ declare module "*.mdx" {
       }
     | undefined;
 
-  const MDXComponent: ComponentType;
+  const MDXComponent: ComponentType<{
+    components?: Record<string, ComponentType>;
+  }>;
   export default MDXComponent;
 }
 
@@ -22,6 +24,7 @@ declare module "virtual:posts-manifest" {
   export const postsManifest: Array<{
     slug: string;
     title: string;
+    description: string;
     date: string;
     author: string;
     buttons: Array<{ title: string; link: string }>;

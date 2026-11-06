@@ -15,12 +15,11 @@ function normalizePathname(pathname: string): string {
 export default function NavMenu(): JSX.Element {
   const location = useLocation();
   const pathname = normalizePathname(location.pathname);
-  const activePath = pathname === "/contact" ? "/" : pathname;
 
   return (
     <nav className="side-nav" aria-label="Main">
       {MENU_ITEMS.map(({ label, path }) => {
-        const isActive = activePath === path;
+        const isActive = pathname === path;
         return (
           <TransitionLink
             key={label}

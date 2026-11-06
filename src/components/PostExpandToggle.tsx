@@ -13,7 +13,7 @@ export default function PostExpandToggle({
       className="post-expand-toggle"
       onClick={onToggle}
       aria-pressed={expanded}
-      aria-label={expanded ? "Collapse post" : "Expand post"}
+      aria-label="Wide reading mode"
     >
       <svg viewBox="2 2 20 20" aria-hidden focusable="false">
         {expanded ? (

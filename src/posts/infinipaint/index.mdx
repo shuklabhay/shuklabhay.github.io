@@ -1,19 +1,19 @@
-import genie3Gif from "./assets/genie3.gif";
-import waymoWmGif from "./assets/waymo wm.gif";
-import csgoGif from "./assets/csgo.gif";
-import minipaintGif from "./assets/minipaint.gif";
+import genie3Webp from "./assets/genie3.webp";
+import waymoWmWebp from "./assets/waymo wm.webp";
+import csgoWebp from "./assets/csgo.webp";
+import minipaintWebp from "./assets/minipaint.webp";
 import minipaintRegionsPng from "./assets/minipaint regions.png";
-import episode0Gif from "./assets/episode_0.gif";
+import episode0Webp from "./assets/episode_0.webp";
 import mainArchitecturePng from "./assets/main architecture.png";
 import compression4xPng from "./assets/4x compression.png";
 import compression8xPng from "./assets/8x compression.png";
 import latentDiffPng from "./assets/latent diff.png";
 import latentcnnArchitecturePng from "./assets/latentcnn architecture.png";
-import viewerGif from "./assets/viewer.gif";
+import viewerWebp from "./assets/viewer.webp";
 import rolloutPng from "./assets/rollout.png";
 import degradationCurvesPng from "./assets/degradation curves.png";
-import toolbarCanvasProgressionGif from "./assets/toolbar canvas progression.gif";
-import finalMomentsGif from "./assets/final moments.gif";
+import toolbarCanvasProgressionWebp from "./assets/toolbar canvas progression.webp";
+import finalMomentsWebp from "./assets/final moments.webp";
 
 # Infinipaint: World Modeling a Trivially Simple World
 
@@ -26,8 +26,8 @@ Generative AI has long focused on training models to create images or videos, bu
 > <img
 >   loading="lazy"
 >   decoding="async"
->   src={genie3Gif}
->   alt=""
+>   src={genie3Webp}
+>   alt="Genie 3 generating a wingsuit flight through a rocky mountain valley"
 >   style={{ width: "min(100%, 756px)" }}
 > />
 > Google Deepmind's [Genie 3 World
@@ -39,8 +39,8 @@ More formally, a world model is a neural network that, given a current state and
 > <img
 >   loading="lazy"
 >   decoding="async"
->   src={csgoGif}
->   alt=""
+>   src={csgoWebp}
+>   alt="Grid of DIAMOND-generated CS:GO clips: shooting, jumping, and moving through tunnels and doors"
 >   style={{ width: "min(100%, 756px)" }}
 > />
 > Alonso et al.'s [DIAMOND](https://arxiv.org/abs/2405.12399) world model
@@ -49,8 +49,8 @@ More formally, a world model is a neural network that, given a current state and
 > <img
 >   loading="lazy"
 >   decoding="async"
->   src={waymoWmGif}
->   alt=""
+>   src={waymoWmWebp}
+>   alt="Waymo World Model generating surround camera views of an elephant on the road, with a LiDAR point cloud below"
 >   style={{ width: "min(100%, 756px)" }}
 > />
 > Waymo's [Waymo World
@@ -71,8 +71,8 @@ Minipaint is a simple 224×224 pixel Pygame-based drawing application with a pen
 > <img
 >   loading="lazy"
 >   decoding="async"
->   src={minipaintGif}
->   alt=""
+>   src={minipaintWebp}
+>   alt="Minipaint in use: switching tools and colors, changing brush size, drawing and erasing strokes"
 >   style={{ width: "min(100%, 360px)" }}
 > />
 > Minipaint in action: all state variables are visible in the interface, all
@@ -82,7 +82,7 @@ Minipaint is a simple 224×224 pixel Pygame-based drawing application with a pen
 >   loading="lazy"
 >   decoding="async"
 >   src={minipaintRegionsPng}
->   alt=""
+>   alt="Minipaint layout with pen, eraser, slider, palette, and canvas regions labeled by share of screen area"
 >   style={{ width: "min(100%, 360px)" }}
 > />
 > Minipaint's UI layout, with each region's percentage of total screen area
@@ -101,8 +101,8 @@ Following [NeuralOS](https://arxiv.org/pdf/2507.08800), data is stored as frame-
 > <img
 >   loading="lazy"
 >   decoding="async"
->   src={episode0Gif}
->   alt=""
+>   src={episode0Webp}
+>   alt="Training episode frames tinted green or red by button state, with a cursor heatmap overlaid"
 >   style={{ width: "min(100%, 360px)" }}
 > />
 > A generated episode excerpt: gaussian action heatmap and button state (green =
@@ -126,7 +126,7 @@ Once we include both `a_t` and `a_{t+1}` Minipaint is effectively deterministic:
 >   loading="lazy"
 >   decoding="async"
 >   src={mainArchitecturePng}
->   alt=""
+>   alt="Diagram of the pipeline: VAE encoder, LatentCNN predicting the next latent from actions, VAE decoder"
 >   style={{ width: "min(100%, 900px)" }}
 > />
 > Infinipaint architecture: a VAE compresses frames into latent space, and a
@@ -141,7 +141,7 @@ Following the [NeuralOS](https://arxiv.org/pdf/2507.08800) and [LDM](https://arx
 >   loading="lazy"
 >   decoding="async"
 >   src={compression4xPng}
->   alt=""
+>   alt="Minipaint frames paired with their VAE reconstructions at 4x compression"
 >   style={{ width: "min(100%, 900px)" }}
 > />
 > VAE reconstructions at 4× compression.
@@ -152,7 +152,7 @@ Early on the VAE excelled at reconstructing the application UI (toolbar, buttons
 >   loading="lazy"
 >   decoding="async"
 >   src={compression8xPng}
->   alt=""
+>   alt="Minipaint frames paired with their VAE reconstructions at 8x compression"
 >   style={{ width: "min(100%, 900px)" }}
 > />
 > VAE reconstructions at 8× compression.
@@ -168,7 +168,7 @@ To understand what our LatentCNN will need to learn, we can analyze the differen
 >   loading="lazy"
 >   decoding="async"
 >   src={latentDiffPng}
->   alt=""
+>   alt="Pixel, latent magnitude, and per-channel diffs for a canvas stroke versus a tool switch"
 >   style={{ width: "min(100%, 984px)" }}
 > />
 > Latent diffs for a canvas stroke (left) versus a UI interaction (right). Top
@@ -185,7 +185,7 @@ Because latent diffs are so sparse, early iterations collapsed to predicting zer
 >   loading="lazy"
 >   decoding="async"
 >   src={latentcnnArchitecturePng}
->   alt=""
+>   alt="Diagram of the LatentCNN: latent and action inputs, four residual blocks with Spatial AdaGN, delta output"
 >   style={{ width: "min(100%, 900px)" }}
 > />
 > LatentCNN architecture: a flat 56×56 single-resolution CNN predicting sparse
@@ -201,8 +201,8 @@ Raw mouse events are too dense for real-time inference, so fixed-interval thrott
 > <img
 >   loading="lazy"
 >   decoding="async"
->   src={viewerGif}
->   alt=""
+>   src={viewerWebp}
+>   alt="Interactive viewer drawing live, with a delta heatmap and layer activation panels beside the canvas"
 >   style={{ width: "min(100%, 816px)" }}
 > />
 > The Infinipaint world model's interactive viewer running the combined world
@@ -222,7 +222,7 @@ Across evaluation, the world model captures Minipaint's core dynamics on fresh r
 >   loading="lazy"
 >   decoding="async"
 >   src={rolloutPng}
->   alt=""
+>   alt="Predicted, ground truth, and error rows from frame 25 to 775, with predictions drifting over time"
 >   style={{ width: "min(100%, 984px)" }}
 > />
 > An example autoregressive rollout of the combined VAE-LatentCNN pipeline.
@@ -235,7 +235,7 @@ Two metrics are used to track rollout fidelity: SSIM (structural similarity; 0.9
 >   loading="lazy"
 >   decoding="async"
 >   src={degradationCurvesPng}
->   alt=""
+>   alt="SSIM and PSNR curves falling over rollout steps, with a dashed VAE reconstruction ceiling"
 >   style={{ width: "min(100%, 984px)" }}
 > />
 > Autoregressive rollout degradation across 20 held-out episodes. Solid lines
@@ -261,8 +261,8 @@ Functionality persists beyond visual degradation. Discrete UI behaviors degrade 
 > <img
 >   loading="lazy"
 >   decoding="async"
->   src={toolbarCanvasProgressionGif}
->   alt=""
+>   src={toolbarCanvasProgressionWebp}
+>   alt="Grid of eight rollouts, with canvas strokes blurring faster than the toolbar"
 >   style={{ width: "min(100%, 816px)" }}
 > />
 > Autoregressive rollouts across 8 held-out episodes: at first UI elements
@@ -279,8 +279,8 @@ _Tool collapse occurs asymmetrically._ Pen-click response accuracy falls from 96
 > <img
 >   loading="lazy"
 >   decoding="async"
->   src={finalMomentsGif}
->   alt=""
+>   src={finalMomentsWebp}
+>   alt="Viewer past frame 1000, with a noisy scribbled canvas and the toolbar dissolved"
 >   style={{ width: "min(100%, 360px)" }}
 > />
 > Late phase model degradation displayed in the interactive viewer.

@@ -201,6 +201,7 @@ export function CheckboxSubtitleLink<T extends string = string>({
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             aria-pressed={isOn}
+            className="page-filter-toggle"
             style={{
               ...sharedStyleWithArrowGap,
               WebkitTouchCallout: "none",
@@ -332,6 +333,7 @@ export function CheckboxSubtitleToggle<T extends string = string>({
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             aria-pressed={isOn}
+            className="page-filter-toggle"
             style={{
               ...sharedStyleWithArrowGap,
               WebkitTouchCallout: "none",

@@ -71,7 +71,7 @@ export default function BlogPost({
     alignItems: "center",
     justifyContent: "center",
     padding: "0 11px",
-    borderRadius: "6px",
+    borderRadius: 0,
     border: isHovered
       ? "1px solid var(--ink)"
       : "1px solid rgba(17, 17, 17, 0.3)",
@@ -107,7 +107,7 @@ export default function BlogPost({
                 ? "192px"
                 : "round(clamp(216px, 26vw, 336px), 12px)",
               margin: isMobile ? "12px 0 24px" : "24px 0 24px",
-              borderRadius: "6px",
+              borderRadius: 0,
               backgroundColor: "#e9e4d8",
               backgroundRepeat: "no-repeat",
               backgroundSize: "cover",
@@ -154,6 +154,7 @@ export default function BlogPost({
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={button.title}
+                    className="post-header-button"
                     onMouseEnter={() => setHoveredButtonIndex(index)}
                     onMouseLeave={() => setHoveredButtonIndex(null)}
                     onFocus={() => setHoveredButtonIndex(index)}

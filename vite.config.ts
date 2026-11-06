@@ -19,17 +19,13 @@ const TOP_LEVEL_SOCIAL_PAGES = [
   {
     canonicalPath: "/about",
     title: "Abhay Shukla · About",
-    description: "about",
+    description:
+      "I've been manipulating computers since I was 9, almost entirely self-taught.",
   },
   {
     canonicalPath: "/gallery",
     title: "Abhay Shukla · Gallery",
-    description: "gallery",
-  },
-  {
-    canonicalPath: "/contact",
-    title: "Abhay Shukla · Contact",
-    description: "contact",
+    description: "Projects and writing by Abhay Shukla.",
   },
 ];
 
@@ -79,6 +75,24 @@ function formatSlug(slug: string): string {
 function extractPostTitle(source: string, slug: string): string {
   const heading = source.match(/^#\s+(.+)$/m);
   return heading?.[1]?.trim() ?? formatSlug(slug);
+}
+
+function extractPostDescription(source: string, title: string): string {
+  const paragraph = source
+    .replace(/^import\s.+$/gm, "")
+    .split(/\n\s*\n/)
+    .map((block) => block.trim())
+    .find((block) => block.length > 0 && /^[A-Za-z0-9'‘"“]/.test(block));
+  if (!paragraph) return title;
+
+  const plain = paragraph
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1")
+    .replace(/[`*_]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (plain.length <= 160) return plain;
+  const cut = plain.slice(0, 157);
+  return `${cut.slice(0, cut.lastIndexOf(" "))}…`;
 }
 
 function extractPostWordCount(source: string): number {
@@ -144,6 +158,7 @@ type PostBuildData = {
   metaPath: string;
   meta: ParsedPostMeta;
   title: string;
+  description: string;
   wordCount: number;
   date: string;
   coverFile?: string;
@@ -253,6 +268,7 @@ function collectPostBuildData(postsDir: string): PostBuildData[] {
           metaPath,
           meta,
           title,
+          description: extractPostDescription(source, title),
           wordCount: extractPostWordCount(source),
           date: meta.date ?? stat.mtime.toISOString().slice(0, 10),
           coverFile: POST_COVER_CANDIDATES.find((fileName) =>
@@ -431,7 +447,7 @@ export default defineConfig({
           itemLines.push(
             `{ slug: ${JSON.stringify(post.slug)}, title: ${JSON.stringify(
               post.title,
-            )}, date: ${JSON.stringify(post.date)}, author: ${JSON.stringify(
+            )}, description: ${JSON.stringify(post.description)}, date: ${JSON.stringify(post.date)}, author: ${JSON.stringify(
               post.meta.author ?? "",
             )}, buttons: ${JSON.stringify(
               post.meta.buttons,
@@ -503,7 +519,7 @@ export default defineConfig({
               {
                 canonicalPath: `/gallery/${post.slug}`,
                 title: post.title,
-                description: post.title,
+                description: post.description,
                 type: "article",
               },
               appShellHtml,

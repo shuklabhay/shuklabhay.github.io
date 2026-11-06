@@ -6,7 +6,7 @@ export const contactData: ReadonlyArray<ContactInfo> = [
     link: "shuklabhay.inbound@gmail.com",
   },
   {
-    title: "Linkedin",
+    title: "LinkedIn",
     link: "https://www.linkedin.com/in/shuklabhay/",
   },
   {
