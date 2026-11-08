@@ -6,9 +6,9 @@ const SHOW_DELTA_PX = 8;
 const HIDE_DELTA_PX = 4;
 const MIN_HIDE_SCROLL_PX = 96;
 
-export function useMobileHeaderAutoHide(): void {
+export function useMobileHeaderAutoHide(enabled: boolean): void {
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined" || !enabled) return;
 
     const rootEl = document.documentElement;
     const mediaQuery = window.matchMedia(MOBILE_QUERY);
@@ -59,5 +59,5 @@ export function useMobileHeaderAutoHide(): void {
       mediaQuery.removeEventListener("change", update);
       setHidden(false);
     };
-  }, []);
+  }, [enabled]);
 }

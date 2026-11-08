@@ -13,7 +13,6 @@ import BlogPost from "../components/BlogPost";
 import ImageLightbox from "../components/ImageLightbox";
 import PostBackLink from "../components/PostBackLink";
 import PostExpandToggle from "../components/PostExpandToggle";
-import { useMobileHeaderAutoHide } from "../utils/useMobileHeaderAutoHide";
 import {
   getLoadedPostBySlug,
   getPostBySlug,
@@ -236,7 +235,6 @@ export default function Post({
     typeof window !== "undefined" &&
     window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
   const navigationType = useNavigationType();
-  useMobileHeaderAutoHide();
   const shouldRestoreScroll =
     didDocumentReload() ||
     (navigationType === "POP" && location.key !== "default");

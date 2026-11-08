@@ -13,6 +13,7 @@ import Home from "./pages/Home.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Post from "./pages/Post.tsx";
 import { getPostBySlug } from "./posts";
+import { useMobileHeaderAutoHide } from "./utils/useMobileHeaderAutoHide";
 import { isBlogPostPath } from "./utils/routeTransitions";
 
 const HOME_BACKGROUND_IMMEDIATE_SRC = "/static/landing-1280.webp";
@@ -240,6 +241,7 @@ function RouteBackground(): null {
 export function AppShell(): JSX.Element {
   const location = useLocation();
   const isHome = isHomeVisualRoute(location.pathname);
+  useMobileHeaderAutoHide(!isHome);
 
   useEffect(() => {
     document.title = getRouteDocumentTitle(location.pathname);
@@ -268,6 +270,7 @@ export function AppShell(): JSX.Element {
       >
         Skip to content
       </a>
+      <div className="safari-tint" aria-hidden />
       <div className="route-sky" aria-hidden />
       <NavMenu />
       <div
