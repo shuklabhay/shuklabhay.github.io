@@ -182,7 +182,6 @@ html.route-post.post-expanded .side-nav-link {
 
 .side-nav-link {
   opacity: 0.72;
-  text-shadow: 0 0 6px rgba(20, 22, 40, 0.45);
   transition: opacity var(--motion-hover) linear;
 }
 
@@ -733,14 +732,6 @@ html.post-expanded .post-toc {
 
 .post-toc-link:focus-visible {
   outline-offset: -2px;
-}
-
-.post-toc {
-  text-shadow: 0 0 6px rgba(20, 22, 40, 0.45);
-}
-
-html.post-expanded .post-toc {
-  text-shadow: none;
 }
 
 @media (max-width: 860px) {
