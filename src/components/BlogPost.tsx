@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import type { CSSProperties } from "react";
 import type { BlogPostProps } from "../utils/types";
 import { isHydratingPrerenderedPage } from "../utils/prerender";
 
@@ -21,9 +20,6 @@ export default function BlogPost({
   children,
 }: BlogPostProps): JSX.Element {
   const [isMobile, setIsMobile] = useState(getInitialIsMobile);
-  const [hoveredButtonIndex, setHoveredButtonIndex] = useState<number | null>(
-    null,
-  );
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -37,54 +33,12 @@ export default function BlogPost({
     return () => window.removeEventListener("resize", onViewportResize);
   }, []);
 
-  useEffect(() => {
-    if (typeof window === "undefined" || typeof document === "undefined")
-      return;
-
-    const clearSourceHover = (): void => {
-      setHoveredButtonIndex(null);
-    };
-
-    const onVisibilityChange = (): void => {
-      if (document.hidden) clearSourceHover();
-    };
-
-    window.addEventListener("blur", clearSourceHover);
-    window.addEventListener("pagehide", clearSourceHover);
-    document.addEventListener("visibilitychange", onVisibilityChange);
-
-    return () => {
-      window.removeEventListener("blur", clearSourceHover);
-      window.removeEventListener("pagehide", clearSourceHover);
-      document.removeEventListener("visibilitychange", onVisibilityChange);
-    };
-  }, []);
-
   const hasHeroImage = Boolean(heroImage);
   const titleMargin = hasHeroImage
     ? "0 0 24px"
     : isMobile
       ? "12px 0 24px"
       : "24px 0 24px";
-  const getHeaderButtonStyle = (isHovered: boolean): CSSProperties => ({
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "0 11px",
-    borderRadius: "6px",
-    border: isHovered
-      ? "1px solid var(--ink)"
-      : "1px solid rgba(17, 17, 17, 0.3)",
-    backgroundColor: "transparent",
-    color: "var(--ink)",
-    textDecoration: "none",
-    fontWeight: "var(--body-weight)",
-    fontSize: "var(--small-text)",
-    letterSpacing: "0.01em",
-    lineHeight: "22px",
-    transition:
-      "background-color var(--motion-hover) linear, border-color var(--motion-hover) linear, color var(--motion-hover) linear",
-  });
 
   return (
     <main
@@ -139,32 +93,23 @@ export default function BlogPost({
           {buttons.length ? (
             <div
               style={{
-                marginTop: "12px",
+                marginTop: "6px",
                 display: "flex",
-                gap: "12px",
+                gap: "18px",
                 flexWrap: "wrap",
               }}
             >
-              {buttons.map((button, index) => {
-                const isHovered = hoveredButtonIndex === index;
-                return (
-                  <a
-                    key={`${button.link}-${index}`}
-                    href={button.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={button.title}
-                    className="post-header-button"
-                    onMouseEnter={() => setHoveredButtonIndex(index)}
-                    onMouseLeave={() => setHoveredButtonIndex(null)}
-                    onFocus={() => setHoveredButtonIndex(index)}
-                    onBlur={() => setHoveredButtonIndex(null)}
-                    style={getHeaderButtonStyle(isHovered)}
-                  >
-                    {button.title}
-                  </a>
-                );
-              })}
+              {buttons.map((button, index) => (
+                <a
+                  key={`${button.link}-${index}`}
+                  href={button.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="post-header-button"
+                >
+                  {button.title} ↗
+                </a>
+              ))}
             </div>
           ) : null}
         </div>
