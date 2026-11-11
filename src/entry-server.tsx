@@ -1,7 +1,12 @@
 import { renderToReadableStream } from "react-dom/server.browser";
 import { StaticRouter } from "react-router-dom/server.js";
 import { AppShell, getRouteDocumentTitle } from "./App";
-import { allPosts } from "./posts";
+import { allPosts, registerPostModules } from "./posts";
+import type { PostModule } from "./utils/types";
+
+registerPostModules(
+  import.meta.glob<PostModule>("./posts/*/index.mdx", { eager: true }),
+);
 
 export type PrerenderRoute = {
   canonicalPath: string;
