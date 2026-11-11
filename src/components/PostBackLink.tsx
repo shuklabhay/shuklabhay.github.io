@@ -1,7 +1,6 @@
 import { useLocation } from "react-router-dom";
 import type { ReactNode } from "react";
 import TransitionLink from "./TransitionLink";
-import TriangleIcon from "./TriangleIcon";
 import type { RouteTransitionState } from "../utils/types";
 
 type PostBackLinkProps = {
@@ -17,10 +16,7 @@ export default function PostBackLink({
   return (
     <div className="post-header-row">
       <TransitionLink to={backTargetPath} className="post-back-link">
-        <span aria-hidden className="post-back-icon">
-          <TriangleIcon direction="left" size="100%" />
-        </span>
-        back
+        ← back
       </TransitionLink>
       {trailing}
     </div>

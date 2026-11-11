@@ -13,21 +13,8 @@ export default function PostExpandToggle({
       className="post-expand-toggle"
       onClick={onToggle}
       aria-pressed={expanded}
-      aria-label="Wide reading mode"
     >
-      <svg viewBox="2 2 20 20" aria-hidden focusable="false">
-        {expanded ? (
-          <>
-            <path d="M16 3V8H21" />
-            <path d="M3 16H8V21" />
-          </>
-        ) : (
-          <>
-            <path d="M15 4H20V9" />
-            <path d="M4 15V20H9" />
-          </>
-        )}
-      </svg>
+      {expanded ? "exit wide" : "wide"}
     </button>
   );
 }
