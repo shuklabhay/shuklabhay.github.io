@@ -595,6 +595,47 @@ export default function Post({
     };
   }, [activeHeadingId, contentsSlot, isExpanded, postHeadings]);
 
+  useIsomorphicLayoutEffect(() => {
+    const listEl = document.querySelector<HTMLElement>(".post-toc-list");
+    if (!listEl) return;
+    const activeRowEl = listEl
+      .querySelector(".post-toc-link.is-active")
+      ?.closest("li");
+    const fill = activeRowEl
+      ? activeRowEl.offsetTop + activeRowEl.offsetHeight
+      : 0;
+    listEl.style.setProperty("--toc-fill", `${fill}px`);
+  }, [activeHeadingId, contentsSlot, isExpanded, postHeadings]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const trackEl = document.querySelector<HTMLElement>(".reading-track");
+      if (!trackEl) return;
+      const maxScroll =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const progress =
+        maxScroll > 0
+          ? Math.min(1, Math.max(0, window.scrollY / maxScroll))
+          : 0;
+      trackEl.style.setProperty("--read", `${progress * 100}%`);
+    };
+    const onScroll = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [contentsSlot, slug]);
+
   useEffect(() => {
     return () => {
       document.documentElement.classList.remove(
@@ -874,12 +915,16 @@ export default function Post({
       (activeParentHeadingId !== null &&
         parentHeadingIdByHeadingId.get(heading.id) === activeParentHeadingId),
   );
+  const activeContentsIndex = visibleContentsHeadings.findIndex(
+    (heading) => heading.id === activeHeadingId,
+  );
   const postSidebar =
     postSummary.showInlineToc && postHeadings.length > 0 ? (
       <nav aria-label="Post sections" className="post-toc">
         <ul className="post-toc-list">
-          {visibleContentsHeadings.map((heading) => {
+          {visibleContentsHeadings.map((heading, index) => {
             const isActive = activeHeadingId === heading.id;
+            const isRead = index < activeContentsIndex;
             const isActiveParent =
               !isActive && activeParentHeadingId === heading.id;
 
@@ -890,7 +935,7 @@ export default function Post({
                   onClick={() => onHeadingJump(heading.id)}
                   className={`post-toc-link${
                     heading.level === 2 ? " is-top-level" : ""
-                  }${isActive ? " is-active" : ""}${
+                  }${isActive ? " is-active" : ""}${isRead ? " is-read" : ""}${
                     isActiveParent ? " is-parent-active" : ""
                   }`}
                 >
@@ -901,7 +946,9 @@ export default function Post({
           })}
         </ul>
       </nav>
-    ) : undefined;
+    ) : (
+      <div className="reading-track" aria-hidden />
+    );
 
   return (
     <>
