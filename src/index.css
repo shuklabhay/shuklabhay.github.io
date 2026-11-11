@@ -30,7 +30,7 @@
   --gutter-top: calc(var(--strip-height) + 12px);
   --toc-width: calc(var(--column-left) - 36px - var(--page-x-padding));
   --motion-page: 100ms;
-  --motion-home: 420ms;
+  --motion-home: 100ms;
   --motion-hover: 100ms;
   --motion-layout: 120ms;
 }
@@ -373,6 +373,17 @@ html.home-fall {
   --home-slide: calc(100vh - var(--strip-height));
 }
 
+html.home-rise .route-page-about,
+html.home-rise .route-page-gallery,
+html.home-rise .route-page-post,
+html.home-rise .route-page-missing,
+html.home-fall .route-page-about,
+html.home-fall .route-page-gallery,
+html.home-fall .route-page-post,
+html.home-fall .route-page-missing {
+  view-transition-name: none;
+}
+
 html.home-rise::view-transition-group(*),
 html.home-fall::view-transition-group(*),
 html.home-rise::view-transition-old(*),
@@ -380,7 +391,7 @@ html.home-fall::view-transition-old(*),
 html.home-rise::view-transition-new(*),
 html.home-fall::view-transition-new(*) {
   animation-duration: var(--motion-home);
-  animation-timing-function: cubic-bezier(0.3, 0, 0, 1);
+  animation-timing-function: linear;
   mix-blend-mode: normal;
 }
 
@@ -397,13 +408,11 @@ html.home-fall::view-transition-group(site-nav) {
 html.home-rise::view-transition-old(site-nav),
 html.home-fall::view-transition-old(site-nav) {
   animation-name: home-fade-out;
-  animation-timing-function: linear;
 }
 
 html.home-rise::view-transition-new(site-nav),
 html.home-fall::view-transition-new(site-nav) {
   animation-name: home-fade-in;
-  animation-timing-function: linear;
 }
 
 html.home-rise::view-transition-old(root) {
@@ -411,10 +420,6 @@ html.home-rise::view-transition-old(root) {
 }
 
 html.home-rise::view-transition-new(root),
-html.home-rise::view-transition-new(page-about),
-html.home-rise::view-transition-new(page-gallery),
-html.home-rise::view-transition-new(page-post),
-html.home-rise::view-transition-new(page-missing),
 html.home-rise::view-transition-new(post-toc) {
   animation-name: slide-in-up;
 }
@@ -424,10 +429,6 @@ html.home-fall::view-transition-new(root) {
 }
 
 html.home-fall::view-transition-old(root),
-html.home-fall::view-transition-old(page-about),
-html.home-fall::view-transition-old(page-gallery),
-html.home-fall::view-transition-old(page-post),
-html.home-fall::view-transition-old(page-missing),
 html.home-fall::view-transition-old(post-toc) {
   animation-name: slide-out-down;
 }
