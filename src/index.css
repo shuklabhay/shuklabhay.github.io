@@ -657,7 +657,8 @@ code {
 
 html.post-expanded .post-toc {
   position: fixed;
-  top: 12px;
+  top: 50%;
+  transform: translateY(-50%);
   left: 0;
   width: calc((100vw - var(--reading-width)) / 2 - 36px);
   margin: 0;
@@ -712,12 +713,67 @@ html.post-expanded .post-toc {
   font-weight: var(--body-weight);
   line-height: 24px;
   text-decoration: none;
-  opacity: 0.72;
+  opacity: 0.5;
   transition: opacity var(--motion-hover) linear;
+}
+
+.post-toc-link.is-read {
+  opacity: 0.75;
 }
 
 .post-toc-link.is-active {
   opacity: 1;
+  font-weight: 600;
+}
+
+.post-toc-list {
+  position: relative;
+  padding-left: 14px;
+}
+
+.post-toc-list::before,
+.post-toc-list::after,
+.reading-track::before,
+.reading-track::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  background: currentColor;
+}
+
+.post-toc-list::before,
+.reading-track::before {
+  bottom: 0;
+  opacity: 0.3;
+}
+
+.post-toc-list::after {
+  height: var(--toc-fill, 0px);
+  transition: height var(--motion-layout) linear;
+}
+
+.reading-track {
+  position: relative;
+  width: 2px;
+  height: 240px;
+  margin-top: 24px;
+  color: white;
+}
+
+.reading-track::after {
+  height: var(--read, 0%);
+}
+
+html.post-expanded .reading-track {
+  position: fixed;
+  top: 50%;
+  left: 12px;
+  margin: 0;
+  transform: translateY(-50%);
+  color: var(--ink);
+  pointer-events: none;
 }
 
 .post-toc-link:not(.is-top-level) {
