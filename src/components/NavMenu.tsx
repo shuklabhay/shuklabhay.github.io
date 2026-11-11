@@ -27,7 +27,9 @@ export default function NavMenu(): JSX.Element {
             aria-current={isActive ? "page" : undefined}
             className={`side-nav-link${isActive ? " is-active" : ""}`}
           >
-            <span className="side-nav-label">{label}</span>
+            <span className="side-nav-label" data-label={label}>
+              {label}
+            </span>
           </TransitionLink>
         );
       })}
