@@ -36,6 +36,7 @@ const HEADING_JUMP_SETTLED_TICKS = 4;
 const POST_EXPAND_ANIMATION_MS = 150;
 const CONTENTS_BOTTOM_MARGIN_PX = 16;
 const CONTENTS_MIN_LIST_WIDTH_PX = 190;
+const TOC_OFFSET_PX = 48;
 const HEADING_JUMP_SCROLL_MS = 180;
 
 function scrollLinearlyTo(top: number): () => void {
@@ -81,10 +82,16 @@ function fitContentsToViewport(tocEl: HTMLElement, animate: boolean): void {
 
   const columnEl = document.querySelector<HTMLElement>(".post-column");
   const room = document.documentElement.classList.contains("post-expanded")
-    ? (window.innerWidth - (columnEl?.offsetWidth ?? 0)) / 2 - 32
+    ? (window.innerWidth - (columnEl?.offsetWidth ?? 0)) / 2 +
+      TOC_OFFSET_PX -
+      32
     : (tocEl.parentElement?.clientWidth ?? 0);
   const isTooNarrow = room < CONTENTS_MIN_LIST_WIDTH_PX;
   tocEl.classList.toggle("is-too-narrow", isTooNarrow);
+  document.documentElement.style.setProperty(
+    "--toc-offset",
+    isTooNarrow ? "0px" : `${TOC_OFFSET_PX}px`,
+  );
   if (isTooNarrow) {
     rowEls.forEach((rowEl) => rowEl.classList.remove("is-fit-hidden"));
     return;
@@ -584,6 +591,7 @@ export default function Post({
     const fitContents = (animate: boolean): void => {
       const tocEl = document.querySelector<HTMLElement>(".post-toc");
       if (tocEl) fitContentsToViewport(tocEl, animate);
+      else document.documentElement.style.removeProperty("--toc-offset");
     };
     const onResize = (): void => fitContents(false);
 
@@ -642,6 +650,7 @@ export default function Post({
         "post-expanded",
         "post-expand-animating",
       );
+      document.documentElement.style.removeProperty("--toc-offset");
       window.clearTimeout(expandAnimationTimeoutIdRef.current);
     };
   }, []);

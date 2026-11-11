@@ -29,6 +29,7 @@
   --content-gutter: round(clamp(24px, 4vw, 60px), 12px);
   --content-left-margin: 24px;
   --reading-width: 672px;
+  --toc-offset: 0px;
   --mobile-band-height: 120px;
   --motion-page: 100ms;
   --motion-home: 120ms;
@@ -266,7 +267,10 @@ html.post-expand-animating .post-column {
 html.route-post.post-expanded .post-column {
   margin-left: max(
     0px,
-    calc((100vw - var(--content-gutter) * 2 - var(--reading-width)) / 2)
+    calc(
+      (100vw - var(--content-gutter) * 2 - var(--reading-width)) / 2 +
+        var(--toc-offset)
+    )
   );
 }
 
@@ -712,7 +716,7 @@ html.post-expanded .post-toc {
   top: 50%;
   transform: translateY(-50%);
   left: 0;
-  width: calc((100vw - var(--reading-width)) / 2 - 36px);
+  width: calc((100vw - var(--reading-width)) / 2 + var(--toc-offset) - 36px);
   margin: 0;
   padding-left: 12px;
   color: var(--ink);
