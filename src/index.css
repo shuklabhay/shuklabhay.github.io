@@ -602,6 +602,14 @@ code {
   -webkit-user-drag: none;
 }
 
+.post-content > img {
+  margin-bottom: 6px;
+}
+
+.post-content > img + p {
+  margin-bottom: 24px;
+}
+
 .post-content video,
 .post-content picture,
 .post-content canvas {
