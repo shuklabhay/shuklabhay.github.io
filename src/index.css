@@ -798,14 +798,14 @@ html.post-expanded .post-toc {
 
 .gallery-row {
   display: grid;
-  grid-template-columns: 4.75em minmax(0, 1fr);
+  grid-template-columns: 4.25em minmax(0, 1fr);
   column-gap: 12px;
   align-items: baseline;
 }
 
 .gallery-row-date {
-  color: var(--ink);
-  font-size: var(--text);
+  color: var(--ink-muted);
+  font-size: calc(var(--text) * 0.875);
   font-weight: var(--body-weight);
   line-height: var(--lh);
   white-space: nowrap;
