@@ -704,7 +704,6 @@ html.post-expanded .post-toc {
   font-weight: var(--body-weight);
   line-height: 24px;
   text-decoration: none;
-  text-transform: lowercase;
   opacity: 0.72;
   transition: opacity var(--motion-hover) linear;
 }
