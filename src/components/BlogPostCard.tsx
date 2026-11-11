@@ -74,7 +74,6 @@ export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
           width: "100%",
           minWidth: 0,
           maxWidth: "100%",
-          columnGap: truncatedTitle.suffix ? "0.24em" : 0,
           overflow: "hidden",
           whiteSpace: "nowrap",
           color: "var(--ink)",
@@ -104,7 +103,7 @@ export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
               whiteSpace: "nowrap",
             }}
           >
-            {truncatedTitle.suffix}
+            {`\u00a0${truncatedTitle.suffix}`}
           </span>
         ) : null}
       </span>
