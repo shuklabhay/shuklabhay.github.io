@@ -99,9 +99,12 @@ function getCheckboxStyle({
     alignItems: "center",
     gap: 0,
     transition: canHover ? "color var(--motion-hover) linear" : "none",
-    textDecorationLine: isOn ? "underline" : "none",
-    textDecorationThickness: "1.5px",
-    textUnderlineOffset: "0.25em",
+    backgroundImage: isOn
+      ? "linear-gradient(currentColor, currentColor)"
+      : "none",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "0 calc(100% - 1px)",
+    backgroundSize: "100% 1.5px",
     WebkitTextFillColor: fg,
   };
 }
