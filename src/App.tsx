@@ -25,8 +25,9 @@ import {
   currentHistoryIndex,
   recallScroll,
   rememberPathAt,
-  setCurrentKey,
+  setCurrentPlace,
 } from "./utils/navigationMemory";
+import type { RouteTransitionState } from "./utils/types";
 
 const HOME_BACKGROUND_IMMEDIATE_SRC = "/static/landing-1280.webp";
 const SITE_TITLE = "Abhay Shukla";
@@ -72,6 +73,34 @@ export function getRouteDocumentTitle(pathname: string): string {
   }
 
   return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Page not found`;
+}
+
+const RESTORE_SCROLL_RETRY_MS = 50;
+const RESTORE_SCROLL_GIVE_UP_MS = 2000;
+
+function scrollOnceTallEnough(top: number): () => void {
+  const startedAt = Date.now();
+  let timeoutId = 0;
+  const stop = (): void => {
+    window.clearTimeout(timeoutId);
+    window.removeEventListener("wheel", stop);
+    window.removeEventListener("touchstart", stop);
+    window.removeEventListener("keydown", stop);
+  };
+  const attempt = (): void => {
+    window.scrollTo(0, top);
+    const reached = Math.abs(window.scrollY - top) < 1;
+    if (reached || Date.now() - startedAt > RESTORE_SCROLL_GIVE_UP_MS) {
+      stop();
+      return;
+    }
+    timeoutId = window.setTimeout(attempt, RESTORE_SCROLL_RETRY_MS);
+  };
+  window.addEventListener("wheel", stop, { passive: true });
+  window.addEventListener("touchstart", stop, { passive: true });
+  window.addEventListener("keydown", stop);
+  timeoutId = window.setTimeout(attempt, RESTORE_SCROLL_RETRY_MS);
+  return stop;
 }
 
 function isHomeVisualRoute(pathname: string): boolean {
@@ -277,13 +306,20 @@ export function AppShell(): JSX.Element {
   }, []);
 
   useIsomorphicLayoutEffect(() => {
-    setCurrentKey(location.key);
+    setCurrentPlace(location.key, location.pathname, location.state);
     const index = currentHistoryIndex();
     if (index !== null) rememberPathAt(index, location.pathname);
     if (location.hash) return;
-    const shouldRestore =
-      navigationType === "POP" && restoresScrollOnReturn(location.pathname);
-    window.scrollTo(0, shouldRestore ? recallScroll(location.key) : 0);
+    if (navigationType === "POP") {
+      const shouldRestore = restoresScrollOnReturn(location.pathname);
+      window.scrollTo(0, shouldRestore ? recallScroll(location.key) : 0);
+      return;
+    }
+    const restoreScroll = (location.state as RouteTransitionState | null)
+      ?.restoreScroll;
+    window.scrollTo(0, restoreScroll ?? 0);
+    if (!restoreScroll) return;
+    return scrollOnceTallEnough(restoreScroll);
   }, [location.key]);
 
   useIsomorphicLayoutEffect(() => {

@@ -6,7 +6,6 @@ import type { PostMeta } from "../utils/types";
 
 type BlogPostCardProps = {
   post: PostMeta;
-  isRecent: boolean;
 };
 
 const DEFAULT_POST_HERO_IMAGE = "/static/landing-1280.avif";
@@ -27,10 +26,7 @@ function splitTitleForMiddleEllipsis(title: string): {
   };
 }
 
-export default function BlogPostCard({
-  post,
-  isRecent,
-}: BlogPostCardProps): JSX.Element {
+export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
   const postPath = `/gallery/${post.slug}`;
   const heroSrc = post.cover ?? DEFAULT_POST_HERO_IMAGE;
   const truncatedTitle = splitTitleForMiddleEllipsis(post.title);
@@ -45,7 +41,7 @@ export default function BlogPostCard({
     <TransitionLink
       to={postPath}
       state={{ fromPath: "/gallery" }}
-      className={`gallery-row${isRecent ? " is-recent" : ""}`}
+      className="gallery-row"
       onMouseEnter={warmPostResources}
       onFocus={warmPostResources}
       onTouchStart={warmPostResources}

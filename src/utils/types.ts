@@ -11,6 +11,7 @@ export type GitHubRepo = { full_name: string };
 
 export type RouteTransitionState = {
   fromPath?: string;
+  restoreScroll?: number;
 };
 
 export type ContactInfo = {

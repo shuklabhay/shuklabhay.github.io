@@ -19,7 +19,6 @@ import {
   readPostBySlug,
 } from "../posts";
 import { preloadImage } from "../utils/imagePreload";
-import { setLastVisitedPost } from "../utils/navigationMemory";
 import { formatPostDate } from "../utils/formatPostDate";
 import type { PostEntry, RichImage } from "../utils/types";
 
@@ -592,10 +591,6 @@ export default function Post({
       window.removeEventListener("resize", onScroll);
     };
   }, [contentsSlot, slug]);
-
-  useIsomorphicLayoutEffect(() => {
-    return () => setLastVisitedPost(slug);
-  }, [slug]);
 
   useEffect(() => {
     if (!postSummary) return;

@@ -7,8 +7,9 @@ import {
 import {
   currentHistoryKey,
   recallScroll,
-  rememberCurrentScroll,
+  rememberCurrentPlace,
 } from "./navigationMemory";
+import type { RouteTransitionState } from "./types";
 
 export function isBlogPostPath(pathname: string) {
   return pathname.startsWith("/gallery/") && pathname !== "/gallery";
@@ -69,8 +70,11 @@ export function navigateWithRouteTransition(
   to: string,
   options?: NavigateOptions,
 ): void {
-  rememberCurrentScroll();
-  runRouteTransition(to, true, () => {
+  rememberCurrentPlace();
+  const restoreScroll = (options?.state as RouteTransitionState | undefined)
+    ?.restoreScroll;
+  const landsAtTop = !restoreScroll || restoreScroll < 1;
+  runRouteTransition(to, landsAtTop, () => {
     flushSync(() => navigate(to, options));
   });
 }
@@ -80,7 +84,7 @@ export function animateHistoryNavigations(): () => void {
 
   const onPopState = (event: PopStateEvent): void => {
     if (isReplaying) return;
-    rememberCurrentScroll();
+    rememberCurrentPlace();
     if (!shouldAnimate()) return;
     event.stopImmediatePropagation();
 

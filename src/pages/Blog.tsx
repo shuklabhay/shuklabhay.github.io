@@ -1,17 +1,14 @@
 import PageTitle, { CheckboxSubtitleLink } from "../components/PageTitle";
-import { useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import BlogPostCard from "../components/BlogPostCard";
 import { allPosts } from "../posts";
 import { preloadImage } from "../utils/imagePreload";
-import { getLastVisitedPost } from "../utils/navigationMemory";
 import type {
   BlogSortDirection,
   BlogSortField,
   BlogSortState,
 } from "../utils/types";
 
-const useIsomorphicLayoutEffect: typeof useEffect =
-  typeof window === "undefined" ? useEffect : useLayoutEffect;
 const BLOG_SORT_STORAGE_KEY = "blog-sort-state-v1";
 const DEFAULT_BLOG_SORT_STATE: BlogSortState = {
   sortField: "date",
@@ -52,10 +49,6 @@ function readBlogSortStateFromStorage(): BlogSortState {
 }
 
 export default function Blog() {
-  const [recentSlug, setRecentSlug] = useState<string | null>(null);
-  useIsomorphicLayoutEffect(() => {
-    setRecentSlug(getLastVisitedPost());
-  }, []);
   const [sortState, setSortState] = useState<BlogSortState>(
     DEFAULT_BLOG_SORT_STATE,
   );
@@ -159,11 +152,7 @@ export default function Blog() {
       />
       <section className="gallery-list">
         {sortedPosts.map((post) => (
-          <BlogPostCard
-            key={post.slug}
-            post={post}
-            isRecent={post.slug === recentSlug}
-          />
+          <BlogPostCard key={post.slug} post={post} />
         ))}
       </section>
     </main>

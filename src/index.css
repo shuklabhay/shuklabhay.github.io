@@ -122,7 +122,6 @@ button:focus-visible,
   text-decoration-line: none;
 }
 
-.gallery-row.is-recent::before,
 .gallery-row:focus-visible::before,
 .post-back-link:focus-visible::before,
 .post-toc-list li:has(.post-toc-link:focus-visible)::before {
@@ -134,10 +133,6 @@ button:focus-visible,
   height: 16px;
   margin-top: -8px;
   background: currentColor;
-}
-
-.gallery-row.is-recent:not(:focus-visible)::before {
-  background: var(--ink-track);
 }
 
 .route-sky {
@@ -182,6 +177,16 @@ html.route-home .route-sky {
   margin: 0 -6px;
   opacity: 0.5;
   -webkit-tap-highlight-color: transparent;
+}
+
+.side-nav-link:focus-visible {
+  text-decoration-line: none;
+}
+
+.side-nav-link:focus-visible .side-nav-label {
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: var(--underline-offset);
 }
 
 .side-nav-link.is-active {
