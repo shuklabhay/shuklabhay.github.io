@@ -2,7 +2,7 @@ import MetaLine from "./MetaLine";
 
 ## Introduction
 
-To some extent, we've 'solved' image generation (ie, specify any number of bits about an image, and they'll be rendered ~exactly, with the rest filled in plausibly). A few years ago this was unimaginable, and how quickly it's gone from barely working to ~perfect is equally unimaginable. The main reasons I wrote this post are 1. for a while I've wondered *how* image generation got this good (Where did DeepDream go? What changed between GANs and Qwen-Image? Is there a Transformer++-style changelog of things that mattered ~as much as scaling?), and 2. more recently I've been learning lots of math, so I'm curious about the mathematical underpinnings of 1.
+To some extent, we've 'solved' image generation (ie, specify any number of bits about an image, and they'll be rendered ~exactly, with the rest filled in plausibly). A few years ago this was unimaginable, and how quickly it's gone from barely working to ~perfect is equally unimaginable. The main reasons I wrote this post are 1. for a while I've wondered _how_ image generation got this good (Where did DeepDream go? What changed between GANs and Qwen-Image? Is there a Transformer++-style changelog of things that mattered ~as much as scaling?), and 2. more recently I've been learning lots of math, so I'm curious about the mathematical underpinnings of 1.
 
 ## Why is generating images hard?
 
@@ -148,7 +148,7 @@ Many of SD3's authors go on to found Black Forest Labs, whose FLUX models mostly
 
 Qwen-Image scales SD3's recipe to ~20B parameters and trains on more text-image pairs with heavier curation. It also takes advantage of Alibaba's ecosystem, encoding prompts with a frozen Qwen2.5-VL (a stronger encoder w/ aligned text-image representations; also lets prompts include images) and compressing images with Wan 2.1's autoencoder. Notably, Qwen-Image adds MSRoPE (better multimodal positional encodings) and further borrows from the LLM playbook with SFT + GRPO post-training.
 
-One of Qwen-Image's main goals is to render *all* kinds of text well. Along with finetuning the autoencoder on text reconstruction, it trains on lots of programmatically rendered text (paragraphs on clean backgrounds, text composited into real scenes, small text on slides and UI templates, etc) and follows a curriculum from small to large images and from no text to text in natural images to full paragraphs. It's also really good at rendering Chinese (non-Latin script with thousands of characters), which is insanely cool!! They also finetune Qwen-Image into Qwen-Image-Edit, which produces a final edited image from a source image and edit instruction. Qwen-Image-Edit is immensely popular, and has thousands of finetunes (relighting, camera-angle changes, style transfer, object removal, virtual try-on, etc).
+One of Qwen-Image's main goals is to render _all_ kinds of text well. Along with finetuning the autoencoder on text reconstruction, it trains on lots of programmatically rendered text (paragraphs on clean backgrounds, text composited into real scenes, small text on slides and UI templates, etc) and follows a curriculum from small to large images and from no text to text in natural images to full paragraphs. It's also really good at rendering Chinese (non-Latin script with thousands of characters), which is insanely cool!! They also finetune Qwen-Image into Qwen-Image-Edit, which produces a final edited image from a source image and edit instruction. Qwen-Image-Edit is immensely popular, and has thousands of finetunes (relighting, camera-angle changes, style transfer, object removal, virtual try-on, etc).
 
 ## Qwen-Image 2.0
 
@@ -164,15 +164,16 @@ Sorry I didn't add many images; one might say I'm Hegel-maxxing (the 'interpreta
 
 It's really interesting how the core idea behind diffusion, narrowing $p(x_0\mid x)$ until the L2 mode average is a sharp image, has endured. I also think it's really cool how a lot of 'machine learning math' is focused much more on 'interpretation' than proofs or derivations for their own sake.
 
-I worry I must warn you (the young machine learning researcher presumably reading this): architectural details and complex derivations are fascinating, but machine learning is almost entirely about 1. thinking very hard about your learning objective and its subtle implications, and 2. relentlessly cleaning, curating, understanding, and interpreting your data. In my eyes, training neural networks is much more engineering than 'science'-- and when engineering, the utmost priority is making the simplest thing that works. To me, good research reads almost like a mathematical proof: you start with the simplest baseline (linear/logistic regression), prove fundamental properties of your problem (axioms!), try a solution built around those properties, diagnose underlying failure modes, try fixes (eg, xxx -> oh hey, someone else found L1 empirically solves this exact problem with L2!), and so on. Nowadays, I get much more excited by simple, stupid ways to solve hard problems (like using logreg, decision trees, and OpenCV to interpret brain signals!) than I do by complex architectures and elaborate methods. IMO, when researching, it's important to never stray *too* far from what's 'known'; if your chain of logic is sound, the 'new' parts will fall into place:)
+I worry I must warn you (the young machine learning researcher presumably reading this): architectural details and complex derivations are fascinating, but machine learning is almost entirely about 1. thinking very hard about your learning objective and its subtle implications, and 2. relentlessly cleaning, curating, understanding, and interpreting your data. In my eyes, training neural networks is much more engineering than 'science'-- and when engineering, the utmost priority is making the simplest thing that works. To me, good research reads almost like a mathematical proof: you start with the simplest baseline (linear/logistic regression), prove fundamental properties of your problem (axioms!), try a solution built around those properties, diagnose underlying failure modes, try fixes (eg, xxx -> oh hey, someone else found L1 empirically solves this exact problem with L2!), and so on. Nowadays, I get much more excited by simple, stupid ways to solve hard problems (like using logreg, decision trees, and OpenCV to interpret brain signals!) than I do by complex architectures and elaborate methods. IMO, when researching, it's important to never stray _too_ far from what's 'known'; if your chain of logic is sound, the 'new' parts will fall into place:)
 
 You should read the code.
 
 I think it's worth viewing diffusion's evolution in the context of compute available at each paper's time. Today, with massive language models and NVL72s to throw around willy nilly, it feels very obvious, for instance, that early diffusion was bottlenecked by language understanding; with V100s and language models nothing like today's, this wasn't obvious at all, and even if it had been, very little could've been done about it (apart from waiting). I wonder what we're bottlenecked by today without realizing it, whether by compute, data, language, attention span, or any of the countless constraints life, society, and our worldly infrastructure impose on us.
 
 What's left/what's next (with image generation):
+
 - There's an extremely recognizable 'AI slop' aesthetic in AI images/writing. I think this is 1. a model $\times$ society thing (anything that can be mass-generated will have a 'slop' middle, even if the long tails are really cool) and 2. an eval problem (where we just don't have metrics that track human preference well). Midjourney mostly avoids this slop problem thanks to years of data curation and edge exploration, though there's also some selection bias here (MJ users are artistic, write unusually detailed prompts, etc). We should figure out how to push probability mass to the edges. MiniMax H3 Image (which just released) looks pretty good too.
-- Images don't look *obviously* wrong anymore, but they're still often *subtly* wrong: for example, diagrams might not make sense, vanishing points might not converge, maps might make up geography, etc. This 'reasoning gap' is, to me, the final leg of realism (using VLMs/prompt upsamplers only partially resolves the problem).
+- Images don't look _obviously_ wrong anymore, but they're still often _subtly_ wrong: for example, diagrams might not make sense, vanishing points might not converge, maps might make up geography, etc. This 'reasoning gap' is, to me, the final leg of realism (using VLMs/prompt upsamplers only partially resolves the problem).
 - It's interesting how well diffusion works for continuous, spatial domains; it's also the backbone for audio and video generation (which then morphs into worldsim, VLA action heads, etc).
 - Something I'm realizing post-writing this post is just how "not dead" autoregression is/how "cooked" diffusion is. I've mostly believed that diffusion is a cool intellectual toy, but complex and hard to adapt to tasks other than image/state generation, and increasingly it looks like the frontier (Reve, Nano Banana 1/2, GPT-Image-2, etc) is moving toward autoregressive planning (using diffusion only to render pixels). Diffusion's solution to mode averaging (committing in pieces) is suboptimal by construction, and there's very little image data at or above 4K resolution. Especially with the [release](https://x.com/jkeatn/status/2119874018706874601) [of](https://x.com/irisfIowers/status/2119934629658370237) [Fable 5.2](https://x.com/yuwen_lu_/status/2120230407878930739), I'm beginning to seriously consider the possibility that diffusion is just a blip in time and that the big model writing [code](https://x.com/nonieengel/status/2120371790564495516) will just win.
 
@@ -180,91 +181,91 @@ I am \#unemployed, so if you find my analysis interesting or cool or abhorrent f
 
 ## Notation
 
-| Symbol | Meaning |
-|---|---|
-| $x_0\in\mathbb{R}^d$ | clean image; after Latent Diffusion, a latent |
-| $x_0'$ | another clean image, for comparison in the DDPM Gaussian-mixture argument |
-| $\hat x_0$ | predicted or generated clean image; after Latent Diffusion, a latent |
-| $d$, $H$, $W$ | image dimensionality, height, width; $d=3HW$ for RGB pixels |
-| $\theta$ | learned model parameters (weights) |
-| $\mathbb{E}[\cdot]$, $\mathbb{E}[\cdot\mid\cdot]$ | expectation, conditional expectation |
-| $\nabla_x$ | gradient with respect to $x$ |
-| $\partial$ | partial derivative |
-| $\log$ | natural logarithm |
-| $\approx$, $\propto$ | approximate equality, proportionality |
-| $y$ | condition: sketch, class label, or text prompt |
-| $\varnothing$ | null condition (unconditional) |
-| $p$, $p_\theta$ | data distribution, model distribution |
-| $f_\theta$ | deterministic regression model |
-| $G$, $D$, $z\in\mathbb{R}^k$ | GAN generator, discriminator, noise vector |
-| $k$ | GAN noise-vector dimensionality |
-| $L$, $K$ | tokens per image, token values / learned patch types (AR) |
-| $\varepsilon$ | Gaussian noise pattern, $\mathcal{N}(0,I)$ |
-| $\mathcal{N}(0,I)$, $I$ | standard multivariate Gaussian distribution, identity covariance matrix |
-| $\sigma$ | noise level |
-| $\sigma_{\min}$, $\sigma_{\max}$ | minimum, maximum noise level |
-| $x=x_0+\sigma\varepsilon$ | noisy image |
-| $\bar\alpha$ | DDPM's variance-preserving coefficient, $\sigma=\sqrt{(1-\bar\alpha)/\bar\alpha}$ |
-| $p(x)$, $p(x_i)$ | noisy image distributions at the associated noise levels $\sigma$, $\sigma_i$ |
-| $p(x_0\mid x)$ | distribution of clean images consistent with $x$ |
-| $p(x_{i-1}\mid x_i)$ | reverse-step distribution |
-| $p(x_{i-1}\mid x_i,x_0)$ | reverse-step distribution given the underlying clean image |
-| $p(x_i\mid y)$, $p(y\mid x_i)$ | noisy image distribution conditioned on $y$, probability of $y$ given the noisy image |
-| $p(y)$ | prior probability of condition $y$ |
-| $p(x_0\mid x_i,y)$ | distribution of clean images consistent with $x_i$ and $y$ |
-| $\varepsilon_\theta(x,\sigma)$ | noise-prediction network (U-Net or DiT) |
-| $\varepsilon_\theta(x,\sigma,y)$, $\varepsilon_\theta(x,\sigma,\varnothing)$ | conditional and unconditional noise predictions from the same network |
-| $a$, $n$ | contrast and area of an image feature |
-| $x_i$, $\sigma_i$ | image and noise level at sampling step $i$ (counting down to $x_0$) |
-| $i$ | sampling-step index |
-| $\Delta\sigma_i=\sigma_i-\sigma_{i-1}$ | step size |
-| $\tilde\mu_i$, $\tilde\sigma_i$ | mean, standard deviation of $p(x_{i-1}\mid x_i,x_0)$ |
-| $\xi$ | fresh Gaussian noise added during DDPM sampling |
-| $x(\sigma)$, $x(t)$ | denoising trajectories as functions of noise level or RF time (ODE solutions) |
-| $x'$, $x''$ | first, second derivative of $x(\sigma)$ with respect to $\sigma$ |
-| $w$ | guidance strength ($0$ unconditional, $1$ conditional, $>1$ amplified) |
-| $\varepsilon_{\text{cond}}$, $\varepsilon_{\text{guided}}$ | class-conditional noise prediction, guided noise prediction |
-| $r$, $c$ | autoencoder downsampling factor, latent channels |
-| $M$, $B$ | activation memory, batch size |
-| $x_{i-1}^{\text{trial}}$ | Heun's Euler trial point |
-| $\sigma_{i-\frac12}$, $x_{i-\frac12}$ | DPM-Solver's log-midpoint noise level and image |
-| $\omega$ | spatial frequency |
-| $\rho$ | EDM schedule parameter |
-| $t$ | RF time, $x=(1-t)x_0+t\varepsilon$ |
-| $v$, $v_\theta(x,t)$ | velocity $\varepsilon-x_0$, velocity-prediction network |
-| $v_{\text{guided}}$ | CFG-guided velocity |
+| Symbol                                                                       | Meaning                                                                               |
+| ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| $x_0\in\mathbb{R}^d$                                                         | clean image; after Latent Diffusion, a latent                                         |
+| $x_0'$                                                                       | another clean image, for comparison in the DDPM Gaussian-mixture argument             |
+| $\hat x_0$                                                                   | predicted or generated clean image; after Latent Diffusion, a latent                  |
+| $d$, $H$, $W$                                                                | image dimensionality, height, width; $d=3HW$ for RGB pixels                           |
+| $\theta$                                                                     | learned model parameters (weights)                                                    |
+| $\mathbb{E}[\cdot]$, $\mathbb{E}[\cdot\mid\cdot]$                            | expectation, conditional expectation                                                  |
+| $\nabla_x$                                                                   | gradient with respect to $x$                                                          |
+| $\partial$                                                                   | partial derivative                                                                    |
+| $\log$                                                                       | natural logarithm                                                                     |
+| $\approx$, $\propto$                                                         | approximate equality, proportionality                                                 |
+| $y$                                                                          | condition: sketch, class label, or text prompt                                        |
+| $\varnothing$                                                                | null condition (unconditional)                                                        |
+| $p$, $p_\theta$                                                              | data distribution, model distribution                                                 |
+| $f_\theta$                                                                   | deterministic regression model                                                        |
+| $G$, $D$, $z\in\mathbb{R}^k$                                                 | GAN generator, discriminator, noise vector                                            |
+| $k$                                                                          | GAN noise-vector dimensionality                                                       |
+| $L$, $K$                                                                     | tokens per image, token values / learned patch types (AR)                             |
+| $\varepsilon$                                                                | Gaussian noise pattern, $\mathcal{N}(0,I)$                                            |
+| $\mathcal{N}(0,I)$, $I$                                                      | standard multivariate Gaussian distribution, identity covariance matrix               |
+| $\sigma$                                                                     | noise level                                                                           |
+| $\sigma_{\min}$, $\sigma_{\max}$                                             | minimum, maximum noise level                                                          |
+| $x=x_0+\sigma\varepsilon$                                                    | noisy image                                                                           |
+| $\bar\alpha$                                                                 | DDPM's variance-preserving coefficient, $\sigma=\sqrt{(1-\bar\alpha)/\bar\alpha}$     |
+| $p(x)$, $p(x_i)$                                                             | noisy image distributions at the associated noise levels $\sigma$, $\sigma_i$         |
+| $p(x_0\mid x)$                                                               | distribution of clean images consistent with $x$                                      |
+| $p(x_{i-1}\mid x_i)$                                                         | reverse-step distribution                                                             |
+| $p(x_{i-1}\mid x_i,x_0)$                                                     | reverse-step distribution given the underlying clean image                            |
+| $p(x_i\mid y)$, $p(y\mid x_i)$                                               | noisy image distribution conditioned on $y$, probability of $y$ given the noisy image |
+| $p(y)$                                                                       | prior probability of condition $y$                                                    |
+| $p(x_0\mid x_i,y)$                                                           | distribution of clean images consistent with $x_i$ and $y$                            |
+| $\varepsilon_\theta(x,\sigma)$                                               | noise-prediction network (U-Net or DiT)                                               |
+| $\varepsilon_\theta(x,\sigma,y)$, $\varepsilon_\theta(x,\sigma,\varnothing)$ | conditional and unconditional noise predictions from the same network                 |
+| $a$, $n$                                                                     | contrast and area of an image feature                                                 |
+| $x_i$, $\sigma_i$                                                            | image and noise level at sampling step $i$ (counting down to $x_0$)                   |
+| $i$                                                                          | sampling-step index                                                                   |
+| $\Delta\sigma_i=\sigma_i-\sigma_{i-1}$                                       | step size                                                                             |
+| $\tilde\mu_i$, $\tilde\sigma_i$                                              | mean, standard deviation of $p(x_{i-1}\mid x_i,x_0)$                                  |
+| $\xi$                                                                        | fresh Gaussian noise added during DDPM sampling                                       |
+| $x(\sigma)$, $x(t)$                                                          | denoising trajectories as functions of noise level or RF time (ODE solutions)         |
+| $x'$, $x''$                                                                  | first, second derivative of $x(\sigma)$ with respect to $\sigma$                      |
+| $w$                                                                          | guidance strength ($0$ unconditional, $1$ conditional, $>1$ amplified)                |
+| $\varepsilon_{\text{cond}}$, $\varepsilon_{\text{guided}}$                   | class-conditional noise prediction, guided noise prediction                           |
+| $r$, $c$                                                                     | autoencoder downsampling factor, latent channels                                      |
+| $M$, $B$                                                                     | activation memory, batch size                                                         |
+| $x_{i-1}^{\text{trial}}$                                                     | Heun's Euler trial point                                                              |
+| $\sigma_{i-\frac12}$, $x_{i-\frac12}$                                        | DPM-Solver's log-midpoint noise level and image                                       |
+| $\omega$                                                                     | spatial frequency                                                                     |
+| $\rho$                                                                       | EDM schedule parameter                                                                |
+| $t$                                                                          | RF time, $x=(1-t)x_0+t\varepsilon$                                                    |
+| $v$, $v_\theta(x,t)$                                                         | velocity $\varepsilon-x_0$, velocity-prediction network                               |
+| $v_{\text{guided}}$                                                          | CFG-guided velocity                                                                   |
 
 ## PSET
 
 As I alluded to earlier, I've been spending lots of time nowadays learning to think very mathematically. As such, I've been trying to make GPT generate good questions that'll help me internalize the things I read. Here are a few (optional) questions (new symbols defined within each question):
 
 1. **What the exact L2 minimizer does on a finite training set.** Suppose $\varepsilon_\theta$ reaches the exact global minimum of the DDPM L2 objective on a finite training set $\{x_0^{(1)},\dots,x_0^{(N)}\}\subset\mathbb{R}^d$, treated as the empirical distribution.
-	- (a) Derive $\mathbb{E}[x_0\mid x]$ at noise level $\sigma$ in closed form as a function of $x$, $\sigma$, and the training images, and write the DDIM ODE $\frac{dx}{d\sigma}$ it induces.
-	- (b) Predict what fraction of DDIM samples (starting from $\sigma_{\max}\varepsilon$, integrated exactly to $\sigma=0$) are not training images, and how that fraction changes as $N$ grows with the model still at the exact optimum.
-	- (c) For $N=2$ with $x$ at squared distance $g$ closer to $x_0^{(1)}$ than to $x_0^{(2)}$, find the $\sigma$ below which $x_0^{(1)}$ gets posterior weight at least $1-\delta$.
-	- (d) Real large-$N$ diffusion models do produce novel images. Name the exact link in the post's chain from "L2 regression" to "sharp novel $\hat x_0$" that must be false for them, and say what quantity you would measure on a trained network to confirm it.
+   - (a) Derive $\mathbb{E}[x_0\mid x]$ at noise level $\sigma$ in closed form as a function of $x$, $\sigma$, and the training images, and write the DDIM ODE $\frac{dx}{d\sigma}$ it induces.
+   - (b) Predict what fraction of DDIM samples (starting from $\sigma_{\max}\varepsilon$, integrated exactly to $\sigma=0$) are not training images, and how that fraction changes as $N$ grows with the model still at the exact optimum.
+   - (c) For $N=2$ with $x$ at squared distance $g$ closer to $x_0^{(1)}$ than to $x_0^{(2)}$, find the $\sigma$ below which $x_0^{(1)}$ gets posterior weight at least $1-\delta$.
+   - (d) Real large-$N$ diffusion models do produce novel images. Name the exact link in the post's chain from "L2 regression" to "sharp novel $\hat x_0$" that must be false for them, and say what quantity you would measure on a trained network to confirm it.
 2. **What distribution CFG actually samples.** Let $p(x_0)=\mathcal{N}(0,1)$ and $p(x_0\mid y)=\mathcal{N}(0,\tau^2)$ with $\tau<1$, in the variance-exploding form $x=x_0+\sigma\varepsilon$, with both $\varepsilon_\theta$s given exactly by Tweedie's formula and plugged into $\varepsilon_{\text{guided}}=\varepsilon_\theta(x,\sigma,\varnothing)+w\big(\varepsilon_\theta(x,\sigma,y)-\varepsilon_\theta(x,\sigma,\varnothing)\big)$.
-	- (a) Show that as $\sigma\to0$, $\varepsilon_{\text{guided}}$ matches Tweedie's formula for the tilted distribution $q\propto p(x_0\mid y)^wp(x_0)^{1-w}$ (ie, $\varepsilon_{\text{guided}}/\sigma\to-\nabla_x\log q(x)$), and give $\operatorname{Var}_q$.
-	- (b) For $\tau^2=\tfrac14$, $w=3$, $\sigma=1$, find the variance $V$ for which Tweedie's formula on $\mathcal{N}(0,V)$ gives $\varepsilon_{\text{guided}}$, compute the variance of $q$ noised to $\sigma=1$, and show that no $V_0$ makes $V=V_0+\sigma^2$ for all $\sigma$.
-	- (c) Integrate the guided DDIM ODE exactly from $\sigma_{\max}\to\infty$ to $0$ and give the variance of the final samples as a closed-form function of $\tau$ and $w$. Evaluate it at $\tau^2=\tfrac14$, $w=3$ and order it against $\operatorname{Var}_q$ and $\tau^2$.
-	- (d) Name the exact step in the post's ADM->CFG derivation that holds at $w=1$ and fails at $w\neq1$. Predict whether more sampling steps or a higher-order solver shrinks the gap from (c).
+   - (a) Show that as $\sigma\to0$, $\varepsilon_{\text{guided}}$ matches Tweedie's formula for the tilted distribution $q\propto p(x_0\mid y)^wp(x_0)^{1-w}$ (ie, $\varepsilon_{\text{guided}}/\sigma\to-\nabla_x\log q(x)$), and give $\operatorname{Var}_q$.
+   - (b) For $\tau^2=\tfrac14$, $w=3$, $\sigma=1$, find the variance $V$ for which Tweedie's formula on $\mathcal{N}(0,V)$ gives $\varepsilon_{\text{guided}}$, compute the variance of $q$ noised to $\sigma=1$, and show that no $V_0$ makes $V=V_0+\sigma^2$ for all $\sigma$.
+   - (c) Integrate the guided DDIM ODE exactly from $\sigma_{\max}\to\infty$ to $0$ and give the variance of the final samples as a closed-form function of $\tau$ and $w$. Evaluate it at $\tau^2=\tfrac14$, $w=3$ and order it against $\operatorname{Var}_q$ and $\tau^2$.
+   - (d) Name the exact step in the post's ADM->CFG derivation that holds at $w=1$ and fails at $w\neq1$. Predict whether more sampling steps or a higher-order solver shrinks the gap from (c).
 3. **Straight paths versus optimal couplings.** Take Rectified Flow with independent coupling in 1D, $x_0\sim\mathcal{N}(0,\lambda)$ and $x=(1-t)x_0+t\varepsilon$.
-	- (a) Derive the exact $v(x,t)=\mathbb{E}[\varepsilon-x_0\mid x]$ at time $t$ and solve the ODE to get the map $\varepsilon\mapsto\hat x_0$. Prove it equals the Brenier (squared-cost optimal transport) map between $\mathcal{N}(0,1)$ and $\mathcal{N}(0,\lambda)$.
-	- (b) Show the trajectories $x(t)$ are curved for every $\lambda>0$, including $\lambda=1$, where the map from (a) is the identity. At $\lambda=4$, compute $\mathbb{E}\|\varepsilon-x_0\|^2$ under the training coupling and $W_2^2$. Using Benamou–Brenier, state whether the learned flow's kinetic energy $\int_0^1\mathbb{E}\|v\|^2dt$ equals, exceeds, or falls below $W_2^2$, and whether equality holds for any $\lambda>0$.
-	- (c) Extend (a) to $x_0\sim\mathcal{N}(0,\Sigma)$ in $\mathbb{R}^d$ and state exactly which structural property makes the map optimal.
-	- (d) The post argues reflow straightens paths because generated trajectories can't cross (Picard–Lindelöf). Decide whether every coupling that is a fixed point of reflow is an optimal transport coupling. Prove it, or give an explicit 2D Gaussian counterexample with both transport costs computed. Then say which property of 1D makes "non-crossing" sufficient there and what the $d\ge2$ optimality condition needs beyond it.
+   - (a) Derive the exact $v(x,t)=\mathbb{E}[\varepsilon-x_0\mid x]$ at time $t$ and solve the ODE to get the map $\varepsilon\mapsto\hat x_0$. Prove it equals the Brenier (squared-cost optimal transport) map between $\mathcal{N}(0,1)$ and $\mathcal{N}(0,\lambda)$.
+   - (b) Show the trajectories $x(t)$ are curved for every $\lambda>0$, including $\lambda=1$, where the map from (a) is the identity. At $\lambda=4$, compute $\mathbb{E}\|\varepsilon-x_0\|^2$ under the training coupling and $W_2^2$. Using Benamou–Brenier, state whether the learned flow's kinetic energy $\int_0^1\mathbb{E}\|v\|^2dt$ equals, exceeds, or falls below $W_2^2$, and whether equality holds for any $\lambda>0$.
+   - (c) Extend (a) to $x_0\sim\mathcal{N}(0,\Sigma)$ in $\mathbb{R}^d$ and state exactly which structural property makes the map optimal.
+   - (d) The post argues reflow straightens paths because generated trajectories can't cross (Picard–Lindelöf). Decide whether every coupling that is a fixed point of reflow is an optimal transport coupling. Prove it, or give an explicit 2D Gaussian counterexample with both transport costs computed. Then say which property of 1D makes "non-crossing" sufficient there and what the $d\ge2$ optimality condition needs beyond it.
 4. **Why SD1 can't make a black image.** Stable Diffusion 1.x trains on $64\times64\times4$ latents up to a terminal noise level of $\sigma_{\max}\approx14.6$ (its schedule ends at $\bar\alpha\approx0.0047$), but starts sampling from pure noise. Observed: prompts like "a pitch-black room" or "a white void" reliably come out near mid-brightness, while local content follows the prompt fine.
-	- (a) Name the assumption about the training distribution at the terminal noise level that must have failed.
-	- (b) Apply the post's visibility criterion (signal $an\gtrsim$ noise $\sigma\sqrt{n}$) at $\sigma_{\max}$. For a per-channel spatial-mean deviation of $a=0.5$ over the $n=4096$ positions of one channel, compute signal and noise at the terminal noise level, and do the same for a single-position feature ($n=1$).
-	- (c) Find the smallest square region side length, in latent pixels, at which a contrast-$0.5$ feature is visible at the terminal noise level. Use that to explain why the failure shows up specifically as global brightness rather than as wrong textures or colors.
-	- (d) For each fix, predict whether it removes the effect and give the mechanism in one line: more sampling steps; a higher-order solver; rescaling the schedule so terminal $\bar\alpha=0$ (with the prediction target changed so the pure-noise endpoint is well posed); adding a per-channel constant offset to $\varepsilon$ during training only.
+   - (a) Name the assumption about the training distribution at the terminal noise level that must have failed.
+   - (b) Apply the post's visibility criterion (signal $an\gtrsim$ noise $\sigma\sqrt{n}$) at $\sigma_{\max}$. For a per-channel spatial-mean deviation of $a=0.5$ over the $n=4096$ positions of one channel, compute signal and noise at the terminal noise level, and do the same for a single-position feature ($n=1$).
+   - (c) Find the smallest square region side length, in latent pixels, at which a contrast-$0.5$ feature is visible at the terminal noise level. Use that to explain why the failure shows up specifically as global brightness rather than as wrong textures or colors.
+   - (d) For each fix, predict whether it removes the effect and give the mechanism in one line: more sampling steps; a higher-order solver; rescaling the schedule so terminal $\bar\alpha=0$ (with the prediction target changed so the pure-noise endpoint is well posed); adding a per-channel constant offset to $\varepsilon$ during training only.
 5. **What the loss plateau measures.** Guo, Shamai, and Verdú (2005) proved that for $Y=\sqrt{\mathrm{snr}}X+Z$ with standard Gaussian noise $Z$, $\frac{d}{d\mathrm{snr}}I(X;Y)=\tfrac12\mathrm{mmse}(\mathrm{snr})$, where $I(X;Y)$ is mutual information and $\mathrm{mmse}=\mathbb{E}\|X-\mathbb{E}[X\mid Y]\|^2$.
-	- (a) Map $x=x_0+\sigma\varepsilon$ onto this channel. Then show that $I(x_0;x_{\sigma_{\text{lo}}})-I(x_0;x_{\sigma_{\text{hi}}})=\int_{\sigma_{\text{lo}}}^{\sigma_{\text{hi}}}\mathrm{mmse}_\varepsilon(\sigma)d\log\sigma$, where $\mathrm{mmse}_\varepsilon$ is the optimal $\varepsilon$-prediction L2 loss.
-	- (b) Check both sides exactly for $x_0\sim\mathcal{N}(0,s^2)$ in 1D.
-	- (c) For $x_0$ uniform over $N$ well-separated images, evaluate $\int_0^\infty\mathrm{mmse}_\varepsilon d\log\sigma$, and predict $\lim_{\sigma\to0}\mathrm{mmse}_\varepsilon$.
-	- (d) For $x_0$ supported on a smooth $m$-dimensional manifold in $\mathbb{R}^d$, predict $\lim_{\sigma\to0}\mathrm{mmse}_\varepsilon$. Then give the number of bits revealed per halving of $\sigma$ in that limit, and state what a trained model's small-$\sigma$ loss plateau measures.
+   - (a) Map $x=x_0+\sigma\varepsilon$ onto this channel. Then show that $I(x_0;x_{\sigma_{\text{lo}}})-I(x_0;x_{\sigma_{\text{hi}}})=\int_{\sigma_{\text{lo}}}^{\sigma_{\text{hi}}}\mathrm{mmse}_\varepsilon(\sigma)d\log\sigma$, where $\mathrm{mmse}_\varepsilon$ is the optimal $\varepsilon$-prediction L2 loss.
+   - (b) Check both sides exactly for $x_0\sim\mathcal{N}(0,s^2)$ in 1D.
+   - (c) For $x_0$ uniform over $N$ well-separated images, evaluate $\int_0^\infty\mathrm{mmse}_\varepsilon d\log\sigma$, and predict $\lim_{\sigma\to0}\mathrm{mmse}_\varepsilon$.
+   - (d) For $x_0$ supported on a smooth $m$-dimensional manifold in $\mathbb{R}^d$, predict $\lim_{\sigma\to0}\mathrm{mmse}_\varepsilon$. Then give the number of bits revealed per halving of $\sigma$ in that limit, and state what a trained model's small-$\sigma$ loss plateau measures.
 6. **Where Picard–Lindelöf stops applying.** Consider the claim that the exact DDIM flow map from $\sigma_{\max}$ to $0$ is a diffeomorphism, so DDIM inversion is well posed.
-	- (a) For $x_0\sim\mathcal{N}(0,1)$ in 1D with $\sigma_{\max}=10$, compute the Jacobian $\partial x(0)/\partial x(\sigma_{\max})$ exactly, and show that the flow map is a diffeomorphism.
-	- (b) For two-point data $x_0\in\{-1,+1\}$ with equal weights, write $\varepsilon_\theta(x,\sigma)$ in closed form. Compute $|\partial\varepsilon_\theta/\partial x|$ at $x=0$ as a function of $\sigma$, and show that its integral over $[0,\sigma_{\max}]$ diverges.
-	- (c) Along the separatrix $x=0$, compute the factor by which an infinitesimal perturbation grows between $\sigma=10$ and $\sigma=0.25$, to three significant figures. Then compute the Jacobian in the limit $\sigma\to0$ for a trajectory inside the $+1$ basin.
-	- (d) State which hypothesis of Picard–Lindelöf fails here and at which endpoint. State what set of starting noises "the $\sigma_{\max}\varepsilon$ that generates $x_0=+1$" actually is.
+   - (a) For $x_0\sim\mathcal{N}(0,1)$ in 1D with $\sigma_{\max}=10$, compute the Jacobian $\partial x(0)/\partial x(\sigma_{\max})$ exactly, and show that the flow map is a diffeomorphism.
+   - (b) For two-point data $x_0\in\{-1,+1\}$ with equal weights, write $\varepsilon_\theta(x,\sigma)$ in closed form. Compute $|\partial\varepsilon_\theta/\partial x|$ at $x=0$ as a function of $\sigma$, and show that its integral over $[0,\sigma_{\max}]$ diverges.
+   - (c) Along the separatrix $x=0$, compute the factor by which an infinitesimal perturbation grows between $\sigma=10$ and $\sigma=0.25$, to three significant figures. Then compute the Jacobian in the limit $\sigma\to0$ for a trajectory inside the $+1$ basin.
+   - (d) State which hypothesis of Picard–Lindelöf fails here and at which endpoint. State what set of starting noises "the $\sigma_{\max}\varepsilon$ that generates $x_0=+1$" actually is.

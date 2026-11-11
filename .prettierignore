@@ -3,4 +3,3 @@ node_modules
 **/assets/**
 one-off-portfolios
 pnpm-lock.yaml
-src/posts/diffusion/index.mdx
