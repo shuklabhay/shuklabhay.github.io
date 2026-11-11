@@ -179,8 +179,19 @@ html.route-home .route-sky {
 }
 
 .side-nav-label {
-  display: inline-block;
+  display: inline-flex;
+  flex-direction: column;
   padding-bottom: 0;
+}
+
+.side-nav-label::after {
+  content: attr(data-label);
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  font-weight: 600;
+  user-select: none;
+  pointer-events: none;
 }
 
 .side-nav-link {
@@ -400,19 +411,14 @@ html.home-fall::view-transition-image-pair(*) {
   isolation: auto;
 }
 
-html.home-rise::view-transition-group(site-nav),
-html.home-fall::view-transition-group(site-nav) {
+::view-transition-group(site-nav),
+::view-transition-new(site-nav) {
   animation: none;
 }
 
-html.home-rise::view-transition-old(site-nav),
-html.home-fall::view-transition-old(site-nav) {
-  animation-name: home-fade-out;
-}
-
-html.home-rise::view-transition-new(site-nav),
-html.home-fall::view-transition-new(site-nav) {
-  animation-name: home-fade-in;
+::view-transition-old(site-nav) {
+  animation: none;
+  opacity: 0;
 }
 
 html.home-rise::view-transition-old(root) {
@@ -454,18 +460,6 @@ html.home-fall::view-transition-old(post-toc) {
 @keyframes slide-out-down {
   to {
     transform: translateY(var(--home-slide));
-  }
-}
-
-@keyframes home-fade-in {
-  from {
-    opacity: 0;
-  }
-}
-
-@keyframes home-fade-out {
-  to {
-    opacity: 0;
   }
 }
 
