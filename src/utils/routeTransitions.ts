@@ -30,14 +30,15 @@ export function navigateWithRouteTransition(
   }
 
   const rootEl = document.documentElement;
-  const isHomeTransition =
-    rootEl.classList.contains("route-home") || to === "/";
-  rootEl.classList.toggle("home-transition", isHomeTransition);
+  const isLeavingHome = rootEl.classList.contains("route-home");
+  const isEnteringHome = !isLeavingHome && to === "/";
+  rootEl.classList.toggle("home-rise", isLeavingHome);
+  rootEl.classList.toggle("home-fall", isEnteringHome);
 
   const transitionId = ++activeTransitionId;
   const clearHomeTransition = (): void => {
     if (transitionId === activeTransitionId) {
-      rootEl.classList.remove("home-transition");
+      rootEl.classList.remove("home-rise", "home-fall");
     }
   };
   runWithRootViewTransition(update)?.then(
