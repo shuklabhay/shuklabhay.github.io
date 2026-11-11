@@ -39,6 +39,52 @@ function remarkDoubleDollarDisplayMath() {
   };
 }
 
+type HastNode = {
+  type: string;
+  tagName?: string;
+  value?: string;
+  properties?: { className?: unknown };
+  children?: HastNode[];
+};
+
+const TRAILING_PUNCTUATION = /^[.,:;!?)\]]+/;
+
+function isInlineKatex(node: HastNode): boolean {
+  const className = node.properties?.className;
+  return (
+    node.type === "element" &&
+    Array.isArray(className) &&
+    className.includes("katex")
+  );
+}
+
+function rehypeKeepPunctuationWithMath() {
+  return (tree: HastNode) => {
+    const visit = (node: HastNode): void => {
+      const children = node.children;
+      if (!children) return;
+      for (let i = 0; i < children.length - 1; i++) {
+        const next = children[i + 1];
+        if (!isInlineKatex(children[i]) || next.type !== "text") continue;
+        const match = next.value?.match(TRAILING_PUNCTUATION);
+        if (!match) continue;
+        next.value = next.value!.slice(match[0].length);
+        children[i] = {
+          type: "element",
+          tagName: "span",
+          properties: { className: ["math-nowrap"] },
+          children: [children[i], { type: "text", value: match[0] }],
+        };
+      }
+      children.forEach((child) => {
+        if (child.tagName === "span") return;
+        visit(child);
+      });
+    };
+    visit(tree);
+  };
+}
+
 const VIRTUAL_POSTS_ID = "virtual:posts-manifest";
 const RESOLVED_VIRTUAL_POSTS_ID = `\0${VIRTUAL_POSTS_ID}`;
 const SITE_ORIGIN = "https://shuklabhay.github.io";
@@ -444,7 +490,7 @@ export default defineConfig({
     },
     mdx({
       remarkPlugins: [remarkGfm, remarkMath, remarkDoubleDollarDisplayMath],
-      rehypePlugins: [rehypeKatex],
+      rehypePlugins: [rehypeKatex, rehypeKeepPunctuationWithMath],
     }),
     react(),
     {

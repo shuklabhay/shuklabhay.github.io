@@ -671,6 +671,10 @@ code {
   font-size: 1.1em;
 }
 
+.post-content .math-nowrap {
+  white-space: nowrap;
+}
+
 .post-content .katex-display {
   margin: 12px 0;
   overflow-x: auto;
