@@ -37,7 +37,6 @@
   --gutter-top: calc(var(--strip-height) + 12px);
   --toc-width: calc(var(--column-left) - 36px - var(--page-x-padding));
   --motion-page: 100ms;
-  --motion-home: 100ms;
   --motion-hover: 100ms;
   --motion-layout: 120ms;
 }
@@ -389,37 +388,6 @@ body.route-home #root {
   view-transition-name: post-toc;
 }
 
-html.home-rise,
-html.home-fall {
-  --home-slide: calc(100vh - var(--strip-height));
-}
-
-html.home-rise .route-page-about,
-html.home-rise .route-page-gallery,
-html.home-rise .route-page-post,
-html.home-rise .route-page-missing,
-html.home-fall .route-page-about,
-html.home-fall .route-page-gallery,
-html.home-fall .route-page-post,
-html.home-fall .route-page-missing {
-  view-transition-name: none;
-}
-
-html.home-rise::view-transition-group(*),
-html.home-fall::view-transition-group(*),
-html.home-rise::view-transition-old(*),
-html.home-fall::view-transition-old(*),
-html.home-rise::view-transition-new(*),
-html.home-fall::view-transition-new(*) {
-  animation-duration: var(--motion-home);
-  mix-blend-mode: normal;
-}
-
-html.home-rise::view-transition-image-pair(*),
-html.home-fall::view-transition-image-pair(*) {
-  isolation: auto;
-}
-
 ::view-transition-group(site-nav),
 ::view-transition-new(site-nav) {
   animation: none;
@@ -428,48 +396,6 @@ html.home-fall::view-transition-image-pair(*) {
 ::view-transition-old(site-nav) {
   animation: none;
   opacity: 0;
-}
-
-html.home-rise::view-transition-old(root) {
-  animation-name: slide-out-up;
-}
-
-html.home-rise::view-transition-new(root),
-html.home-rise::view-transition-new(post-toc) {
-  animation-name: slide-in-up;
-}
-
-html.home-fall::view-transition-new(root) {
-  animation-name: slide-in-down;
-}
-
-html.home-fall::view-transition-old(root),
-html.home-fall::view-transition-old(post-toc) {
-  animation-name: slide-out-down;
-}
-
-@keyframes slide-out-up {
-  to {
-    transform: translateY(calc(var(--home-slide) * -1));
-  }
-}
-
-@keyframes slide-in-up {
-  from {
-    transform: translateY(var(--home-slide));
-  }
-}
-
-@keyframes slide-in-down {
-  from {
-    transform: translateY(calc(var(--home-slide) * -1));
-  }
-}
-
-@keyframes slide-out-down {
-  to {
-    transform: translateY(var(--home-slide));
-  }
 }
 
 .app-shell-home {

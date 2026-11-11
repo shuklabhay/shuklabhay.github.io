@@ -4,12 +4,7 @@ import {
   canRunRootViewTransition,
   runWithRootViewTransition,
 } from "./viewTransitions";
-import {
-  currentHistoryKey,
-  recallScroll,
-  rememberCurrentPlace,
-} from "./navigationMemory";
-import type { RouteTransitionState } from "./types";
+import { rememberCurrentPlace } from "./navigationMemory";
 
 export function isBlogPostPath(pathname: string) {
   return pathname.startsWith("/gallery/") && pathname !== "/gallery";
@@ -25,8 +20,6 @@ const SKIP_TRANSITION_QUERIES = [
   "(hover: none)",
 ];
 
-let activeTransitionId = 0;
-
 function shouldAnimate(): boolean {
   return (
     canRunRootViewTransition() &&
@@ -36,33 +29,12 @@ function shouldAnimate(): boolean {
   );
 }
 
-function runRouteTransition(
-  toPath: string,
-  landsAtTop: boolean,
-  update: () => void,
-): void {
+function runRouteTransition(update: () => void): void {
   if (!shouldAnimate()) {
     update();
     return;
   }
-
-  const rootEl = document.documentElement;
-  const isLeavingHome = rootEl.classList.contains("route-home");
-  const isEnteringHome = !isLeavingHome && toPath === "/";
-  const isAtTop = window.scrollY < 1;
-  rootEl.classList.toggle("home-rise", isLeavingHome && landsAtTop);
-  rootEl.classList.toggle("home-fall", isEnteringHome && isAtTop);
-
-  const transitionId = ++activeTransitionId;
-  const clearHomeTransition = (): void => {
-    if (transitionId === activeTransitionId) {
-      rootEl.classList.remove("home-rise", "home-fall");
-    }
-  };
-  runWithRootViewTransition(update)?.then(
-    clearHomeTransition,
-    clearHomeTransition,
-  );
+  runWithRootViewTransition(update);
 }
 
 export function navigateWithRouteTransition(
@@ -71,10 +43,7 @@ export function navigateWithRouteTransition(
   options?: NavigateOptions,
 ): void {
   rememberCurrentPlace();
-  const restoreScroll = (options?.state as RouteTransitionState | undefined)
-    ?.restoreScroll;
-  const landsAtTop = !restoreScroll || restoreScroll < 1;
-  runRouteTransition(to, landsAtTop, () => {
+  runRouteTransition(() => {
     flushSync(() => navigate(to, options));
   });
 }
@@ -88,11 +57,7 @@ export function animateHistoryNavigations(): () => void {
     if (!shouldAnimate()) return;
     event.stopImmediatePropagation();
 
-    const toPath = window.location.pathname;
-    const landsAtTop =
-      !restoresScrollOnReturn(toPath) || recallScroll(currentHistoryKey()) < 1;
-
-    runRouteTransition(toPath, landsAtTop, () => {
+    runRouteTransition(() => {
       isReplaying = true;
       try {
         flushSync(() => {
