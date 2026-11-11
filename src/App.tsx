@@ -284,6 +284,10 @@ export function AppShell(): JSX.Element {
           <Route path="/gallery" element={<Blog />} />
           <Route path="/gallery/:slug" element={<Post />} />
           <Route path="/blog/*" element={<LegacyBlogRedirect />} />
+          <Route
+            path="/contact"
+            element={<Navigate replace to="/about#contact" />}
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
