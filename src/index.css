@@ -281,7 +281,8 @@ html.route-post.post-expanded .post-column {
 
 .post-back-link,
 .post-expand-toggle {
-  color: var(--ink);
+  color: var(--ink-muted);
+  font-size: 0.875rem;
   transition: opacity var(--motion-hover) linear;
   -webkit-tap-highlight-color: transparent;
 }
@@ -297,14 +298,6 @@ html.route-post.post-expanded .post-column {
   gap: 6px;
   text-decoration: none;
   border-radius: 0;
-}
-
-.post-back-icon {
-  display: block;
-  flex: none;
-  width: 12px;
-  height: 12px;
-  margin-left: -2px;
 }
 
 @media (min-width: 861px) {
@@ -327,10 +320,6 @@ html.route-post.post-expanded .post-column {
   }
 }
 
-.post-back-icon svg {
-  display: block;
-}
-
 .post-expand-toggle {
   appearance: none;
   display: inline-block;
@@ -339,21 +328,9 @@ html.route-post.post-expanded .post-column {
   border: 0;
   background: none;
   font: inherit;
-  line-height: 1;
+  font-size: 0.875rem;
+  line-height: 24px;
   cursor: pointer;
-}
-
-.post-expand-toggle svg {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  vertical-align: baseline;
-  overflow: visible;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: butt;
-  stroke-linejoin: miter;
 }
 
 html,
@@ -890,7 +867,7 @@ html.post-expanded .reading-track {
     padding-left: var(--page-x-padding);
   }
 
-  .post-expand-toggle {
+  .post-header-row {
     display: none;
   }
 }
@@ -971,26 +948,12 @@ html.post-expanded .reading-track {
     transform: translateY(-100%);
   }
 
-  html.route-post .post-header-row {
-    position: sticky;
-    top: var(--mobile-band-height);
-    z-index: 5;
-    margin: -6px calc(var(--page-x-padding) * -1) 0;
-    padding: 6px var(--page-x-padding);
-    background: var(--page-background-color);
-    transition: transform var(--motion-layout) linear;
-  }
-
   html.mobile-header-hidden:not(.route-home) .route-sky {
     transform: translateY(-100%);
   }
 
   html.mobile-header-hidden:not(.route-home) .side-nav {
     transform: translateY(calc(var(--mobile-band-height) * -1));
-  }
-
-  html.route-post.mobile-header-hidden .post-header-row {
-    transform: translateY(calc(var(--mobile-band-height) * -1 - 100%));
   }
 }
 

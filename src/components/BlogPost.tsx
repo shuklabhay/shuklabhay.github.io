@@ -38,7 +38,7 @@ export default function BlogPost({
     ? "0 0 24px"
     : isMobile
       ? "12px 0 24px"
-      : "24px 0 24px";
+      : "12px 0 24px";
 
   return (
     <main
@@ -60,7 +60,7 @@ export default function BlogPost({
               height: isMobile
                 ? "192px"
                 : "round(clamp(216px, 26vw, 336px), 12px)",
-              margin: isMobile ? "12px 0 24px" : "24px 0 24px",
+              margin: "12px 0 24px",
               borderRadius: 0,
               backgroundColor: "#e9e4d8",
               backgroundRepeat: "no-repeat",
