@@ -79,7 +79,7 @@ export default function BlogPost({
     color: "var(--ink)",
     textDecoration: "none",
     fontWeight: 400,
-    fontSize: "12px",
+    fontSize: "var(--small-text)",
     letterSpacing: "0.01em",
     lineHeight: "22px",
     transition:
@@ -128,8 +128,8 @@ export default function BlogPost({
               style={{
                 margin: "6px 0 0",
                 color: "var(--ink-muted)",
-                fontSize: "0.75rem",
-                lineHeight: "18px",
+                fontSize: "var(--small-text)",
+                lineHeight: "var(--small-lh)",
                 letterSpacing: "0.01em",
               }}
             >

@@ -11,9 +11,11 @@
   --page-x-padding: 12px;
   --text: 1.125rem;
   --nav-text: 1.125rem;
-  --title-text: 1.875rem;
-  --heading-text: 1.375rem;
-  --lh: 24px;
+  --title-text: 2.25rem;
+  --heading-text: 1.5rem;
+  --lh: 30px;
+  --small-text: 0.875rem;
+  --small-lh: 24px;
   --browser-bottom-clearance: 0px;
   --sidebar-width: round(
     down,
@@ -25,7 +27,7 @@
   );
   --content-gutter: round(clamp(24px, 4vw, 60px), 12px);
   --content-left-margin: 24px;
-  --reading-width: 792px;
+  --reading-width: 720px;
   --mobile-band-height: 120px;
   --motion-page: 100ms;
   --motion-home: 120ms;
@@ -237,7 +239,7 @@ html.route-post.post-expanded .app-shell {
   font-size: var(--title-text);
   font-weight: 600;
   letter-spacing: -0.01em;
-  line-height: round(up, 1.2em, 6px);
+  line-height: round(up, 1.15em, 6px);
 }
 
 .visually-hidden {
@@ -272,8 +274,8 @@ html.route-post.post-expanded .post-column {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  font-size: var(--text);
-  line-height: var(--lh);
+  font-size: var(--nav-text);
+  line-height: 24px;
   color: var(--ink);
 }
 
@@ -474,7 +476,7 @@ code {
 
 .post-content h2 {
   font-size: var(--heading-text);
-  line-height: 24px;
+  line-height: var(--lh);
 }
 
 .post-content h3,
@@ -739,6 +741,12 @@ html.post-expanded .post-toc {
     --page-x-padding: 12px;
     --browser-bottom-clearance: 72px;
     --title-text: 1.5rem;
+    --text: 1rem;
+    --nav-text: 1rem;
+    --heading-text: 1.125rem;
+    --lh: 24px;
+    --small-text: 0.75rem;
+    --small-lh: 18px;
   }
 
   .about-subtitle {
