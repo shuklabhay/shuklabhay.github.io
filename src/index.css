@@ -820,6 +820,11 @@ html.post-expanded .post-toc {
     pointer-events: none;
   }
 
+  html:not(.route-home),
+  html:not(.route-home) body {
+    overscroll-behavior-y: none;
+  }
+
   html.route-post body {
     overflow-y: visible;
   }
