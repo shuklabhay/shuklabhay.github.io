@@ -78,7 +78,7 @@ export default function BlogPost({
     backgroundColor: "transparent",
     color: "var(--ink)",
     textDecoration: "none",
-    fontWeight: 400,
+    fontWeight: "var(--body-weight)",
     fontSize: "var(--small-text)",
     letterSpacing: "0.01em",
     lineHeight: "22px",
