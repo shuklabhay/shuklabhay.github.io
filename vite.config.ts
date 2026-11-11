@@ -68,16 +68,10 @@ function rehypeKeepPunctuationWithMath() {
         if (!isInlineKatex(children[i]) || next.type !== "text") continue;
         const match = next.value?.match(TRAILING_PUNCTUATION);
         if (!match) continue;
-        next.value = next.value!.slice(match[0].length);
-        children[i] = {
-          type: "element",
-          tagName: "span",
-          properties: { className: ["math-nowrap"] },
-          children: [children[i], { type: "text", value: match[0] }],
-        };
+        next.value = `\u2060${next.value}`;
       }
       children.forEach((child) => {
-        if (child.tagName === "span") return;
+        if (isInlineKatex(child)) return;
         visit(child);
       });
     };

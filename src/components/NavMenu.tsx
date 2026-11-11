@@ -1,5 +1,6 @@
 import { useLocation } from "react-router-dom";
 import TransitionLink from "./TransitionLink";
+import { isBlogPostPath } from "../utils/routeTransitions";
 
 const MENU_ITEMS = [
   { label: "home", path: "/" },
@@ -19,12 +20,16 @@ export default function NavMenu(): JSX.Element {
   return (
     <nav className="side-nav" aria-label="Main">
       {MENU_ITEMS.map(({ label, path }) => {
-        const isActive = pathname === path;
+        const isCurrentPage = pathname === path;
+        const isActive =
+          isCurrentPage || (path === "/gallery" && isBlogPostPath(pathname));
         return (
           <TransitionLink
             key={label}
             to={path}
-            aria-current={isActive ? "page" : undefined}
+            aria-current={
+              isCurrentPage ? "page" : isActive ? "location" : undefined
+            }
             className={`side-nav-link${isActive ? " is-active" : ""}`}
           >
             <span className="side-nav-label" data-label={label}>

@@ -1,368 +1,48 @@
-import { useEffect, useMemo, useState } from "react";
-import type { CSSProperties, Dispatch, SetStateAction } from "react";
-import type {
-  CheckboxSubtitleLinkProps,
-  CheckboxSubtitleToggleProps,
-  PageTitleProps,
-} from "../utils/types";
+import { useMemo } from "react";
+import type { CheckboxSubtitleLinkProps, PageTitleProps } from "../utils/types";
 import TriangleIcon from "./TriangleIcon";
-import { isHydratingPrerenderedPage } from "../utils/prerender";
-
-type CheckboxSubtitleInteraction = {
-  hovered: number | null;
-  setHovered: Dispatch<SetStateAction<number | null>>;
-  canHover: boolean;
-};
 
 export default function PageTitle({
   title,
   subtitle,
 }: PageTitleProps): JSX.Element {
   return (
-    <div style={{ marginTop: 0 }}>
+    <div>
       <h1 className="page-heading">{title}</h1>
       {subtitle ? subtitle : null}
     </div>
   );
 }
 
-function useCheckboxSubtitleInteraction(): CheckboxSubtitleInteraction {
-  const [hovered, setHovered] = useState<number | null>(null);
-  const [canHover, setCanHover] = useState(() => {
-    if (typeof window === "undefined") return false;
-    if (isHydratingPrerenderedPage()) return false;
-    return window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-  });
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const mediaQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
-    const onChange = (event: MediaQueryListEvent) => {
-      setCanHover(event.matches);
-      if (!event.matches) setHovered(null);
-    };
-
-    setCanHover(mediaQuery.matches);
-    if (typeof mediaQuery.addEventListener === "function") {
-      mediaQuery.addEventListener("change", onChange);
-      return () => mediaQuery.removeEventListener("change", onChange);
-    }
-
-    mediaQuery.addListener(onChange);
-    return () => mediaQuery.removeListener(onChange);
-  }, []);
-
-  useEffect(() => {
-    if (typeof document === "undefined" || typeof window === "undefined")
-      return;
-
-    const clearHover = () => setHovered(null);
-    const onVisibilityChange = () => {
-      if (document.visibilityState === "visible") clearHover();
-    };
-
-    document.addEventListener("visibilitychange", onVisibilityChange);
-    window.addEventListener("pageshow", clearHover);
-
-    return () => {
-      document.removeEventListener("visibilitychange", onVisibilityChange);
-      window.removeEventListener("pageshow", clearHover);
-    };
-  }, []);
-
-  return { hovered, setHovered, canHover };
-}
-
-function getCheckboxStyle({
-  isOn,
-  isHover,
-  canHover,
-}: {
-  isOn: boolean;
-  isHover: boolean;
-  canHover: boolean;
-}): CSSProperties {
-  const fg = isOn || isHover ? "var(--ink)" : "var(--ink-muted)";
-
-  return {
-    padding: 0,
-    border: 0,
-    backgroundColor: "transparent",
-    color: fg,
-    fontSize: "var(--text)",
-    lineHeight: "var(--lh)",
-    fontWeight: "var(--body-weight)",
-    cursor: "pointer",
-    userSelect: "none" as const,
-    WebkitUserSelect: "none" as const,
-    display: "inline-flex",
-    alignItems: "center",
-    gap: 0,
-    transition: canHover ? "color var(--motion-hover) linear" : "none",
-    backgroundImage: isOn
-      ? "linear-gradient(currentColor, currentColor)"
-      : "none",
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "0 calc(100% - 1px)",
-    backgroundSize: "100% 1.5px",
-    WebkitTextFillColor: fg,
-  };
-}
-
 export function CheckboxSubtitleLink<T extends string = string>({
   items,
   activeIndexes,
-  hoverFill = true,
   marginTop = "6px",
   marginBottom = "48px",
 }: CheckboxSubtitleLinkProps<T>): JSX.Element {
-  const { hovered, setHovered, canHover } = useCheckboxSubtitleInteraction();
   const activeIndexSet = useMemo(
     () => new Set(activeIndexes ?? []),
     [activeIndexes],
   );
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexWrap: "wrap",
-        gap: "24px",
-        maxWidth: "100%",
-        marginTop,
-        marginBottom,
-        userSelect: "none",
-        WebkitUserSelect: "none",
-      }}
-    >
-      {items.map((item, idx) => {
-        const isOn = activeIndexSet.has(idx);
-        const isHover = canHover && hoverFill && hovered === idx;
-        const sharedStyle = getCheckboxStyle({ isOn, isHover, canHover });
-
-        const sharedStyleWithArrowGap = {
-          ...sharedStyle,
-          gap: 0,
-        };
-
-        const onMouseEnter = () => {
-          if (!canHover) return;
-          setHovered(idx);
-        };
-        const onMouseLeave = () => {
-          setHovered((current) => (current === idx ? null : current));
-        };
-
-        if (item.href && !item.onClick) {
-          return (
-            <a
-              key={item.label}
-              href={item.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              onMouseEnter={onMouseEnter}
-              onMouseLeave={onMouseLeave}
-              onClick={() => setHovered(null)}
-              onPointerDown={() => setHovered(null)}
-              onTouchStart={() => setHovered(null)}
-              onBlur={() =>
-                setHovered((current) => (current === idx ? null : current))
-              }
-              style={{
-                ...sharedStyleWithArrowGap,
-                userSelect: "auto",
-                WebkitUserSelect: "auto",
-                WebkitTouchCallout: "default",
-              }}
-            >
-              {item.label}
-              {item.arrowDirection ? (
-                <span
-                  aria-hidden
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: "12px",
-                    visibility:
-                      item.arrowVisible === undefined || item.arrowVisible
-                        ? "visible"
-                        : "hidden",
-                  }}
-                >
-                  <TriangleIcon direction={item.arrowDirection} />
-                </span>
-              ) : null}
-            </a>
-          );
-        }
-
-        return (
-          <button
-            key={item.label}
-            onClick={item.onClick}
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-            aria-pressed={isOn}
-            className="page-filter-toggle"
-            style={{
-              ...sharedStyleWithArrowGap,
-              WebkitTouchCallout: "none",
-            }}
-          >
-            {item.label}
-            {item.arrowDirection ? (
-              <span
-                aria-hidden
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "12px",
-                  visibility:
-                    item.arrowVisible === undefined || item.arrowVisible
-                      ? "visible"
-                      : "hidden",
-                }}
-              >
-                <TriangleIcon direction={item.arrowDirection} />
-              </span>
-            ) : null}
-          </button>
-        );
-      })}
-    </div>
-  );
-}
-
-export function CheckboxSubtitleToggle<T extends string = string>({
-  items,
-  storageKey,
-  hoverFill = true,
-  selectedTags,
-  setSelectedTags,
-  marginTop = "6px",
-  marginBottom = "48px",
-}: CheckboxSubtitleToggleProps<T>): JSX.Element {
-  const { hovered, setHovered, canHover } = useCheckboxSubtitleInteraction();
-  const selectedTagSet = useMemo(
-    () => new Set(selectedTags ?? []),
-    [selectedTags],
-  );
-
-  useEffect(() => {
-    if (!storageKey || typeof window === "undefined") return;
-
-    window.localStorage.setItem(storageKey, JSON.stringify(selectedTags));
-
-    const hashParams = new URLSearchParams(window.location.hash.slice(1));
-    const currentTags = hashParams.get("tags");
-    const newTags =
-      selectedTags && selectedTags.length > 0 ? selectedTags.join(",") : "";
-
-    if (currentTags !== newTags) {
-      if (newTags) {
-        hashParams.set("tags", newTags);
-      } else {
-        hashParams.delete("tags");
-      }
-      const newHash = hashParams.toString();
-      history.replaceState(
-        null,
-        "",
-        newHash ? `#${newHash}` : window.location.pathname,
-      );
-    }
-  }, [selectedTags, storageKey]);
-
-  const onClick = (index: number) => {
-    const item = items[index];
-    if (!item) return;
-
-    if (item.onClick) {
-      item.onClick();
-      return;
-    }
-
-    if (!setSelectedTags) return;
-    const label = item.label;
-    const wasSelected = selectedTagSet.has(label);
-
-    setSelectedTags((prev) =>
-      prev.includes(label)
-        ? (prev.filter((tag) => tag !== label) as T[])
-        : ([...prev, label] as T[]),
-    );
-
-    if (wasSelected && hoverFill && hovered === index) {
-      setHovered(null);
-    }
-  };
-
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexWrap: "wrap",
-        gap: "24px",
-        maxWidth: "100%",
-        marginTop,
-        marginBottom,
-        userSelect: "none",
-        WebkitUserSelect: "none",
-      }}
-    >
-      {items.map((item, idx) => {
-        const isOn = selectedTagSet.has(item.label);
-        const isHover = canHover && hoverFill && hovered === idx;
-        const sharedStyle = getCheckboxStyle({ isOn, isHover, canHover });
-        const sharedStyleWithArrowGap = {
-          ...sharedStyle,
-          gap: 0,
-        };
-
-        const onMouseEnter = () => {
-          if (!canHover) return;
-          setHovered(idx);
-        };
-        const onMouseLeave = () => {
-          setHovered((current) => (current === idx ? null : current));
-        };
-
-        return (
-          <button
-            key={item.label}
-            onClick={() => onClick(idx)}
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-            aria-pressed={isOn}
-            className="page-filter-toggle"
-            style={{
-              ...sharedStyleWithArrowGap,
-              WebkitTouchCallout: "none",
-            }}
-          >
-            {item.label}
-            {item.arrowDirection ? (
-              <span
-                aria-hidden
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "12px",
-                  visibility:
-                    item.arrowVisible === undefined || item.arrowVisible
-                      ? "visible"
-                      : "hidden",
-                }}
-              >
-                <TriangleIcon direction={item.arrowDirection} />
-              </span>
-            ) : null}
-          </button>
-        );
-      })}
+    <div className="page-filter-row" style={{ marginTop, marginBottom }}>
+      {items.map((item, idx) => (
+        <button
+          key={item.label}
+          type="button"
+          onClick={item.onClick}
+          aria-pressed={activeIndexSet.has(idx)}
+          className="page-filter-toggle"
+        >
+          {item.label}
+          {item.arrowDirection ? (
+            <span aria-hidden className="page-filter-arrow">
+              <TriangleIcon direction={item.arrowDirection} />
+            </span>
+          ) : null}
+        </button>
+      ))}
     </div>
   );
 }

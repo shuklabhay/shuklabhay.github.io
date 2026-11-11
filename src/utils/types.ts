@@ -64,11 +64,8 @@ type CheckboxArrowDirection = "up" | "down";
 
 type CheckboxItem<T extends string = string> = {
   label: T;
-  defaultChecked?: boolean;
-  href?: string;
   onClick?: () => void;
   arrowDirection?: CheckboxArrowDirection;
-  arrowVisible?: boolean;
 };
 
 export type PageTitleProps = {
@@ -78,18 +75,7 @@ export type PageTitleProps = {
 
 export type CheckboxSubtitleLinkProps<T extends string = string> = {
   items: ReadonlyArray<CheckboxItem<T>>;
-  hoverFill?: boolean;
   activeIndexes?: number[];
-  marginTop?: string;
-  marginBottom?: string;
-};
-
-export type CheckboxSubtitleToggleProps<T extends string = string> = {
-  items: ReadonlyArray<CheckboxItem<T>>;
-  storageKey?: string;
-  hoverFill?: boolean;
-  selectedTags?: T[];
-  setSelectedTags?: (value: T[] | ((prev: T[]) => T[])) => void;
   marginTop?: string;
   marginBottom?: string;
 };
@@ -106,15 +92,6 @@ export type ImageLightboxProps = {
   setOpened: (value: SetStateAction<boolean>) => void;
   images: RichImage[];
   currentIndex: number;
-};
-
-type UnderlineMode = "none" | "fade" | "move";
-
-export type UnderlineStyle = {
-  left: number;
-  width: number;
-  opacity: number;
-  mode: UnderlineMode;
 };
 
 export type BlogPostProps = {

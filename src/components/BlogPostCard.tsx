@@ -1,4 +1,3 @@
-import { useState } from "react";
 import TransitionLink from "./TransitionLink";
 import { loadPostBySlug } from "../posts";
 import { formatPostMonthYear } from "../utils/formatPostDate";
@@ -7,6 +6,7 @@ import type { PostMeta } from "../utils/types";
 
 type BlogPostCardProps = {
   post: PostMeta;
+  isRecent: boolean;
 };
 
 const DEFAULT_POST_HERO_IMAGE = "/static/landing-1280.avif";
@@ -27,10 +27,12 @@ function splitTitleForMiddleEllipsis(title: string): {
   };
 }
 
-export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
+export default function BlogPostCard({
+  post,
+  isRecent,
+}: BlogPostCardProps): JSX.Element {
   const postPath = `/gallery/${post.slug}`;
   const heroSrc = post.cover ?? DEFAULT_POST_HERO_IMAGE;
-  const [isHovered, setIsHovered] = useState(false);
   const truncatedTitle = splitTitleForMiddleEllipsis(post.title);
   const monthYear = formatPostMonthYear(post.date);
 
@@ -43,66 +45,17 @@ export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
     <TransitionLink
       to={postPath}
       state={{ fromPath: "/gallery" }}
-      className="gallery-row"
-      style={{
-        width: "100%",
-        color: "var(--ink)",
-        padding: 0,
-        textDecoration: "none",
-        userSelect: "none",
-        WebkitUserSelect: "none",
-        WebkitTouchCallout: "none",
-      }}
-      onMouseEnter={() => {
-        warmPostResources();
-        setIsHovered(true);
-      }}
-      onPointerLeave={() => setIsHovered(false)}
-      onFocus={() => {
-        warmPostResources();
-        setIsHovered(true);
-      }}
-      onBlur={() => setIsHovered(false)}
+      className={`gallery-row${isRecent ? " is-recent" : ""}`}
+      onMouseEnter={warmPostResources}
+      onFocus={warmPostResources}
       onTouchStart={warmPostResources}
       onPointerDown={warmPostResources}
     >
       <span className="gallery-row-date">{monthYear}</span>
-      <span
-        title={post.title}
-        style={{
-          display: "flex",
-          width: "100%",
-          minWidth: 0,
-          maxWidth: "100%",
-          overflow: "hidden",
-          whiteSpace: "nowrap",
-          color: "var(--ink)",
-          textDecorationLine: isHovered ? "underline" : "none",
-          textDecorationThickness: "1.5px",
-          textUnderlineOffset: "0.14em",
-          fontSize: "var(--text)",
-          fontWeight: "var(--body-weight)",
-          lineHeight: "var(--lh)",
-        }}
-      >
-        <span
-          style={{
-            flex: "0 1 auto",
-            minWidth: 0,
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-          }}
-        >
-          {truncatedTitle.prefix}
-        </span>
+      <span title={post.title} className="gallery-row-title">
+        <span className="gallery-row-title-start">{truncatedTitle.prefix}</span>
         {truncatedTitle.suffix ? (
-          <span
-            style={{
-              flex: "0 0 auto",
-              whiteSpace: "nowrap",
-            }}
-          >
+          <span className="gallery-row-title-end">
             {`\u00a0${truncatedTitle.suffix}`}
           </span>
         ) : null}

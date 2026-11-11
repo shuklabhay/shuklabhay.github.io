@@ -1,14 +1,17 @@
 import PageTitle, { CheckboxSubtitleLink } from "../components/PageTitle";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import BlogPostCard from "../components/BlogPostCard";
 import { allPosts } from "../posts";
 import { preloadImage } from "../utils/imagePreload";
+import { getLastVisitedPost } from "../utils/navigationMemory";
 import type {
   BlogSortDirection,
   BlogSortField,
   BlogSortState,
 } from "../utils/types";
 
+const useIsomorphicLayoutEffect: typeof useEffect =
+  typeof window === "undefined" ? useEffect : useLayoutEffect;
 const BLOG_SORT_STORAGE_KEY = "blog-sort-state-v1";
 const DEFAULT_BLOG_SORT_STATE: BlogSortState = {
   sortField: "date",
@@ -49,6 +52,10 @@ function readBlogSortStateFromStorage(): BlogSortState {
 }
 
 export default function Blog() {
+  const [recentSlug, setRecentSlug] = useState<string | null>(null);
+  useIsomorphicLayoutEffect(() => {
+    setRecentSlug(getLastVisitedPost());
+  }, []);
   const [sortState, setSortState] = useState<BlogSortState>(
     DEFAULT_BLOG_SORT_STATE,
   );
@@ -133,50 +140,30 @@ export default function Blog() {
   }, [sortedPosts]);
 
   return (
-    <main
-      className="route-page-gallery"
-      style={{
-        width: "100%",
-        color: "var(--ink)",
-        paddingBottom: "calc(24px + env(safe-area-inset-bottom))",
-      }}
-    >
-      <div style={{ position: "relative" }}>
-        <PageTitle title="I write" />
-      </div>
-      <div style={{ position: "relative" }}>
-        <CheckboxSubtitleLink
-          hoverFill
-          activeIndexes={[sortField === "date" ? 0 : 1]}
-          marginBottom="12px"
-          items={[
-            {
-              label: "date",
-              arrowDirection: dateDirection === "desc" ? "down" : "up",
-              onClick: onDateSortClick,
-            },
-            {
-              label: `alphabetical ${alphaDirection === "asc" ? "a-z" : "z-a"}`,
-              onClick: onAlphaSortClick,
-            },
-          ]}
-        />
-      </div>
-      <section
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          width: "100%",
-          maxWidth: "var(--reading-width)",
-          gap: "6px",
-          marginTop: "12px",
-          userSelect: "none",
-          WebkitUserSelect: "none",
-          WebkitTouchCallout: "none",
-        }}
-      >
+    <main className="route-page-gallery">
+      <PageTitle title="I write" />
+      <CheckboxSubtitleLink
+        activeIndexes={[sortField === "date" ? 0 : 1]}
+        marginBottom="12px"
+        items={[
+          {
+            label: "date",
+            arrowDirection: dateDirection === "desc" ? "down" : "up",
+            onClick: onDateSortClick,
+          },
+          {
+            label: `alphabetical ${alphaDirection === "asc" ? "a-z" : "z-a"}`,
+            onClick: onAlphaSortClick,
+          },
+        ]}
+      />
+      <section className="gallery-list">
         {sortedPosts.map((post) => (
-          <BlogPostCard key={post.slug} post={post} />
+          <BlogPostCard
+            key={post.slug}
+            post={post}
+            isRecent={post.slug === recentSlug}
+          />
         ))}
       </section>
     </main>
