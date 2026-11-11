@@ -4,6 +4,7 @@ import {
   Route,
   Routes,
   useLocation,
+  useNavigationType,
 } from "react-router-dom";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import NavMenu from "./components/NavMenu.tsx";
@@ -14,7 +15,19 @@ import NotFound from "./pages/NotFound.tsx";
 import Post from "./pages/Post.tsx";
 import { getPostBySlug } from "./posts";
 import { useMobileHeaderAutoHide } from "./utils/useMobileHeaderAutoHide";
-import { isBlogPostPath } from "./utils/routeTransitions";
+import {
+  animateHistoryNavigations,
+  isBlogPostPath,
+  restoresScrollOnReturn,
+} from "./utils/routeTransitions";
+import { MOBILE_QUERY } from "./utils/breakpoints";
+import {
+  currentHistoryIndex,
+  recallScroll,
+  rememberPathAt,
+  setCurrentPlace,
+} from "./utils/navigationMemory";
+import type { RouteTransitionState } from "./utils/types";
 
 const HOME_BACKGROUND_IMMEDIATE_SRC = "/static/landing-1280.webp";
 const SITE_TITLE = "Abhay Shukla";
@@ -33,10 +46,6 @@ function decodeSegment(segment: string): string {
   } catch {
     return segment;
   }
-}
-
-function humanizeRouteSegment(segment: string): string {
-  return decodeSegment(segment).replace(/[-_]+/g, " ").trim();
 }
 
 export function getRouteDocumentTitle(pathname: string): string {
@@ -59,11 +68,39 @@ export function getRouteDocumentTitle(pathname: string): string {
     const slug = exactPathname.slice("/gallery/".length).split("/")[0] ?? "";
     const post = getPostBySlug(decodeSegment(slug));
     if (post) {
-      return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}${humanizeRouteSegment(post.slug)}`;
+      return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}${post.title}`;
     }
   }
 
-  return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Page Not Found`;
+  return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Page not found`;
+}
+
+const RESTORE_SCROLL_RETRY_MS = 50;
+const RESTORE_SCROLL_GIVE_UP_MS = 2000;
+
+function scrollOnceTallEnough(top: number): () => void {
+  const startedAt = Date.now();
+  let timeoutId = 0;
+  const stop = (): void => {
+    window.clearTimeout(timeoutId);
+    window.removeEventListener("wheel", stop);
+    window.removeEventListener("touchstart", stop);
+    window.removeEventListener("keydown", stop);
+  };
+  const attempt = (): void => {
+    window.scrollTo(0, top);
+    const reached = Math.abs(window.scrollY - top) < 1;
+    if (reached || Date.now() - startedAt > RESTORE_SCROLL_GIVE_UP_MS) {
+      stop();
+      return;
+    }
+    timeoutId = window.setTimeout(attempt, RESTORE_SCROLL_RETRY_MS);
+  };
+  window.addEventListener("wheel", stop, { passive: true });
+  window.addEventListener("touchstart", stop, { passive: true });
+  window.addEventListener("keydown", stop);
+  timeoutId = window.setTimeout(attempt, RESTORE_SCROLL_RETRY_MS);
+  return stop;
 }
 
 function isHomeVisualRoute(pathname: string): boolean {
@@ -75,8 +112,7 @@ function getHomeBackgroundCandidates(): string[] {
 
   const prefersReducedData =
     window.matchMedia?.("(prefers-reduced-data: reduce)").matches ?? false;
-  const isMobileViewport =
-    window.matchMedia?.("(max-width: 860px)").matches ?? false;
+  const isMobileViewport = window.matchMedia?.(MOBILE_QUERY).matches ?? false;
   const isCoarsePointer =
     window.matchMedia?.("(pointer: coarse)").matches ?? false;
   const networkConnection = (
@@ -240,6 +276,7 @@ function RouteBackground(): null {
 
 export function AppShell(): JSX.Element {
   const location = useLocation();
+  const navigationType = useNavigationType();
   const isHome = isHomeVisualRoute(location.pathname);
   useMobileHeaderAutoHide(!isHome);
 
@@ -249,11 +286,40 @@ export function AppShell(): JSX.Element {
 
   useEffect(() => {
     window.history.scrollRestoration = "manual";
+    return animateHistoryNavigations();
+  }, []);
+
+  useEffect(() => {
+    const onClick = (event: MouseEvent): void => {
+      if (event.detail === 0) return;
+      const target = event.target as Element | null;
+      const control = target?.closest?.("a, button");
+      if (
+        control instanceof HTMLElement &&
+        control === document.activeElement
+      ) {
+        control.blur();
+      }
+    };
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
   }, []);
 
   useIsomorphicLayoutEffect(() => {
+    setCurrentPlace(location.key, location.pathname, location.state);
+    const index = currentHistoryIndex();
+    if (index !== null) rememberPathAt(index, location.pathname);
     if (location.hash) return;
-    window.scrollTo(0, 0);
+    if (navigationType === "POP") {
+      const shouldRestore = restoresScrollOnReturn(location.pathname);
+      window.scrollTo(0, shouldRestore ? recallScroll(location.key) : 0);
+      return;
+    }
+    const restoreScroll = (location.state as RouteTransitionState | null)
+      ?.restoreScroll;
+    window.scrollTo(0, restoreScroll ?? 0);
+    if (!restoreScroll) return;
+    return scrollOnceTallEnough(restoreScroll);
   }, [location.key]);
 
   useIsomorphicLayoutEffect(() => {

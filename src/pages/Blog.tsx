@@ -133,48 +133,24 @@ export default function Blog() {
   }, [sortedPosts]);
 
   return (
-    <main
-      className="route-page-gallery"
-      style={{
-        width: "100%",
-        color: "var(--ink)",
-        paddingBottom: "calc(24px + env(safe-area-inset-bottom))",
-      }}
-    >
-      <div style={{ position: "relative" }}>
-        <PageTitle title="I write" />
-      </div>
-      <div style={{ position: "relative" }}>
-        <CheckboxSubtitleLink
-          hoverFill
-          activeIndexes={[sortField === "date" ? 0 : 1]}
-          marginBottom="12px"
-          items={[
-            {
-              label: "date",
-              arrowDirection: dateDirection === "desc" ? "down" : "up",
-              onClick: onDateSortClick,
-            },
-            {
-              label: `alphabetical ${alphaDirection === "asc" ? "a-z" : "z-a"}`,
-              onClick: onAlphaSortClick,
-            },
-          ]}
-        />
-      </div>
-      <section
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          width: "100%",
-          maxWidth: "var(--reading-width)",
-          gap: "6px",
-          marginTop: "12px",
-          userSelect: "none",
-          WebkitUserSelect: "none",
-          WebkitTouchCallout: "none",
-        }}
-      >
+    <main className="route-page-gallery">
+      <PageTitle title="I write" />
+      <CheckboxSubtitleLink
+        activeIndexes={[sortField === "date" ? 0 : 1]}
+        marginBottom="12px"
+        items={[
+          {
+            label: "date",
+            arrowDirection: dateDirection === "desc" ? "down" : "up",
+            onClick: onDateSortClick,
+          },
+          {
+            label: `alphabetical ${alphaDirection === "asc" ? "a-z" : "z-a"}`,
+            onClick: onAlphaSortClick,
+          },
+        ]}
+      />
+      <section className="gallery-list">
         {sortedPosts.map((post) => (
           <BlogPostCard key={post.slug} post={post} />
         ))}

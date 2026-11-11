@@ -1,48 +1,76 @@
 import { flushSync } from "react-dom";
 import type { NavigateFunction, NavigateOptions } from "react-router-dom";
-import { runWithRootViewTransition } from "./viewTransitions";
+import {
+  canRunRootViewTransition,
+  runWithRootViewTransition,
+} from "./viewTransitions";
+import { rememberCurrentPlace } from "./navigationMemory";
 
 export function isBlogPostPath(pathname: string) {
   return pathname.startsWith("/gallery/") && pathname !== "/gallery";
 }
 
-let activeTransitionId = 0;
+export function restoresScrollOnReturn(pathname: string): boolean {
+  return !isBlogPostPath(pathname);
+}
+
+const SKIP_TRANSITION_QUERIES = [
+  "(prefers-reduced-motion: reduce)",
+  "(pointer: coarse)",
+  "(hover: none)",
+];
+
+function shouldAnimate(): boolean {
+  return (
+    canRunRootViewTransition() &&
+    !SKIP_TRANSITION_QUERIES.some(
+      (query) => window.matchMedia?.(query).matches === true,
+    )
+  );
+}
+
+function runRouteTransition(update: () => void): void {
+  if (!shouldAnimate()) {
+    update();
+    return;
+  }
+  runWithRootViewTransition(update);
+}
 
 export function navigateWithRouteTransition(
   navigate: NavigateFunction,
   to: string,
   options?: NavigateOptions,
 ): void {
-  const shouldSkipTransition = [
-    "(prefers-reduced-motion: reduce)",
-    "(pointer: coarse)",
-    "(hover: none)",
-  ].some((query) => window.matchMedia?.(query).matches === true);
-
-  const update = () => {
+  rememberCurrentPlace();
+  runRouteTransition(() => {
     flushSync(() => navigate(to, options));
-    window.scrollTo(0, 0);
+  });
+}
+
+export function animateHistoryNavigations(): () => void {
+  let isReplaying = false;
+
+  const onPopState = (event: PopStateEvent): void => {
+    if (isReplaying) return;
+    rememberCurrentPlace();
+    if (!shouldAnimate()) return;
+    event.stopImmediatePropagation();
+
+    runRouteTransition(() => {
+      isReplaying = true;
+      try {
+        flushSync(() => {
+          window.dispatchEvent(
+            new PopStateEvent("popstate", { state: window.history.state }),
+          );
+        });
+      } finally {
+        isReplaying = false;
+      }
+    });
   };
 
-  if (shouldSkipTransition) {
-    update();
-    return;
-  }
-
-  const rootEl = document.documentElement;
-  const isLeavingHome = rootEl.classList.contains("route-home");
-  const isEnteringHome = !isLeavingHome && to === "/";
-  rootEl.classList.toggle("home-rise", isLeavingHome);
-  rootEl.classList.toggle("home-fall", isEnteringHome);
-
-  const transitionId = ++activeTransitionId;
-  const clearHomeTransition = (): void => {
-    if (transitionId === activeTransitionId) {
-      rootEl.classList.remove("home-rise", "home-fall");
-    }
-  };
-  runWithRootViewTransition(update)?.then(
-    clearHomeTransition,
-    clearHomeTransition,
-  );
+  window.addEventListener("popstate", onPopState, true);
+  return () => window.removeEventListener("popstate", onPopState, true);
 }

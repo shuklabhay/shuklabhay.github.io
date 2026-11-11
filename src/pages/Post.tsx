@@ -33,7 +33,7 @@ const HEADING_JUMP_WATCH_TIMEOUT_MS = 8000;
 const HEADING_JUMP_SETTLED_TICKS = 4;
 const CONTENTS_BOTTOM_MARGIN_PX = 16;
 const CONTENTS_MIN_LIST_WIDTH_PX = 190;
-const TOC_OFFSET_PX = 48;
+const CONTENTS_GUTTER_PX = 48;
 const HEADING_JUMP_SCROLL_MS = 180;
 
 function scrollLinearlyTo(top: number): () => void {
@@ -79,13 +79,9 @@ function fitContentsToViewport(tocEl: HTMLElement, animate: boolean): void {
 
   const columnEl = document.querySelector<HTMLElement>(".post-column");
   const room =
-    (window.innerWidth - (columnEl?.offsetWidth ?? 0)) / 2 + TOC_OFFSET_PX - 32;
+    (window.innerWidth - (columnEl?.offsetWidth ?? 0)) / 2 - CONTENTS_GUTTER_PX;
   const isTooNarrow = room < CONTENTS_MIN_LIST_WIDTH_PX;
   tocEl.classList.toggle("is-too-narrow", isTooNarrow);
-  document.documentElement.style.setProperty(
-    "--toc-offset",
-    isTooNarrow ? "0px" : `${TOC_OFFSET_PX}px`,
-  );
   if (isTooNarrow) {
     rowEls.forEach((rowEl) => rowEl.classList.remove("is-fit-hidden"));
     return;
@@ -544,7 +540,6 @@ export default function Post({
     const fitContents = (animate: boolean): void => {
       const tocEl = document.querySelector<HTMLElement>(".post-toc");
       if (tocEl) fitContentsToViewport(tocEl, animate);
-      else document.documentElement.style.removeProperty("--toc-offset");
     };
     const onResize = (): void => fitContents(false);
 
@@ -598,12 +593,6 @@ export default function Post({
   }, [contentsSlot, slug]);
 
   useEffect(() => {
-    return () => {
-      document.documentElement.style.removeProperty("--toc-offset");
-    };
-  }, []);
-
-  useEffect(() => {
     if (!postSummary) return;
     if (!heroImage) return;
     void preloadImage(heroImage);
@@ -612,21 +601,11 @@ export default function Post({
   if (!postSummary) {
     return (
       <>
-        <main
-          key={slug}
-          className="route-page-post"
-          style={{
-            width: "100%",
-            color: "var(--ink)",
-            paddingBottom: "calc(48px + env(safe-area-inset-bottom))",
-            position: "relative",
-            opacity: 1,
-          }}
-        >
-          <PostBackLink />
-          <h1 className="page-heading" style={{ marginTop: "12px" }}>
-            Post not found
-          </h1>
+        <main key={slug} className="route-page-post">
+          <div className="post-column">
+            <PostBackLink />
+            <h1 className="page-heading">Post not found</h1>
+          </div>
         </main>
       </>
     );

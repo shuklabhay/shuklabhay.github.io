@@ -7,6 +7,7 @@ import {
   type CSSProperties,
   type MouseEvent as ReactMouseEvent,
 } from "react";
+import { MOBILE_QUERY } from "../utils/breakpoints";
 
 function CloseIcon({ size = 18 }: { size?: number }) {
   return (
@@ -101,7 +102,7 @@ export default function ImageLightbox({
   const isTouchAware = () => {
     if (typeof window === "undefined") return false;
     return (
-      window.matchMedia?.("(max-width: 860px)").matches ||
+      window.matchMedia?.(MOBILE_QUERY).matches ||
       window.matchMedia?.("(pointer: coarse)").matches
     );
   };
