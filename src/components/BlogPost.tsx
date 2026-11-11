@@ -71,7 +71,7 @@ export default function BlogPost({
     alignItems: "center",
     justifyContent: "center",
     padding: "0 11px",
-    borderRadius: 0,
+    borderRadius: "6px",
     border: isHovered
       ? "1px solid var(--ink)"
       : "1px solid rgba(17, 17, 17, 0.3)",
