@@ -139,7 +139,7 @@ export default function BlogPost({
           {buttons.length ? (
             <div
               style={{
-                marginTop: "12px",
+                marginTop: "6px",
                 display: "flex",
                 gap: "12px",
                 flexWrap: "wrap",

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 const HIDDEN_CLASS = "mobile-header-hidden";
-const MOBILE_QUERY = "(max-width: 860px)";
+const MOBILE_QUERY = "(min-width: 0px)";
 const SHOW_DELTA_PX = 8;
 const HIDE_DELTA_PX = 4;
 const MIN_HIDE_SCROLL_PX = 96;
