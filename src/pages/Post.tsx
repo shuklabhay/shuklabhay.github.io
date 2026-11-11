@@ -8,11 +8,10 @@ import {
 } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
 import { createPortal } from "react-dom";
-import { useLocation, useNavigationType, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import BlogPost from "../components/BlogPost";
 import ImageLightbox from "../components/ImageLightbox";
 import PostBackLink from "../components/PostBackLink";
-import PostExpandToggle from "../components/PostExpandToggle";
 import {
   getLoadedPostBySlug,
   getPostBySlug,
@@ -23,7 +22,6 @@ import { preloadImage } from "../utils/imagePreload";
 import { formatPostDate } from "../utils/formatPostDate";
 import type { PostEntry, RichImage } from "../utils/types";
 
-const POST_SCROLL_POSITION_PREFIX = "post-scroll-position:";
 const HEADING_SCROLL_OFFSET_PX = 80;
 const ACTIVE_HEADING_THRESHOLD_PX = 140;
 const HEADING_JUMP_SETTLE_TOLERANCE_PX = 12;
@@ -33,7 +31,6 @@ const CARD_TOP_CLAMP_DISTANCE_PX = HEADING_SCROLL_OFFSET_PX + 40;
 const HEADING_JUMP_WATCH_INTERVAL_MS = 150;
 const HEADING_JUMP_WATCH_TIMEOUT_MS = 8000;
 const HEADING_JUMP_SETTLED_TICKS = 4;
-const POST_EXPAND_ANIMATION_MS = 150;
 const CONTENTS_BOTTOM_MARGIN_PX = 16;
 const CONTENTS_MIN_LIST_WIDTH_PX = 190;
 const TOC_OFFSET_PX = 48;
@@ -81,11 +78,8 @@ function fitContentsToViewport(tocEl: HTMLElement, animate: boolean): void {
   if (rowEls.length === 0 || tocEl.getClientRects().length === 0) return;
 
   const columnEl = document.querySelector<HTMLElement>(".post-column");
-  const room = document.documentElement.classList.contains("post-expanded")
-    ? (window.innerWidth - (columnEl?.offsetWidth ?? 0)) / 2 +
-      TOC_OFFSET_PX -
-      32
-    : (tocEl.parentElement?.clientWidth ?? 0);
+  const room =
+    (window.innerWidth - (columnEl?.offsetWidth ?? 0)) / 2 + TOC_OFFSET_PX - 32;
   const isTooNarrow = room < CONTENTS_MIN_LIST_WIDTH_PX;
   tocEl.classList.toggle("is-too-narrow", isTooNarrow);
   document.documentElement.style.setProperty(
@@ -159,35 +153,6 @@ function fitContentsToViewport(tocEl: HTMLElement, animate: boolean): void {
   });
 }
 
-function didDocumentReload(): boolean {
-  if (typeof window === "undefined" || typeof performance === "undefined") {
-    return false;
-  }
-
-  const navigationEntries = performance.getEntriesByType?.("navigation");
-  const navigationEntry = navigationEntries?.[0] as
-    | PerformanceNavigationTiming
-    | undefined;
-  if (navigationEntry?.type) {
-    return navigationEntry.type === "reload";
-  }
-
-  const legacyNavigation = (
-    performance as Performance & {
-      navigation?: {
-        type?: number;
-        TYPE_RELOAD?: number;
-      };
-    }
-  ).navigation;
-  if (!legacyNavigation) return false;
-  return legacyNavigation.type === legacyNavigation.TYPE_RELOAD;
-}
-
-function getPostScrollStorageKey(pathname: string): string {
-  return `${POST_SCROLL_POSITION_PREFIX}${pathname}`;
-}
-
 function measurePostHeadings(
   headings: PostHeading[],
   headingElementById: ReadonlyMap<string, HTMLElement>,
@@ -237,15 +202,9 @@ export default function Post({
 }: PostProps): JSX.Element {
   const { slug: routeSlug = "" } = useParams();
   const slug = initialSlug ?? routeSlug;
-  const location = useLocation();
   const prefersReducedMotion =
     typeof window !== "undefined" &&
     window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
-  const navigationType = useNavigationType();
-  const shouldRestoreScroll =
-    didDocumentReload() ||
-    (navigationType === "POP" && location.key !== "default");
-  const postScrollStorageKey = getPostScrollStorageKey(location.pathname);
   const postSummary = getPostBySlug(slug);
   const heroImage = postSummary?.cover;
   const postContentRef = useRef<HTMLElement>(null);
@@ -272,13 +231,11 @@ export default function Post({
     postEntryState?.slug === slug
       ? postEntryState.entry
       : ((postSummary ? readPostBySlug(slug) : undefined) ?? null);
-  const [isExpanded, setIsExpanded] = useState(false);
   const [contentsSlot, setContentsSlot] = useState<HTMLElement | null>(null);
   const pendingHeadingJumpIdRef = useRef<string | null>(null);
   const pendingHeadingTargetScrollTopRef = useRef<number | null>(null);
   const pendingHeadingJumpReleaseTimeoutIdRef = useRef<number | null>(null);
   const stopHeadingJumpWatchRef = useRef<(() => void) | null>(null);
-  const expandAnimationTimeoutIdRef = useRef(0);
   const previousFittedHeadingIdRef = useRef<string | null>(null);
 
   const clearPendingHeadingJump = useCallback(() => {
@@ -584,10 +541,6 @@ export default function Post({
   }, []);
 
   useIsomorphicLayoutEffect(() => {
-    document.documentElement.classList.toggle("post-expanded", isExpanded);
-  }, [isExpanded]);
-
-  useIsomorphicLayoutEffect(() => {
     const fitContents = (animate: boolean): void => {
       const tocEl = document.querySelector<HTMLElement>(".post-toc");
       if (tocEl) fitContentsToViewport(tocEl, animate);
@@ -601,7 +554,7 @@ export default function Post({
     return () => {
       window.removeEventListener("resize", onResize);
     };
-  }, [activeHeadingId, contentsSlot, isExpanded, postHeadings]);
+  }, [activeHeadingId, contentsSlot, postHeadings]);
 
   useIsomorphicLayoutEffect(() => {
     const listEl = document.querySelector<HTMLElement>(".post-toc-list");
@@ -613,7 +566,7 @@ export default function Post({
       ? activeRowEl.offsetTop + activeRowEl.offsetHeight
       : 0;
     listEl.style.setProperty("--toc-fill", `${fill}px`);
-  }, [activeHeadingId, contentsSlot, isExpanded, postHeadings]);
+  }, [activeHeadingId, contentsSlot, postHeadings]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -646,140 +599,15 @@ export default function Post({
 
   useEffect(() => {
     return () => {
-      document.documentElement.classList.remove(
-        "post-expanded",
-        "post-expand-animating",
-      );
       document.documentElement.style.removeProperty("--toc-offset");
-      window.clearTimeout(expandAnimationTimeoutIdRef.current);
     };
   }, []);
-
-  const onToggleExpanded = (): void => {
-    const rootEl = document.documentElement;
-    rootEl.classList.add("post-expand-animating");
-    window.clearTimeout(expandAnimationTimeoutIdRef.current);
-    expandAnimationTimeoutIdRef.current = window.setTimeout(() => {
-      rootEl.classList.remove("post-expand-animating");
-    }, POST_EXPAND_ANIMATION_MS);
-    setIsExpanded((current) => !current);
-  };
-
-  useEffect(() => {
-    setIsExpanded(false);
-  }, [slug]);
 
   useEffect(() => {
     if (!postSummary) return;
     if (!heroImage) return;
     void preloadImage(heroImage);
   }, [heroImage, postSummary]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const saveScrollPosition = () => {
-      if (
-        getPostScrollStorageKey(window.location.pathname) !==
-        postScrollStorageKey
-      ) {
-        return;
-      }
-      window.sessionStorage.setItem(
-        postScrollStorageKey,
-        String(window.scrollY),
-      );
-    };
-
-    const onVisibilityChange = () => {
-      if (document.visibilityState !== "hidden") return;
-      saveScrollPosition();
-    };
-
-    let saveFrame = 0;
-    const onScroll = () => {
-      if (saveFrame) return;
-      saveFrame = window.requestAnimationFrame(() => {
-        saveFrame = 0;
-        saveScrollPosition();
-      });
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("beforeunload", saveScrollPosition);
-    window.addEventListener("pagehide", saveScrollPosition);
-    document.addEventListener("visibilitychange", onVisibilityChange);
-
-    return () => {
-      window.cancelAnimationFrame(saveFrame);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("beforeunload", saveScrollPosition);
-      window.removeEventListener("pagehide", saveScrollPosition);
-      document.removeEventListener("visibilitychange", onVisibilityChange);
-    };
-  }, [postScrollStorageKey]);
-
-  useEffect(() => {
-    if (typeof window === "undefined" || !shouldRestoreScroll) return;
-
-    const raw = window.sessionStorage.getItem(postScrollStorageKey);
-    const savedY = Number(raw);
-    if (!Number.isFinite(savedY)) return;
-    const targetY = Math.max(0, savedY);
-    if (targetY <= 0) return;
-
-    let didUserInteract = false;
-
-    const onUserInteraction = () => {
-      didUserInteract = true;
-    };
-    const onKeyDown = (event: KeyboardEvent) => {
-      const isScrollKey =
-        event.key === "ArrowDown" ||
-        event.key === "ArrowUp" ||
-        event.key === "PageDown" ||
-        event.key === "PageUp" ||
-        event.key === "Home" ||
-        event.key === "End" ||
-        event.key === " ";
-      if (!isScrollKey) return;
-      didUserInteract = true;
-    };
-
-    const restoreScroll = () => {
-      if (didUserInteract) return;
-      window.scrollTo(0, targetY);
-    };
-
-    restoreScroll();
-    let frameB = 0;
-    const frameA = window.requestAnimationFrame(() => {
-      restoreScroll();
-      frameB = window.requestAnimationFrame(restoreScroll);
-    });
-    const timeoutIds = [120, 280, 520, 900].map((delayMs) =>
-      window.setTimeout(restoreScroll, delayMs),
-    );
-    const onLoad = () => restoreScroll();
-    window.addEventListener("wheel", onUserInteraction, { passive: true });
-    window.addEventListener("touchstart", onUserInteraction, { passive: true });
-    window.addEventListener("pointerdown", onUserInteraction, {
-      passive: true,
-    });
-    window.addEventListener("keydown", onKeyDown);
-    window.addEventListener("load", onLoad);
-
-    return () => {
-      window.cancelAnimationFrame(frameA);
-      window.cancelAnimationFrame(frameB);
-      timeoutIds.forEach((timeoutId) => window.clearTimeout(timeoutId));
-      window.removeEventListener("wheel", onUserInteraction);
-      window.removeEventListener("touchstart", onUserInteraction);
-      window.removeEventListener("pointerdown", onUserInteraction);
-      window.removeEventListener("keydown", onKeyDown);
-      window.removeEventListener("load", onLoad);
-    };
-  }, [shouldRestoreScroll, postScrollStorageKey]);
 
   if (!postSummary) {
     return (
@@ -966,16 +794,7 @@ export default function Post({
         : null}
       <BlogPost
         key={slug}
-        header={
-          <PostBackLink
-            trailing={
-              <PostExpandToggle
-                expanded={isExpanded}
-                onToggle={onToggleExpanded}
-              />
-            }
-          />
-        }
+        header={<PostBackLink />}
         title={postSummary.title}
         byline={bylineParts.length ? bylineParts.join(" · ") : undefined}
         buttons={postSummary.buttons}

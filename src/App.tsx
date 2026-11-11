@@ -247,6 +247,15 @@ export function AppShell(): JSX.Element {
     document.title = getRouteDocumentTitle(location.pathname);
   }, [location.pathname]);
 
+  useEffect(() => {
+    window.history.scrollRestoration = "manual";
+  }, []);
+
+  useIsomorphicLayoutEffect(() => {
+    if (location.hash) return;
+    window.scrollTo(0, 0);
+  }, [location.key]);
+
   useIsomorphicLayoutEffect(() => {
     const isHome = isHomeVisualRoute(location.pathname);
     document.documentElement.classList.toggle("route-home", isHome);
