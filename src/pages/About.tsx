@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import TransitionLink from "../components/TransitionLink";
 import PageTitle from "../components/PageTitle";
 import { contactData, getContactLink } from "../utils/contactData";
@@ -8,6 +10,17 @@ export default function About(): JSX.Element {
   const twitter = getContactLink(contactData, "Twitter");
   const youtube = getContactLink(contactData, "YouTube");
   const github = getContactLink(contactData, "GitHub");
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash !== "#contact") return;
+    const frame = window.requestAnimationFrame(() => {
+      document
+        .getElementById("contact")
+        ?.scrollIntoView({ block: "center", behavior: "instant" });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [location.hash, location.key]);
 
   return (
     <main className="about-page route-page-about">
@@ -118,7 +131,7 @@ export default function About(): JSX.Element {
                 telling stories.
               </li>
             </ul>
-            <p className="about-links about-section-start">
+            <p id="contact" className="about-links about-section-start">
               <a href={email} className="about-contact-link">
                 Email
               </a>{" "}
