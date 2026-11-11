@@ -797,11 +797,34 @@ html.post-expanded .post-toc {
   }
 }
 
+.gallery-row {
+  display: grid;
+  grid-template-columns: 5.5em minmax(0, 1fr);
+  column-gap: 18px;
+  align-items: baseline;
+}
+
+.gallery-row-date {
+  color: var(--ink-muted);
+  font-size: var(--text);
+  line-height: var(--lh);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
 .safari-tint {
   display: none;
 }
 
 @media (max-width: 860px) {
+  .gallery-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .gallery-row-date {
+    display: none;
+  }
+
   .safari-tint {
     display: block;
     position: fixed;

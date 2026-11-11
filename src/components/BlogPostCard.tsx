@@ -1,6 +1,7 @@
 import { useState } from "react";
 import TransitionLink from "./TransitionLink";
 import { loadPostBySlug } from "../posts";
+import { formatPostMonthYear } from "../utils/formatPostDate";
 import { preloadImage } from "../utils/imagePreload";
 import type { PostMeta } from "../utils/types";
 
@@ -31,6 +32,7 @@ export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
   const heroSrc = post.cover ?? DEFAULT_POST_HERO_IMAGE;
   const [isHovered, setIsHovered] = useState(false);
   const truncatedTitle = splitTitleForMiddleEllipsis(post.title);
+  const monthYear = formatPostMonthYear(post.date);
 
   const warmPostResources = (): void => {
     void preloadImage(heroSrc);
@@ -41,8 +43,8 @@ export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
     <TransitionLink
       to={postPath}
       state={{ fromPath: "/gallery" }}
+      className="gallery-row"
       style={{
-        display: "block",
         width: "100%",
         color: "var(--ink)",
         padding: 0,
@@ -64,6 +66,7 @@ export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
       onTouchStart={warmPostResources}
       onPointerDown={warmPostResources}
     >
+      <span className="gallery-row-date">{monthYear}</span>
       <span
         title={post.title}
         style={{
