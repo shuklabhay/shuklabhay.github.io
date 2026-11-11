@@ -79,8 +79,11 @@ body {
 a:focus-visible,
 button:focus-visible,
 [role="button"]:focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 2px;
+  outline: none;
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: currentColor;
+  text-underline-offset: 0.18em;
 }
 
 .post-content img:focus-visible {
@@ -88,26 +91,49 @@ button:focus-visible,
   outline-offset: 2px;
 }
 
-.skip-link {
-  position: fixed;
-  top: 12px;
-  left: var(--page-x-padding);
-  z-index: 100;
-  padding: 0 6px;
-  background: var(--paper);
-  color: var(--ink);
-  font-size: var(--nav-text);
-  line-height: 24px;
-  text-decoration: none;
-  transform: translateY(-200%);
+.side-nav-link,
+.gallery-row,
+.page-filter-toggle,
+.post-back-link,
+.post-expand-toggle,
+.post-toc-list li {
+  --focus-marker-x: -10px;
+  position: relative;
 }
 
-.skip-link:focus-visible {
-  transform: none;
+.side-nav-link,
+.post-expand-toggle {
+  --focus-marker-x: -4px;
 }
 
-#content:focus {
-  outline: none;
+.post-toc-list li {
+  --focus-marker-x: -14px;
+}
+
+.side-nav-link:focus-visible,
+.gallery-row:focus-visible,
+.page-filter-toggle:focus-visible,
+.post-back-link:focus-visible,
+.post-expand-toggle:focus-visible,
+.post-toc-link:focus-visible {
+  text-decoration-line: none;
+  opacity: 1;
+}
+
+.side-nav-link:focus-visible::before,
+.gallery-row:focus-visible::before,
+.page-filter-toggle:focus-visible::before,
+.post-back-link:focus-visible::before,
+.post-expand-toggle:focus-visible::before,
+.post-toc-list li:has(.post-toc-link:focus-visible)::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: var(--focus-marker-x);
+  width: 2px;
+  height: 16px;
+  margin-top: -8px;
+  background: currentColor;
 }
 
 .route-sky {
@@ -845,10 +871,6 @@ html.post-expanded .reading-track {
   .post-toc-link:hover {
     opacity: 1;
   }
-}
-
-.post-toc-link:focus-visible {
-  outline-offset: -2px;
 }
 
 @media (max-width: 860px) {

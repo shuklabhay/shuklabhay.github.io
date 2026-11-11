@@ -260,24 +260,10 @@ export function AppShell(): JSX.Element {
   return (
     <>
       <RouteBackground />
-      <a
-        className="skip-link"
-        href="#content"
-        onClick={(event) => {
-          event.preventDefault();
-          document.getElementById("content")?.focus();
-        }}
-      >
-        Skip to content
-      </a>
       <div className="safari-tint" aria-hidden />
       <div className="route-sky" aria-hidden />
       <NavMenu />
-      <div
-        id="content"
-        tabIndex={-1}
-        className={isHome ? "app-shell app-shell-home" : "app-shell"}
-      >
+      <div className={isHome ? "app-shell app-shell-home" : "app-shell"}>
         <Routes location={location}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
