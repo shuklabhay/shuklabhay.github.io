@@ -798,7 +798,7 @@ html.post-expanded .post-toc {
 
 .gallery-row {
   display: grid;
-  grid-template-columns: 4.25em minmax(0, 1fr);
+  grid-template-columns: 3.75em minmax(0, 1fr);
   column-gap: 12px;
   align-items: baseline;
 }

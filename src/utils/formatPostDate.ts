@@ -27,17 +27,9 @@ export function formatPostDate(raw: string) {
   return PACIFIC_DATE_FORMATTER.format(parsed);
 }
 
-const MONTH_YEAR_FORMATTER = new Intl.DateTimeFormat("en-US", {
-  timeZone: "UTC",
-  year: "numeric",
-  month: "short",
-});
-
 export function formatPostMonthYear(raw: string): string {
   const dateOnlyMatch = raw.match(DATE_ONLY_PATTERN);
   if (!dateOnlyMatch) return "";
   const [, yearText, monthText] = dateOnlyMatch;
-  return MONTH_YEAR_FORMATTER.format(
-    new Date(Date.UTC(Number(yearText), Number(monthText) - 1, 15)),
-  );
+  return `${monthText}-${yearText}`;
 }
