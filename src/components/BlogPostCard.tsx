@@ -79,7 +79,7 @@ export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
           textDecorationThickness: "1.5px",
           textUnderlineOffset: "0.14em",
           fontSize: "var(--text)",
-          fontWeight: 400,
+          fontWeight: "var(--body-weight)",
           lineHeight: "var(--lh)",
         }}
       >

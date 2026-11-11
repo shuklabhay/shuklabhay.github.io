@@ -9,11 +9,14 @@
   --sky-edge: #807eaf;
   --home-background-image: url("/static/landing-1280.webp");
   --page-x-padding: 12px;
-  --text: 1.125rem;
-  --nav-text: 1.125rem;
+  --text: 1rem;
+  --nav-text: 1rem;
   --title-text: 1.875rem;
-  --heading-text: 1.375rem;
+  --heading-text: 1.25rem;
   --lh: 24px;
+  --small-text: 0.8125rem;
+  --small-lh: 18px;
+  --body-weight: 450;
   --browser-bottom-clearance: 0px;
   --sidebar-width: round(
     down,
@@ -25,7 +28,7 @@
   );
   --content-gutter: round(clamp(24px, 4vw, 60px), 12px);
   --content-left-margin: 24px;
-  --reading-width: 792px;
+  --reading-width: 672px;
   --mobile-band-height: 120px;
   --motion-page: 100ms;
   --motion-home: 120ms;
@@ -58,8 +61,6 @@ body {
     Arial, sans-serif;
   font-size: var(--text);
   line-height: var(--lh);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   width: 100%;
   max-width: 100%;
   background-color: var(--page-background-color);
@@ -164,7 +165,7 @@ html.route-post.post-expanded .side-nav-link {
 }
 
 .side-nav-link {
-  font-weight: 450;
+  font-weight: var(--body-weight);
   color: white;
   text-decoration: none;
   font-size: var(--nav-text);
@@ -201,7 +202,7 @@ html.route-post.post-expanded .side-nav-link {
   width: 100%;
   max-width: 100%;
   overflow-x: clip;
-  font-weight: 400;
+  font-weight: var(--body-weight);
   padding: 12px var(--content-left-margin) var(--browser-bottom-clearance)
     calc(var(--sidebar-width) + var(--content-left-margin));
   color: var(--ink);
@@ -237,7 +238,7 @@ html.route-post.post-expanded .app-shell {
   font-size: var(--title-text);
   font-weight: 600;
   letter-spacing: -0.01em;
-  line-height: round(up, 1.2em, 6px);
+  line-height: round(up, 1.15em, 6px);
 }
 
 .visually-hidden {
@@ -272,8 +273,8 @@ html.route-post.post-expanded .post-column {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  font-size: var(--text);
-  line-height: var(--lh);
+  font-size: var(--nav-text);
+  line-height: 24px;
   color: var(--ink);
 }
 
@@ -474,7 +475,7 @@ code {
 
 .post-content h2 {
   font-size: var(--heading-text);
-  line-height: 24px;
+  line-height: var(--lh);
 }
 
 .post-content h3,
@@ -700,7 +701,7 @@ html.post-expanded .post-toc {
   color: inherit;
   cursor: pointer;
   font-size: 0.9375rem;
-  font-weight: 450;
+  font-weight: var(--body-weight);
   line-height: 24px;
   text-decoration: none;
   text-transform: lowercase;
@@ -739,6 +740,12 @@ html.post-expanded .post-toc {
     --page-x-padding: 12px;
     --browser-bottom-clearance: 72px;
     --title-text: 1.5rem;
+    --text: 0.9375rem;
+    --nav-text: 0.9375rem;
+    --heading-text: 1.0625rem;
+    --lh: 22px;
+    --small-text: 0.75rem;
+    --small-lh: 18px;
   }
 
   .about-subtitle {
