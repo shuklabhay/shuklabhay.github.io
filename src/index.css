@@ -603,8 +603,8 @@ code {
 
 .post-header-button {
   color: var(--ink);
-  font-size: var(--text);
-  line-height: var(--lh);
+  font-size: 0.875rem;
+  line-height: 24px;
   text-decoration-line: underline;
   text-decoration-thickness: 1px;
   text-decoration-color: rgba(17, 17, 17, 0.4);
