@@ -1,8 +1,43 @@
 import { defineConfig, type ViteDevServer } from "vite";
 import react from "@vitejs/plugin-react";
 import mdx from "@mdx-js/rollup";
+import rehypeKatex from "rehype-katex";
+import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
 import fs from "fs";
 import path from "path";
+
+type MarkdownNode = {
+  type: string;
+  value?: string;
+  children?: MarkdownNode[];
+  position?: { start: { offset?: number } };
+  data?: Record<string, unknown>;
+};
+
+function remarkDoubleDollarDisplayMath() {
+  return (tree: MarkdownNode, file: { value: unknown }) => {
+    const source = String(file.value);
+    const visit = (node: MarkdownNode): void => {
+      const start = node.position?.start.offset;
+      if (
+        node.type === "inlineMath" &&
+        start !== undefined &&
+        source.startsWith("$$", start)
+      ) {
+        node.data = {
+          ...node.data,
+          hName: "code",
+          hProperties: { className: ["language-math", "math-display"] },
+          hChildren: [{ type: "text", value: node.value ?? "" }],
+        };
+        return;
+      }
+      node.children?.forEach(visit);
+    };
+    visit(tree);
+  };
+}
 
 const VIRTUAL_POSTS_ID = "virtual:posts-manifest";
 const RESOLVED_VIRTUAL_POSTS_ID = `\0${VIRTUAL_POSTS_ID}`;
@@ -407,7 +442,10 @@ export default defineConfig({
         };
       },
     },
-    mdx(),
+    mdx({
+      remarkPlugins: [remarkGfm, remarkMath, remarkDoubleDollarDisplayMath],
+      rehypePlugins: [rehypeKatex],
+    }),
     react(),
     {
       name: "virtual-posts-manifest",

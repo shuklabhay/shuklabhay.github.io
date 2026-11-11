@@ -617,6 +617,43 @@ code {
   text-decoration-color: var(--ink);
 }
 
+.post-content table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 12px 0 24px;
+  border-collapse: collapse;
+}
+
+.post-content th,
+.post-content td {
+  padding: 6px 12px 6px 0;
+  border-bottom: 1px solid rgba(17, 17, 17, 0.12);
+  text-align: left;
+  vertical-align: baseline;
+}
+
+.post-content th {
+  font-weight: 600;
+}
+
+.post-content .katex {
+  font-size: 1.1em;
+}
+
+.post-content .katex-display {
+  margin: 12px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.post-content .post-meta-line {
+  margin: 0 0 6px;
+  color: var(--ink-muted);
+  font-size: var(--small-text);
+  line-height: var(--small-lh);
+}
+
 .post-content > img {
   margin-bottom: 6px;
 }
