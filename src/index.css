@@ -10,7 +10,6 @@
   --ink-track: color-mix(in srgb, var(--ink) 30%, transparent);
   --ink-selection: color-mix(in srgb, var(--ink) 14%, transparent);
   --ink-rule: color-mix(in srgb, var(--ink) 12%, transparent);
-  --ink-shadow: color-mix(in srgb, var(--ink) 8%, transparent);
   --ink-wash: color-mix(in srgb, var(--ink) 5%, transparent);
   --sky-edge: #807eaf;
   --home-background-image: url("/static/landing-1280.webp");
@@ -666,7 +665,6 @@ code {
   height: auto;
   border: 1px solid var(--ink-rule);
   margin: 24px 0;
-  box-shadow: 0 12px 24px var(--ink-shadow);
   cursor: zoom-in;
   user-select: none;
   -webkit-user-select: none;
@@ -747,7 +745,6 @@ code {
 .post-content blockquote img {
   margin: 0 0 12px;
   max-width: 100%;
-  box-shadow: none;
 }
 
 .post-toc {
