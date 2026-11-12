@@ -663,7 +663,6 @@ code {
   display: block;
   max-width: 100%;
   height: auto;
-  border: 1px solid var(--ink-rule);
   margin: 24px 0;
   cursor: zoom-in;
   user-select: none;
