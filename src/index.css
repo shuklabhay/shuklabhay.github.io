@@ -30,7 +30,7 @@
   --strip-height: 36px;
   --content-gutter: round(clamp(24px, 4vw, 60px), 12px);
   --reading-width: 672px;
-  --optical-shift: 24px;
+  --optical-shift: 36px;
   --column-left: max(
     var(--content-gutter),
     calc((100vw - var(--reading-width)) / 2 + var(--optical-shift))
