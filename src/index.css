@@ -81,6 +81,32 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink-track) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: var(--ink-track) padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--ink-muted);
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
 html:not(.route-home),
 html:not(.route-home) body {
   overscroll-behavior-y: none;
