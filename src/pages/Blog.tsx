@@ -1,6 +1,7 @@
 import PageTitle, { CheckboxSubtitleLink } from "../components/PageTitle";
 import { useEffect, useMemo, useState } from "react";
 import BlogPostCard from "../components/BlogPostCard";
+import ReadingTrack from "../components/ReadingTrack";
 import { allPosts } from "../posts";
 import { preloadImage } from "../utils/imagePreload";
 import type {
@@ -134,6 +135,7 @@ export default function Blog() {
 
   return (
     <main className="route-page-gallery">
+      <ReadingTrack />
       <PageTitle title="I write" />
       <CheckboxSubtitleLink
         activeIndexes={[sortField === "date" ? 0 : 1]}
