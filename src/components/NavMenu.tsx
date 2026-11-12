@@ -29,8 +29,6 @@ export default function NavMenu(): JSX.Element {
         const isActive =
           isCurrentPage || (path === "/gallery" && isBlogPostPath(pathname));
         const spot = path === "/gallery" ? gallerySpot : null;
-        const needsDoubleClick =
-          path === "/gallery" && isBlogPostPath(pathname);
         return (
           <TransitionLink
             key={label}
@@ -47,13 +45,6 @@ export default function NavMenu(): JSX.Element {
               isCurrentPage ? "page" : isActive ? "location" : undefined
             }
             className={`side-nav-link${isActive ? " is-active" : ""}`}
-            onClick={
-              needsDoubleClick
-                ? (event) => {
-                    if (event.detail === 1) event.preventDefault();
-                  }
-                : undefined
-            }
           >
             <span className="side-nav-label" data-label={label}>
               {label}
