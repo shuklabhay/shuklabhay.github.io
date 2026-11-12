@@ -79,7 +79,7 @@ function fitContentsToViewport(tocEl: HTMLElement, animate: boolean): void {
 
   const columnEl = document.querySelector<HTMLElement>(".post-column");
   const room =
-    (window.innerWidth - (columnEl?.offsetWidth ?? 0)) / 2 - CONTENTS_GUTTER_PX;
+    (columnEl?.getBoundingClientRect().left ?? 0) - CONTENTS_GUTTER_PX;
   const isTooNarrow = room < CONTENTS_MIN_LIST_WIDTH_PX;
   tocEl.classList.toggle("is-too-narrow", isTooNarrow);
   if (isTooNarrow) {

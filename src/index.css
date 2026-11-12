@@ -30,9 +30,10 @@
   --strip-height: 36px;
   --content-gutter: round(clamp(24px, 4vw, 60px), 12px);
   --reading-width: 672px;
+  --optical-shift: 36px;
   --column-left: max(
     var(--content-gutter),
-    calc((100vw - var(--reading-width)) / 2)
+    calc((100vw - var(--reading-width)) / 2 + var(--optical-shift))
   );
   --gutter-top: calc(var(--strip-height) + 12px);
   --toc-width: calc(var(--column-left) - 36px - var(--page-x-padding));
@@ -221,6 +222,8 @@ html.route-home .route-sky {
 }
 
 .app-shell > main {
+  position: relative;
+  left: var(--optical-shift);
   max-width: var(--reading-width);
   margin-inline: auto;
   padding-bottom: var(--page-bottom);
@@ -885,6 +888,7 @@ code {
     --small-text: 0.75rem;
     --heading-text: 1.0625rem;
     --lh: 22px;
+    --optical-shift: 0px;
   }
 
   html.route-home {
