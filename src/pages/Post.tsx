@@ -7,7 +7,6 @@ import {
   useState,
 } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
-import { createPortal } from "react-dom";
 import { useParams } from "react-router-dom";
 import BlogPost from "../components/BlogPost";
 import ImageLightbox from "../components/ImageLightbox";
@@ -19,6 +18,12 @@ import {
   loadPostBySlug,
   readPostBySlug,
 } from "../posts";
+import {
+  readHeadingElements,
+  readHeadingsFromElement,
+  seededPostHeadings,
+} from "../utils/postHeadings";
+import type { PostHeading } from "../utils/postHeadings";
 import { preloadImage } from "../utils/imagePreload";
 import { formatPostDate } from "../utils/formatPostDate";
 import type { PostEntry, RichImage } from "../utils/types";
@@ -33,8 +38,6 @@ const HEADING_JUMP_WATCH_INTERVAL_MS = 150;
 const HEADING_JUMP_WATCH_TIMEOUT_MS = 8000;
 const HEADING_JUMP_SETTLED_TICKS = 4;
 const CONTENTS_BOTTOM_MARGIN_PX = 16;
-const CONTENTS_MIN_LIST_WIDTH_PX = 190;
-const CONTENTS_GUTTER_PX = 48;
 const HEADING_JUMP_SCROLL_MS = 180;
 
 function scrollLinearlyTo(top: number): () => void {
@@ -48,11 +51,6 @@ function scrollLinearlyTo(top: number): () => void {
   return () => window.cancelAnimationFrame(frameId);
 }
 
-type PostHeading = {
-  id: string;
-  text: string;
-  level: number;
-};
 type MeasuredPostHeading = {
   id: string;
   top: number;
@@ -77,16 +75,6 @@ function fitContentsToViewport(tocEl: HTMLElement, animate: boolean): void {
   const rowEls = Array.from(tocEl.querySelectorAll("li"));
   tocEl.classList.toggle("is-animating", animate);
   if (rowEls.length === 0 || tocEl.getClientRects().length === 0) return;
-
-  const columnEl = document.querySelector<HTMLElement>(".post-column");
-  const room =
-    (columnEl?.getBoundingClientRect().left ?? 0) - CONTENTS_GUTTER_PX;
-  const isTooNarrow = room < CONTENTS_MIN_LIST_WIDTH_PX;
-  tocEl.classList.toggle("is-too-narrow", isTooNarrow);
-  if (isTooNarrow) {
-    rowEls.forEach((rowEl) => rowEl.classList.remove("is-fit-hidden"));
-    return;
-  }
 
   const available =
     window.innerHeight -
@@ -208,7 +196,9 @@ export default function Post({
   const [lightboxOpened, setLightboxOpened] = useState(false);
   const [postImages, setPostImages] = useState<RichImage[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState(0);
-  const [postHeadings, setPostHeadings] = useState<PostHeading[]>([]);
+  const [postHeadings, setPostHeadings] = useState<PostHeading[]>(() =>
+    seededPostHeadings(slug),
+  );
   const [activeHeadingId, setActiveHeadingId] = useState<string | null>(null);
   const headingElementByIdRef = useRef<Map<string, HTMLElement>>(new Map());
   const measuredPostHeadingsRef = useRef<MeasuredPostHeading[]>([]);
@@ -228,7 +218,6 @@ export default function Post({
     postEntryState?.slug === slug
       ? postEntryState.entry
       : ((postSummary ? readPostBySlug(slug) : undefined) ?? null);
-  const [contentsSlot, setContentsSlot] = useState<HTMLElement | null>(null);
   const pendingHeadingJumpIdRef = useRef<string | null>(null);
   const pendingHeadingTargetScrollTopRef = useRef<number | null>(null);
   const pendingHeadingJumpReleaseTimeoutIdRef = useRef<number | null>(null);
@@ -318,7 +307,7 @@ export default function Post({
     };
   }, [postSummary, slug]);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!postEntry) {
       clearPendingHeadingJump();
       headingElementByIdRef.current = new Map();
@@ -372,43 +361,17 @@ export default function Post({
     };
     contentEl.addEventListener("keydown", onImageKeyDown);
 
-    const headingElements = Array.from(
-      contentEl.querySelectorAll("h2, h3, h4"),
-    ) as HTMLHeadingElement[];
-    const headingSlugCount = new Map<string, number>();
+    const headingElements = readHeadingElements(contentEl);
+    const headings = readHeadingsFromElement(contentEl);
     const headingElementById = new Map<string, HTMLElement>();
-    const headings: PostHeading[] = headingElements
-      .map((headingEl) => {
-        const text = headingEl.textContent?.trim() ?? "";
-        if (!text) return null;
-
-        const level = Number(headingEl.tagName.slice(1));
-        if (!Number.isFinite(level)) return null;
-
-        if (!headingEl.id) {
-          const baseSlug = text
-            .toLowerCase()
-            .replace(/[^a-z0-9\s-]/g, "")
-            .trim()
-            .replace(/\s+/g, "-")
-            .replace(/-+/g, "-");
-          const normalizedBase = baseSlug || "section";
-          const occurrence = headingSlugCount.get(normalizedBase) ?? 0;
-          headingSlugCount.set(normalizedBase, occurrence + 1);
-          headingEl.id =
-            occurrence > 0
-              ? `${normalizedBase}-${occurrence + 1}`
-              : normalizedBase;
-        }
-        headingElementById.set(headingEl.id, headingEl);
-
-        return {
-          id: headingEl.id,
-          text,
-          level,
-        };
-      })
-      .filter((heading): heading is PostHeading => heading !== null);
+    headingElements
+      .filter((headingEl) => (headingEl.textContent?.trim() ?? "") !== "")
+      .forEach((headingEl, index) => {
+        const heading = headings[index];
+        if (!heading) return;
+        if (!headingEl.id) headingEl.id = heading.id;
+        headingElementById.set(heading.id, headingEl);
+      });
 
     headingElementByIdRef.current = headingElementById;
     measuredPostHeadingsRef.current = measurePostHeadings(
@@ -533,10 +496,6 @@ export default function Post({
     };
   }, [clearPendingHeadingJump]);
 
-  useEffect(() => {
-    setContentsSlot(document.getElementById("side-nav-contents"));
-  }, []);
-
   useIsomorphicLayoutEffect(() => {
     const fitContents = (animate: boolean): void => {
       const tocEl = document.querySelector<HTMLElement>(".post-toc");
@@ -550,7 +509,7 @@ export default function Post({
     return () => {
       window.removeEventListener("resize", onResize);
     };
-  }, [activeHeadingId, contentsSlot, postHeadings]);
+  }, [activeHeadingId, postHeadings]);
 
   useIsomorphicLayoutEffect(() => {
     const listEl = document.querySelector<HTMLElement>(".post-toc-list");
@@ -562,7 +521,7 @@ export default function Post({
       ? activeRowEl.offsetTop + activeRowEl.offsetHeight
       : 0;
     listEl.style.setProperty("--toc-fill", `${fill}px`);
-  }, [activeHeadingId, contentsSlot, postHeadings]);
+  }, [activeHeadingId, postHeadings]);
 
   useEffect(() => {
     if (!postSummary) return;
@@ -740,9 +699,7 @@ export default function Post({
 
   return (
     <>
-      {contentsSlot && postSidebar
-        ? createPortal(postSidebar, contentsSlot)
-        : null}
+      {postSidebar}
       <BlogPost
         key={slug}
         header={<PostBackLink />}

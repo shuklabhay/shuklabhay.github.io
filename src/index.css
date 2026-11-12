@@ -759,8 +759,10 @@ code {
   color: var(--ink);
 }
 
-.post-toc.is-too-narrow {
-  visibility: hidden;
+@media (width < 1076px) {
+  .post-toc {
+    display: none;
+  }
 }
 
 .post-toc-list {
@@ -890,7 +892,6 @@ code {
     background-position: var(--home-mobile-focal-x) center;
   }
 
-  #side-nav-contents,
   .reading-track,
   .post-header-row,
   .gallery-row-date {

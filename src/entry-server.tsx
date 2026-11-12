@@ -3,6 +3,7 @@ import { StaticRouter } from "react-router-dom/server.js";
 import { AppShell, getRouteDocumentTitle } from "./App";
 import { allPosts, registerPostModules } from "./posts";
 import type { PostModule } from "./utils/types";
+import { readHeadingsFromHtml, seedPostHeadings } from "./utils/postHeadings";
 
 registerPostModules(
   import.meta.glob<PostModule>("./posts/*/index.mdx", { eager: true }),
@@ -70,7 +71,7 @@ export function getPrerenderRoutes(): PrerenderRoute[] {
   ];
 }
 
-export async function renderRoute(pathname: string): Promise<string> {
+async function renderOnce(pathname: string): Promise<string> {
   const stream = (await renderToReadableStream(
     <StaticRouter location={pathname}>
       <AppShell />
@@ -79,4 +80,12 @@ export async function renderRoute(pathname: string): Promise<string> {
 
   await stream.allReady;
   return new Response(stream).text();
+}
+
+export async function renderRoute(pathname: string): Promise<string> {
+  const html = await renderOnce(pathname);
+  const postSlug = pathname.match(/^\/gallery\/([^/]+)$/)?.[1];
+  if (!postSlug) return html;
+  seedPostHeadings(decodeURIComponent(postSlug), readHeadingsFromHtml(html));
+  return renderOnce(pathname);
 }
