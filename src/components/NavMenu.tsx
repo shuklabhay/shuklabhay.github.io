@@ -61,7 +61,6 @@ export default function NavMenu(): JSX.Element {
           </TransitionLink>
         );
       })}
-      <div id="side-nav-contents" />
     </nav>
   );
 }

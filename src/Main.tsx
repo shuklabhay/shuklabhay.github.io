@@ -2,6 +2,10 @@ import React from "react";
 import { createRoot, hydrateRoot } from "react-dom/client";
 import App from "./App.tsx";
 import { loadPostBySlug } from "./posts";
+import {
+  readHeadingsFromElement,
+  seedPostHeadings,
+} from "./utils/postHeadings";
 import "katex/dist/katex.min.css";
 import "katex/dist/contrib/copy-tex.mjs";
 import "./index.css";
@@ -14,12 +18,20 @@ const app = (
 );
 
 const currentPath = window.location.pathname.replace(/\/+$/, "") || "/";
+const postSlugMatch = currentPath.match(/^\/gallery\/([^/]+)$/);
+const postSlug = postSlugMatch
+  ? decodeURIComponent(postSlugMatch[1] ?? "")
+  : null;
 
 function renderApp(): void {
   if (
     rootElement.hasChildNodes() &&
     rootElement.dataset.prerenderedPath === currentPath
   ) {
+    const contentEl = rootElement.querySelector(".post-content");
+    if (postSlug && contentEl) {
+      seedPostHeadings(postSlug, readHeadingsFromElement(contentEl));
+    }
     hydrateRoot(rootElement, app);
     window.setTimeout(() => {
       delete rootElement.dataset.prerendered;
@@ -30,11 +42,8 @@ function renderApp(): void {
   }
 }
 
-const postSlugMatch = currentPath.match(/^\/gallery\/([^/]+)$/);
-if (postSlugMatch) {
-  void loadPostBySlug(decodeURIComponent(postSlugMatch[1] ?? "")).finally(
-    renderApp,
-  );
+if (postSlug) {
+  void loadPostBySlug(postSlug).finally(renderApp);
 } else {
   renderApp();
 }
