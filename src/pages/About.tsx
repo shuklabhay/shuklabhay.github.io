@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import TransitionLink from "../components/TransitionLink";
 import PageTitle from "../components/PageTitle";
+import ReadingTrack from "../components/ReadingTrack";
 import { contactData, getContactLink } from "../utils/contactData";
 
 export default function About(): JSX.Element {
@@ -24,6 +25,7 @@ export default function About(): JSX.Element {
 
   return (
     <main className="about-page route-page-about">
+      <ReadingTrack />
       <PageTitle
         title="Hi, I'm Abhay"
         subtitle={

@@ -82,29 +82,11 @@ body {
 }
 
 html {
-  scrollbar-width: thin;
-  scrollbar-color: var(--ink-track) transparent;
+  scrollbar-width: none;
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  border: 3px solid transparent;
-  border-radius: 999px;
-  background: var(--ink-track) padding-box;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: var(--ink-muted);
-}
-
-::-webkit-scrollbar-track,
-::-webkit-scrollbar-corner {
-  background: transparent;
+  display: none;
 }
 
 html:not(.route-home),
@@ -255,22 +237,6 @@ html.route-home .route-sky {
   padding-bottom: var(--page-bottom);
 }
 
-.route-page-about {
-  view-transition-name: page-about;
-}
-
-.route-page-gallery {
-  view-transition-name: page-gallery;
-}
-
-.route-page-post {
-  view-transition-name: page-post;
-}
-
-.route-page-missing {
-  view-transition-name: page-missing;
-}
-
 .page-heading {
   margin: 0;
   color: var(--ink);
@@ -412,9 +378,12 @@ body.route-home #root {
   view-transition-name: site-nav;
 }
 
-.post-toc,
-.reading-track {
+.post-toc {
   view-transition-name: post-toc;
+}
+
+.reading-track {
+  view-transition-name: reading-track;
 }
 
 ::view-transition-group(site-nav),
@@ -922,6 +891,7 @@ code {
   }
 
   #side-nav-contents,
+  .reading-track,
   .post-header-row,
   .gallery-row-date {
     display: none;

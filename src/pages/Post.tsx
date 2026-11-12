@@ -12,6 +12,7 @@ import { useParams } from "react-router-dom";
 import BlogPost from "../components/BlogPost";
 import ImageLightbox from "../components/ImageLightbox";
 import PostBackLink from "../components/PostBackLink";
+import ReadingTrack from "../components/ReadingTrack";
 import {
   getLoadedPostBySlug,
   getPostBySlug,
@@ -564,35 +565,6 @@ export default function Post({
   }, [activeHeadingId, contentsSlot, postHeadings]);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      const trackEl = document.querySelector<HTMLElement>(".reading-track");
-      if (!trackEl) return;
-      const maxScroll =
-        document.documentElement.scrollHeight - window.innerHeight;
-      const progress =
-        maxScroll > 0
-          ? Math.min(1, Math.max(0, window.scrollY / maxScroll))
-          : 0;
-      trackEl.style.setProperty("--read", `${progress * 100}%`);
-    };
-    const onScroll = () => {
-      if (frame) return;
-      frame = window.requestAnimationFrame(update);
-    };
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, [contentsSlot, slug]);
-
-  useEffect(() => {
     if (!postSummary) return;
     if (!heroImage) return;
     void preloadImage(heroImage);
@@ -763,7 +735,7 @@ export default function Post({
         </ul>
       </nav>
     ) : (
-      <div className="reading-track" aria-hidden />
+      <ReadingTrack />
     );
 
   return (
