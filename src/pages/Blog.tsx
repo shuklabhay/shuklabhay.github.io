@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import BlogPostCard from "../components/BlogPostCard";
 import { allPosts } from "../posts";
 import { preloadImage } from "../utils/imagePreload";
+import { warmMathFonts } from "../utils/mathFonts";
 import type {
   BlogSortDirection,
   BlogSortField,
@@ -54,6 +55,10 @@ export default function Blog() {
   );
   const [hasLoadedSortState, setHasLoadedSortState] = useState(false);
   const { sortField, dateDirection, alphaDirection } = sortState;
+
+  useEffect(() => {
+    warmMathFonts();
+  }, []);
 
   useEffect(() => {
     setSortState(readBlogSortStateFromStorage());
