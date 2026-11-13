@@ -25,6 +25,71 @@ const PROJECT_ROOT = path.resolve(
 );
 const DIST_DIR = path.join(PROJECT_ROOT, "dist");
 const DIST_SSR_DIR = path.join(PROJECT_ROOT, "dist-ssr");
+const DIST_ASSETS_DIR = path.join(DIST_DIR, "assets");
+
+const KATEX_FONTS_BY_CLASS: Record<string, string[]> = {
+  katex: ["Main-Regular"],
+  mathnormal: ["Math-Italic"],
+  mathit: ["Main-Italic"],
+  mathbf: ["Main-Bold"],
+  textbf: ["Main-Bold"],
+  boldsymbol: ["Math-BoldItalic"],
+  amsrm: ["AMS-Regular"],
+  mathbb: ["AMS-Regular"],
+  textbb: ["AMS-Regular"],
+  mathcal: ["Caligraphic-Regular"],
+  mathfrak: ["Fraktur-Regular"],
+  textfrak: ["Fraktur-Regular"],
+  mathscr: ["Script-Regular"],
+  textscr: ["Script-Regular"],
+  mathsf: ["SansSerif-Regular"],
+  textsf: ["SansSerif-Regular"],
+  mathtt: ["Typewriter-Regular"],
+  texttt: ["Typewriter-Regular"],
+  "small-op": ["Size1-Regular"],
+  "large-op": ["Size2-Regular"],
+};
+
+const KATEX_DELIMITER_FONTS: Record<string, string> = {
+  size1: "Size1-Regular",
+  size2: "Size2-Regular",
+  size3: "Size3-Regular",
+  size4: "Size4-Regular",
+};
+
+function usedKatexFonts(appHtml: string): Set<string> {
+  const fonts = new Set<string>();
+  for (const match of appHtml.matchAll(/\sclass="([^"]*)"/g)) {
+    const classes = match[1].split(/\s+/);
+    for (const className of classes) {
+      for (const font of KATEX_FONTS_BY_CLASS[className] ?? []) {
+        fonts.add(font);
+      }
+    }
+    if (classes.includes("delimsizing")) {
+      for (const className of classes) {
+        const font = KATEX_DELIMITER_FONTS[className];
+        if (font) fonts.add(font);
+      }
+    }
+  }
+  return fonts;
+}
+
+function katexFontPreloads(appHtml: string, assetFiles: string[]): string {
+  return [...usedKatexFonts(appHtml)]
+    .map((font) =>
+      assetFiles.find(
+        (file) => file.startsWith(`KaTeX_${font}-`) && file.endsWith(".woff2"),
+      ),
+    )
+    .filter((file): file is string => Boolean(file))
+    .map(
+      (file) =>
+        `    <link rel="preload" href="/assets/${file}" as="font" type="font/woff2" crossorigin />\n`,
+    )
+    .join("");
+}
 
 function escapeHtmlAttribute(value: string): string {
   return value
@@ -77,6 +142,7 @@ function createPrerenderedHtml(
   appShellHtml: string,
   route: PrerenderRoute,
   appHtml: string,
+  assetFiles: string[],
 ): string {
   const canonicalUrl = `${SITE_ORIGIN}${route.canonicalPath}`;
   const socialImageUrl = `${SITE_ORIGIN}${DEFAULT_SOCIAL_IMAGE_PATH}`;
@@ -173,6 +239,11 @@ function createPrerenderedHtml(
     "root element",
   );
 
+  const fontPreloads = katexFontPreloads(appHtml, assetFiles);
+  if (fontPreloads) {
+    html = html.replace("</head>", `${fontPreloads}  </head>`);
+  }
+
   if (isHomeVisualRoute) {
     html = addClassToTag(html, "html", "route-home");
     html = addClassToTag(html, "body", "route-home");
@@ -256,6 +327,7 @@ async function main(): Promise<void> {
     pathToFileURL(serverEntryPath).href
   )) as ServerEntry;
   const routes = getPrerenderRoutes();
+  const assetFiles = await fs.readdir(DIST_ASSETS_DIR);
 
   for (const route of routes) {
     const appHtml = await renderRoute(route.path);
@@ -263,7 +335,7 @@ async function main(): Promise<void> {
     await fs.mkdir(path.dirname(outputPath), { recursive: true });
     await fs.writeFile(
       outputPath,
-      createPrerenderedHtml(appShellHtml, route, appHtml),
+      createPrerenderedHtml(appShellHtml, route, appHtml, assetFiles),
     );
   }
 
