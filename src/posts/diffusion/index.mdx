@@ -146,7 +146,7 @@ Many of SD3's authors went on to found Black Forest Labs, whose FLUX models most
 
 <MetaLine date="08-25" tags={["SCALE", "CONDITIONING"]} />
 
-Qwen-Image scales SD3's recipe to ~20B parameters and trains on more text-image pairs with heavier curation. It also takes advantage of Alibaba's ecosystem, encoding prompts with a frozen [Qwen2.5-VL](https://arxiv.org/abs/2502.13923) (a stronger encoder w/ aligned text-image representations; also lets prompts include images) and compressing images with Wan 2.1's autoencoder. Notably, Qwen-Image adds MSRoPE (better multimodal positional encodings) and further borrows from the LLM playbook with SFT + [GRPO](https://arxiv.org/abs/2402.03300) post-training.
+Qwen-Image scales SD3's recipe to ~20B parameters and trains on more text-image pairs with heavier curation. It also takes advantage of Alibaba's ecosystem, encoding prompts with a frozen Qwen2.5-VL (a stronger encoder w/ aligned text-image representations; also lets prompts include images) and compressing images with Wan 2.1's autoencoder. Notably, Qwen-Image adds MSRoPE (better multimodal positional encodings) and further borrows from the LLM playbook with SFT + GRPO post-training.
 
 One of Qwen-Image's main goals is to render _all_ kinds of text well. Along with finetuning the autoencoder on text reconstruction, it trains on lots of programmatically rendered text (paragraphs on clean backgrounds, text composited into real scenes, small text on slides and UI templates, etc) and follows a curriculum from small to large images and from no text to text in natural images to full paragraphs. It's also good at rendering Chinese (non-Latin script with thousands of characters), which is insanely cool!! They also finetune Qwen-Image into Qwen-Image-Edit, which produces a final edited image from a source image and edit instruction. Qwen-Image-Edit is immensely popular, and has thousands of finetunes (relighting, camera-angle changes, style transfer, object removal, virtual try-on, etc).
 
@@ -154,9 +154,9 @@ One of Qwen-Image's main goals is to render _all_ kinds of text well. Along with
 
 <MetaLine date="02-26" tags={["SCALE"]} />
 
-Qwen-Image is a really good model, but its capabilities are scattered across checkpoints (generate, edit, multi-image, layers, etc). Qwen-Image 2.0 is an RF MMDiT with a stronger, lopsided $r=16$, $c=64$ autoencoder (79M-parameter encoder, 259M decoder) and a [Qwen3-VL](https://arxiv.org/abs/2511.21631) text encoder. It builds on the Qwen-Image-Edit recipe (input images go through the VLM and in as VAE latents), but trains on both editing and generation, across many more editing task types, throughout pretraining and post-training.
+Qwen-Image is a really good model, but its capabilities are scattered across checkpoints (generate, edit, multi-image, layers, etc). Qwen-Image 2.0 is an RF MMDiT with a stronger, lopsided $r=16$, $c=64$ autoencoder (79M-parameter encoder, 259M decoder) and a Qwen3-VL text encoder. It builds on the Qwen-Image-Edit recipe (input images go through the VLM and in as VAE latents), but trains on both editing and generation, across many more editing task types, throughout pretraining and post-training.
 
-Qwen-Image 2.0 is [post-trained](https://arxiv.org/abs/2606.27608) with SFT then GRPO against five reward models (aesthetics, alignment, portraits, instruction following, edit consistency). They also train a Qwen3.5-9B prompt enhancer based on the images it leads to (GRPO), and build a data flywheel to route user feedback from [qwen.ai](https://qwen.ai) to RL, pretraining, post-training, or the prompt enhancer.
+Qwen-Image 2.0 is post-trained with SFT then GRPO against five reward models (aesthetics, alignment, portraits, instruction following, edit consistency). They also train a Qwen3.5-9B prompt enhancer based on the images it leads to (GRPO), and build a data flywheel to route user feedback from [qwen.ai](https://qwen.ai) to RL, pretraining, post-training, or the prompt enhancer.
 
 ## Closing notes
 
