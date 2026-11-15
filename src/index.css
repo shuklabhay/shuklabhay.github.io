@@ -868,7 +868,8 @@ code {
   height: var(--read, 0%);
 }
 
-.safari-tint {
+.safari-tint,
+.top-fade {
   display: none;
 }
 
@@ -933,8 +934,7 @@ code {
     transition: transform var(--motion-layout) linear;
   }
 
-  .route-sky::before,
-  .app-shell-home::before {
+  .route-sky::before {
     content: "";
     position: absolute;
     top: 0;
@@ -945,8 +945,16 @@ code {
     pointer-events: none;
   }
 
-  html.mobile-header-hidden .safari-tint {
-    transform: translateY(-100%);
+  .top-fade {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 8;
+    height: 36px;
+    background: linear-gradient(var(--sky-edge), transparent);
+    pointer-events: none;
   }
 
   html.mobile-header-hidden:not(.route-home) .route-sky {
