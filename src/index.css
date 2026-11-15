@@ -868,10 +868,6 @@ code {
   height: var(--read, 0%);
 }
 
-.safari-tint {
-  display: none;
-}
-
 @media (width <= 860px) {
   :root {
     --browser-bottom-clearance: 72px;
@@ -911,6 +907,7 @@ code {
   }
 
   .route-sky {
+    background-color: transparent;
     background-attachment: scroll;
     background-position: var(--home-mobile-focal-x) center;
     transition: transform var(--motion-layout) linear;
@@ -918,35 +915,6 @@ code {
 
   .side-nav {
     transition: transform var(--motion-layout) linear;
-  }
-
-  .safari-tint {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 11;
-    height: 6px;
-    background-color: var(--sky-edge);
-    pointer-events: none;
-    transition: transform var(--motion-layout) linear;
-  }
-
-  .route-sky::before,
-  .app-shell-home::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 24px;
-    background: linear-gradient(var(--sky-edge), transparent);
-    pointer-events: none;
-  }
-
-  html.mobile-header-hidden .safari-tint {
-    transform: translateY(-100%);
   }
 
   html.mobile-header-hidden:not(.route-home) .route-sky {
