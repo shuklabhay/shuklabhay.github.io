@@ -98,7 +98,7 @@ DPM-Solver captures the same extra term by assuming $\varepsilon_\theta$ changes
 
 EDM also 1. samples training $\sigma$s from a log-normal distribution, focusing $\varepsilon_\theta$'s training on mid-level $\sigma$s where it actually commits features, 2. introduces a noise schedule parametrized by $\rho$, which controls how strongly steps bunch at low $\sigma$s ($\rho=1$: evenly spaced in $\sigma$; $\rho\to\infty$: evenly spaced in $\log\sigma$), and 3. adds preconditioning, which uses $\sigma$-dependent scalings and a skip connection around $\varepsilon_\theta$ to keep its inputs and outputs similarly scaled at any $\sigma$.
 
-## Stable Diffusion
+## [Stable Diffusion](https://github.com/CompVis/stable-diffusion)
 
 <MetaLine date="08-22" tags={["SCALE", "CONDITIONING"]} />
 
