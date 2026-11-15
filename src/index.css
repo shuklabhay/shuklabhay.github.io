@@ -912,8 +912,8 @@ code {
   }
 
   .route-sky {
-    background-attachment: scroll;
-    background-position: var(--home-mobile-focal-x) center;
+    overflow: hidden;
+    background-image: none;
     transition: transform var(--motion-layout) linear;
   }
 
@@ -940,8 +940,12 @@ code {
     top: 0;
     left: 0;
     right: 0;
-    height: 24px;
-    background: linear-gradient(var(--sky-edge), transparent);
+    height: 100vh;
+    height: 100lvh;
+    background-image: var(--home-background-image);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: var(--home-mobile-focal-x) center;
     pointer-events: none;
   }
 
@@ -951,13 +955,15 @@ code {
     top: 0;
     left: 0;
     right: 0;
-    z-index: 8;
+    z-index: 9;
     height: 36px;
     background: linear-gradient(var(--sky-edge), transparent);
     pointer-events: none;
+    transition: transform var(--motion-layout) linear;
   }
 
-  html.mobile-header-hidden:not(.route-home) .route-sky {
+  html.mobile-header-hidden:not(.route-home) .route-sky,
+  html.mobile-header-hidden:not(.route-home) .top-fade {
     transform: translateY(-100%);
   }
 

@@ -336,8 +336,8 @@ export function AppShell(): JSX.Element {
     <>
       <RouteBackground />
       <div className="safari-tint" aria-hidden />
-      <div className="top-fade" aria-hidden />
       <div className="route-sky" aria-hidden />
+      <div className="top-fade" aria-hidden />
       <NavMenu />
       <div className={isHome ? "app-shell app-shell-home" : "app-shell"}>
         <Routes location={location}>
