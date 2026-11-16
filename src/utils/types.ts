@@ -100,6 +100,7 @@ export type BlogPostProps = {
   byline?: string;
   buttons: PostButton[];
   heroImage?: string;
+  onHeroClick?: () => void;
   contentRef: RefObject<HTMLElement>;
   onContentClick?: MouseEventHandler<HTMLElement>;
   header?: ReactNode;

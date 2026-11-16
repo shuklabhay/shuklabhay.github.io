@@ -274,6 +274,10 @@ function createPrerenderedHtml(
     html = addClassToTag(html, "body", "route-home");
   }
 
+  if (route.canonicalPath.startsWith("/gallery/")) {
+    html = addClassToTag(html, "html", "route-post");
+  }
+
   return html;
 }
 
