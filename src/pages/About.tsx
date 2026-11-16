@@ -27,6 +27,7 @@ export default function About(): JSX.Element {
         title="Hi, I'm Abhay"
         subtitle={
           <div className="about-subtitle">
+            <p>I want to become (at least rudimentarily) good at everything!</p>
             <p className="about-list-intro">I've previously:</p>
             <ul>
               <li>
@@ -81,6 +82,15 @@ export default function About(): JSX.Element {
                 >
                   Decompiled audio plugins
                 </a>
+                ,{" "}
+                <a
+                  href="https://www.youtube.com/@01shuklabhay"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="about-contact-link"
+                >
+                  produced music
+                </a>
                 , taught kids 2{" "}
                 <a
                   href="https://bayareastemacademy.org/"
@@ -98,9 +108,6 @@ export default function About(): JSX.Element {
               <li>Understanding things</li>
               <li>Noticing things</li>
             </ul>
-            <p>
-              I want to become (at least rudimentarily) good at everything:)
-            </p>
             <p id="contact" className="about-links about-section-start">
               <a href={email} className="about-contact-link">
                 Email
