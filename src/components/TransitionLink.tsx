@@ -5,10 +5,12 @@ import { navigateWithRouteTransition } from "../utils/routeTransitions";
 
 type TransitionLinkProps = Omit<LinkProps, "to" | "viewTransition"> & {
   to: string;
+  prepare?: () => Promise<unknown>;
 };
 
 export default function TransitionLink({
   to,
+  prepare,
   state,
   replace,
   onClick,
@@ -26,10 +28,15 @@ export default function TransitionLink({
 
     event.preventDefault();
     if (location.pathname === to) return;
-    navigateWithRouteTransition(navigate, to, {
-      state,
-      replace,
-    });
+    navigateWithRouteTransition(
+      navigate,
+      to,
+      {
+        state,
+        replace,
+      },
+      prepare,
+    );
   };
 
   return (
