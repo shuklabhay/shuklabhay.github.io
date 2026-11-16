@@ -97,8 +97,10 @@ export default function About(): JSX.Element {
               <li>Making &amp; breaking things</li>
               <li>Understanding things</li>
               <li>Noticing things</li>
-              <li>Thinking about things</li>
             </ul>
+            <p>
+              I want to become (at least rudimentarily) good at everything:)
+            </p>
             <p id="contact" className="about-links about-section-start">
               <a href={email} className="about-contact-link">
                 Email
