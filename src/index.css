@@ -269,7 +269,15 @@ html.route-home .route-sky {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  pointer-events: none;
+  display: block;
+  padding: 0;
+  border: 0;
+  cursor: zoom-in;
+}
+
+.post-hero:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
 }
 
 .post-title-block {
@@ -316,7 +324,7 @@ html.route-home .route-sky {
 }
 
 @media (width > 860px) {
-  .post-header-row {
+  html.route-post .post-header-row {
     position: fixed;
     top: var(--gutter-top);
     left: var(--page-x-padding);

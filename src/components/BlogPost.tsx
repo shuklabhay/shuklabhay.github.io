@@ -5,6 +5,7 @@ export default function BlogPost({
   byline,
   buttons,
   heroImage,
+  onHeroClick,
   contentRef,
   onContentClick,
   header,
@@ -15,10 +16,12 @@ export default function BlogPost({
       <div className="post-column">
         {header}
         {heroImage ? (
-          <div
+          <button
+            type="button"
             className="post-hero"
             style={{ backgroundImage: `url(${heroImage})` }}
-            aria-hidden
+            aria-label={`Open image: ${title}`}
+            onClick={onHeroClick}
           />
         ) : null}
         <div className="post-title-block">

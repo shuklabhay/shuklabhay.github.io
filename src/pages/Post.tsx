@@ -196,6 +196,9 @@ export default function Post({
   const [lightboxOpened, setLightboxOpened] = useState(false);
   const [postImages, setPostImages] = useState<RichImage[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [heroLightboxImage, setHeroLightboxImage] = useState<RichImage | null>(
+    null,
+  );
   const [postHeadings, setPostHeadings] = useState<PostHeading[]>(() =>
     seededPostHeadings(slug),
   );
@@ -524,9 +527,22 @@ export default function Post({
   }, [activeHeadingId, postHeadings]);
 
   useEffect(() => {
+    setHeroLightboxImage(null);
     if (!postSummary) return;
     if (!heroImage) return;
     void preloadImage(heroImage);
+    const img = new Image();
+    img.onload = () =>
+      setHeroLightboxImage({
+        src: heroImage,
+        alt: postSummary.title,
+        width: img.naturalWidth || 1,
+        height: img.naturalHeight || 1,
+      });
+    img.src = heroImage;
+    return () => {
+      img.onload = null;
+    };
   }, [heroImage, postSummary]);
 
   if (!postSummary) {
@@ -555,6 +571,10 @@ export default function Post({
     wordCountBylinePart,
   ].filter((part): part is string => Boolean(part));
 
+  const lightboxImages = heroLightboxImage
+    ? [heroLightboxImage, ...postImages]
+    : postImages;
+
   const onPostContentClick = (event: ReactMouseEvent<HTMLElement>) => {
     const target = event.target;
     if (!(target instanceof HTMLElement)) return;
@@ -571,7 +591,13 @@ export default function Post({
       return;
 
     event.preventDefault();
-    setLightboxIndex(index);
+    setLightboxIndex(heroLightboxImage ? index + 1 : index);
+    setLightboxOpened(true);
+  };
+
+  const onHeroClick = () => {
+    if (!heroLightboxImage) return;
+    setLightboxIndex(0);
     setLightboxOpened(true);
   };
 
@@ -707,16 +733,17 @@ export default function Post({
         byline={bylineParts.length ? bylineParts.join(" · ") : undefined}
         buttons={postSummary.buttons}
         heroImage={heroImage}
+        onHeroClick={onHeroClick}
         contentRef={postContentRef}
         onContentClick={onPostContentClick}
       >
         {Content ? <Content components={{ h1: () => null }} /> : null}
       </BlogPost>
-      {lightboxOpened && postImages.length > 0 ? (
+      {lightboxOpened && lightboxImages.length > 0 ? (
         <ImageLightbox
           opened={lightboxOpened}
           setOpened={setLightboxOpened}
-          images={postImages}
+          images={lightboxImages}
           currentIndex={lightboxIndex}
         />
       ) : null}
