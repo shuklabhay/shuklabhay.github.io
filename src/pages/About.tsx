@@ -104,9 +104,13 @@ export default function About(): JSX.Element {
             </ul>
             <p className="about-list-intro about-section-start">I like:</p>
             <ul>
-              <li>Making &amp; breaking things</li>
+              <li>Making things</li>
+              <li>Breaking things</li>
               <li>Understanding things</li>
-              <li>Noticing things</li>
+              <li>Aesthetics</li>
+              <li>Texture</li>
+              <li>Intensity</li>
+              <li>Balance</li>
             </ul>
             <p id="contact" className="about-links about-section-start">
               <a href={email} className="about-contact-link">
