@@ -109,6 +109,8 @@ type SocialPageMeta = {
   title: string;
   description: string;
   type: "article" | "website";
+  imagePath?: string;
+  imageAlt?: string;
 };
 
 function rewriteWikiEmbedsToMarkdown(source: string): string {
@@ -368,10 +370,12 @@ function replaceRequiredHtml(
 
 function createSocialHtml(meta: SocialPageMeta, appShellHtml: string): string {
   const canonicalUrl = `${SITE_ORIGIN}${meta.canonicalPath}`;
-  const socialImageUrl = `${SITE_ORIGIN}${DEFAULT_SOCIAL_IMAGE_PATH}`;
+  const socialImageUrl = `${SITE_ORIGIN}${meta.imagePath ?? DEFAULT_SOCIAL_IMAGE_PATH}`;
   const escapedTitle = escapeHtmlAttribute(meta.title);
   const escapedDescription = escapeHtmlAttribute(meta.description);
-  const escapedImageAlt = escapeHtmlAttribute(SOCIAL_IMAGE_ALT);
+  const escapedImageAlt = escapeHtmlAttribute(
+    meta.imageAlt ?? SOCIAL_IMAGE_ALT,
+  );
 
   let html = appShellHtml.replace(
     /\s*<link\s+rel="preload"\s+href="\/static\/landing-1280\.webp"[\s\S]*?\/>\n/,
@@ -591,6 +595,12 @@ export default defineConfig({
         for (const post of posts) {
           const distPostDir = path.join(distDir, "gallery", post.slug);
           fs.mkdirSync(distPostDir, { recursive: true });
+          if (post.coverFile) {
+            fs.copyFileSync(
+              path.join(post.sourcePostDir, post.coverFile),
+              path.join(distPostDir, post.coverFile),
+            );
+          }
           fs.writeFileSync(
             path.join(distPostDir, "index.html"),
             createSocialHtml(
@@ -599,6 +609,10 @@ export default defineConfig({
                 title: post.title,
                 description: post.description,
                 type: "article",
+                imagePath: post.coverFile
+                  ? `/gallery/${post.slug}/${post.coverFile}`
+                  : undefined,
+                imageAlt: post.coverFile ? post.title : undefined,
               },
               appShellHtml,
             ),

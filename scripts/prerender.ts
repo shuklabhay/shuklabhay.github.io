@@ -19,6 +19,12 @@ type ServerEntry = {
 const SITE_ORIGIN = "https://shuklabhay.github.io";
 const DEFAULT_SOCIAL_IMAGE_PATH = "/static/landing-1280.webp";
 const SOCIAL_IMAGE_ALT = "Abhay Shukla portfolio landing image";
+const POST_COVER_CANDIDATES = [
+  "banner.png",
+  "banner.jpg",
+  "banner.jpeg",
+  "banner.webp",
+];
 const PROJECT_ROOT = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
@@ -138,18 +144,37 @@ function addClassToTag(
   );
 }
 
+async function findPostCoverPath(
+  canonicalPath: string,
+): Promise<string | undefined> {
+  if (!canonicalPath.startsWith("/gallery/")) return undefined;
+  for (const fileName of POST_COVER_CANDIDATES) {
+    const coverPath = `${canonicalPath}/${fileName}`;
+    try {
+      await fs.access(path.join(DIST_DIR, coverPath));
+      return coverPath;
+    } catch {
+      continue;
+    }
+  }
+  return undefined;
+}
+
 function createPrerenderedHtml(
   appShellHtml: string,
   route: PrerenderRoute,
   appHtml: string,
   assetFiles: string[],
+  coverPath: string | undefined,
 ): string {
   const canonicalUrl = `${SITE_ORIGIN}${route.canonicalPath}`;
-  const socialImageUrl = `${SITE_ORIGIN}${DEFAULT_SOCIAL_IMAGE_PATH}`;
+  const socialImageUrl = `${SITE_ORIGIN}${coverPath ?? DEFAULT_SOCIAL_IMAGE_PATH}`;
   const escapedTitle = escapeHtmlAttribute(route.title);
   const escapedSocialTitle = escapeHtmlAttribute(route.socialTitle);
   const escapedDescription = escapeHtmlAttribute(route.description);
-  const escapedImageAlt = escapeHtmlAttribute(SOCIAL_IMAGE_ALT);
+  const escapedImageAlt = escapeHtmlAttribute(
+    coverPath ? route.socialTitle : SOCIAL_IMAGE_ALT,
+  );
   const isHomeVisualRoute = route.path === "/";
   let html = appShellHtml;
 
@@ -335,7 +360,13 @@ async function main(): Promise<void> {
     await fs.mkdir(path.dirname(outputPath), { recursive: true });
     await fs.writeFile(
       outputPath,
-      createPrerenderedHtml(appShellHtml, route, appHtml, assetFiles),
+      createPrerenderedHtml(
+        appShellHtml,
+        route,
+        appHtml,
+        assetFiles,
+        await findPostCoverPath(route.canonicalPath),
+      ),
     );
   }
 
