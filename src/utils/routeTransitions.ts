@@ -37,15 +37,41 @@ function runRouteTransition(update: () => void): void {
   runWithRootViewTransition(update);
 }
 
+const PREPARE_TIMEOUT_MS = 1500;
+
+function waitAtMost(promise: Promise<unknown>, ms: number): Promise<void> {
+  return new Promise((resolve) => {
+    const timeoutId = window.setTimeout(resolve, ms);
+    promise.then(
+      () => {
+        window.clearTimeout(timeoutId);
+        resolve();
+      },
+      () => {
+        window.clearTimeout(timeoutId);
+        resolve();
+      },
+    );
+  });
+}
+
 export function navigateWithRouteTransition(
   navigate: NavigateFunction,
   to: string,
   options?: NavigateOptions,
+  prepare?: () => Promise<unknown>,
 ): void {
-  rememberCurrentPlace();
-  runRouteTransition(() => {
-    flushSync(() => navigate(to, options));
-  });
+  const go = (): void => {
+    rememberCurrentPlace();
+    runRouteTransition(() => {
+      flushSync(() => navigate(to, options));
+    });
+  };
+  if (!prepare) {
+    go();
+    return;
+  }
+  void waitAtMost(prepare(), PREPARE_TIMEOUT_MS).then(go);
 }
 
 export function animateHistoryNavigations(): () => void {

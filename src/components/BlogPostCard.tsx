@@ -37,10 +37,17 @@ export default function BlogPostCard({ post }: BlogPostCardProps): JSX.Element {
     void loadPostBySlug(post.slug);
   };
 
+  const preparePost = (): Promise<unknown> =>
+    Promise.all([
+      post.cover ? preloadImage(post.cover) : undefined,
+      loadPostBySlug(post.slug),
+    ]);
+
   return (
     <TransitionLink
       to={postPath}
       state={{ fromPath: "/gallery" }}
+      prepare={preparePost}
       className="gallery-row"
       onMouseEnter={warmPostResources}
       onFocus={warmPostResources}
