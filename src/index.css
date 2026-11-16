@@ -1,7 +1,7 @@
 :root {
   color-scheme: only light;
   --home-mobile-focal-x: 70%;
-  --paper: #fbf9f4;
+  --paper: #fdfcfa;
   --paper-shade: #e9e4d8;
   --ink: #111111;
   --ink-muted: #6b6b6b;
@@ -416,11 +416,6 @@ textarea {
   background: var(--ink-selection);
 }
 
-code {
-  font-family:
-    source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
-}
-
 .page-filter-row {
   display: flex;
   flex-wrap: wrap;
@@ -640,10 +635,13 @@ code {
   padding-bottom: 0;
 }
 
-.post-content code {
+code {
   display: inline;
-  padding: 0;
+  font-family:
+    source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  padding: 0.05em 0.15em;
   border: 0;
+  border-radius: 3px;
   background: var(--ink-wash);
   color: var(--ink);
   font-size: 0.9em;
@@ -651,7 +649,9 @@ code {
   -webkit-box-decoration-break: clone;
 }
 
-.post-content pre code {
+pre code {
+  padding: 0;
+  border-radius: 0;
   background: transparent;
   color: inherit;
   font-size: inherit;
