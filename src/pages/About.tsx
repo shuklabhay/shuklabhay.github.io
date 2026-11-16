@@ -107,8 +107,9 @@ export default function About(): JSX.Element {
               <li>Making things</li>
               <li>Breaking things</li>
               <li>Understanding things</li>
-              <li>Aesthetics</li>
+              <li>Noticing things</li>
               <li>Texture</li>
+              <li>Aesthetics</li>
               <li>Intensity</li>
               <li>Balance</li>
             </ul>
