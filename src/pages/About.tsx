@@ -50,9 +50,8 @@ export default function About(): JSX.Element {
                   rel="noopener noreferrer"
                   className="about-contact-link"
                 >
-                  breast+lung tissue
-                </a>{" "}
-                augmentations
+                  breast+lung tissue augmentations
+                </a>
               </li>
               <li>
                 Made <code>gemini-2.0-pro</code>{" "}
