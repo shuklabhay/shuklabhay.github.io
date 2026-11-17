@@ -43,6 +43,18 @@ export default function About(): JSX.Element {
                 , trained thought {"->"} action models
               </li>
               <li>
+                Built physics sims for{" "}
+                <a
+                  href="https://computationalmedicine.stanford.edu/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="about-contact-link"
+                >
+                  breast+lung tissue
+                </a>{" "}
+                augmentations
+              </li>
+              <li>
                 Made <code>gemini-2.0-pro</code>{" "}
                 <a
                   href="/static/sitedata/vt_poster.png"
@@ -63,17 +75,6 @@ export default function About(): JSX.Element {
                 </a>
               </li>
               <li>
-                Built simulations of{" "}
-                <a
-                  href="https://computationalmedicine.stanford.edu/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="about-contact-link"
-                >
-                  breast &amp; lung tissue
-                </a>
-              </li>
-              <li>
                 <a
                   href="https://github.com/shuklabhay/dtblkfx-osx-recompiled"
                   target="_blank"
@@ -91,7 +92,7 @@ export default function About(): JSX.Element {
                 >
                   produced music
                 </a>
-                , taught kids 2{" "}
+                , helped kids{" "}
                 <a
                   href="https://bayareastemacademy.org/"
                   target="_blank"
