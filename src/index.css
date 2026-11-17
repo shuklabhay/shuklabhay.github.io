@@ -970,6 +970,10 @@ pre code {
     transition: transform var(--motion-layout) linear;
   }
 
+  html.route-home .top-fade {
+    position: absolute;
+  }
+
   html.mobile-header-hidden:not(.route-home) .route-sky,
   html.mobile-header-hidden:not(.route-home) .top-fade {
     transform: translateY(-100%);
