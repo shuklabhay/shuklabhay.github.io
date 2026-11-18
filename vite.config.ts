@@ -92,8 +92,8 @@ const POST_COVER_CANDIDATES = [
 ];
 const TOP_LEVEL_SOCIAL_PAGES = [
   {
-    canonicalPath: "/about",
-    title: "Abhay Shukla · About",
+    canonicalPath: "/bio",
+    title: "Abhay Shukla · Bio",
     description:
       "I've been manipulating computers since I was 9, almost entirely self-taught.",
   },

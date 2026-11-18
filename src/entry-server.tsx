@@ -41,12 +41,12 @@ export function getPrerenderRoutes(): PrerenderRoute[] {
       type: "website",
     },
     {
-      canonicalPath: "/about",
+      canonicalPath: "/bio",
       description:
         "I've been manipulating computers since I was 9, almost entirely self-taught.",
-      path: "/about",
-      socialTitle: `${SITE_TITLE} · About`,
-      title: `${SITE_TITLE} · About`,
+      path: "/bio",
+      socialTitle: `${SITE_TITLE} · Bio`,
+      title: `${SITE_TITLE} · Bio`,
       type: "website",
     },
     {

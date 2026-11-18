@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import PageTitle from "../components/PageTitle";
 import { contactData, getContactLink } from "../utils/contactData";
 
-export default function About(): JSX.Element {
+export default function Bio(): JSX.Element {
   const rawEmail = getContactLink(contactData, "Email");
   const email = rawEmail ? `mailto:${rawEmail}` : undefined;
   const twitter = getContactLink(contactData, "Twitter");
@@ -22,13 +22,13 @@ export default function About(): JSX.Element {
   }, [location.hash, location.key]);
 
   return (
-    <main className="about-page route-page-about">
+    <main className="bio-page route-page-bio">
       <PageTitle
         title="Hi, I'm Abhay"
         subtitle={
-          <div className="about-subtitle">
+          <div className="bio-subtitle">
             <p>I want to become (at least rudimentarily) good at everything!</p>
-            <p className="about-list-intro">I've previously:</p>
+            <p className="bio-list-intro">I've previously:</p>
             <ul>
               <li>
                 Collected{" "}
@@ -36,7 +36,7 @@ export default function About(): JSX.Element {
                   href="https://condu.it/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="about-contact-link"
+                  className="bio-contact-link"
                 >
                   neural data
                 </a>
@@ -48,7 +48,7 @@ export default function About(): JSX.Element {
                   href="https://computationalmedicine.stanford.edu/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="about-contact-link"
+                  className="bio-contact-link"
                 >
                   breast+lung tissue augmentations
                 </a>
@@ -59,7 +59,7 @@ export default function About(): JSX.Element {
                   href="/static/sitedata/vt_poster.png"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="about-contact-link"
+                  className="bio-contact-link"
                 >
                   translate songs
                 </a>
@@ -68,7 +68,7 @@ export default function About(): JSX.Element {
                   href="https://www.youtube.com/@translateanyaudio"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="about-contact-link"
+                  className="bio-contact-link"
                 >
                   run a yt channel
                 </a>
@@ -78,7 +78,7 @@ export default function About(): JSX.Element {
                   href="https://github.com/shuklabhay/dtblkfx-osx-recompiled"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="about-contact-link"
+                  className="bio-contact-link"
                 >
                   Decompiled audio plugins
                 </a>
@@ -87,7 +87,7 @@ export default function About(): JSX.Element {
                   href="https://www.youtube.com/@01shuklabhay"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="about-contact-link"
+                  className="bio-contact-link"
                 >
                   produced music
                 </a>
@@ -96,13 +96,13 @@ export default function About(): JSX.Element {
                   href="https://bayareastemacademy.org/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="about-contact-link"
+                  className="bio-contact-link"
                 >
                   vibecode
                 </a>
               </li>
             </ul>
-            <p className="about-list-intro about-section-start">I like:</p>
+            <p className="bio-list-intro bio-section-start">I like:</p>
             <ul>
               <li>Making things</li>
               <li>Breaking things</li>
@@ -113,8 +113,8 @@ export default function About(): JSX.Element {
               <li>Intensity</li>
               <li>Balance</li>
             </ul>
-            <p id="contact" className="about-links about-section-start">
-              <a href={email} className="about-contact-link">
+            <p id="contact" className="bio-links bio-section-start">
+              <a href={email} className="bio-contact-link">
                 Email
               </a>{" "}
               |{" "}
@@ -122,7 +122,7 @@ export default function About(): JSX.Element {
                 href={twitter}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="about-contact-link"
+                className="bio-contact-link"
               >
                 Twitter
               </a>{" "}
@@ -131,7 +131,7 @@ export default function About(): JSX.Element {
                 href={youtube}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="about-contact-link"
+                className="bio-contact-link"
               >
                 YouTube
               </a>{" "}
@@ -140,7 +140,7 @@ export default function About(): JSX.Element {
                 href={github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="about-contact-link"
+                className="bio-contact-link"
               >
                 GitHub
               </a>
