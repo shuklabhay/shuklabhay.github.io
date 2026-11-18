@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import NavMenu from "./components/NavMenu.tsx";
-import About from "./pages/About.tsx";
+import Bio from "./pages/Bio.tsx";
 import Blog from "./pages/Blog.tsx";
 import Home from "./pages/Home.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -56,8 +56,8 @@ export function getRouteDocumentTitle(pathname: string): string {
     return SITE_TITLE;
   }
 
-  if (normalizedPathname === "/about") {
-    return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}About`;
+  if (normalizedPathname === "/bio") {
+    return `${SITE_TITLE}${SITE_TITLE_SEPARATOR}Bio`;
   }
 
   if (normalizedPathname === "/gallery") {
@@ -222,6 +222,17 @@ function LegacyBlogRedirect(): JSX.Element {
   );
 }
 
+function LegacyAboutRedirect(): JSX.Element {
+  const location = useLocation();
+  return (
+    <Navigate
+      replace
+      to={`/bio${location.search}${location.hash}`}
+      state={location.state}
+    />
+  );
+}
+
 function RouteBackground(): null {
   const location = useLocation();
   const isHome = isHomeVisualRoute(location.pathname);
@@ -342,13 +353,14 @@ export function AppShell(): JSX.Element {
       <div className={isHome ? "app-shell app-shell-home" : "app-shell"}>
         <Routes location={location}>
           <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
+          <Route path="/bio" element={<Bio />} />
+          <Route path="/about" element={<LegacyAboutRedirect />} />
           <Route path="/gallery" element={<Blog />} />
           <Route path="/gallery/:slug" element={<Post />} />
           <Route path="/blog/*" element={<LegacyBlogRedirect />} />
           <Route
             path="/contact"
-            element={<Navigate replace to="/about#contact" />}
+            element={<Navigate replace to="/bio#contact" />}
           />
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -8,7 +8,7 @@ import {
 
 const MENU_ITEMS = [
   { label: "home", path: "/" },
-  { label: "about", path: "/about" },
+  { label: "bio", path: "/bio" },
   { label: "gallery", path: "/gallery" },
 ];
 

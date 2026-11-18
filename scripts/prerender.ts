@@ -305,7 +305,8 @@ async function writeLegacyBlogRedirects(
 ): Promise<void> {
   const redirects: Array<[string, string]> = [
     ["/blog/index.html", "/gallery"],
-    ["/contact/index.html", "/about#contact"],
+    ["/about/index.html", "/bio"],
+    ["/contact/index.html", "/bio#contact"],
   ];
 
   for (const route of routes) {
