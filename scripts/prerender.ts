@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import postcss from "postcss";
 import subsetFont from "subset-font";
 
 type PrerenderRoute = {
@@ -171,7 +172,7 @@ async function subsetKatexFonts(
   );
 }
 
-const EAGER_POST_IMAGE_COUNT = 1;
+const EAGER_POST_IMAGE_COUNT = 0;
 const IMAGE_PLACEHOLDER =
   "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 
@@ -239,12 +240,74 @@ function routeFilePaths(routePath: string): string[] {
   ];
 }
 
-async function inlineMathStylesheet(assetFiles: string[]): Promise<string> {
+function purgeMathCss(css: string, bodies: string[]): string {
+  const usedClasses = new Set<string>();
+  for (const body of bodies) {
+    for (const match of body.matchAll(/\sclass="([^"]*)"/g)) {
+      for (const className of match[1].split(/\s+/)) {
+        if (className) usedClasses.add(className);
+      }
+    }
+  }
+  const root = postcss.parse(css);
+  root.walkRules((rule) => {
+    if (
+      rule.parent?.type === "atrule" &&
+      /keyframes/i.test((rule.parent as postcss.AtRule).name)
+    ) {
+      return;
+    }
+    const kept = rule.selectors.filter((selector) =>
+      Array.from(
+        selector.replace(/:not\([^)]*\)/g, "").matchAll(/\.([\w-]+)/g),
+      ).every((match) => usedClasses.has(match[1])),
+    );
+    if (kept.length === 0) rule.remove();
+    else rule.selectors = kept;
+  });
+  const usedFamilies = new Set<string>();
+  root.walkDecls(/^font(-family)?$/, (decl) => {
+    if (decl.parent?.type === "atrule") return;
+    for (const match of decl.value.matchAll(/KaTeX_[\w]+/g)) {
+      usedFamilies.add(match[0]);
+    }
+  });
+  root.walkAtRules("font-face", (atRule) => {
+    let family = "";
+    atRule.walkDecls("font-family", (decl) => {
+      family = decl.value.replace(/["']/g, "").trim();
+    });
+    if (!usedFamilies.has(family)) {
+      atRule.remove();
+      return;
+    }
+    atRule.walkDecls("src", (decl) => {
+      const woff2 = decl.value
+        .split(/,(?![^(]*\))/)
+        .map((part) => part.trim())
+        .filter((part) => /format\(["']?woff2["']?\)/.test(part));
+      if (woff2.length > 0) decl.value = woff2.join(",");
+    });
+  });
+  root.walkAtRules((atRule) => {
+    if (atRule.name !== "font-face" && atRule.nodes?.length === 0) {
+      atRule.remove();
+    }
+  });
+  return root.toString();
+}
+
+async function inlineMathStylesheet(
+  assetFiles: string[],
+  bodies: string[],
+): Promise<string> {
   const file = assetFiles.find(
     (name) => name.startsWith("mathStyles-") && name.endsWith(".css"),
   );
   if (!file) throw new Error("Missing math stylesheet build output");
-  const css = await fs.readFile(path.join(DIST_ASSETS_DIR, file), "utf8");
+  const filePath = path.join(DIST_ASSETS_DIR, file);
+  const css = purgeMathCss(await fs.readFile(filePath, "utf8"), bodies);
+  await fs.writeFile(filePath, css);
   if (css.includes("</style")) throw new Error(`Cannot inline ${file}`);
   return `    <style data-math-styles>${css.trim()}</style>\n`;
 }
@@ -425,7 +488,27 @@ function createPrerenderedHtml(
     html = addClassToTag(html, "html", "route-post");
   }
 
-  return html;
+  return hoistPreloads(html);
+}
+
+function hoistPreloads(html: string): string {
+  const preloads: string[] = [];
+  const withoutPreloads = html.replace(
+    /[ \t]*<link rel="preload"[^>]*>\n?/g,
+    (tag: string) => {
+      preloads.push(`    ${tag.trim()}\n`);
+      return "";
+    },
+  );
+  if (preloads.length === 0) return html;
+  const scriptIndex = withoutPreloads.indexOf('<script type="module"');
+  if (scriptIndex === -1) throw new Error("Missing module script in page");
+  const lineStart = withoutPreloads.lastIndexOf("\n", scriptIndex) + 1;
+  return (
+    withoutPreloads.slice(0, lineStart) +
+    preloads.join("") +
+    withoutPreloads.slice(lineStart)
+  );
 }
 
 function createRedirectHtml(targetPath: string): string {
@@ -517,7 +600,16 @@ async function main(): Promise<void> {
   const routes = getPrerenderRoutes();
   const assetFiles = await fs.readdir(DIST_ASSETS_DIR);
   const postBodies: string[] = [];
-  const mathStyles = await inlineMathStylesheet(assetFiles);
+  const mathStyles = await inlineMathStylesheet(
+    assetFiles,
+    routes
+      .filter((route) => route.canonicalPath.startsWith("/gallery/"))
+      .map((route) =>
+        renderPostBody(
+          decodeURIComponent(route.canonicalPath.slice("/gallery/".length)),
+        ),
+      ),
+  );
 
   for (const route of routes) {
     let appHtml = await renderRoute(route.path);
