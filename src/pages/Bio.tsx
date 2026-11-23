@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "../router";
 import PageTitle from "../components/PageTitle";
 import { contactData, getContactLink } from "../utils/contactData";
 

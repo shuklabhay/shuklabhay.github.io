@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import subsetFont from "subset-font";
 
 type PrerenderRoute = {
   canonicalPath: string;
@@ -13,6 +14,7 @@ type PrerenderRoute = {
 
 type ServerEntry = {
   getPrerenderRoutes: () => PrerenderRoute[];
+  renderPostBody: (slug: string) => string;
   renderRoute: (pathname: string) => Promise<string>;
 };
 
@@ -97,6 +99,78 @@ function katexFontPreloads(appHtml: string, assetFiles: string[]): string {
     .join("");
 }
 
+function katexHtmlSegments(html: string): string[] {
+  const segments: string[] = [];
+  const openerPattern = /<span\b[^>]*\bclass="katex-html"[^>]*>/g;
+  for (
+    let opener = openerPattern.exec(html);
+    opener;
+    opener = openerPattern.exec(html)
+  ) {
+    const tagPattern = /<span\b|<\/span>/g;
+    tagPattern.lastIndex = openerPattern.lastIndex;
+    let depth = 1;
+    let end = html.length;
+    for (
+      let match = tagPattern.exec(html);
+      match;
+      match = tagPattern.exec(html)
+    ) {
+      depth += match[0] === "</span>" ? -1 : 1;
+      if (depth === 0) {
+        end = match.index;
+        break;
+      }
+    }
+    segments.push(html.slice(openerPattern.lastIndex, end));
+    openerPattern.lastIndex = end;
+  }
+  if (html.includes("katex-html") && segments.length === 0) {
+    throw new Error("Could not find KaTeX HTML to subset fonts");
+  }
+  return segments;
+}
+
+function decodeHtmlText(html: string): string {
+  return html
+    .replace(/<[^>]*>/g, "")
+    .replace(/&#x([0-9a-f]+);/gi, (_match, hex: string) =>
+      String.fromCodePoint(parseInt(hex, 16)),
+    )
+    .replace(/&#(\d+);/g, (_match, code: string) =>
+      String.fromCodePoint(Number(code)),
+    )
+    .replace(/&quot;/g, '"')
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, "&");
+}
+
+async function subsetKatexFonts(
+  bodies: string[],
+  assetFiles: string[],
+): Promise<void> {
+  const glyphs = new Set("0123456789()[]{}+-=,.;:!?/|' ");
+  for (const body of bodies) {
+    for (const segment of katexHtmlSegments(body)) {
+      for (const glyph of decodeHtmlText(segment)) glyphs.add(glyph);
+    }
+  }
+  const text = Array.from(glyphs).join("");
+  const fontFiles = assetFiles.filter(
+    (file) => file.startsWith("KaTeX_") && file.endsWith(".woff2"),
+  );
+  await Promise.all(
+    fontFiles.map(async (file) => {
+      const fontPath = path.join(DIST_ASSETS_DIR, file);
+      const subset = await subsetFont(await fs.readFile(fontPath), text, {
+        targetFormat: "woff2",
+      });
+      await fs.writeFile(fontPath, subset);
+    }),
+  );
+}
+
 function escapeHtmlAttribute(value: string): string {
   return value
     .replace(/&/g, "&amp;")
@@ -117,9 +191,23 @@ function replaceRequiredHtml(
   return html.replace(pattern, replacement);
 }
 
-function routeFilePath(routePath: string): string {
-  if (routePath === "/") return path.join(DIST_DIR, "index.html");
-  return path.join(DIST_DIR, routePath.replace(/^\/+/, ""), "index.html");
+function routeFilePaths(routePath: string): string[] {
+  if (routePath === "/") return [path.join(DIST_DIR, "index.html")];
+  const relativePath = routePath.replace(/^\/+/, "");
+  return [
+    path.join(DIST_DIR, `${relativePath}.html`),
+    path.join(DIST_DIR, relativePath, "index.html"),
+  ];
+}
+
+async function inlineMathStylesheet(assetFiles: string[]): Promise<string> {
+  const file = assetFiles.find(
+    (name) => name.startsWith("mathStyles-") && name.endsWith(".css"),
+  );
+  if (!file) throw new Error("Missing math stylesheet build output");
+  const css = await fs.readFile(path.join(DIST_ASSETS_DIR, file), "utf8");
+  if (css.includes("</style")) throw new Error(`Cannot inline ${file}`);
+  return `    <style data-math-styles>${css.trim()}</style>\n`;
 }
 
 function addClassToTag(
@@ -166,6 +254,7 @@ function createPrerenderedHtml(
   appHtml: string,
   assetFiles: string[],
   coverPath: string | undefined,
+  mathStyles: string,
 ): string {
   const canonicalUrl = `${SITE_ORIGIN}${route.canonicalPath}`;
   const socialImageUrl = `${SITE_ORIGIN}${coverPath ?? DEFAULT_SOCIAL_IMAGE_PATH}`;
@@ -177,13 +266,6 @@ function createPrerenderedHtml(
   );
   const isHomeVisualRoute = route.path === "/";
   let html = appShellHtml;
-
-  if (!isHomeVisualRoute) {
-    html = html.replace(
-      /\s*<link\s+rel="preload"\s+href="\/static\/landing-1280\.webp"[\s\S]*?\/>\n/,
-      "\n",
-    );
-  }
 
   html = replaceRequiredHtml(
     html,
@@ -266,7 +348,33 @@ function createPrerenderedHtml(
 
   const fontPreloads = katexFontPreloads(appHtml, assetFiles);
   if (fontPreloads) {
-    html = html.replace("</head>", `${fontPreloads}  </head>`);
+    html = html.replace("</head>", `${fontPreloads}${mathStyles}  </head>`);
+  }
+
+  if (route.canonicalPath.startsWith("/gallery/")) {
+    const postChunks = assetFiles.filter((file) =>
+      /^(Post|postPage)-[\w-]+\.js$/.test(file),
+    );
+    if (postChunks.length === 0) throw new Error("Missing post page chunk");
+    html = html.replace(
+      "</head>",
+      `${postChunks
+        .map(
+          (file) =>
+            `    <link rel="modulepreload" crossorigin href="/assets/${file}" />\n`,
+        )
+        .join("")}  </head>`,
+    );
+  }
+
+  const heroAvif = appHtml.match(
+    /--hero-image-set:image-set\(url\(&quot;(\/assets\/[^&]+\.avif)&quot;\)/,
+  )?.[1];
+  if (heroAvif) {
+    html = html.replace(
+      "</head>",
+      `    <link rel="preload" href="${heroAvif}" as="image" type="image/avif" fetchpriority="high" />\n  </head>`,
+    );
   }
 
   if (isHomeVisualRoute) {
@@ -347,34 +455,62 @@ async function findServerEntryPath(): Promise<string> {
   throw new Error("Missing SSR entry build output");
 }
 
+async function inlineStylesheets(html: string): Promise<string> {
+  const pattern =
+    /<link rel="stylesheet" crossorigin href="(\/assets\/[^"]+\.css)">/g;
+  let result = html;
+  for (const match of html.matchAll(pattern)) {
+    const css = await fs.readFile(path.join(DIST_DIR, match[1]), "utf8");
+    if (css.includes("</style")) throw new Error(`Cannot inline ${match[1]}`);
+    result = result.replace(match[0], () => `<style>${css.trim()}</style>`);
+  }
+  return result;
+}
+
 async function main(): Promise<void> {
-  const appShellHtml = await fs.readFile(
-    path.join(DIST_DIR, "index.html"),
-    "utf8",
+  const appShellHtml = await inlineStylesheets(
+    await fs.readFile(path.join(DIST_DIR, "index.html"), "utf8"),
   );
   const serverEntryPath = await findServerEntryPath();
-  const { getPrerenderRoutes, renderRoute } = (await import(
+  const { getPrerenderRoutes, renderPostBody, renderRoute } = (await import(
     pathToFileURL(serverEntryPath).href
   )) as ServerEntry;
   const routes = getPrerenderRoutes();
   const assetFiles = await fs.readdir(DIST_ASSETS_DIR);
+  const postBodies: string[] = [];
+  const mathStyles = await inlineMathStylesheet(assetFiles);
 
   for (const route of routes) {
     const appHtml = await renderRoute(route.path);
-    const outputPath = routeFilePath(route.canonicalPath);
-    await fs.mkdir(path.dirname(outputPath), { recursive: true });
-    await fs.writeFile(
-      outputPath,
-      createPrerenderedHtml(
-        appShellHtml,
-        route,
-        appHtml,
-        assetFiles,
-        await findPostCoverPath(route.canonicalPath),
-      ),
+    const pageHtml = createPrerenderedHtml(
+      appShellHtml,
+      route,
+      appHtml,
+      assetFiles,
+      await findPostCoverPath(route.canonicalPath),
+      mathStyles,
     );
+    for (const outputPath of routeFilePaths(route.canonicalPath)) {
+      await fs.mkdir(path.dirname(outputPath), { recursive: true });
+      await fs.writeFile(outputPath, pageHtml);
+    }
+    if (route.canonicalPath.startsWith("/gallery/")) {
+      const slug = decodeURIComponent(
+        route.canonicalPath.slice("/gallery/".length),
+      );
+      const bodyHtml = renderPostBody(slug);
+      postBodies.push(bodyHtml);
+      if (!appHtml.includes(bodyHtml)) {
+        throw new Error(`Post body for ${slug} does not match its page`);
+      }
+      await fs.writeFile(
+        path.join(DIST_DIR, "gallery", slug, "body.html"),
+        bodyHtml,
+      );
+    }
   }
 
+  await subsetKatexFonts(postBodies, assetFiles);
   await writeLegacyBlogRedirects(routes);
 
   const canonicalPaths = [

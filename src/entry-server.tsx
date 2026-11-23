@@ -1,9 +1,10 @@
-import { renderToReadableStream } from "react-dom/server.browser";
-import { StaticRouter } from "react-router-dom/server.js";
+import { renderToString } from "preact-render-to-string";
+import { StaticRouter } from "./router";
 import { AppShell, getRouteDocumentTitle } from "./App";
-import { allPosts, registerPostModules } from "./posts";
+import { allPosts, readPostBySlug, registerPostModules } from "./posts";
 import type { PostModule } from "./utils/types";
 import { readHeadingsFromHtml, seedPostHeadings } from "./utils/postHeadings";
+import { loadPostPage } from "./pages/postPage";
 
 registerPostModules(
   import.meta.glob<PostModule>("./posts/*/index.mdx", { eager: true }),
@@ -16,10 +17,6 @@ export type PrerenderRoute = {
   socialTitle: string;
   title: string;
   type: "article" | "website";
-};
-
-type ReactReadableStream = ReadableStream<Uint8Array> & {
-  allReady: Promise<void>;
 };
 
 const SITE_TITLE = "Abhay Shukla";
@@ -71,19 +68,23 @@ export function getPrerenderRoutes(): PrerenderRoute[] {
   ];
 }
 
-async function renderOnce(pathname: string): Promise<string> {
-  const stream = (await renderToReadableStream(
+function renderOnce(pathname: string): string {
+  return renderToString(
     <StaticRouter location={pathname}>
       <AppShell />
     </StaticRouter>,
-  )) as ReactReadableStream;
+  );
+}
 
-  await stream.allReady;
-  return new Response(stream).text();
+export function renderPostBody(slug: string): string {
+  const Content = readPostBySlug(slug)?.Component;
+  if (!Content) throw new Error(`Missing post module for ${slug}`);
+  return renderToString(<Content components={{ h1: () => null }} />);
 }
 
 export async function renderRoute(pathname: string): Promise<string> {
-  const html = await renderOnce(pathname);
+  await loadPostPage();
+  const html = renderOnce(pathname);
   const postSlug = pathname.match(/^\/gallery\/([^/]+)$/)?.[1];
   if (!postSlug) return html;
   seedPostHeadings(decodeURIComponent(postSlug), readHeadingsFromHtml(html));

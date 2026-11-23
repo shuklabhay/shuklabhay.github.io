@@ -1,21 +1,19 @@
-import React from "react";
-import { createRoot, hydrateRoot } from "react-dom/client";
+import { hydrate, render } from "preact";
 import App from "./App.tsx";
-import { loadPostBySlug } from "./posts";
+import { loadPostPage } from "./pages/postPage";
+import {
+  adoptInlinedMathStyles,
+  getPostBySlug,
+  loadMathStyles,
+  registerPostHtml,
+} from "./posts";
 import {
   readHeadingsFromElement,
   seedPostHeadings,
 } from "./utils/postHeadings";
-import "katex/dist/katex.min.css";
-import "katex/dist/contrib/copy-tex.mjs";
 import "./index.css";
 
 const rootElement = document.getElementById("root") as HTMLElement;
-const app = (
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
 
 const currentPath = window.location.pathname.replace(/\/+$/, "") || "/";
 const postSlugMatch = currentPath.match(/^\/gallery\/([^/]+)$/);
@@ -23,27 +21,36 @@ const postSlug = postSlugMatch
   ? decodeURIComponent(postSlugMatch[1] ?? "")
   : null;
 
-function renderApp(): void {
+function start(): void {
   if (
     rootElement.hasChildNodes() &&
     rootElement.dataset.prerenderedPath === currentPath
   ) {
     const contentEl = rootElement.querySelector(".post-content");
     if (postSlug && contentEl) {
+      registerPostHtml(postSlug, contentEl.innerHTML);
       seedPostHeadings(postSlug, readHeadingsFromElement(contentEl));
+      if (getPostBySlug(postSlug)?.hasMath) {
+        if (document.querySelector("style[data-math-styles]")) {
+          adoptInlinedMathStyles();
+        } else {
+          void loadMathStyles();
+        }
+      }
     }
-    hydrateRoot(rootElement, app);
+    hydrate(<App />, rootElement);
     window.setTimeout(() => {
       delete rootElement.dataset.prerendered;
     }, 5000);
   } else {
     delete rootElement.dataset.prerendered;
-    createRoot(rootElement).render(app);
+    rootElement.textContent = "";
+    render(<App />, rootElement);
   }
 }
 
 if (postSlug) {
-  void loadPostBySlug(postSlug).finally(renderApp);
+  loadPostPage().then(start, start);
 } else {
-  renderApp();
+  start();
 }

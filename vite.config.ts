@@ -1,5 +1,5 @@
 import { defineConfig, type ViteDevServer } from "vite";
-import react from "@vitejs/plugin-react";
+import preact from "@preact/preset-vite";
 import mdx from "@mdx-js/rollup";
 import rehypeKatex from "rehype-katex";
 import remarkGfm from "remark-gfm";
@@ -47,6 +47,7 @@ type HastNode = {
   children?: HastNode[];
 };
 
+const MATH_SYNTAX = /\$\$[\s\S]+?\$\$|\$[^\s$][^$\n]*?\$/;
 const TRAILING_PUNCTUATION = /^[.,:;!?)\]]+/;
 
 function isInlineKatex(node: HastNode): boolean {
@@ -139,6 +140,103 @@ function rewriteWikiEmbedsToMarkdown(source: string): string {
 
   if (importLines.length === 0) return source;
   return `${importLines.join("\n")}\n\n${rewrittenBody}`;
+}
+
+const AVIF_UPGRADABLE_IMAGE = /\.(webp|png|jpe?g|gif)$/i;
+
+function addImageEnhancements(source: string, postDir: string): string {
+  const avifImportByName = new Map<string, string>();
+  const sizeByName = new Map<string, { width: number; height: number }>();
+  const importLines: string[] = [];
+  const importPattern =
+    /^import\s+(\w+)\s+from\s+["'](\.\/assets\/[^"']+)["'];?$/gm;
+
+  for (const match of source.matchAll(importPattern)) {
+    const [, importName, importPath] = match;
+    if (!AVIF_UPGRADABLE_IMAGE.test(importPath)) continue;
+    const size = readImageSize(path.join(postDir, importPath));
+    if (size) sizeByName.set(importName, size);
+    const avifPath = importPath.replace(AVIF_UPGRADABLE_IMAGE, ".avif");
+    if (!fs.existsSync(path.join(postDir, avifPath))) continue;
+    const avifImportName = `${importName}__avif`;
+    avifImportByName.set(importName, avifImportName);
+    importLines.push(
+      `import ${avifImportName} from ${JSON.stringify(avifPath)};`,
+    );
+  }
+
+  if (avifImportByName.size === 0 && sizeByName.size === 0) return source;
+
+  const rewrittenBody = source.replace(
+    /<img\b[^>]*?\bsrc=\{(\w+)\}[^>]*?\/>/g,
+    (tag: string, importName: string) => {
+      const size = sizeByName.get(importName);
+      let img = tag;
+      if (size && !/\b(width|height)=/.test(img)) {
+        img = img.replace(
+          /^<img\b/,
+          `<img width={${size.width}} height={${size.height}}`,
+        );
+      }
+      const avifImportName = avifImportByName.get(importName);
+      if (!avifImportName) return img;
+      return `<picture><source type="image/avif" srcSet={${avifImportName}} />${img}</picture>`;
+    },
+  );
+  return `${importLines.join("\n")}\n${rewrittenBody}`;
+}
+
+function addAvifSourcesToHtml(html: string, projectRoot: string): string {
+  let upgraded = false;
+  const rewritten = html.replace(
+    /<img\b[^>]*?\bsrc="([^"]+)"[^>]*>/g,
+    (tag: string, src: string) => {
+      if (!src.startsWith("/") || !AVIF_UPGRADABLE_IMAGE.test(src)) return tag;
+      const avifSrc = src.replace(AVIF_UPGRADABLE_IMAGE, ".avif");
+      const avifPath = path.join(projectRoot, decodeURIComponent(avifSrc));
+      if (!fs.existsSync(avifPath)) return tag;
+      upgraded = true;
+      return `<picture><source type="image/avif" srcset="${avifSrc}" />${tag}</picture>`;
+    },
+  );
+  if (!upgraded) return html;
+  return rewritten.replace(
+    "</head>",
+    "  <style>picture{display:contents}</style>\n  </head>",
+  );
+}
+
+function readImageSize(
+  filePath: string,
+): { width: number; height: number } | undefined {
+  const header = fs.readFileSync(filePath).subarray(0, 32);
+  if (header.toString("ascii", 12, 16) === "IHDR") {
+    return { width: header.readUInt32BE(16), height: header.readUInt32BE(20) };
+  }
+  if (
+    header.toString("ascii", 0, 4) !== "RIFF" ||
+    header.toString("ascii", 8, 12) !== "WEBP"
+  ) {
+    return undefined;
+  }
+  const chunk = header.toString("ascii", 12, 16);
+  if (chunk === "VP8X") {
+    return {
+      width: header.readUIntLE(24, 3) + 1,
+      height: header.readUIntLE(27, 3) + 1,
+    };
+  }
+  if (chunk === "VP8 ") {
+    return {
+      width: header.readUInt16LE(26) & 0x3fff,
+      height: header.readUInt16LE(28) & 0x3fff,
+    };
+  }
+  if (chunk === "VP8L") {
+    const bits = header.readUInt32LE(21);
+    return { width: (bits & 0x3fff) + 1, height: ((bits >> 14) & 0x3fff) + 1 };
+  }
+  return undefined;
 }
 
 function formatSlug(slug: string): string {
@@ -237,6 +335,7 @@ type PostBuildData = {
   title: string;
   description: string;
   wordCount: number;
+  hasMath: boolean;
   date: string;
   coverFile?: string;
 };
@@ -347,6 +446,9 @@ function collectPostBuildData(postsDir: string): PostBuildData[] {
           title,
           description: extractPostDescription(source, title),
           wordCount: extractPostWordCount(source),
+          hasMath: MATH_SYNTAX.test(
+            source.replace(/```[\s\S]*?```/g, " ").replace(/`[^`]*`/g, " "),
+          ),
           date: meta.date ?? stat.mtime.toISOString().slice(0, 10),
           coverFile: POST_COVER_CANDIDATES.find((fileName) =>
             fs.existsSync(path.join(sourcePostDir, fileName)),
@@ -377,12 +479,8 @@ function createSocialHtml(meta: SocialPageMeta, appShellHtml: string): string {
     meta.imageAlt ?? SOCIAL_IMAGE_ALT,
   );
 
-  let html = appShellHtml.replace(
-    /\s*<link\s+rel="preload"\s+href="\/static\/landing-1280\.webp"[\s\S]*?\/>\n/,
-    "\n",
-  );
-  html = replaceRequiredHtml(
-    html,
+  let html = replaceRequiredHtml(
+    appShellHtml,
     /<title>[\s\S]*?<\/title>/,
     `<title>${escapedTitle}</title>`,
     "title",
@@ -477,7 +575,10 @@ export default defineConfig({
         if (!id.endsWith(".mdx")) return null;
         if (!id.includes("/src/posts/")) return null;
 
-        const transformed = rewriteWikiEmbedsToMarkdown(code);
+        const transformed = addImageEnhancements(
+          rewriteWikiEmbedsToMarkdown(code),
+          path.dirname(id),
+        );
         if (transformed === code) return null;
 
         return {
@@ -487,10 +588,11 @@ export default defineConfig({
       },
     },
     mdx({
+      jsxImportSource: "preact",
       remarkPlugins: [remarkGfm, remarkMath, remarkDoubleDollarDisplayMath],
       rehypePlugins: [rehypeKatex, rehypeKeepPunctuationWithMath],
     }),
-    react(),
+    preact(),
     {
       name: "virtual-posts-manifest",
       resolveId(id: string): string | undefined {
@@ -516,6 +618,8 @@ export default defineConfig({
           this.addWatchFile(post.postPath);
           this.addWatchFile(post.metaPath);
           let coverExpr = "undefined";
+          let coverAvifExpr = "undefined";
+          let coverSizeExpr = "undefined";
           if (post.coverFile) {
             const importName = `cover${coverImportIndex++}`;
             const coverPath = `/src/posts/${post.slug}/${post.coverFile}`;
@@ -523,7 +627,16 @@ export default defineConfig({
               `import ${importName} from ${JSON.stringify(coverPath)};`,
             );
             coverExpr = importName;
-            this.addWatchFile(path.join(post.sourcePostDir, post.coverFile));
+            const coverFilePath = path.join(post.sourcePostDir, post.coverFile);
+            this.addWatchFile(coverFilePath);
+            coverSizeExpr = JSON.stringify(readImageSize(coverFilePath));
+            const avifFile = post.coverFile.replace(/\.[^.]+$/, ".avif");
+            if (fs.existsSync(path.join(post.sourcePostDir, avifFile))) {
+              importLines.push(
+                `import ${importName}Avif from ${JSON.stringify(`/src/posts/${post.slug}/${avifFile}`)};`,
+              );
+              coverAvifExpr = `${importName}Avif`;
+            }
           }
 
           itemLines.push(
@@ -535,7 +648,7 @@ export default defineConfig({
               post.meta.buttons,
             )}, showInlineToc: ${JSON.stringify(
               post.meta.showInlineToc,
-            )}, hidden: ${JSON.stringify(post.meta.hidden)}, cover: ${coverExpr}, wordCount: ${post.wordCount} }`,
+            )}, hidden: ${JSON.stringify(post.meta.hidden)}, cover: ${coverExpr}, coverAvif: ${coverAvifExpr}, coverSize: ${coverSizeExpr}, wordCount: ${post.wordCount}, hasMath: ${post.hasMath} }`,
           );
         }
 
@@ -624,9 +737,12 @@ export default defineConfig({
           );
           if (!fs.existsSync(slideshowSrcPath)) continue;
 
-          fs.copyFileSync(
-            slideshowSrcPath,
+          fs.writeFileSync(
             path.join(distPostDir, "slideshow.html"),
+            addAvifSourcesToHtml(
+              fs.readFileSync(slideshowSrcPath, "utf8"),
+              process.cwd(),
+            ),
           );
           fs.cpSync(
             post.sourcePostDir,
@@ -642,4 +758,16 @@ export default defineConfig({
     },
   ],
   base: "/",
+  build: {
+    modulePreload: {
+      resolveDependencies: (_filename: string, dependencies: string[]) =>
+        dependencies.filter(
+          (dependency) => !/^assets\/index-[\w-]+\.css$/.test(dependency),
+        ),
+    },
+  },
+  ssr: {
+    noExternal: true,
+    external: ["subset-font"],
+  },
 });

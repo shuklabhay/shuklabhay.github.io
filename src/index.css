@@ -41,6 +41,15 @@
   --motion-layout: 120ms;
 }
 
+@supports (background-image: image-set(url("x.avif") type("image/avif"))) {
+  :root {
+    --home-background-image: image-set(
+      url("./assets/landing-640.avif") type("image/avif"),
+      url("/static/landing-1280.webp") type("image/webp")
+    );
+  }
+}
+
 html {
   box-sizing: border-box;
   width: 100%;
@@ -262,6 +271,7 @@ html.route-home .route-sky {
 }
 
 .post-hero {
+  background-image: var(--hero-image);
   width: 100%;
   height: round(clamp(216px, 26vw, 336px), 12px);
   margin: 0 0 24px;
@@ -273,6 +283,12 @@ html.route-home .route-sky {
   padding: 0;
   border: 0;
   cursor: zoom-in;
+}
+
+@supports (background-image: image-set(url("x.avif") type("image/avif"))) {
+  .post-hero {
+    background-image: var(--hero-image-set, var(--hero-image));
+  }
 }
 
 .post-hero:focus-visible {
@@ -679,11 +695,17 @@ pre code {
   -webkit-user-drag: none;
 }
 
-.post-content > img {
+.post-content > picture {
+  display: contents;
+}
+
+.post-content > img,
+.post-content > picture > img {
   margin-bottom: 6px;
 }
 
-.post-content > img + p {
+.post-content > img + p,
+.post-content > picture + p {
   margin-bottom: 24px;
   color: var(--ink-muted);
   font-size: var(--small-text);

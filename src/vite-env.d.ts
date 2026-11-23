@@ -31,6 +31,9 @@ declare module "virtual:posts-manifest" {
     showInlineToc: boolean;
     hidden: boolean;
     cover?: string;
+    coverAvif?: string;
+    coverSize?: { width: number; height: number };
     wordCount?: number;
+    hasMath: boolean;
   }>;
 }

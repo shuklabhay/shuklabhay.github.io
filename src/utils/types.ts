@@ -41,7 +41,10 @@ export type PostMeta = {
   showInlineToc: boolean;
   hidden: boolean;
   cover?: string;
+  coverAvif?: string;
+  coverSize?: { width: number; height: number };
   wordCount?: number;
+  hasMath?: boolean;
 };
 
 export type MDXContentComponent = ComponentType<{
@@ -49,7 +52,8 @@ export type MDXContentComponent = ComponentType<{
 }>;
 
 export type PostEntry = PostMeta & {
-  Component: MDXContentComponent;
+  Component?: MDXContentComponent;
+  html?: string;
 };
 
 export type PostModule = {
@@ -100,11 +104,13 @@ export type BlogPostProps = {
   byline?: string;
   buttons: PostButton[];
   heroImage?: string;
+  heroImageAvif?: string;
   onHeroClick?: () => void;
   contentRef: RefObject<HTMLElement>;
   onContentClick?: MouseEventHandler<HTMLElement>;
   header?: ReactNode;
-  children: ReactNode;
+  html?: string;
+  children?: ReactNode;
 };
 
 export type BlogSortField = "date" | "alpha";
