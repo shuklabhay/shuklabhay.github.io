@@ -1,5 +1,5 @@
-import { flushSync } from "react-dom";
-import type { NavigateFunction, NavigateOptions } from "react-router-dom";
+import { flushSync } from "./flushSync";
+import type { NavigateFunction, NavigateOptions } from "../router";
 import {
   canRunRootViewTransition,
   runWithRootViewTransition,

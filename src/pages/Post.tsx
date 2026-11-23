@@ -7,24 +7,25 @@ import {
   useState,
 } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from "../router";
 import BlogPost from "../components/BlogPost";
-import ImageLightbox from "../components/ImageLightbox";
 import PostBackLink from "../components/PostBackLink";
 import ReadingTrack from "../components/ReadingTrack";
 import {
   getLoadedPostBySlug,
   getPostBySlug,
+  loadLightbox,
   loadPostBySlug,
   readPostBySlug,
 } from "../posts";
+import type { LightboxComponent } from "../posts";
 import {
   readHeadingElements,
   readHeadingsFromElement,
   seededPostHeadings,
 } from "../utils/postHeadings";
 import type { PostHeading } from "../utils/postHeadings";
-import { preloadImage } from "../utils/imagePreload";
+import { preloadPostCover } from "../utils/imagePreload";
 import { formatPostDate } from "../utils/formatPostDate";
 import type { PostEntry, RichImage } from "../utils/types";
 
@@ -194,6 +195,7 @@ export default function Post({
   const heroImage = postSummary?.cover;
   const postContentRef = useRef<HTMLElement>(null);
   const [lightboxOpened, setLightboxOpened] = useState(false);
+  const [Lightbox, setLightbox] = useState<LightboxComponent | null>(null);
   const [postImages, setPostImages] = useState<RichImage[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [heroLightboxImage, setHeroLightboxImage] = useState<RichImage | null>(
@@ -499,6 +501,24 @@ export default function Post({
     };
   }, [clearPendingHeadingJump]);
 
+  useEffect(() => {
+    const idle = window.requestIdleCallback ?? window.setTimeout;
+    const cancelIdle = window.cancelIdleCallback ?? window.clearTimeout;
+    const idleId = idle(() => void loadLightbox().catch(() => undefined));
+    return () => cancelIdle(idleId);
+  }, []);
+
+  const openLightbox = (index: number): void => {
+    setLightboxIndex(index);
+    loadLightbox().then(
+      (component) => {
+        setLightbox(() => component);
+        setLightboxOpened(true);
+      },
+      () => undefined,
+    );
+  };
+
   useIsomorphicLayoutEffect(() => {
     const fitContents = (animate: boolean): void => {
       const tocEl = document.querySelector<HTMLElement>(".post-toc");
@@ -530,7 +550,17 @@ export default function Post({
     setHeroLightboxImage(null);
     if (!postSummary) return;
     if (!heroImage) return;
-    void preloadImage(heroImage);
+    const coverSize = postSummary.coverSize;
+    if (coverSize) {
+      setHeroLightboxImage({
+        src: heroImage,
+        alt: postSummary.title,
+        width: coverSize.width,
+        height: coverSize.height,
+      });
+      return;
+    }
+    void preloadPostCover(postSummary);
     const img = new Image();
     img.onload = () =>
       setHeroLightboxImage({
@@ -559,6 +589,7 @@ export default function Post({
   }
 
   const Content = postEntry?.Component;
+  const contentHtml = Content ? undefined : postEntry?.html;
   const wordCountBylinePart =
     typeof postSummary.wordCount === "number"
       ? `${postSummary.wordCount.toLocaleString()} ${
@@ -591,14 +622,12 @@ export default function Post({
       return;
 
     event.preventDefault();
-    setLightboxIndex(heroLightboxImage ? index + 1 : index);
-    setLightboxOpened(true);
+    openLightbox(heroLightboxImage ? index + 1 : index);
   };
 
   const onHeroClick = () => {
     if (!heroLightboxImage) return;
-    setLightboxIndex(0);
-    setLightboxOpened(true);
+    openLightbox(0);
   };
 
   const onHeadingJump = (headingId: string) => {
@@ -733,14 +762,16 @@ export default function Post({
         byline={bylineParts.length ? bylineParts.join(" · ") : undefined}
         buttons={postSummary.buttons}
         heroImage={heroImage}
+        heroImageAvif={postSummary.coverAvif}
         onHeroClick={onHeroClick}
         contentRef={postContentRef}
         onContentClick={onPostContentClick}
+        html={contentHtml}
       >
         {Content ? <Content components={{ h1: () => null }} /> : null}
       </BlogPost>
-      {lightboxOpened && lightboxImages.length > 0 ? (
-        <ImageLightbox
+      {Lightbox && lightboxOpened && lightboxImages.length > 0 ? (
+        <Lightbox
           opened={lightboxOpened}
           setOpened={setLightboxOpened}
           images={lightboxImages}

@@ -2,8 +2,6 @@ import PageTitle, { CheckboxSubtitleLink } from "../components/PageTitle";
 import { useEffect, useMemo, useState } from "react";
 import BlogPostCard from "../components/BlogPostCard";
 import { allPosts } from "../posts";
-import { preloadImage } from "../utils/imagePreload";
-import { warmMathFonts } from "../utils/mathFonts";
 import type {
   BlogSortDirection,
   BlogSortField,
@@ -55,10 +53,6 @@ export default function Blog() {
   );
   const [hasLoadedSortState, setHasLoadedSortState] = useState(false);
   const { sortField, dateDirection, alphaDirection } = sortState;
-
-  useEffect(() => {
-    warmMathFonts();
-  }, []);
 
   useEffect(() => {
     setSortState(readBlogSortStateFromStorage());
@@ -127,15 +121,6 @@ export default function Blog() {
 
     return sorted;
   }, [sortField, dateDirection, alphaDirection]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const topPostsToPrime = 4;
-    for (const post of sortedPosts.slice(0, topPostsToPrime)) {
-      void preloadImage(post.cover ?? "/static/landing-1280.avif");
-    }
-  }, [sortedPosts]);
 
   return (
     <main className="route-page-gallery">

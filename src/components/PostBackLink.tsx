@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "../router";
 import type { MouseEvent as ReactMouseEvent } from "react";
 import TransitionLink from "./TransitionLink";
 import { currentHistoryIndex, pathAt } from "../utils/navigationMemory";

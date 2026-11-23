@@ -1,5 +1,5 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import type { LinkProps } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "../router";
+import type { LinkProps } from "../router";
 import type { MouseEvent as ReactMouseEvent } from "react";
 import { navigateWithRouteTransition } from "../utils/routeTransitions";
 

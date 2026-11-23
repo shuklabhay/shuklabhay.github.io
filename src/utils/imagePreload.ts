@@ -1,3 +1,8 @@
+import type { PostMeta } from "./types";
+
+const AVIF_PROBE =
+  "data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAAD5bWV0YQAAAAAAAAAvaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAFBpY3R1cmVIYW5kbGVyAAAAAA5waXRtAAAAAAABAAAAHmlsb2MAAAAARAAAAQABAAAAAQAAASEAAAAWAAAAKGlpbmYAAAAAAAEAAAAaaW5mZQIAAAAAAQAAYXYwMUNvbG9yAAAAAGppcHJwAAAAS2lwY28AAAAUaXNwZQAAAAAAAAACAAAAAgAAABBwaXhpAAAAAAMICAgAAAAMYXYxQ4EADAAAAAATY29scm5jbHgAAgACAAIAAAAAF2lwbWEAAAAAAAAAAQABBAECgwQAAAAebWRhdAoFGAA2wCAyDRgAAABQAAAAALATSyg=";
+
 export type ImagePreloadStatus = "loading" | "loaded" | "error";
 
 const statusBySrc = new Map<string, ImagePreloadStatus>();
@@ -57,4 +62,27 @@ export function preloadImage(src: string): Promise<ImagePreloadStatus> {
 
   promiseBySrc.set(src, task);
   return task;
+}
+
+let avifSupport: Promise<boolean> | null = null;
+
+export function supportsAvif(): Promise<boolean> {
+  avifSupport ??= new Promise<boolean>((resolve) => {
+    const image = new Image();
+    image.onload = () => resolve(image.width > 0);
+    image.onerror = () => resolve(false);
+    image.src = AVIF_PROBE;
+  });
+  return avifSupport;
+}
+
+export function preloadPostCover(
+  post: Pick<PostMeta, "cover" | "coverAvif">,
+): Promise<ImagePreloadStatus | undefined> {
+  const { cover, coverAvif } = post;
+  if (!cover) return Promise.resolve(undefined);
+  if (!coverAvif) return preloadImage(cover);
+  return supportsAvif().then((supported) =>
+    preloadImage(supported ? coverAvif : cover),
+  );
 }
