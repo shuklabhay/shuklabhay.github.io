@@ -172,7 +172,7 @@ async function subsetKatexFonts(
   );
 }
 
-const EAGER_POST_IMAGE_COUNT = 0;
+const EAGER_POST_IMAGE_COUNT = 1;
 const IMAGE_PLACEHOLDER =
   "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 
@@ -453,22 +453,6 @@ function createPrerenderedHtml(
     html = html.replace("</head>", `${fontPreloads}${mathStyles}  </head>`);
   }
 
-  if (route.canonicalPath.startsWith("/gallery/")) {
-    const postChunks = assetFiles.filter((file) =>
-      /^(Post|postPage)-[\w-]+\.js$/.test(file),
-    );
-    if (postChunks.length === 0) throw new Error("Missing post page chunk");
-    html = html.replace(
-      "</head>",
-      `${postChunks
-        .map(
-          (file) =>
-            `    <link rel="modulepreload" crossorigin href="/assets/${file}" />\n`,
-        )
-        .join("")}  </head>`,
-    );
-  }
-
   const heroAvif = appHtml.match(
     /--hero-image-set:image-set\(url\(&quot;(\/assets\/[^&]+\.avif)&quot;\)/,
   )?.[1];
@@ -488,7 +472,30 @@ function createPrerenderedHtml(
     html = addClassToTag(html, "html", "route-post");
   }
 
-  return hoistPreloads(html);
+  return hoistPreloads(deferAppScript(html));
+}
+
+const APP_LOAD_EVENTS = [
+  "pointerdown",
+  "pointermove",
+  "touchstart",
+  "keydown",
+  "wheel",
+  "scroll",
+  "focusin",
+];
+
+function deferAppScript(html: string): string {
+  const scriptPattern =
+    /<script type="module" crossorigin src="(\/assets\/[^"]+\.js)"><\/script>/;
+  const src = html.match(scriptPattern)?.[1];
+  if (!src) throw new Error("Missing app module script");
+  const loader = `<script>(function(){var w=window,d=document,e=${JSON.stringify(
+    APP_LOAD_EVENTS,
+  )},o={capture:true,passive:true},done=false;function load(){if(done)return;done=true;e.forEach(function(t){w.removeEventListener(t,load,o)});var s=d.createElement("script");s.type="module";s.crossOrigin="";s.src=${JSON.stringify(
+    src,
+  )};d.head.appendChild(s)}e.forEach(function(t){w.addEventListener(t,load,o)});d.addEventListener("DOMContentLoaded",function(){var r=d.getElementById("root"),p=w.location.pathname.replace(/\\/+$/,"")||"/";if(!r||r.dataset.prerenderedPath!==p)load()})})()</script>`;
+  return html.replace(scriptPattern, () => loader);
 }
 
 function hoistPreloads(html: string): string {
@@ -501,7 +508,9 @@ function hoistPreloads(html: string): string {
     },
   );
   if (preloads.length === 0) return html;
-  const scriptIndex = withoutPreloads.indexOf('<script type="module"');
+  const scriptIndex = withoutPreloads.indexOf(
+    "<script>(function(){var w=window",
+  );
   if (scriptIndex === -1) throw new Error("Missing module script in page");
   const lineStart = withoutPreloads.lastIndexOf("\n", scriptIndex) + 1;
   return (
