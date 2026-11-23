@@ -472,16 +472,119 @@ function purgeMathCss(css: string, bodies: string[]): string {
   return root.toString();
 }
 
+const RESERVED_MATH_CLASSES = new Set([
+  "katex",
+  "katex-display",
+  "katex-mathml",
+  "katex-html",
+  "katex-error",
+  ...Object.keys(KATEX_FONTS_BY_CLASS),
+  ...Object.keys(KATEX_DELIMITER_FONTS),
+  "delimsizing",
+]);
+
+async function buildMathClassMap(
+  mathCss: string,
+  bodies: string[],
+): Promise<Map<string, string>> {
+  const siteCss = await fs.readFile(
+    path.join(PROJECT_ROOT, "src/index.css"),
+    "utf8",
+  );
+  const siteClasses = new Set(
+    Array.from(siteCss.matchAll(/\.([a-zA-Z][\w-]*)/g), (match) => match[1]),
+  );
+  const mathClasses = new Set<string>();
+  postcss.parse(mathCss).walkRules((rule) => {
+    for (const match of rule.selector.matchAll(/\.([a-zA-Z][\w-]*)/g)) {
+      mathClasses.add(match[1]);
+    }
+  });
+  const counts = new Map<string, number>();
+  for (const body of bodies) {
+    for (const match of body.matchAll(/\sclass="([^"]*)"/g)) {
+      for (const name of match[1].split(/\s+/)) {
+        if (name) counts.set(name, (counts.get(name) ?? 0) + 1);
+      }
+    }
+  }
+  const outsideMath = new Set<string>();
+  for (const body of bodies) {
+    let rest = body;
+    for (const segment of katexHtmlSegments(body)) {
+      rest = rest.replace(segment, "");
+    }
+    for (const match of rest.matchAll(/\sclass="([^"]*)"/g)) {
+      for (const name of match[1].split(/\s+/)) outsideMath.add(name);
+    }
+  }
+  const taken = new Set([...counts.keys(), ...siteClasses, ...mathClasses]);
+  const renameable = Array.from(counts.keys())
+    .filter(
+      (name) =>
+        mathClasses.has(name) &&
+        !siteClasses.has(name) &&
+        !RESERVED_MATH_CLASSES.has(name),
+    )
+    .sort((a, b) => (counts.get(b) ?? 0) - (counts.get(a) ?? 0));
+  const map = new Map<string, string>();
+  for (const name of counts.keys()) {
+    if (
+      !mathClasses.has(name) &&
+      !siteClasses.has(name) &&
+      !outsideMath.has(name) &&
+      !RESERVED_MATH_CLASSES.has(name)
+    ) {
+      map.set(name, "");
+    }
+  }
+  let index = 0;
+  for (const name of renameable) {
+    let short = `k${(index++).toString(36)}`;
+    while (taken.has(short)) short = `k${(index++).toString(36)}`;
+    if (short.length < name.length) map.set(name, short);
+  }
+  return map;
+}
+
+function renameHtmlClasses(html: string, map: Map<string, string>): string {
+  return html.replace(/\sclass="([^"]*)"/g, (_match: string, value: string) => {
+    const names = value
+      .split(/\s+/)
+      .map((name) => map.get(name) ?? name)
+      .filter(Boolean);
+    return names.length > 0 ? ` class="${names.join(" ")}"` : "";
+  });
+}
+
+function renameCssClasses(css: string, map: Map<string, string>): string {
+  const root = postcss.parse(css);
+  root.walkRules((rule) => {
+    rule.selector = rule.selector.replace(
+      /\.([a-zA-Z][\w-]*)/g,
+      (match: string, name: string) => {
+        const short = map.get(name);
+        return short ? `.${short}` : match;
+      },
+    );
+  });
+  return root.toString();
+}
+
 async function inlineMathStylesheet(
   assetFiles: string[],
   bodies: string[],
+  classMap: Map<string, string>,
 ): Promise<string> {
   const file = assetFiles.find(
     (name) => name.startsWith("mathStyles-") && name.endsWith(".css"),
   );
   if (!file) throw new Error("Missing math stylesheet build output");
   const filePath = path.join(DIST_ASSETS_DIR, file);
-  const css = purgeMathCss(await fs.readFile(filePath, "utf8"), bodies);
+  const css = renameCssClasses(
+    purgeMathCss(await fs.readFile(filePath, "utf8"), bodies),
+    classMap,
+  );
   await fs.writeFile(filePath, css);
   if (css.includes("</style")) throw new Error(`Cannot inline ${file}`);
   return `    <style data-math-styles>${css.trim()}</style>\n`;
@@ -803,15 +906,25 @@ async function main(): Promise<void> {
   const routes = getPrerenderRoutes();
   const assetFiles = await fs.readdir(DIST_ASSETS_DIR);
   const postBodies: string[] = [];
+  const allPostBodies = routes
+    .filter((route) => route.canonicalPath.startsWith("/gallery/"))
+    .map((route) =>
+      renderPostBody(
+        decodeURIComponent(route.canonicalPath.slice("/gallery/".length)),
+      ),
+    );
+  const mathCssFile = assetFiles.find(
+    (name) => name.startsWith("mathStyles-") && name.endsWith(".css"),
+  );
+  if (!mathCssFile) throw new Error("Missing math stylesheet build output");
+  const mathClassMap = await buildMathClassMap(
+    await fs.readFile(path.join(DIST_ASSETS_DIR, mathCssFile), "utf8"),
+    allPostBodies,
+  );
   const mathStyles = await inlineMathStylesheet(
     assetFiles,
-    routes
-      .filter((route) => route.canonicalPath.startsWith("/gallery/"))
-      .map((route) =>
-        renderPostBody(
-          decodeURIComponent(route.canonicalPath.slice("/gallery/".length)),
-        ),
-      ),
+    allPostBodies,
+    mathClassMap,
   );
 
   for (const route of routes) {
@@ -825,7 +938,9 @@ async function main(): Promise<void> {
       if (!appHtml.includes(bodyHtml)) {
         throw new Error(`Post body for ${slug} does not match its page`);
       }
-      const deferredBodyHtml = deferPostImages(bodyHtml);
+      const deferredBodyHtml = deferPostImages(
+        renameHtmlClasses(bodyHtml, mathClassMap),
+      );
       appHtml = appHtml.replace(bodyHtml, () => deferredBodyHtml);
       await fs.mkdir(path.join(DIST_DIR, "gallery", slug), {
         recursive: true,
