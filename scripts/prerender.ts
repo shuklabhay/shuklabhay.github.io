@@ -171,6 +171,45 @@ async function subsetKatexFonts(
   );
 }
 
+const EAGER_POST_IMAGE_COUNT = 1;
+const IMAGE_PLACEHOLDER =
+  "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+
+function deferPostImages(bodyHtml: string): string {
+  let imageIndex = 0;
+  return bodyHtml.replace(
+    /(<source\b[^>]*?\s)srcset="([^"]*)"([^>]*>)?(<img\b[^>]*>)|(<img\b[^>]*>)/g,
+    (
+      match: string,
+      sourceStart: string | undefined,
+      sourceSrcset: string | undefined,
+      sourceEnd: string | undefined,
+      pictureImg: string | undefined,
+      plainImg: string | undefined,
+    ) => {
+      const img = pictureImg ?? plainImg ?? "";
+      if (!/\sloading="lazy"/.test(img) || !/\ssrc="/.test(img)) return match;
+      imageIndex += 1;
+      if (imageIndex <= EAGER_POST_IMAGE_COUNT) return match;
+      const width = img.match(/\swidth="(\d+)"/)?.[1];
+      const height = img.match(/\sheight="(\d+)"/)?.[1];
+      const ratio = width && height ? `aspect-ratio:${width}/${height};` : "";
+      const sizedImg = !ratio
+        ? img
+        : /\sstyle="/.test(img)
+          ? img.replace(/\sstyle="/, ` style="${ratio}`)
+          : img.replace(/^<img\b/, `<img style="${ratio}"`);
+      const deferredImg = sizedImg.replace(
+        /\ssrc="([^"]*)"/,
+        (_src: string, value: string) =>
+          ` src="${IMAGE_PLACEHOLDER}" data-src="${value}"`,
+      );
+      if (pictureImg === undefined) return deferredImg;
+      return `${sourceStart}data-srcset="${sourceSrcset}"${sourceEnd ?? ""}${deferredImg}`;
+    },
+  );
+}
+
 function escapeHtmlAttribute(value: string): string {
   return value
     .replace(/&/g, "&amp;")
@@ -481,7 +520,26 @@ async function main(): Promise<void> {
   const mathStyles = await inlineMathStylesheet(assetFiles);
 
   for (const route of routes) {
-    const appHtml = await renderRoute(route.path);
+    let appHtml = await renderRoute(route.path);
+    if (route.canonicalPath.startsWith("/gallery/")) {
+      const slug = decodeURIComponent(
+        route.canonicalPath.slice("/gallery/".length),
+      );
+      const bodyHtml = renderPostBody(slug);
+      postBodies.push(bodyHtml);
+      if (!appHtml.includes(bodyHtml)) {
+        throw new Error(`Post body for ${slug} does not match its page`);
+      }
+      const deferredBodyHtml = deferPostImages(bodyHtml);
+      appHtml = appHtml.replace(bodyHtml, () => deferredBodyHtml);
+      await fs.mkdir(path.join(DIST_DIR, "gallery", slug), {
+        recursive: true,
+      });
+      await fs.writeFile(
+        path.join(DIST_DIR, "gallery", slug, "body.html"),
+        deferredBodyHtml,
+      );
+    }
     const pageHtml = createPrerenderedHtml(
       appShellHtml,
       route,
@@ -493,20 +551,6 @@ async function main(): Promise<void> {
     for (const outputPath of routeFilePaths(route.canonicalPath)) {
       await fs.mkdir(path.dirname(outputPath), { recursive: true });
       await fs.writeFile(outputPath, pageHtml);
-    }
-    if (route.canonicalPath.startsWith("/gallery/")) {
-      const slug = decodeURIComponent(
-        route.canonicalPath.slice("/gallery/".length),
-      );
-      const bodyHtml = renderPostBody(slug);
-      postBodies.push(bodyHtml);
-      if (!appHtml.includes(bodyHtml)) {
-        throw new Error(`Post body for ${slug} does not match its page`);
-      }
-      await fs.writeFile(
-        path.join(DIST_DIR, "gallery", slug, "body.html"),
-        bodyHtml,
-      );
     }
   }
 

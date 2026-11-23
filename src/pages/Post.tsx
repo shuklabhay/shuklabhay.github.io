@@ -340,11 +340,49 @@ export default function Post({
 
     const imageElements = Array.from(contentEl.querySelectorAll("img"));
     const images: RichImage[] = imageElements.map((img) => ({
-      src: img.currentSrc || img.src,
+      src: img.dataset.src || img.currentSrc || img.src,
       alt: img.alt || "",
-      width: img.naturalWidth || img.width || img.clientWidth || 1,
-      height: img.naturalHeight || img.height || img.clientHeight || 1,
+      width:
+        Number(img.getAttribute("width")) ||
+        img.naturalWidth ||
+        img.clientWidth ||
+        1,
+      height:
+        Number(img.getAttribute("height")) ||
+        img.naturalHeight ||
+        img.clientHeight ||
+        1,
     }));
+
+    const revealImage = (img: HTMLImageElement): void => {
+      const src = img.dataset.src;
+      if (!src) return;
+      img.parentElement
+        ?.querySelectorAll<HTMLSourceElement>("source[data-srcset]")
+        .forEach((sourceEl) => {
+          sourceEl.srcset = sourceEl.dataset.srcset ?? "";
+          delete sourceEl.dataset.srcset;
+        });
+      img.src = src;
+      delete img.dataset.src;
+    };
+    const deferredImages = imageElements.filter((img) => img.dataset.src);
+    const imageObserver =
+      deferredImages.length > 0 && "IntersectionObserver" in window
+        ? new IntersectionObserver(
+            (entries) => {
+              for (const entry of entries) {
+                if (!entry.isIntersecting) continue;
+                imageObserver?.unobserve(entry.target);
+                revealImage(entry.target as HTMLImageElement);
+              }
+            },
+            { rootMargin: "300px 0px" },
+          )
+        : null;
+    deferredImages.forEach((img) =>
+      imageObserver ? imageObserver.observe(img) : revealImage(img),
+    );
 
     imageElements.forEach((img, index) => {
       img.dataset.lightboxIndex = String(index);
@@ -390,6 +428,7 @@ export default function Post({
     setLightboxOpened(false);
 
     return () => {
+      imageObserver?.disconnect();
       contentEl.removeEventListener("keydown", onImageKeyDown);
     };
   }, [clearPendingHeadingJump, slug, postEntry]);
@@ -622,6 +661,14 @@ export default function Post({
       return;
 
     event.preventDefault();
+    const loadedSrc = imageEl.dataset.src ? undefined : imageEl.currentSrc;
+    if (loadedSrc) {
+      setPostImages((images) =>
+        images.map((image, imageIndex) =>
+          imageIndex === index ? { ...image, src: loadedSrc } : image,
+        ),
+      );
+    }
     openLightbox(heroLightboxImage ? index + 1 : index);
   };
 
