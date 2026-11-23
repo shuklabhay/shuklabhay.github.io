@@ -191,7 +191,8 @@ function deferPostImages(bodyHtml: string): string {
       const img = pictureImg ?? plainImg ?? "";
       if (!/\sloading="lazy"/.test(img) || !/\ssrc="/.test(img)) return match;
       imageIndex += 1;
-      if (imageIndex <= EAGER_POST_IMAGE_COUNT) return match;
+      const poster = img.match(/\sdata-poster="([^"]*)"/)?.[1];
+      if (!poster && imageIndex <= EAGER_POST_IMAGE_COUNT) return match;
       const width = img.match(/\swidth="(\d+)"/)?.[1];
       const height = img.match(/\sheight="(\d+)"/)?.[1];
       const ratio = width && height ? `aspect-ratio:${width}/${height};` : "";
@@ -200,11 +201,13 @@ function deferPostImages(bodyHtml: string): string {
         : /\sstyle="/.test(img)
           ? img.replace(/\sstyle="/, ` style="${ratio}`)
           : img.replace(/^<img\b/, `<img style="${ratio}"`);
-      const deferredImg = sizedImg.replace(
-        /\ssrc="([^"]*)"/,
-        (_src: string, value: string) =>
-          ` src="${IMAGE_PLACEHOLDER}" data-src="${value}"`,
-      );
+      const deferredImg = sizedImg
+        .replace(
+          /\ssrc="([^"]*)"/,
+          (_src: string, value: string) =>
+            ` src="${poster ?? IMAGE_PLACEHOLDER}" data-src="${value}"`,
+        )
+        .replace(/\sdata-poster="[^"]*"/, "");
       if (pictureImg === undefined) return deferredImg;
       return `${sourceStart}data-srcset="${sourceSrcset}"${sourceEnd ?? ""}${deferredImg}`;
     },
