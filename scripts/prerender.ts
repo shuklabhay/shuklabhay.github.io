@@ -147,26 +147,174 @@ function decodeHtmlText(html: string): string {
     .replace(/&amp;/g, "&");
 }
 
+type FontRule = {
+  classes: string[];
+  family?: string;
+  weight?: string;
+  style?: string;
+};
+
+function readKatexFontRules(css: string): {
+  rules: FontRule[];
+  faces: Map<string, string>;
+} {
+  const rules: FontRule[] = [];
+  const faces = new Map<string, string>();
+  const root = postcss.parse(css);
+  root.walkAtRules("font-face", (atRule) => {
+    let family = "";
+    let weight = "400";
+    let style = "normal";
+    let file = "";
+    atRule.walkDecls((decl) => {
+      if (decl.prop === "font-family") family = decl.value.replace(/["']/g, "");
+      if (decl.prop === "font-weight") weight = normalizeWeight(decl.value);
+      if (decl.prop === "font-style") style = decl.value;
+      if (decl.prop === "src") {
+        file = decl.value.match(/KaTeX_\w+-\w+(?=[.-][\w.-]*woff2)/)?.[0] ?? "";
+      }
+    });
+    if (family && file) faces.set(`${family}|${weight}|${style}`, file);
+  });
+  root.walkRules((rule) => {
+    if (rule.parent?.type === "atrule") return;
+    let family: string | undefined;
+    let weight: string | undefined;
+    let style: string | undefined;
+    rule.walkDecls((decl) => {
+      if (decl.prop === "font-family") {
+        family = decl.value.match(/KaTeX_\w+/)?.[0] ?? "inherit-other";
+      } else if (decl.prop === "font-weight") {
+        weight = normalizeWeight(decl.value);
+      } else if (decl.prop === "font-style") {
+        style = decl.value;
+      } else if (decl.prop === "font") {
+        family = decl.value.match(/KaTeX_\w+/)?.[0] ?? family;
+        if (/\bbold\b/.test(decl.value)) weight = "700";
+        else if (/\bnormal\b/.test(decl.value)) weight = weight ?? "400";
+        style = /\bitalic\b/.test(decl.value) ? "italic" : "normal";
+      }
+    });
+    if (!family && !weight && !style) return;
+    for (const selector of rule.selectors) {
+      const last =
+        selector
+          .trim()
+          .split(/\s*[ >+~]\s*/)
+          .pop() ?? "";
+      if (/[:[\]#*]/.test(last) || !last.startsWith(".")) continue;
+      const classes = last.split(".").filter(Boolean);
+      rules.push({ classes, family, weight, style });
+    }
+  });
+  return { rules, faces };
+}
+
+function normalizeWeight(value: string): string {
+  if (value === "bold") return "700";
+  if (value === "normal") return "400";
+  return value;
+}
+
+function resolveFontFile(
+  stack: string[][],
+  rules: FontRule[],
+  faces: Map<string, string>,
+): string | undefined {
+  const pick = (prop: "family" | "weight" | "style"): string | undefined => {
+    for (let depth = stack.length - 1; depth >= 0; depth--) {
+      const classes = stack[depth];
+      let value: string | undefined;
+      for (const rule of rules) {
+        if (rule[prop] === undefined) continue;
+        if (rule.classes.every((name) => classes.includes(name))) {
+          value = rule[prop];
+        }
+      }
+      if (value !== undefined) return value;
+    }
+    return undefined;
+  };
+  const family = pick("family") ?? "KaTeX_Main";
+  const weight = pick("weight") ?? "400";
+  const style = pick("style") ?? "normal";
+  return (
+    faces.get(`${family}|${weight}|${style}`) ??
+    faces.get(`${family}|400|${style}`) ??
+    faces.get(`${family}|400|normal`)
+  );
+}
+
 async function subsetKatexFonts(
   bodies: string[],
   assetFiles: string[],
+  katexCss: string,
 ): Promise<void> {
-  const glyphs = new Set("0123456789()[]{}+-=,.;:!?/|' ");
+  const { rules, faces } = readKatexFontRules(katexCss);
+  const glyphsByFont = new Map<string, Set<string>>();
+  const addGlyphs = (font: string | undefined, text: string): void => {
+    if (!font) return;
+    const glyphs = glyphsByFont.get(font) ?? new Set<string>();
+    for (const glyph of text) glyphs.add(glyph);
+    glyphsByFont.set(font, glyphs);
+  };
   for (const body of bodies) {
-    for (const segment of katexHtmlSegments(body)) {
-      for (const glyph of decodeHtmlText(segment)) glyphs.add(glyph);
+    for (const match of body.matchAll(
+      /<span\b[^>]*\bclass="[^"]*\bkatex\b[^"]*"[^>]*>/g,
+    )) {
+      if (!/\bclass="katex"/.test(match[0])) continue;
+      const stack: string[][] = [];
+      const tokenPattern = /<(\/?)([a-zA-Z][\w-]*)([^>]*?)(\/?)>|([^<]+)/g;
+      tokenPattern.lastIndex = match.index ?? 0;
+      let mathmlDepth = -1;
+      for (
+        let token = tokenPattern.exec(body);
+        token;
+        token = tokenPattern.exec(body)
+      ) {
+        const [, closing, , attrs, selfClosing, text] = token;
+        if (text !== undefined) {
+          if (mathmlDepth === -1 && stack.length > 0) {
+            addGlyphs(
+              resolveFontFile(stack, rules, faces),
+              decodeHtmlText(text),
+            );
+          }
+          continue;
+        }
+        if (closing) {
+          stack.pop();
+          if (stack.length <= mathmlDepth) mathmlDepth = -1;
+          if (stack.length === 0) break;
+          continue;
+        }
+        if (selfClosing) continue;
+        const classes =
+          attrs
+            .match(/\sclass="([^"]*)"/)?.[1]
+            .split(/\s+/)
+            .filter(Boolean) ?? [];
+        stack.push(classes);
+        if (mathmlDepth === -1 && classes.includes("katex-mathml")) {
+          mathmlDepth = stack.length - 1;
+        }
+      }
     }
   }
-  const text = Array.from(glyphs).join("");
   const fontFiles = assetFiles.filter(
     (file) => file.startsWith("KaTeX_") && file.endsWith(".woff2"),
   );
   await Promise.all(
     fontFiles.map(async (file) => {
+      const fontName = file.match(/^KaTeX_[\w]+-[\w]+(?=-)/)?.[0] ?? "";
+      const glyphs = glyphsByFont.get(fontName) ?? new Set<string>();
+      if (glyphs.size === 0) return;
       const fontPath = path.join(DIST_ASSETS_DIR, file);
-      const subset = await subsetFont(await fs.readFile(fontPath), text, {
-        targetFormat: "woff2",
-      });
+      const subset = await subsetFont(
+        await fs.readFile(fontPath),
+        Array.from(glyphs).join(""),
+        { targetFormat: "woff2" },
+      );
       await fs.writeFile(fontPath, subset);
     }),
   );
@@ -701,7 +849,14 @@ async function main(): Promise<void> {
     }
   }
 
-  await subsetKatexFonts(postBodies, assetFiles);
+  await subsetKatexFonts(
+    postBodies,
+    assetFiles,
+    await fs.readFile(
+      path.join(PROJECT_ROOT, "node_modules/katex/dist/katex.min.css"),
+      "utf8",
+    ),
+  );
   await writeLegacyBlogRedirects(routes);
 
   const canonicalPaths = [
