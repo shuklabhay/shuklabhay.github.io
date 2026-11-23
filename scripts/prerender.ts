@@ -240,16 +240,19 @@ function routeFilePaths(routePath: string): string[] {
   ];
 }
 
-function purgeMathCss(css: string, bodies: string[]): string {
+function collectClasses(htmls: string[]): Set<string> {
   const usedClasses = new Set<string>();
-  for (const body of bodies) {
-    for (const match of body.matchAll(/\sclass="([^"]*)"/g)) {
+  for (const html of htmls) {
+    for (const match of html.matchAll(/\sclass="([^"]*)"/g)) {
       for (const className of match[1].split(/\s+/)) {
         if (className) usedClasses.add(className);
       }
     }
   }
-  const root = postcss.parse(css);
+  return usedClasses;
+}
+
+function pruneSelectors(root: postcss.Root, usedClasses: Set<string>): void {
   root.walkRules((rule) => {
     if (
       rule.parent?.type === "atrule" &&
@@ -265,6 +268,31 @@ function purgeMathCss(css: string, bodies: string[]): string {
     if (kept.length === 0) rule.remove();
     else rule.selectors = kept;
   });
+}
+
+function removeEmptyAtRules(root: postcss.Root): void {
+  let removed = true;
+  while (removed) {
+    removed = false;
+    root.walkAtRules((atRule) => {
+      if (atRule.name !== "font-face" && atRule.nodes?.length === 0) {
+        atRule.remove();
+        removed = true;
+      }
+    });
+  }
+}
+
+function purgeAppCss(css: string, pageHtml: string): string {
+  const root = postcss.parse(css);
+  pruneSelectors(root, collectClasses([pageHtml]));
+  removeEmptyAtRules(root);
+  return root.toString();
+}
+
+function purgeMathCss(css: string, bodies: string[]): string {
+  const root = postcss.parse(css);
+  pruneSelectors(root, collectClasses(bodies));
   const usedFamilies = new Set<string>();
   root.walkDecls(/^font(-family)?$/, (decl) => {
     if (decl.parent?.type === "atrule") return;
@@ -289,11 +317,7 @@ function purgeMathCss(css: string, bodies: string[]): string {
       if (woff2.length > 0) decl.value = woff2.join(",");
     });
   });
-  root.walkAtRules((atRule) => {
-    if (atRule.name !== "font-face" && atRule.nodes?.length === 0) {
-      atRule.remove();
-    }
-  });
+  removeEmptyAtRules(root);
   return root.toString();
 }
 
@@ -472,7 +496,7 @@ function createPrerenderedHtml(
     html = addClassToTag(html, "html", "route-post");
   }
 
-  return hoistPreloads(deferAppScript(html));
+  return hoistPreloads(deferAppScript(purgeInlinedAppStyles(html)));
 }
 
 const APP_LOAD_EVENTS = [
@@ -485,17 +509,33 @@ const APP_LOAD_EVENTS = [
   "focusin",
 ];
 
+function purgeInlinedAppStyles(html: string): string {
+  return html.replace(
+    /<style data-app-styles="([^"]+)">([\s\S]*?)<\/style>/,
+    (_match: string, href: string, css: string) =>
+      `<style data-app-styles="${href}">${purgeAppCss(css, html)}</style>`,
+  );
+}
+
 function deferAppScript(html: string): string {
   const scriptPattern =
     /<script type="module" crossorigin src="(\/assets\/[^"]+\.js)"><\/script>/;
   const src = html.match(scriptPattern)?.[1];
   if (!src) throw new Error("Missing app module script");
+  const href = html.match(/<style data-app-styles="([^"]+)">/)?.[1];
+  if (!href) throw new Error("Missing inlined app styles");
   const loader = `<script>(function(){var w=window,d=document,e=${JSON.stringify(
     APP_LOAD_EVENTS,
-  )},o={capture:true,passive:true},done=false;function load(){if(done)return;done=true;e.forEach(function(t){w.removeEventListener(t,load,o)});var s=d.createElement("script");s.type="module";s.crossOrigin="";s.src=${JSON.stringify(
+  )},o={capture:true,passive:true},done=false;function add(rel,url,cb){var l=d.createElement("link");l.rel=rel;l.href=url;if(rel==="modulepreload")l.crossOrigin="";if(cb)l.onload=l.onerror=cb;d.head.appendChild(l)}function load(){if(done)return;done=true;e.forEach(function(t){w.removeEventListener(t,load,o)});add("modulepreload",${JSON.stringify(
     src,
-  )};d.head.appendChild(s)}e.forEach(function(t){w.addEventListener(t,load,o)});d.addEventListener("DOMContentLoaded",function(){var r=d.getElementById("root"),p=w.location.pathname.replace(/\\/+$/,"")||"/";if(!r||r.dataset.prerenderedPath!==p)load()})})()</script>`;
-  return html.replace(scriptPattern, () => loader);
+  )});add("stylesheet",${JSON.stringify(
+    href,
+  )},function(){var s=d.createElement("script");s.type="module";s.crossOrigin="";s.src=${JSON.stringify(
+    src,
+  )};d.head.appendChild(s)})}e.forEach(function(t){w.addEventListener(t,load,o)});d.addEventListener("DOMContentLoaded",function(){var r=d.getElementById("root"),p=w.location.pathname.replace(/\\/+$/,"")||"/";if(!r||r.dataset.prerenderedPath!==p)load()})})()</script>`;
+  return html
+    .replace(scriptPattern, () => loader)
+    .replace(/<style data-app-styles="[^"]+">/, "<style>");
 }
 
 function hoistPreloads(html: string): string {
@@ -593,7 +633,10 @@ async function inlineStylesheets(html: string): Promise<string> {
   for (const match of html.matchAll(pattern)) {
     const css = await fs.readFile(path.join(DIST_DIR, match[1]), "utf8");
     if (css.includes("</style")) throw new Error(`Cannot inline ${match[1]}`);
-    result = result.replace(match[0], () => `<style>${css.trim()}</style>`);
+    result = result.replace(
+      match[0],
+      () => `<style data-app-styles="${match[1]}">${css.trim()}</style>`,
+    );
   }
   return result;
 }
