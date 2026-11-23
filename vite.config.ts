@@ -147,6 +147,7 @@ const AVIF_UPGRADABLE_IMAGE = /\.(webp|png|jpe?g|gif)$/i;
 function addImageEnhancements(source: string, postDir: string): string {
   const avifImportByName = new Map<string, string>();
   const sizeByName = new Map<string, { width: number; height: number }>();
+  const posterImportByName = new Map<string, string>();
   const importLines: string[] = [];
   const importPattern =
     /^import\s+(\w+)\s+from\s+["'](\.\/assets\/[^"']+)["'];?$/gm;
@@ -156,6 +157,17 @@ function addImageEnhancements(source: string, postDir: string): string {
     if (!AVIF_UPGRADABLE_IMAGE.test(importPath)) continue;
     const size = readImageSize(path.join(postDir, importPath));
     if (size) sizeByName.set(importName, size);
+    const posterPath = importPath.replace(
+      AVIF_UPGRADABLE_IMAGE,
+      ".poster.avif",
+    );
+    if (fs.existsSync(path.join(postDir, posterPath))) {
+      const posterImportName = `${importName}__poster`;
+      posterImportByName.set(importName, posterImportName);
+      importLines.push(
+        `import ${posterImportName} from ${JSON.stringify(posterPath)};`,
+      );
+    }
     const avifPath = importPath.replace(AVIF_UPGRADABLE_IMAGE, ".avif");
     if (!fs.existsSync(path.join(postDir, avifPath))) continue;
     const avifImportName = `${importName}__avif`;
@@ -172,6 +184,10 @@ function addImageEnhancements(source: string, postDir: string): string {
     (tag: string, importName: string) => {
       const size = sizeByName.get(importName);
       let img = tag;
+      const posterImportName = posterImportByName.get(importName);
+      if (posterImportName) {
+        img = img.replace(/^<img\b/, `<img data-poster={${posterImportName}}`);
+      }
       if (size && !/\b(width|height)=/.test(img)) {
         img = img.replace(
           /^<img\b/,
