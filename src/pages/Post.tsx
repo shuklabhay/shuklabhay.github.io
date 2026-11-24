@@ -363,6 +363,7 @@ export default function Post({
           sourceEl.srcset = sourceEl.dataset.srcset ?? "";
           delete sourceEl.dataset.srcset;
         });
+      img.loading = "eager";
       img.src = src;
       delete img.dataset.src;
     };
@@ -377,12 +378,38 @@ export default function Post({
                 revealImage(entry.target as HTMLImageElement);
               }
             },
-            { rootMargin: "300px 0px" },
+            { rootMargin: "1500px 0px" },
           )
         : null;
     deferredImages.forEach((img) =>
       imageObserver ? imageObserver.observe(img) : revealImage(img),
     );
+
+    const idle =
+      window.requestIdleCallback ??
+      ((callback: () => void) => window.setTimeout(callback, 200));
+    const cancelIdle = window.cancelIdleCallback ?? window.clearTimeout;
+    let backgroundRevealCancelled = false;
+    let backgroundIdleId = 0;
+    const revealNextInBackground = (): void => {
+      if (backgroundRevealCancelled) return;
+      const next = deferredImages.find((img) => img.dataset.src);
+      if (!next) return;
+      imageObserver?.unobserve(next);
+      revealImage(next);
+      const proceed = (): void => {
+        backgroundIdleId = idle(revealNextInBackground, { timeout: 2000 });
+      };
+      if (next.complete) {
+        proceed();
+      } else {
+        next.addEventListener("load", proceed, { once: true });
+        next.addEventListener("error", proceed, { once: true });
+      }
+    };
+    if (deferredImages.length > 0) {
+      backgroundIdleId = idle(revealNextInBackground, { timeout: 2000 });
+    }
 
     imageElements.forEach((img, index) => {
       img.dataset.lightboxIndex = String(index);
@@ -428,6 +455,8 @@ export default function Post({
     setLightboxOpened(false);
 
     return () => {
+      backgroundRevealCancelled = true;
+      cancelIdle(backgroundIdleId);
       imageObserver?.disconnect();
       contentEl.removeEventListener("keydown", onImageKeyDown);
     };
