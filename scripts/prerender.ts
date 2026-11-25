@@ -6,7 +6,7 @@ import subsetFont from "subset-font";
 
 type PrerenderRoute = {
   canonicalPath: string;
-  description: string;
+  description?: string;
   path: string;
   socialTitle: string;
   title: string;
@@ -640,7 +640,6 @@ function createPrerenderedHtml(
   const socialImageUrl = `${SITE_ORIGIN}${coverPath ?? DEFAULT_SOCIAL_IMAGE_PATH}`;
   const escapedTitle = escapeHtmlAttribute(route.title);
   const escapedSocialTitle = escapeHtmlAttribute(route.socialTitle);
-  const escapedDescription = escapeHtmlAttribute(route.description);
   const escapedImageAlt = escapeHtmlAttribute(
     coverPath ? route.socialTitle : SOCIAL_IMAGE_ALT,
   );
@@ -655,12 +654,6 @@ function createPrerenderedHtml(
   );
   html = replaceRequiredHtml(
     html,
-    /<meta\s+name="description"\s+content="[^"]*"\s*\/>/,
-    `<meta name="description" content="${escapedDescription}" />`,
-    "description meta",
-  );
-  html = replaceRequiredHtml(
-    html,
     /<meta\s+property="og:type"\s+content="[^"]*"\s*\/>/,
     `<meta property="og:type" content="${route.type}" />`,
     "Open Graph type meta",
@@ -670,12 +663,6 @@ function createPrerenderedHtml(
     /<meta\s+property="og:title"\s+content="[^"]*"\s*\/>/,
     `<meta property="og:title" content="${escapedSocialTitle}" />`,
     "Open Graph title meta",
-  );
-  html = replaceRequiredHtml(
-    html,
-    /<meta\s+property="og:description"\s+content="[^"]*"\s*\/>/,
-    `<meta property="og:description" content="${escapedDescription}" />`,
-    "Open Graph description meta",
   );
   html = replaceRequiredHtml(
     html,
@@ -703,16 +690,19 @@ function createPrerenderedHtml(
   );
   html = replaceRequiredHtml(
     html,
-    /<meta\s+name="twitter:description"\s+content="[^"]*"\s*\/>/,
-    `<meta name="twitter:description" content="${escapedDescription}" />`,
-    "Twitter description meta",
-  );
-  html = replaceRequiredHtml(
-    html,
     /<meta\s+name="twitter:image"\s+content="[^"]*"\s*\/>/,
     `<meta name="twitter:image" content="${socialImageUrl}" />`,
     "Twitter image meta",
   );
+  if (route.description) {
+    const description = escapeHtmlAttribute(route.description);
+    html = replaceRequiredHtml(
+      html,
+      /<title>/,
+      `<meta name="description" content="${description}" />\n    <meta property="og:description" content="${description}" />\n    <meta name="twitter:description" content="${description}" />\n    <title>`,
+      "description meta",
+    );
+  }
   html = replaceRequiredHtml(
     html,
     /<link\s+rel="canonical"\s+href="[^"]*"\s*\/>/,

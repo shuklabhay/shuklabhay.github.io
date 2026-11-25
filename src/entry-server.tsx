@@ -12,7 +12,7 @@ registerPostModules(
 
 export type PrerenderRoute = {
   canonicalPath: string;
-  description: string;
+  description?: string;
   path: string;
   socialTitle: string;
   title: string;
@@ -30,8 +30,6 @@ export function getPrerenderRoutes(): PrerenderRoute[] {
   return [
     {
       canonicalPath: "/",
-      description:
-        "I make video games, music, circuits, neural networks, webapps, and many other things.",
       path: "/",
       socialTitle: SITE_TITLE,
       title: SITE_TITLE,
@@ -39,8 +37,6 @@ export function getPrerenderRoutes(): PrerenderRoute[] {
     },
     {
       canonicalPath: "/bio",
-      description:
-        "I've been manipulating computers since I was 9, almost entirely self-taught.",
       path: "/bio",
       socialTitle: `${SITE_TITLE} · Bio`,
       title: `${SITE_TITLE} · Bio`,
@@ -48,7 +44,6 @@ export function getPrerenderRoutes(): PrerenderRoute[] {
     },
     {
       canonicalPath: "/gallery",
-      description: "Projects and writing by Abhay Shukla.",
       path: "/gallery",
       socialTitle: `${SITE_TITLE} · Gallery`,
       title: `${SITE_TITLE} · Gallery`,
