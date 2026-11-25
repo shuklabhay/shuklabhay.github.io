@@ -95,20 +95,17 @@ const TOP_LEVEL_SOCIAL_PAGES = [
   {
     canonicalPath: "/bio",
     title: "Abhay Shukla · Bio",
-    description:
-      "I've been manipulating computers since I was 9, almost entirely self-taught.",
   },
   {
     canonicalPath: "/gallery",
     title: "Abhay Shukla · Gallery",
-    description: "Projects and writing by Abhay Shukla.",
   },
 ];
 
 type SocialPageMeta = {
   canonicalPath: string;
   title: string;
-  description: string;
+  description?: string;
   type: "article" | "website";
   imagePath?: string;
   imageAlt?: string;
@@ -490,7 +487,6 @@ function createSocialHtml(meta: SocialPageMeta, appShellHtml: string): string {
   const canonicalUrl = `${SITE_ORIGIN}${meta.canonicalPath}`;
   const socialImageUrl = `${SITE_ORIGIN}${meta.imagePath ?? DEFAULT_SOCIAL_IMAGE_PATH}`;
   const escapedTitle = escapeHtmlAttribute(meta.title);
-  const escapedDescription = escapeHtmlAttribute(meta.description);
   const escapedImageAlt = escapeHtmlAttribute(
     meta.imageAlt ?? SOCIAL_IMAGE_ALT,
   );
@@ -503,12 +499,6 @@ function createSocialHtml(meta: SocialPageMeta, appShellHtml: string): string {
   );
   html = replaceRequiredHtml(
     html,
-    /<meta\s+name="description"\s+content="[^"]*"\s*\/>/,
-    `<meta name="description" content="${escapedDescription}" />`,
-    "description meta",
-  );
-  html = replaceRequiredHtml(
-    html,
     /<meta\s+property="og:type"\s+content="[^"]*"\s*\/>/,
     `<meta property="og:type" content="${meta.type}" />`,
     "Open Graph type meta",
@@ -518,12 +508,6 @@ function createSocialHtml(meta: SocialPageMeta, appShellHtml: string): string {
     /<meta\s+property="og:title"\s+content="[^"]*"\s*\/>/,
     `<meta property="og:title" content="${escapedTitle}" />`,
     "Open Graph title meta",
-  );
-  html = replaceRequiredHtml(
-    html,
-    /<meta\s+property="og:description"\s+content="[^"]*"\s*\/>/,
-    `<meta property="og:description" content="${escapedDescription}" />`,
-    "Open Graph description meta",
   );
   html = replaceRequiredHtml(
     html,
@@ -551,16 +535,19 @@ function createSocialHtml(meta: SocialPageMeta, appShellHtml: string): string {
   );
   html = replaceRequiredHtml(
     html,
-    /<meta\s+name="twitter:description"\s+content="[^"]*"\s*\/>/,
-    `<meta name="twitter:description" content="${escapedDescription}" />`,
-    "Twitter description meta",
-  );
-  html = replaceRequiredHtml(
-    html,
     /<meta\s+name="twitter:image"\s+content="[^"]*"\s*\/>/,
     `<meta name="twitter:image" content="${socialImageUrl}" />`,
     "Twitter image meta",
   );
+  if (meta.description) {
+    const description = escapeHtmlAttribute(meta.description);
+    html = replaceRequiredHtml(
+      html,
+      /<title>/,
+      `<meta name="description" content="${description}" />\n    <meta property="og:description" content="${description}" />\n    <meta name="twitter:description" content="${description}" />\n    <title>`,
+      "description meta",
+    );
+  }
   return replaceRequiredHtml(
     html,
     /<link\s+rel="canonical"\s+href="[^"]*"\s*\/>/,
